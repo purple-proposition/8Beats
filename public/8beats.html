@@ -1302,16 +1302,22 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 /* ── Show sections — uses .content / .section from homepage ── */
 
 /* ── Tracklist popup (show page) ── */
+#show-tracklist-scrim {
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: rgba(0,0,0,0); transition: background .18s ease;
+}
+#show-tracklist-scrim.open { background: rgba(0,0,0,0.35); }
 #show-tracklist-popup {
   display: none; position: fixed;
-  top: 0; left: 0; /* overridden by JS */
-  transform: translateY(6px);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
   width: 480px; max-width: calc(100vw - 32px); z-index: 1000;
   border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden;
   background: var(--surface); backdrop-filter: blur(20px) saturate(1.8); -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  opacity: 0; transition: opacity .22s ease, transform .22s ease;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+  opacity: 0; transition: opacity .18s ease, transform .18s ease;
 }
-#show-tracklist-popup.open { opacity: 1; transform: translateY(0); }
+#show-tracklist-popup.open { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 #show-tracklist-body { max-height: 292px; }
 </style>
 </head>
@@ -1742,6 +1748,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 </div>
 
 <!-- TRACKLIST POPUP -->
+<div id="show-tracklist-scrim"></div>
 <div id="show-tracklist-popup">
   <div style="padding:16px 16px 0;display:flex;align-items:center;justify-content:space-between;">
     <span class="label" id="show-tracklist-label">Tracklist</span>
@@ -3403,38 +3410,34 @@ function openShowTracklist() {
   if (tracklistPopupOpen) { closeShowTracklist(); return; }
   // Close player tracklist panel if open (but leave last-played intact)
   if (plOpen && plPanel && plPanel.classList.contains('tracklist')) {
-    plOpen = false;
-    plPanel.classList.remove('open');
+    plOpen = false; plPanel.classList.remove('open');
     if (plBtnD) plBtnD.classList.remove('active');
   }
   const popup = document.getElementById('show-tracklist-popup');
-  const btn   = document.getElementById('show-tracklist-btn');
+  const scrim = document.getElementById('show-tracklist-scrim');
   tracklistPopupOpen = true;
   popup.style.display = 'block';
+  if (scrim) scrim.style.display = 'block';
   requestAnimationFrame(() => {
-    const bRect = btn.getBoundingClientRect();
-    const popW  = Math.min(480, window.innerWidth - 32);
-    popup.style.width = popW + 'px';
-    let left = bRect.left + bRect.width / 2 - popW / 2;
-    left = Math.max(16, Math.min(left, window.innerWidth - popW - 16));
-    popup.style.top  = (bRect.bottom + 8) + 'px';
-    popup.style.left = left + 'px';
     popup.classList.add('open');
+    if (scrim) scrim.classList.add('open');
   });
 }
 function closeShowTracklist() {
   const popup = document.getElementById('show-tracklist-popup');
+  const scrim = document.getElementById('show-tracklist-scrim');
   if (!popup) return;
   tracklistPopupOpen = false;
   popup.classList.remove('open');
-  setTimeout(() => { popup.style.display = 'none'; }, 260);
+  if (scrim) scrim.classList.remove('open');
+  setTimeout(() => {
+    popup.style.display = 'none';
+    if (scrim) scrim.style.display = 'none';
+  }, 200);
 }
-document.addEventListener('click', e => {
-  if (!tracklistPopupOpen) return;
-  const popup = document.getElementById('show-tracklist-popup');
-  const btn = document.getElementById('show-tracklist-btn');
-  if (popup && !popup.contains(e.target) && btn && !btn.contains(e.target)) closeShowTracklist();
-});
+// Scrim click + Escape to close
+document.getElementById('show-tracklist-scrim').addEventListener('click', () => closeShowTracklist());
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && tracklistPopupOpen) closeShowTracklist(); });
 
 /* ── Scroll fade helpers ── */
 function updateScrollFade(el) {
