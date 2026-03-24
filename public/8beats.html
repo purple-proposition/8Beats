@@ -62,8 +62,8 @@
   --bg:          #000000;
   --bg-rgb:      0,0,0;
   --surface:     rgba(0,0,0,0.72);
-  --border:      #404040;
-  --text:        #bfbfbf;
+  --border:      #333333;
+  --text:        #cccccc;
   --text-muted:  #7f7f7f;
   --fg-strong:   #ffffff;
   --accent:      #E05A4A;
@@ -79,8 +79,8 @@ html.light {
   --bg:         #FFFFFF;
   --bg-rgb:     255,255,255;
   --surface:    rgba(255,255,255,0.72);
-  --border:     #bfbfbf;
-  --text:       #404040;
+  --border:     #cccccc;
+  --text:       #333333;
   --text-muted: #7f7f7f;
   --fg-strong:  #000000;
 }
@@ -470,20 +470,20 @@ html.light #nav-dropdown { background: var(--surface); }
 .mno-toggle-knob {
   position: absolute; top: 3px; left: 3px;
   width: 22px; height: 22px; border-radius: 50%;
-  background: #bfbfbf;
+  background: #cccccc;
   display: flex; align-items: center; justify-content: center;
   transition: transform .22s cubic-bezier(.4,0,.2,1);
   pointer-events: none;
 }
 .mno-toggle-knob svg {
   width: 10px; height: 10px;
-  stroke: #404040; fill: none;
+  stroke: #333333; fill: none;
   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
   display: block; flex-shrink: 0;
 }
 /* Light mode = toggled right, inverted colors */
-html.light .mno-toggle-knob { transform: translateX(24px); background: #404040; }
-html.light .mno-toggle-knob svg { stroke: #bfbfbf; }
+html.light .mno-toggle-knob { transform: translateX(24px); background: #333333; }
+html.light .mno-toggle-knob svg { stroke: #cccccc; }
 html.light .mno-toggle-track { background: transparent; border-color: var(--border); }
 .mno-social {
   display: flex; align-items: center; justify-content: space-between;
