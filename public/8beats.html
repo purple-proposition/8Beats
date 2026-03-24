@@ -1685,7 +1685,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
           </button>
           <div class="show-actions-row">
             <button class="show-btn-ghost" id="show-tracklist-btn" onclick="openShowTracklist()">
-              <i data-lucide="list" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+              <i data-lucide="list-music" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
               Tracklist
             </button>
             <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
@@ -1774,7 +1774,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     <div class="player-bar">
       <div class="player-bar-main">
         <button class="play-btn" id="play-btn" aria-label="Play / Pause">
-          <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5,3 19,12 5,21"/></svg>
+          <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>
         </button>
         <div class="player-info">
           <div class="player-info-top">
@@ -1797,7 +1797,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
           <div class="divider"></div>
           <button class="ctrl-btn" id="vol-btn" aria-label="Volume"></button>
           <button class="ctrl-btn" id="playlist-btn" aria-label="Playlist">
-            <i data-lucide="list" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>
+            <i data-lucide="list-video" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>
           </button>
         </div>
       </div>
@@ -2453,7 +2453,7 @@ const TRACKLISTS = {
 const DEFAULT_TRACKLIST = TRACKLISTS['International Radio Day'];
 
 /* ── Icon SVG constants ── */
-const ICON_PLAY  = '<polygon points="5,3 19,12 5,21"/>';
+const ICON_PLAY  = '<polygon points="6 3 20 12 6 21 6 3"/>';
 const ICON_PAUSE = '<rect x="5" y="3" width="4" height="18" rx="1"/><rect x="15" y="3" width="4" height="18" rx="1"/>';
 
 let activeCardId = null;
@@ -3181,7 +3181,7 @@ function makeRelatedCard(r, i) {
         <rect width="400" height="300" fill="url(#${r.gradId})"/>
         <rect width="400" height="300" fill="url(#${r.gradId}r)"/>
       </svg>
-      <div class="card-overlay"><button class="card-play" data-show="${r.title}" aria-label="Play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+      <div class="card-overlay"><button class="card-play" data-show="${r.title}" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg></button></div>
     </div>
     <div class="card-body">
       <h3>${r.title}</h3>
