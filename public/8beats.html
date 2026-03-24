@@ -788,12 +788,11 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   position: fixed; z-index: 9999;
   background: var(--surface); border: 1px solid var(--border);
   backdrop-filter: blur(20px) saturate(1.8); -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border-radius: var(--radius-sm); padding: 8px 12px;
-  font-family: var(--font); font-size: 12px; color: var(--text);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+  font-family: var(--font);
   pointer-events: none; white-space: nowrap;
   opacity: 0; transform: translateY(4px);
   transition: opacity .18s ease, transform .18s ease;
-  line-height: 1.5;
 }
 
 .player-bar {
@@ -2548,7 +2547,7 @@ progressTrack.addEventListener('mousemove', e => {
 
   if (current) {
     progressTooltipEl.innerHTML = `
-      <div style="color:var(--text);font-size:12px;font-weight:400;">${current.name}</div>
+      <div style="color:var(--fg-strong);font-size:14px;font-weight:400;line-height:1.4;">${current.name}</div>
       ${current.game ? `<div style="color:var(--text-muted);font-size:12px;margin-top:3px;">${current.game}</div>` : ''}
     `;
     progressTooltipEl.style.opacity = '1';
