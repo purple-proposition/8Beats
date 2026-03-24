@@ -3337,7 +3337,7 @@ function updateShowPlayBtn() {
   const data = currentShowKey ? SHOW_DATA[currentShowKey] : null;
   const dur = data ? data.duration : '';
   const iconName = playing ? 'pause' : 'play';
-  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:none;fill:var(--fg-strong);display:block;"></i><span id="show-duration">${dur}</span>`;
+  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:none;fill:var(--bg);display:block;"></i><span id="show-duration">${dur}</span>`;
   lucide.createIcons({ nodes: [btn] });
 }
 
@@ -3399,6 +3399,12 @@ document.querySelectorAll('.card').forEach(card => {
 let tracklistPopupOpen = false;
 function openShowTracklist() {
   if (tracklistPopupOpen) { closeShowTracklist(); return; }
+  // Close player tracklist panel if open (but leave last-played intact)
+  if (plOpen && plPanel && plPanel.classList.contains('tracklist')) {
+    plOpen = false;
+    plPanel.classList.remove('open');
+    if (plBtnD) plBtnD.classList.remove('active');
+  }
   const popup = document.getElementById('show-tracklist-popup');
   const btn   = document.getElementById('show-tracklist-btn');
   tracklistPopupOpen = true;
