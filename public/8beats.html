@@ -276,7 +276,7 @@ html.light .theme-toggle { background: transparent; border-color: var(--border);
 }
 .theme-knob {
   position: absolute; top: 3px; left: 3px;
-  width: 16px; height: 16px; border-radius: 50%; background: var(--text);
+  width: 16px; height: 16px; border-radius: 50%; background: var(--fg-strong);
   display: flex; align-items: center; justify-content: center;
   transition: transform .25s cubic-bezier(.4,0,.2,1), background .25s ease;
 }
@@ -661,7 +661,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .card-tags   { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 16px; margin-top: auto; }
 
 .tag { font-size: 12px; font-weight: 500; letter-spacing: .4px; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--border); border-radius: 4px; padding: 3px 7px; cursor: pointer; transition: color .18s ease, border-color .18s ease, background .18s ease; }
-.tag:hover { color: var(--bg); border-color: var(--text); background: var(--text); }
+.tag:hover { color: var(--bg); border-color: var(--fg-strong); background: var(--fg-strong); }
 
 /* ============================================================
    PANELS
@@ -1284,7 +1284,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: inline-flex; align-items: center; gap: 8px;
   background: transparent; color: var(--text); border: 1px solid var(--border);
   border-radius: var(--radius-sm); padding: 12px 18px;
-  font-family: var(--font); font-size: 12px; font-weight: 400; letter-spacing: -.1px;
+  font-family: var(--font); font-size: 14px; font-weight: 400; letter-spacing: -.1px;
   cursor: pointer; transition: border-color .18s, color .18s;
 }
 .show-btn-ghost:hover { border-color: var(--text-muted); }
@@ -1294,11 +1294,11 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: border-color .18s; flex-shrink: 0;
 }
-.show-btn-icon svg { width: 15px; height: 15px; stroke: var(--text); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: stroke .18s; }
+.show-btn-icon svg { width: 16px; height: 16px; stroke: var(--fg-strong); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: stroke .18s; }
 .show-btn-icon:hover { border-color: var(--text-muted); }
-.show-btn-icon:hover svg { stroke: var(--text); }
-.show-btn-icon.active { border-color: var(--text); }
-.show-btn-icon.active svg { stroke: var(--text); }
+.show-btn-icon:hover svg { stroke: var(--fg-strong); }
+.show-btn-icon.active { border-color: var(--fg-strong); }
+.show-btn-icon.active svg { stroke: var(--fg-strong); }
 
 /* ── Show sections — uses .content / .section from homepage ── */
 
@@ -1689,10 +1689,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
               Tracklist
             </button>
             <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
-              <i data-lucide="bookmark" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>
+              <i data-lucide="bookmark" style="width:16px;height:16px;fill:none;display:block;"></i>
             </button>
             <button class="show-btn-icon" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
-              <i data-lucide="user-plus" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>
+              <i data-lucide="user-plus" style="width:16px;height:16px;fill:none;display:block;"></i>
             </button>
           </div>
       </div>
@@ -1743,18 +1743,11 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 </div>
 
 <!-- TRACKLIST POPUP -->
-<div id="show-tracklist-backdrop" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);transition:background .25s ease,backdrop-filter .25s ease;"></div>
 <div id="show-tracklist-popup">
   <div style="padding:16px 16px 0;display:flex;align-items:center;justify-content:space-between;">
     <span class="label" id="show-tracklist-label">Tracklist</span>
   </div>
   <div id="show-tracklist-body" style="overflow-y:auto;max-height:292px;padding:0 16px 4px;"></div>
-  <div class="prog-blur">
-    <span style="--b:8px;--s:0%;--e:25%"></span>
-    <span style="--b:4px;--s:0%;--e:50%"></span>
-    <span style="--b:2px;--s:0%;--e:75%"></span>
-    <span style="--b:1px;--s:0%;--e:100%"></span>
-  </div>
 </div>
 
 <!-- PLAYER -->
@@ -1773,9 +1766,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   <div class="player-inner">
     <div class="player-bar">
       <div class="player-bar-main">
-        <button class="play-btn" id="play-btn" aria-label="Play / Pause">
-          <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-        </button>
+        <button class="play-btn" id="play-btn" aria-label="Play / Pause"></button>
         <div class="player-info">
           <div class="player-info-top">
             <span class="live-dot"></span>
@@ -1797,7 +1788,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
           <div class="divider"></div>
           <button class="ctrl-btn" id="vol-btn" aria-label="Volume"></button>
           <button class="ctrl-btn" id="playlist-btn" aria-label="Playlist">
-            <i data-lucide="list-video" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>
+            <i data-lucide="list-video" style="width:16px;height:16px;fill:none;display:block;"></i>
           </button>
         </div>
       </div>
@@ -2869,12 +2860,22 @@ wireTagTooltips();
 
 /* ── Play / Pause ── */
 let playing = false;
-const playBtn  = document.getElementById('play-btn');
-const playIcon = document.getElementById('play-icon');
+const playBtn = document.getElementById('play-btn');
+
+function setPlayIcon(state) {
+  playBtn.innerHTML = '';
+  const i = document.createElement('i');
+  i.setAttribute('data-lucide', state ? 'pause' : 'play');
+  playBtn.appendChild(i);
+  lucide.createIcons({ nodes: [playBtn] });
+  const s = playBtn.querySelector('svg');
+  if (s) s.style.cssText = 'width:16px;height:16px;fill:var(--fg-strong);stroke:none;display:block;';
+}
+setPlayIcon(false);
 
 function setPlaying(state) {
   playing = state;
-  playIcon.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+  setPlayIcon(playing);
   syncCardButtons();
 }
 
@@ -2882,8 +2883,8 @@ playBtn.addEventListener('click', e => {
   e.stopPropagation();
   setPlaying(!playing);
 });
-playBtn.addEventListener('mouseenter', () => { playIcon.style.fill = 'var(--text-muted)'; });
-playBtn.addEventListener('mouseleave', () => { playIcon.style.fill = ''; });
+playBtn.addEventListener('mouseenter', () => { const s = playBtn.querySelector('svg'); if (s) s.style.fill = 'var(--text-muted)'; });
+playBtn.addEventListener('mouseleave', () => { const s = playBtn.querySelector('svg'); if (s) s.style.fill = 'var(--fg-strong)'; });
 
 /* ── Panels ── */
 function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.display='none',200); }
@@ -3297,6 +3298,9 @@ function openShow(key) {
     recSection.style.display = 'none';
   }
 
+  // Ensure Lucide icons render in show page
+  lucide.createIcons({ nodes: [document.getElementById('view-show')] });
+
   // Transition: fade out home, fade in show
   const home = document.getElementById('view-home');
   const show = document.getElementById('view-show');
@@ -3333,7 +3337,7 @@ function updateShowPlayBtn() {
   const data = currentShowKey ? SHOW_DATA[currentShowKey] : null;
   const dur = data ? data.duration : '';
   const iconName = playing ? 'pause' : 'play';
-  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:none;fill:var(--text-muted);display:block;"></i><span id="show-duration">${dur}</span>`;
+  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:none;fill:var(--fg-strong);display:block;"></i><span id="show-duration">${dur}</span>`;
   lucide.createIcons({ nodes: [btn] });
 }
 
@@ -3347,10 +3351,7 @@ function playShowFromPage() {
   if (currentTitle && currentTitle.includes(currentShowKey)) {
     // Même show — toggle
     playing = !playing;
-    playIcon.innerHTML = playing
-      ? '<rect x="5" y="3" width="4" height="18" rx="1"/><rect x="15" y="3" width="4" height="18" rx="1"/>'
-      : '<polygon points="5,3 19,12 5,21"/>';
-    playIcon.style.stroke = 'var(--text-muted)';
+    setPlayIcon(playing);
   } else {
     // Nouveau show — lancer
     playShow(currentShowKey, data.host, currentShowKey);
@@ -3399,39 +3400,21 @@ let tracklistPopupOpen = false;
 function openShowTracklist() {
   if (tracklistPopupOpen) { closeShowTracklist(); return; }
   const popup = document.getElementById('show-tracklist-popup');
-  const backdrop = document.getElementById('show-tracklist-backdrop');
   tracklistPopupOpen = true;
   popup.style.display = 'block';
-  if (backdrop) {
-    backdrop.style.display = 'block';
-    requestAnimationFrame(() => {
-      backdrop.style.background = 'rgba(0,0,0,0.45)';
-      backdrop.style.backdropFilter = 'blur(12px)';
-      backdrop.style.webkitBackdropFilter = 'blur(12px)';
-    });
-  }
   requestAnimationFrame(() => popup.classList.add('open'));
 }
 function closeShowTracklist() {
   const popup = document.getElementById('show-tracklist-popup');
-  const backdrop = document.getElementById('show-tracklist-backdrop');
   if (!popup) return;
   tracklistPopupOpen = false;
   popup.classList.remove('open');
-  if (backdrop) {
-    backdrop.style.background = 'rgba(0,0,0,0)';
-    backdrop.style.backdropFilter = 'blur(0px)';
-    backdrop.style.webkitBackdropFilter = 'blur(0px)';
-    setTimeout(() => { backdrop.style.display = 'none'; }, 260);
-  }
   setTimeout(() => { popup.style.display = 'none'; }, 260);
 }
 document.addEventListener('click', e => {
   if (!tracklistPopupOpen) return;
   const popup = document.getElementById('show-tracklist-popup');
   const btn = document.getElementById('show-tracklist-btn');
-  const backdrop = document.getElementById('show-tracklist-backdrop');
-  if (backdrop && backdrop.contains(e.target)) { closeShowTracklist(); return; }
   if (popup && !popup.contains(e.target) && btn && !btn.contains(e.target)) closeShowTracklist();
 });
 
