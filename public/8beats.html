@@ -2906,6 +2906,8 @@ function getPlayerHeight() {
 
 function togglePlaylist(e) {
   e.stopPropagation();
+  // Close show-page tracklist popup if open
+  if (tracklistPopupOpen) closeShowTracklist();
   plOpen = !plOpen;
   plPanel.classList.toggle('open', plOpen);
   plBtnD.classList.toggle('active', plOpen);
