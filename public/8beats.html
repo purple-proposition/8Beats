@@ -578,9 +578,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .btn-primary svg { stroke: var(--bg); }
 .btn-primary:hover { opacity: .8; }
 .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
-.btn-secondary svg { stroke: var(--text); transition: stroke .18s ease; }
-.btn-secondary:hover { border-color: var(--text-muted); }
-.btn-secondary:hover svg { stroke: var(--text); }
+.btn-secondary svg { stroke: currentColor; transition: stroke .18s ease; }
+.btn-secondary:hover { border-color: var(--fg-strong); color: var(--fg-strong); }
+.btn-secondary:hover svg { stroke: var(--fg-strong); }
 
 /* ============================================================
    CONTENT
