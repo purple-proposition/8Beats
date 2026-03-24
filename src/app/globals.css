@@ -3,6 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-title: #000000;
+  --color-solid-btn-bg: #000000;
+  --color-solid-btn-text: #ffffff;
 }
 
 @theme inline {
@@ -16,7 +19,15 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --color-title: #ffffff;
+    --color-solid-btn-bg: #ffffff;
+    --color-solid-btn-text: #000000;
   }
+}
+
+h1,
+.font-alpha-lyrae {
+  color: var(--color-title);
 }
 
 body {
