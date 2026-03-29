@@ -59,12 +59,13 @@
    TOKENS
    ============================================================ */
 :root {
-  --bg:                #000000;
-  --bg-rgb:            0,0,0;
-  --surface:           rgba(0,0,0,0.72);
-  --border:            #333333;
-  --text:              #cccccc;
-  --text-muted:        #7f7f7f;
+  /* ── 4-color neutral scale (Tailwind neutral) ── */
+  --bg:                #0a0a0a;   /* neutral-950 */
+  --bg-rgb:            10,10,10;
+  --surface:           rgba(10,10,10,0.80);
+  --border:            #262626;   /* neutral-800 */
+  --text:              #d4d4d4;   /* neutral-300 */
+  --text-muted:        #737373;   /* neutral-500 — same in dark & light */
   --fg-strong:         #ffffff;
   --ghost-border:      rgba(255,255,255,0.10);
   --ghost-border-hover:rgba(255,255,255,0.22);
@@ -79,12 +80,13 @@
 }
 
 html.light {
-  --bg:                #FFFFFF;
+  /* ── 4-color neutral scale (Tailwind neutral, mirrored) ── */
+  --bg:                #ffffff;
   --bg-rgb:            255,255,255;
-  --surface:           rgba(255,255,255,0.72);
-  --border:            #cccccc;
-  --text:              #333333;
-  --text-muted:        #7f7f7f;
+  --surface:           rgba(255,255,255,0.80);
+  --border:            #e5e5e5;   /* neutral-200 */
+  --text:              #171717;   /* neutral-900 */
+  --text-muted:        #737373;   /* neutral-500 — same as dark */
   --fg-strong:         #000000;
   --ghost-border:      rgba(0,0,0,0.10);
   --ghost-border-hover:rgba(0,0,0,0.20);
@@ -1557,7 +1559,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
         <h2>Latest shows</h2>
         <h3>Fresh video game music mixes from our residents — new shows every week.</h3>
       </div>
-      <a href="#" class="view-all">View all <i data-lucide="arrow-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
+      <a href="#" class="view-all">View all <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
     </header>
 
     <div class="cards">
@@ -1618,7 +1620,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
         <h2>Cozy Grooves</h2>
         <h3>Calming music for focus, relaxation, and sleep.</h3>
       </div>
-      <a href="#" class="view-all">View all <i data-lucide="arrow-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
+      <a href="#" class="view-all">View all <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
     </header>
 
     <div class="cards">
@@ -1687,8 +1689,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     <div class="show-body">
       <div class="show-body-inner">
         <button class="show-back" id="show-back-btn" onclick="closeShow()">
-          <i data-lucide="arrow-left" style="width:14px;height:14px;fill:none;display:block;"></i>
-          All shows
+          <i data-lucide="chevron-left" style="width:14px;height:14px;fill:none;display:block;"></i>
+          8Beats
         </button>
         <h1 class="show-title" id="show-title">International Radio Day</h1>
         <div class="show-host" id="show-host-wrap">
@@ -1729,7 +1731,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
         <div class="section-header-text">
           <h2 id="show-more-title">More from Purple Proposition</h2>
         </div>
-        <a href="#" class="view-all">View all <i data-lucide="arrow-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
+        <a href="#" class="view-all">View all <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
       </div>
       <div class="cards" id="show-related-cards"></div>
 
