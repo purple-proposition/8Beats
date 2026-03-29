@@ -689,6 +689,35 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .panel-close svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; display: block; transition: stroke .18s ease; }
 .panel-close:hover svg { stroke: var(--text); }
 
+/* ── Pitch / Join the party ── */
+.pitch-card {
+  position: relative; overflow: hidden;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 72px 48px;
+  text-align: center;
+  background: linear-gradient(150deg, #08091a 0%, #0a0a0f 50%, #120810 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.pitch-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.pitch-title {
+  font-size: clamp(22px, 3vw, 36px); font-weight: 700;
+  letter-spacing: 0.10em; text-transform: uppercase; color: var(--fg-strong);
+  line-height: 1.1;
+}
+.pitch-body {
+  font-size: 16px; color: var(--text-muted); line-height: 1.65;
+  max-width: 500px;
+}
+.pitch-deco {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  opacity: 0.10; pointer-events: none;
+}
+.pitch-deco-left  { left: 48px; }
+.pitch-deco-right { right: 48px; }
+
 .panel-support { bottom: var(--space); left: var(--space); }
 .orb { position: absolute; border-radius: 50%; pointer-events: none; }
 .orb-1 { width:200px; height:160px; background:radial-gradient(ellipse,rgba(80,50,160,.45) 0%,transparent 70%); top:-50px; left:-40px; }
@@ -1675,6 +1704,44 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     </div>
   </div>
 
+  <div class="content" style="margin-top:80px;margin-bottom:80px;">
+    <div class="section">
+      <div class="pitch-card">
+
+        <!-- Pixel-art dancer (left deco) -->
+        <svg class="pitch-deco pitch-deco-left" width="72" height="90" viewBox="0 0 9 11" fill="var(--text)" shape-rendering="crispEdges">
+          <rect x="3" y="0" width="3" height="3"/>
+          <rect x="4" y="3" width="1" height="1"/>
+          <rect x="2" y="4" width="5" height="3"/>
+          <rect x="0" y="4" width="2" height="2"/>
+          <rect x="7" y="4" width="2" height="2"/>
+          <rect x="2" y="7" width="2" height="4"/>
+          <rect x="5" y="7" width="2" height="4"/>
+        </svg>
+
+        <!-- Pixel-art music note (right deco) -->
+        <svg class="pitch-deco pitch-deco-right" width="72" height="90" viewBox="0 0 9 11" fill="var(--text)" shape-rendering="crispEdges">
+          <rect x="3" y="0" width="2" height="7"/>
+          <rect x="5" y="0" width="4" height="2"/>
+          <rect x="5" y="2" width="2" height="3"/>
+          <rect x="1" y="6" width="4" height="3"/>
+          <rect x="5" y="5" width="4" height="3"/>
+        </svg>
+
+        <div class="pitch-inner">
+          <span class="label">Open to creators</span>
+          <h2 class="pitch-title">Join the party</h2>
+          <p class="pitch-body">Have an idea for a new show or podcast that you'd like to share with a global audience? We're all ears!</p>
+          <a href="mailto:hello@8beats.fm" class="btn btn-secondary" style="letter-spacing:0.06em;text-transform:uppercase;font-size:13px;">
+            Show proposal
+            <i data-lucide="chevron-right" style="width:14px;height:14px;fill:none;display:block;"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </main>
 </div><!-- /#view-home -->
 
@@ -2284,10 +2351,10 @@ function renderShows(list, q) {
 function renderResidents(list) {
   return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;">` + list.map(r => `
     <div style="display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:background .18s ease;" onmouseenter="this.style.background='rgba(128,128,128,.06)'" onmouseleave="this.style.background='transparent'">
-      <div style="width:36px;height:36px;border-radius:50%;background:var(--border);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text-muted);flex-shrink:0;">${r.initials}</div>
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--border);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-muted);flex-shrink:0;">${r.initials}</div>
       <div style="min-width:0;">
-        <div style="font-size:14px;color:var(--text);">${r.name}</div>
-        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">${r.frequency}</div>
+        <div style="font-size:15px;color:var(--fg-strong);font-weight:500;">${r.name}</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:3px;">${r.frequency}</div>
       </div>
     </div>
   `).join('') + `</div>`;
