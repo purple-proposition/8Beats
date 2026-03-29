@@ -106,7 +106,7 @@ html { background: var(--bg); scroll-behavior: smooth; transition: background .3
 
 body {
   font-family: var(--font);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--text);
   background: var(--bg);
@@ -129,7 +129,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -211,7 +211,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Wordmark ── */
 .nav-wordmark {
-  font-size: 14px; font-weight: 500; letter-spacing: -.3px;
+  font-size: 16px; font-weight: 500; letter-spacing: -.3px;
   color: var(--fg-strong); text-decoration: none; white-space: nowrap; flex-shrink: 0;
   margin-right: 0;
   transition: color .18s ease;
@@ -229,7 +229,7 @@ a { text-decoration: none; color: inherit; }
 .nav-item {
   display: flex; align-items: center; gap: 8px;
   background: none; border: none; cursor: pointer; padding: 0;
-  font-family: var(--font); font-size: 14px; font-weight: 400;
+  font-family: var(--font); font-size: 16px; font-weight: 400;
   color: var(--fg-strong); white-space: nowrap; text-decoration: none;
   flex-shrink: 0; margin-right: 20px;
   transition: color .18s ease;
@@ -361,7 +361,7 @@ html.light #nav-dropdown { background: var(--surface); }
 .nav-dropdown-links { padding: 0; }
 .nav-dd-item {
   display: flex; align-items: center; gap: 10px;
-  font-size: 14px; color: var(--text);
+  font-size: 16px; color: var(--text);
   padding: 14px 16px; text-decoration: none;
   transition: color .18s ease;
   cursor: pointer; white-space: nowrap;
@@ -388,7 +388,7 @@ html.light #nav-dropdown { background: var(--surface); }
   content: ''; position: absolute; top: 0; left: 16px; right: 16px;
   height: 1px; background: var(--border);
 }
-.nav-dd-theme-label { font-size: 14px; color: var(--text); flex: 1; }
+.nav-dd-theme-label { font-size: 16px; color: var(--text); flex: 1; }
 .nav-dropdown-social {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 16px;
@@ -434,7 +434,7 @@ html.light #nav-dropdown { background: var(--surface); }
 .mno-link {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; padding: 16px;
-  font-size: 14px; font-weight: 400;
+  font-size: 16px; font-weight: 400;
   color: var(--text) !important; text-decoration: none;
   cursor: pointer; transition: background .18s ease;
   position: relative;
@@ -459,7 +459,7 @@ html.light #nav-dropdown { background: var(--surface); }
   display: flex; align-items: center; gap: 12px;
   padding: 16px; position: relative;
 }
-.mno-theme-label { flex: 1; font-size: 14px; color: var(--text); }
+.mno-theme-label { flex: 1; font-size: 16px; color: var(--text); }
 .mno-theme-icon {
   width: 16px; height: 16px; flex-shrink: 0;
   fill: none; stroke: var(--text); stroke-width: 1.75;
@@ -569,7 +569,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 12px 16px;
-  font-family: var(--font); font-size: 14px; font-weight: 500;
+  font-family: var(--font); font-size: 16px; font-weight: 500;
   letter-spacing: -.1px;
   border-radius: var(--radius-sm); cursor: pointer;
   transition: opacity .18s ease, border-color .18s ease;
@@ -608,7 +608,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .section-header-text h2 { font-size: 24px; font-weight: 500; letter-spacing: -.4px; line-height: 1.1; }
 .section-header-text h3 { font-size: 16px; font-weight: 400; color: var(--text-muted); }
 
-.view-all { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--fg-strong); white-space: nowrap; transition: color .18s ease; }
+.view-all { display: flex; align-items: center; gap: 8px; font-size: 16px; color: var(--fg-strong); white-space: nowrap; transition: color .18s ease; }
 .view-all:hover { color: var(--text-muted); }
 .view-all svg { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 
@@ -656,15 +656,15 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .card-play:hover svg { stroke: var(--text-muted); }
 
 .card-body { padding: 16px 0 0; display: flex; flex-direction: column; flex: 1; }
-.card-body h3 { font-size: 18px; font-weight: 400; line-height: 25.2px; min-height: 50.4px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 8px; transition: color .18s ease; cursor: pointer; }
+.card-body h3 { font-size: 20px; font-weight: 400; line-height: 28px; min-height: 56px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 8px; transition: color .18s ease; cursor: pointer; }
 .card-body h3:hover { color: var(--text-muted); }
 
 .card-host { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
-.avatar { width: 18px; height: 18px; border-radius: 50%; background: var(--border); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .3px; }
-.host-name { font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .18s ease; }
+.avatar { width: 18px; height: 18px; border-radius: 50%; background: var(--border); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .3px; }
+.host-name { font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .18s ease; }
 .host-name:hover { color: var(--text-muted); }
 
-.card-meta   { font-size: 14px; color: var(--text-muted); }
+.card-meta   { font-size: 12px; color: var(--text-muted); }
 .card-tags   { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 16px; margin-top: auto; }
 
 .tag { font-size: 12px; font-weight: 500; letter-spacing: .4px; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--border); border-radius: 4px; padding: 3px 7px; cursor: pointer; transition: color .18s ease, border-color .18s ease, background .18s ease; }
@@ -678,10 +678,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 .panel-header { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
 
-.panel p { font-size: 14px; color: var(--text-muted); line-height: 1.6; position: relative; z-index: 1; }
+.panel p { font-size: 16px; color: var(--text-muted); line-height: 1.6; position: relative; z-index: 1; }
 .panel p strong { color: var(--text-muted); font-weight: 400; }
 
-.panel-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 16px; font-family: var(--font); font-size: 14px; font-weight: 500; letter-spacing: -.1px; color: var(--bg); background: var(--fg-strong); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity .18s ease; position: relative; z-index: 1; }
+.panel-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 16px; font-family: var(--font); font-size: 16px; font-weight: 500; letter-spacing: -.1px; color: var(--bg); background: var(--fg-strong); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity .18s ease; position: relative; z-index: 1; }
 .panel-btn:hover { opacity: .8; }
 .panel-btn svg { width: 14px; height: 14px; stroke: var(--bg); fill: none; display: block; flex-shrink: 0; }
 
@@ -753,7 +753,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .track + .track { border-top: 1px solid var(--border); }
 .playlist-header + .track { padding-top: 0; }
 .track-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
-.track-name { font-size: 14px; line-height: 1.4; color: var(--fg-strong); }
+.track-name { font-size: 16px; line-height: 1.4; color: var(--fg-strong); }
 .track-game { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .track-ago  { font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
 
@@ -848,11 +848,11 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 .player-title-wrap { overflow: hidden; mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); }
-.player-title { font-size: 18px; font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; }
+.player-title { font-size: 20px; font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game { font-size: 14px; color: var(--text-muted); }
+.player-game { font-size: 12px; color: var(--text-muted); }
 .player-controls { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
 
 .spotify-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; }
@@ -927,7 +927,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   .nav-sep-mobile, .hamburger, .drawer-overlay, .drawer { display: none !important; }
   .nav-pill { padding: 0 16px; width: fit-content; height: 48px; border-radius: 99px; transition: none !important; animation: none !important; }
   .nav-pill, .nav-pill * { transition: none !important; animation: none !important; }
-  .nav-wordmark { font-size: 14px; margin-right: 0 !important; }
+  .nav-wordmark { font-size: 16px; margin-right: 0 !important; }
   .nav-sep#sep-main-1 { margin-left: 16px !important; margin-right: 16px !important; }
   #search-btn { margin-right: 0 !important; }
   .nav-pill .nav-collapsible-item,
@@ -957,7 +957,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   }
   .hero-inner { grid-column: unset; width: 100%; }
   .hero-inner h1 { font-size: clamp(32px,9vw,48px); letter-spacing: -0.03em; }
-  .hero-inner p  { font-size: 14px; max-width: 320px; }
+  .hero-inner p  { font-size: 16px; max-width: 320px; }
   .hero-actions  { flex-direction: column; width: 100%; gap: 12px; }
   .btn { width: 100%; justify-content: center; padding: 14px 24px; }
 
@@ -984,7 +984,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   .cards::-webkit-scrollbar { display: none; }
   .card { flex: 0 0 68vw; max-width: 280px; scroll-snap-align: start; height: auto; }
   .card-body { padding: 12px 0 0; }
-  .card-body h3 { font-size: 18px; line-height: 25.2px; min-height: 50.4px; margin-bottom: 8px; }
+  .card-body h3 { font-size: 20px; line-height: 28px; min-height: 56px; margin-bottom: 8px; }
   .card-host { margin-bottom: 8px; }
   .card-host .host-name { font-size: 12px; }
   .card-meta { font-size: 12px; }
@@ -1105,9 +1105,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   }
   .show-title { font-size: clamp(28px,7vw,40px); letter-spacing: -0.03em; margin-bottom: 12px; opacity: 1 !important; }
   .show-host { margin-bottom: 16px; }
-  .show-host-name { font-size: 14px; opacity: 1 !important; }
+  .show-host-name { font-size: 16px; opacity: 1 !important; }
   .show-host-av { opacity: 1 !important; }
-  .show-desc { font-size: 14px !important; max-width: 100% !important; margin-bottom: 16px; }
+  .show-desc { font-size: 16px !important; max-width: 100% !important; margin-bottom: 16px; }
   .hero-tags { margin-bottom: 16px; }
   .show-actions { flex-direction: row; gap: 16px; }
   .show-actions-row { display: contents; }
@@ -1147,7 +1147,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: 8px; }
   .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; justify-content: center; }
   .player-info-top { gap: 6px; }
-  .player-info-top .label { font-size: 11px; }
+  .player-info-top .label { font-size: 12px; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 20px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 20px),transparent); }
   .player-title { font-size: 16px; font-weight: 400; }
   .player-game  { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1169,7 +1169,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   .playlist-inner { padding: 16px 16px 0; }
   .playlist-header { margin-bottom: 16px; }
   .track { padding: 14px 0; }
-  .track-name { font-size: 14px; }
+  .track-name { font-size: 16px; }
   .track-game { font-size: 12px; }
   .track-ago  { font-size: 12px; }
 }
@@ -1184,7 +1184,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 /* Tabs */
 .explore-tab {
-  font-family: var(--font); font-size: 14px; font-weight: 500;
+  font-family: var(--font); font-size: 16px; font-weight: 500;
   color: var(--text-muted); background: none; border: none;
   padding: 16px 8px; cursor: pointer; transition: color .18s;
   display: flex; align-items: center; gap: 8px;
@@ -1198,7 +1198,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 /* Show rows hover — titre uniquement */
 .explore-show-row { display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer; }
-.explore-show-title { font-size:14px;color:var(--fg-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .18s ease; }
+.explore-show-title { font-size:16px;color:var(--fg-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .18s ease; }
 .explore-show-row:hover .explore-show-title { color: var(--text-muted); }
 .explore-section-border {
   position: relative;
@@ -1226,7 +1226,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
-  font-family: var(--font); font-size: 14px; line-height: 1.5;
+  font-family: var(--font); font-size: 16px; line-height: 1.5;
   color: var(--text-muted);
   pointer-events: none;
   opacity: 0; transform: translateY(4px);
@@ -1287,7 +1287,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-back {
   display: inline-flex; align-items: center; gap: 6px;
   background: none; border: none; cursor: pointer; padding: 0;
-  color: var(--text-muted); font-family: var(--font); font-size: 13px; font-weight: 400;
+  color: var(--text-muted); font-family: var(--font); font-size: 12px; font-weight: 400;
   letter-spacing: -.1px; transition: color 140ms ease; margin-bottom: 24px;
 }
 .show-back:hover { color: var(--fg-strong); }
@@ -1306,7 +1306,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   width: 18px; height: 18px; border-radius: 50%;
   background: rgba(100,20,160,.5); border: 1px solid rgba(255,255,255,.12);
   display: flex; align-items: center; justify-content: center;
-  font-size: 6px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);
+  font-size: 8px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);
   flex-shrink: 0;
 }
 .show-host-name { font-size: 16px; color: var(--text); transition: color .18s; }
@@ -1327,7 +1327,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: inline-flex; align-items: center; gap: 8px;
   background: transparent; color: var(--text-muted); border: 1px solid var(--ghost-border);
   border-radius: var(--radius-sm); padding: 12px 18px;
-  font-family: var(--font); font-size: 14px; font-weight: 400; letter-spacing: -.1px;
+  font-family: var(--font); font-size: 16px; font-weight: 400; letter-spacing: -.1px;
   cursor: pointer; transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
 }
 .show-btn-ghost:hover { border-color: var(--ghost-border-hover); background: var(--ghost-bg-hover); color: var(--fg-strong); }
@@ -1540,10 +1540,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
     <!-- Filters toggle -->
     <div id="explore-filter-bar" class="explore-section-border" style="padding:0 16px;display:flex;align-items:center;gap:16px;">
-      <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:16px 0;font-family:var(--font);font-size:14px;font-weight:500;color:var(--text-muted);transition:color .18s ease;">
+      <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:16px 0;font-family:var(--font);font-size:16px;font-weight:500;color:var(--text-muted);transition:color .18s ease;">
         <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="width:14px;height:14px;stroke:var(--text-muted);fill:none;display:block;transition:stroke .18s ease;"></i>
         Filters
-        <span id="filter-count" style="display:none;font-size:10px;font-weight:700;letter-spacing:.5px;background:var(--text);color:var(--bg);border-radius:99px;padding:1px 6px;"></span>
+        <span id="filter-count" style="display:none;font-size:8px;font-weight:700;letter-spacing:.5px;background:var(--text);color:var(--bg);border-radius:99px;padding:1px 6px;"></span>
       </button>
     </div>
 
@@ -1704,9 +1704,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     </div>
   </div>
 
-  <div class="content" style="margin-top:80px;margin-bottom:80px;">
-    <div class="section">
-      <div class="pitch-card">
+  <div class="section" style="margin-top:80px;margin-bottom:80px;">
+    <div class="pitch-card">
 
         <!-- Pixel-art dancer (left deco) -->
         <svg class="pitch-deco pitch-deco-left" width="72" height="90" viewBox="0 0 9 11" fill="var(--text)" shape-rendering="crispEdges">
@@ -1732,7 +1731,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
           <span class="label">Open to creators</span>
           <h2 class="pitch-title">Join the party</h2>
           <p class="pitch-body">Have an idea for a new show or podcast that you'd like to share with a global audience? We're all ears!</p>
-          <a href="mailto:hello@8beats.fm" class="btn btn-secondary" style="letter-spacing:0.06em;text-transform:uppercase;font-size:13px;">
+          <a href="mailto:hello@8beats.fm" class="btn btn-secondary" style="letter-spacing:0.06em;text-transform:uppercase;font-size:12px;">
             Show proposal
             <i data-lucide="chevron-right" style="width:14px;height:14px;fill:none;display:block;"></i>
           </a>
@@ -1740,7 +1739,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
       </div>
     </div>
-  </div>
 
 </main>
 </div><!-- /#view-home -->
@@ -2320,7 +2318,7 @@ function applyFilters() {
   if (activeThemes.size) list = list.filter(s => s.themes.some(t => activeThemes.has(t.toLowerCase())));
   if (activeTime !== null) list = list.filter(s => TIME_RANGES[activeTime].fn(s.date));
   const content = document.getElementById('explore-content');
-  content.innerHTML = list.length ? renderShows(list, q) : '<p style="font-size:14px;color:var(--text-muted);padding:16px 8px;">No shows found.</p>';
+  content.innerHTML = list.length ? renderShows(list, q) : '<p style="font-size:16px;color:var(--text-muted);padding:16px 8px;">No shows found.</p>';
   wireTagTooltips(content);
   initScrollFade(content, 48);
 }
@@ -2351,10 +2349,10 @@ function renderShows(list, q) {
 function renderResidents(list) {
   return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;">` + list.map(r => `
     <div style="display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:background .18s ease;" onmouseenter="this.style.background='rgba(128,128,128,.06)'" onmouseleave="this.style.background='transparent'">
-      <div style="width:40px;height:40px;border-radius:50%;background:var(--border);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-muted);flex-shrink:0;">${r.initials}</div>
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--border);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-muted);flex-shrink:0;">${r.initials}</div>
       <div style="min-width:0;">
-        <div style="font-size:15px;color:var(--fg-strong);font-weight:500;">${r.name}</div>
-        <div style="font-size:13px;color:var(--text-muted);margin-top:3px;">${r.frequency}</div>
+        <div style="font-size:16px;color:var(--fg-strong);font-weight:500;">${r.name}</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">${r.frequency}</div>
       </div>
     </div>
   `).join('') + `</div>`;
@@ -2388,7 +2386,7 @@ function setTab(t) {
       bar.style.display = 'none';
       const q = (document.getElementById('explore-input').value || '').toLowerCase();
       const f = q ? residents.filter(r => r.name.toLowerCase().includes(q)) : residents;
-      content.innerHTML = f.length ? renderResidents(f) : '<p style="font-size:14px;color:var(--text-muted);padding:16px 8px;">No residents found.</p>';
+      content.innerHTML = f.length ? renderResidents(f) : '<p style="font-size:16px;color:var(--text-muted);padding:16px 8px;">No residents found.</p>';
       initScrollFade(content, 48);
       wireTagTooltips(content);
     }
@@ -2401,7 +2399,7 @@ function handleSearch(q) {
   else {
     const ql = q.toLowerCase();
     const f = ql ? residents.filter(r=>r.name.toLowerCase().includes(ql)||r.desc.toLowerCase().includes(ql)) : residents;
-    document.getElementById('explore-content').innerHTML = f.length ? renderResidents(f) : '<p style="font-size:14px;color:var(--text-muted);padding:16px 8px;">No residents found.</p>';
+    document.getElementById('explore-content').innerHTML = f.length ? renderResidents(f) : '<p style="font-size:16px;color:var(--text-muted);padding:16px 8px;">No residents found.</p>';
     wireTagTooltips(document.getElementById('explore-content'));
     initScrollFade(document.getElementById('explore-content'), 48);
   }
@@ -2641,7 +2639,7 @@ progressTrack.addEventListener('mousemove', e => {
 
   if (current) {
     progressTooltipEl.innerHTML = `
-      <div style="color:var(--fg-strong);font-size:14px;font-weight:400;line-height:1.4;">${current.name}</div>
+      <div style="color:var(--fg-strong);font-size:16px;font-weight:400;line-height:1.4;">${current.name}</div>
       ${current.game ? `<div style="color:var(--text-muted);font-size:12px;margin-top:3px;">${current.game}</div>` : ''}
     `;
     progressTooltipEl.style.opacity = '1';
