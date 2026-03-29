@@ -2295,6 +2295,8 @@ function renderResidents(list) {
 
 function setTab(t) {
   exploreTab = t;
+  const inp = document.getElementById('explore-input');
+  inp.value = '';
   document.getElementById('tab-shows').className    = 'explore-tab' + (t==='shows'     ? ' explore-tab-active' : '');
   document.getElementById('tab-residents').className = 'explore-tab' + (t==='residents' ? ' explore-tab-active' : '');
   const bar     = document.getElementById('explore-filter-bar');
