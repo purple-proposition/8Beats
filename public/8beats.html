@@ -1703,7 +1703,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
         </div>
         <div class="show-actions">
           <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
-            <i data-lucide="play" style="width:11px;height:11px;stroke:none;fill:var(--fg-strong);display:block;"></i>
+            <i data-lucide="play" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i>
             <span id="show-duration">1:01:26</span>
           </button>
           <div class="show-actions-row">
@@ -3365,7 +3365,7 @@ function updateShowPlayBtn() {
   const data = currentShowKey ? SHOW_DATA[currentShowKey] : null;
   const dur = data ? data.duration : '';
   const iconName = playing ? 'pause' : 'play';
-  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:none;fill:var(--bg);display:block;"></i><span id="show-duration">${dur}</span>`;
+  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i><span id="show-duration">${dur}</span>`;
   lucide.createIcons({ nodes: [btn] });
 }
 
