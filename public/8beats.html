@@ -1250,9 +1250,17 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   width: 100%;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 16px;
+  gap: 24px;
   padding: 128px var(--space) 64px;
 }
+.show-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--text-muted); font-family: var(--font); font-size: 13px; font-weight: 400;
+  letter-spacing: -.1px; transition: color 140ms ease; margin-bottom: 24px;
+}
+.show-back:hover { color: var(--fg-strong); }
+.show-back svg { stroke: currentColor; }
 .show-body-inner {
   grid-column: 3 / span 5;
   display: flex; flex-direction: column;
@@ -1678,6 +1686,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     </div>
     <div class="show-body">
       <div class="show-body-inner">
+        <button class="show-back" id="show-back-btn" onclick="closeShow()">
+          <i data-lucide="arrow-left" style="width:14px;height:14px;fill:none;display:block;"></i>
+          All shows
+        </button>
         <h1 class="show-title" id="show-title">International Radio Day</h1>
         <div class="show-host" id="show-host-wrap">
           <div class="show-host-av" id="show-host-av">PP</div>
@@ -3208,6 +3220,7 @@ function makeRelatedCard(r, i) {
 function openShow(key) {
   const data = SHOW_DATA[key] || SHOW_DATA['International Radio Day'];
   currentShowKey = key;
+  history.pushState({ show: key }, '', '#' + encodeURIComponent(key));
 
   // Populate show content
   document.getElementById('show-title').textContent = key;
@@ -3393,6 +3406,7 @@ function closeShow() {
   wordmark.onclick = null;
   wordmark.title = '';
   closeShowTracklist();
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
 }
 
 // Wire card title clicks (not just the play button) to open show
@@ -3471,6 +3485,20 @@ function toggleShowFollow(btn) {
   svg.innerHTML = following
     ? '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16,11 18,13 22,9"/>'
     : '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>';
+}
+
+/* ── Browser back / hash routing ── */
+window.addEventListener('popstate', e => {
+  const showView = document.getElementById('view-show');
+  if (showView && showView.classList.contains('active') && (!e.state || !e.state.show)) {
+    closeShow();
+  } else if (e.state && e.state.show && SHOW_DATA[e.state.show]) {
+    openShow(e.state.show);
+  }
+});
+if (location.hash) {
+  const key = decodeURIComponent(location.hash.slice(1));
+  if (SHOW_DATA[key]) openShow(key);
 }
 
 /* ── Init Lucide icons ── */
