@@ -848,7 +848,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 .player-title-wrap { overflow: hidden; mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); }
-.player-title { font-size: 20px; font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; }
+.player-title { font-size: 16px; font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
@@ -1261,33 +1261,32 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-hero::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  /* Both fades share the same 9-stop easing curve over a 20% transition zone.
+     Left : opaque at edge → transparent at col-3 (≈ var(--space) + 20%)
+     Bottom: clear until 74% → full bg at 94%                               */
   background:
     linear-gradient(to bottom,
-      rgba(var(--bg-rgb),0) 60%,
-      rgba(var(--bg-rgb),.026) 62.5%,
-      rgba(var(--bg-rgb),.099) 65%,
-      rgba(var(--bg-rgb),.204) 67.5%,
-      rgba(var(--bg-rgb),.334) 70%,
-      rgba(var(--bg-rgb),.476) 72.5%,
-      rgba(var(--bg-rgb),.618) 75%,
-      rgba(var(--bg-rgb),.748) 77.5%,
-      rgba(var(--bg-rgb),.854) 80%,
-      rgba(var(--bg-rgb),.93) 82.5%,
-      rgba(var(--bg-rgb),.98) 85%,
-      var(--bg) 88%
+      rgba(var(--bg-rgb),0)    74%,
+      rgba(var(--bg-rgb),.026) 76.2%,
+      rgba(var(--bg-rgb),.099) 78.4%,
+      rgba(var(--bg-rgb),.204) 80.6%,
+      rgba(var(--bg-rgb),.334) 82.8%,
+      rgba(var(--bg-rgb),.476) 85%,
+      rgba(var(--bg-rgb),.618) 87.2%,
+      rgba(var(--bg-rgb),.748) 89.4%,
+      rgba(var(--bg-rgb),.93)  91.6%,
+      var(--bg)                94%
     ),
     linear-gradient(to right,
-      rgba(var(--bg-rgb),.88) 0%,
-      rgba(var(--bg-rgb),.82) 10%,
-      rgba(var(--bg-rgb),.748) 20%,
-      rgba(var(--bg-rgb),.618) 28%,
-      rgba(var(--bg-rgb),.476) 36%,
-      rgba(var(--bg-rgb),.334) 42%,
-      rgba(var(--bg-rgb),.204) 48%,
-      rgba(var(--bg-rgb),.099) 53%,
-      rgba(var(--bg-rgb),.026) 57%,
-      rgba(var(--bg-rgb),.026) 57.5%,
-      rgba(var(--bg-rgb),0) 60%
+      rgba(var(--bg-rgb),.85)  0%,
+      rgba(var(--bg-rgb),.748) calc(var(--space) + 2.2%),
+      rgba(var(--bg-rgb),.618) calc(var(--space) + 4.4%),
+      rgba(var(--bg-rgb),.476) calc(var(--space) + 6.6%),
+      rgba(var(--bg-rgb),.334) calc(var(--space) + 8.8%),
+      rgba(var(--bg-rgb),.204) calc(var(--space) + 11%),
+      rgba(var(--bg-rgb),.099) calc(var(--space) + 13.2%),
+      rgba(var(--bg-rgb),.026) calc(var(--space) + 15.4%),
+      rgba(var(--bg-rgb),0)    calc(var(--space) + 20%)
     );
 }
 .show-body {
