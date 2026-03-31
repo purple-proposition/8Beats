@@ -1254,42 +1254,72 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: flex;
   overflow: hidden;
 }
-.show-art {
-  position: absolute; top: 0; right: 0; bottom: 0; left: 33%;
-  z-index: 0; overflow: hidden;
+/* ── Grid debug overlay ── */
+#grid-debug {
+  position: absolute; inset: 0; z-index: 99; pointer-events: none;
+  display: none; /* toggled by dev button */
+  grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 0 var(--space);
 }
-.show-art svg { width: 100%; height: 100%; display: block; }
+#grid-debug span { background: rgba(99,102,241,.20); }
+#grid-debug.visible { display: grid; }
+
+/* ── Dev mode toggle ── */
+#dev-grid-btn {
+  position: fixed; bottom: 80px; right: var(--space); z-index: 9999;
+  background: rgba(99,102,241,.85); color: #fff;
+  border: none; border-radius: 6px; padding: 6px 10px;
+  font-family: var(--font); font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  cursor: pointer; backdrop-filter: blur(8px);
+}
+
+.show-art {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  /* col 5 start = var(--space) + 4*(col+gap) = calc(13px + 100%/3) */
+  left: calc(13px + 100% / 3);
+  z-index: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right,
+    rgba(0,0,0,0)    0%,
+    rgba(0,0,0,.026) 2.2%,
+    rgba(0,0,0,.099) 4.4%,
+    rgba(0,0,0,.204) 6.6%,
+    rgba(0,0,0,.334) 8.8%,
+    rgba(0,0,0,.476) 11%,
+    rgba(0,0,0,.618) 13.2%,
+    rgba(0,0,0,.748) 15.4%,
+    rgba(0,0,0,.93)  17.6%,
+    rgba(0,0,0,1)    20%
+  );
+  mask-image: linear-gradient(to right,
+    rgba(0,0,0,0)    0%,
+    rgba(0,0,0,.026) 2.2%,
+    rgba(0,0,0,.099) 4.4%,
+    rgba(0,0,0,.204) 6.6%,
+    rgba(0,0,0,.334) 8.8%,
+    rgba(0,0,0,.476) 11%,
+    rgba(0,0,0,.618) 13.2%,
+    rgba(0,0,0,.748) 15.4%,
+    rgba(0,0,0,.93)  17.6%,
+    rgba(0,0,0,1)    20%
+  );
+}
+.show-art svg { width: 100%; height: auto; display: block; }
+.show-art img { width: 100%; height: auto; display: block; }
+
 .show-hero::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  /* Same 9-stop curve, same 17% transition zone, mirrored on both axes.
-     Left  : solid 0→33%, ease 33→50%, transparent from 50%
-     Bottom: transparent until 83%, ease 83→100%, solid at 100%           */
-  background:
-    linear-gradient(to bottom,
-      rgba(var(--bg-rgb),0)    83%,
-      rgba(var(--bg-rgb),.026) 84.9%,
-      rgba(var(--bg-rgb),.099) 86.8%,
-      rgba(var(--bg-rgb),.204) 88.7%,
-      rgba(var(--bg-rgb),.334) 90.6%,
-      rgba(var(--bg-rgb),.476) 92.5%,
-      rgba(var(--bg-rgb),.618) 94.4%,
-      rgba(var(--bg-rgb),.748) 96.3%,
-      rgba(var(--bg-rgb),.93)  98.2%,
-      var(--bg)                100%
-    ),
-    linear-gradient(to right,
-      var(--bg)                0%,
-      var(--bg)                33%,
-      rgba(var(--bg-rgb),.93)  35.1%,
-      rgba(var(--bg-rgb),.748) 37.2%,
-      rgba(var(--bg-rgb),.618) 39.3%,
-      rgba(var(--bg-rgb),.476) 41.4%,
-      rgba(var(--bg-rgb),.334) 43.5%,
-      rgba(var(--bg-rgb),.204) 45.6%,
-      rgba(var(--bg-rgb),.099) 47.7%,
-      rgba(var(--bg-rgb),.026) 49.8%,
-      rgba(var(--bg-rgb),0)    51%
-    );
+  /* Bottom fade only — same 9-stop ease, 17% zone */
+  background: linear-gradient(to bottom,
+    rgba(var(--bg-rgb),0)    83%,
+    rgba(var(--bg-rgb),.026) 84.9%,
+    rgba(var(--bg-rgb),.099) 86.8%,
+    rgba(var(--bg-rgb),.204) 88.7%,
+    rgba(var(--bg-rgb),.334) 90.6%,
+    rgba(var(--bg-rgb),.476) 92.5%,
+    rgba(var(--bg-rgb),.618) 94.4%,
+    rgba(var(--bg-rgb),.748) 96.3%,
+    rgba(var(--bg-rgb),.93)  98.2%,
+    var(--bg)                100%
+  );
 }
 .show-body {
   position: relative; z-index: 2;
@@ -1754,11 +1784,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
      SHOW PAGE VIEW
 ═══════════════════════════════════ -->
 <div id="view-show">
-  <!-- TEMP: grid debug overlay — remove when done -->
-  <style>
-    #grid-debug { position:absolute;inset:0;z-index:99;pointer-events:none;display:grid;grid-template-columns:repeat(12,1fr);gap:24px;padding:0 var(--space); }
-    #grid-debug span { background:rgba(99,102,241,.20); }
-  </style>
   <section class="show-hero" id="show-hero">
     <div id="grid-debug"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <div class="show-art" id="show-art">
@@ -3582,6 +3607,9 @@ if (location.hash) {
 /* ── Init Lucide icons ── */
 lucide.createIcons();
 </script>
+
+<!-- Dev grid toggle -->
+<button id="dev-grid-btn" onclick="(function(){const g=document.getElementById('grid-debug');g.classList.toggle('visible');document.getElementById('dev-grid-btn').textContent=g.classList.contains('visible')?'▦ Grid ON':'▦ Grid';})()">▦ Grid</button>
 
 </body>
 </html>
