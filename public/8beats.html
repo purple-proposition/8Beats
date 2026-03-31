@@ -1261,9 +1261,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-hero::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  /* Both fades share the same 9-stop easing curve over a 20% transition zone.
-     Left : opaque at edge → transparent at col-3 (≈ var(--space) + 20%)
-     Bottom: clear until 74% → full bg at 94%                               */
+  /* Both fades: same 9-stop ease-in-out curve, same 20% zone.
+     Left : var(--bg) solid → transparent at col-3 (≈ var(--space) + 20%)
+     Bottom: transparent at 74% → var(--bg) solid at 94%                  */
   background:
     linear-gradient(to bottom,
       rgba(var(--bg-rgb),0)    74%,
@@ -1278,14 +1278,16 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
       var(--bg)                94%
     ),
     linear-gradient(to right,
-      rgba(var(--bg-rgb),.85)  0%,
-      rgba(var(--bg-rgb),.748) calc(var(--space) + 2.2%),
-      rgba(var(--bg-rgb),.618) calc(var(--space) + 4.4%),
-      rgba(var(--bg-rgb),.476) calc(var(--space) + 6.6%),
-      rgba(var(--bg-rgb),.334) calc(var(--space) + 8.8%),
-      rgba(var(--bg-rgb),.204) calc(var(--space) + 11%),
-      rgba(var(--bg-rgb),.099) calc(var(--space) + 13.2%),
-      rgba(var(--bg-rgb),.026) calc(var(--space) + 15.4%),
+      var(--bg)                0%,
+      var(--bg)                var(--space),
+      rgba(var(--bg-rgb),.93)  calc(var(--space) + 2.2%),
+      rgba(var(--bg-rgb),.748) calc(var(--space) + 4.4%),
+      rgba(var(--bg-rgb),.618) calc(var(--space) + 6.6%),
+      rgba(var(--bg-rgb),.476) calc(var(--space) + 8.8%),
+      rgba(var(--bg-rgb),.334) calc(var(--space) + 11%),
+      rgba(var(--bg-rgb),.204) calc(var(--space) + 13.2%),
+      rgba(var(--bg-rgb),.099) calc(var(--space) + 15.4%),
+      rgba(var(--bg-rgb),.026) calc(var(--space) + 17.6%),
       rgba(var(--bg-rgb),0)    calc(var(--space) + 20%)
     );
 }
