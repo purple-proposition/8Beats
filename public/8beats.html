@@ -1255,40 +1255,40 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   overflow: hidden;
 }
 .show-art {
-  position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+  position: absolute; top: 0; right: 0; bottom: 0; left: 33%;
   z-index: 0; overflow: hidden;
 }
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-hero::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  /* Both fades: same 9-stop ease-in-out curve, same 20% zone.
-     Left : var(--bg) solid → transparent at col-3 (≈ var(--space) + 20%)
-     Bottom: transparent at 74% → var(--bg) solid at 94%                  */
+  /* Same 9-stop curve, same 17% transition zone, mirrored on both axes.
+     Left  : solid 0→33%, ease 33→50%, transparent from 50%
+     Bottom: transparent until 83%, ease 83→100%, solid at 100%           */
   background:
     linear-gradient(to bottom,
-      rgba(var(--bg-rgb),0)    74%,
-      rgba(var(--bg-rgb),.026) 76.2%,
-      rgba(var(--bg-rgb),.099) 78.4%,
-      rgba(var(--bg-rgb),.204) 80.6%,
-      rgba(var(--bg-rgb),.334) 82.8%,
-      rgba(var(--bg-rgb),.476) 85%,
-      rgba(var(--bg-rgb),.618) 87.2%,
-      rgba(var(--bg-rgb),.748) 89.4%,
-      rgba(var(--bg-rgb),.93)  91.6%,
-      var(--bg)                94%
+      rgba(var(--bg-rgb),0)    83%,
+      rgba(var(--bg-rgb),.026) 84.9%,
+      rgba(var(--bg-rgb),.099) 86.8%,
+      rgba(var(--bg-rgb),.204) 88.7%,
+      rgba(var(--bg-rgb),.334) 90.6%,
+      rgba(var(--bg-rgb),.476) 92.5%,
+      rgba(var(--bg-rgb),.618) 94.4%,
+      rgba(var(--bg-rgb),.748) 96.3%,
+      rgba(var(--bg-rgb),.93)  98.2%,
+      var(--bg)                100%
     ),
     linear-gradient(to right,
       var(--bg)                0%,
-      var(--bg)                var(--space),
-      rgba(var(--bg-rgb),.93)  calc(var(--space) + 2.2%),
-      rgba(var(--bg-rgb),.748) calc(var(--space) + 4.4%),
-      rgba(var(--bg-rgb),.618) calc(var(--space) + 6.6%),
-      rgba(var(--bg-rgb),.476) calc(var(--space) + 8.8%),
-      rgba(var(--bg-rgb),.334) calc(var(--space) + 11%),
-      rgba(var(--bg-rgb),.204) calc(var(--space) + 13.2%),
-      rgba(var(--bg-rgb),.099) calc(var(--space) + 15.4%),
-      rgba(var(--bg-rgb),.026) calc(var(--space) + 17.6%),
-      rgba(var(--bg-rgb),0)    calc(var(--space) + 20%)
+      var(--bg)                33%,
+      rgba(var(--bg-rgb),.93)  35.1%,
+      rgba(var(--bg-rgb),.748) 37.2%,
+      rgba(var(--bg-rgb),.618) 39.3%,
+      rgba(var(--bg-rgb),.476) 41.4%,
+      rgba(var(--bg-rgb),.334) 43.5%,
+      rgba(var(--bg-rgb),.204) 45.6%,
+      rgba(var(--bg-rgb),.099) 47.7%,
+      rgba(var(--bg-rgb),.026) 49.8%,
+      rgba(var(--bg-rgb),0)    51%
     );
 }
 .show-body {
