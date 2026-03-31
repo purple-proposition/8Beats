@@ -1754,7 +1754,13 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
      SHOW PAGE VIEW
 ═══════════════════════════════════ -->
 <div id="view-show">
+  <!-- TEMP: grid debug overlay — remove when done -->
+  <style>
+    #grid-debug { position:absolute;inset:0;z-index:99;pointer-events:none;display:grid;grid-template-columns:repeat(12,1fr);gap:24px;padding:0 var(--space); }
+    #grid-debug span { background:rgba(99,102,241,.20); }
+  </style>
   <section class="show-hero" id="show-hero">
+    <div id="grid-debug"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <div class="show-art" id="show-art">
       <!-- artwork SVG injected by JS -->
     </div>
