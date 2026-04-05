@@ -582,6 +582,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .icon-lg  { width: 20px; height: 20px; display: block; flex-shrink: 0; }
 .icon-xl  { width: 24px; height: 24px; display: block; flex-shrink: 0; }
 [data-lucide] { display: block; flex-shrink: 0; }
+svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !important; stroke: none !important; }
 .btn-primary  { background: var(--fg-strong); color: var(--bg); border: none; }
 .btn-primary svg { stroke: var(--bg); }
 .btn-primary:hover { opacity: .8; }
@@ -840,7 +841,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 .play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--ghost-border); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 140ms ease, background 140ms ease; }
 .play-btn:hover { border-color: var(--ghost-border-hover); background: var(--ghost-bg-hover); }
-.play-btn svg { stroke: var(--fg-strong); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 140ms ease; }
+.play-btn svg { fill: var(--fg-strong); stroke: none; transition: fill 140ms ease; }
 
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
 .player-info-top { display: flex; align-items: center; gap: 7px; }
@@ -1278,7 +1279,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  padding: calc(var(--nav-h) + var(--space) * 5) var(--space) 48px;
+  padding: calc(var(--nav-h) + var(--space) * 6) var(--space) 48px;
   align-items: start;
 }
 
@@ -1321,7 +1322,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 /* Groupe host + date collés */
 .show-meta-identity { display: flex; flex-direction: column; gap: 5px; }
 .show-date {
-  font-size: 13px; color: var(--text-muted); letter-spacing: .15px;
+  font-size: 14px; color: var(--text-muted); letter-spacing: .15px;
 }
 
 /* Description + boutons (dans .show-meta) */
@@ -1417,10 +1418,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   font-size: 8px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);
   flex-shrink: 0;
 }
-.show-host-name { font-size: 16px; color: var(--text); transition: color .18s; }
+.show-host-name { font-size: 14px; color: var(--text); transition: color .18s; }
 .show-host:hover .show-host-name { color: var(--text-muted); }
 
-.show-desc { font-size: 15px; color: var(--text-muted); line-height: 1.65; margin: 0; }
+.show-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin: 0; }
 
 .show-actions { display: flex; align-items: center; gap: 16px; }
 .show-actions-row { display: contents; }
@@ -1964,7 +1965,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
           <p class="show-desc" id="show-desc">In celebration of International Radio Day, co-founder Purple Proposition has curated a one-hour nocturnal journey through ambient, downtempo, and drum'n'bass, weaving together some of his selected favorite tracks for 8Beats Radio programming.</p>
           <div class="show-actions">
             <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
-              <i data-lucide="play" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i>
+              <i data-lucide="play" style="width:11px;height:11px;display:block;"></i>
               Play
             </button>
             <div class="show-actions-row">
@@ -1979,7 +1980,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
         </div>
       </div>
       <!-- Séparateur pleine largeur (art + meta) -->
-      <hr class="show-hero-divider">
+      <div class="show-hero-divider"></div>
       <!-- Tracklist inline -->
       <div class="show-tracklist-inline" id="show-tracklist-inline"></div>
     </div>
@@ -3669,7 +3670,7 @@ function updateShowPlayBtn() {
   const data = currentShowKey ? SHOW_DATA[currentShowKey] : null;
   const iconName = playing ? 'pause' : 'play';
   const label = playing ? 'Pause' : 'Play';
-  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i>${label}`;
+  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;display:block;"></i>${label}`;
   lucide.createIcons({ nodes: [btn] });
 }
 
