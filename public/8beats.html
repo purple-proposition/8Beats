@@ -1270,10 +1270,12 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
+  max-height: min(55vh, 480px);
+  overflow: hidden;
 }
 /* ── Grid debug overlay ── */
 #grid-debug {
-  position: absolute; inset: 0; z-index: 99; pointer-events: none;
+  position: fixed; inset: 0; z-index: 99; pointer-events: none;
   display: none; /* toggled by dev button */
   grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 0 var(--space);
 }
@@ -1422,6 +1424,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
+  max-height: min(55vh, 480px);
+  overflow: hidden;
 }
 
 .artist-photo {
@@ -1879,7 +1883,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 ═══════════════════════════════════ -->
 <div id="view-show">
   <section class="show-hero" id="show-hero">
-    <div id="grid-debug"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <div class="show-art" id="show-art">
       <div id="show-art-media" style="width:100%;height:100%;"></div>
       <div class="hero-grad hero-grad-left"></div>
@@ -1952,7 +1955,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     </div>
     <div class="artist-body">
       <div class="artist-body-inner">
-        <span class="label" id="artist-role">Resident</span>
         <h1 class="artist-name" id="artist-name">Purple Proposition</h1>
         <p class="artist-bio" id="artist-bio"></p>
         <div class="artist-stats" id="artist-stats"></div>
@@ -3843,7 +3845,6 @@ function openArtist(hostName) {
   currentArtistName = hostName;
   history.pushState({ artist: hostName }, '', '#artist/' + encodeURIComponent(hostName));
 
-  document.getElementById('artist-role').textContent = artist.role.toUpperCase();
   document.getElementById('artist-name').textContent = hostName;
   document.getElementById('artist-bio').textContent = artist.bio;
 
@@ -4025,7 +4026,8 @@ if (location.hash) {
 lucide.createIcons();
 </script>
 
-<!-- Dev grid toggle -->
+<!-- Global grid debug overlay + toggle -->
+<div id="grid-debug"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
 <button id="dev-grid-btn" onclick="(function(){const g=document.getElementById('grid-debug');g.classList.toggle('visible');document.getElementById('dev-grid-btn').textContent=g.classList.contains('visible')?'▦ Grid ON':'▦ Grid';})()">▦ Grid</button>
 
 </body>
