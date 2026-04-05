@@ -617,7 +617,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ============================================================
    CARDS
    ============================================================ */
-.cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; align-items: stretch; }
+.cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; align-items: stretch; }
 
 .card { display: flex; flex-direction: column; height: 100%; }
 
@@ -654,8 +654,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; pointer-events: all;
 }
-.card-play svg { width: 26px; height: 26px; stroke: var(--fg-strong); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: block; transition: stroke 140ms ease; }
-.card-play:hover svg { stroke: var(--text-muted); }
+.card-play svg { width: 22px; height: 22px; fill: var(--fg-strong); stroke: none; display: block; transition: fill 140ms ease; }
+.card-play:hover svg { fill: var(--text-muted); }
 
 .card-body { padding: 16px 0 0; display: flex; flex-direction: column; flex: 1; }
 .card-body h3 { font-size: 16px; font-weight: 400; line-height: 24px; min-height: 48px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 8px; transition: color .18s ease; cursor: pointer; }
@@ -675,7 +675,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ============================================================
    PANELS
    ============================================================ */
-.panel { position: fixed; width: 280px; padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow: hidden; z-index: 51; transition: opacity .18s ease, transform .18s ease; }
+.panel { position: fixed; width: calc((100vw - 2 * var(--space) - 264px) / 6 + 24px); min-width: 200px; padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow: hidden; z-index: 51; transition: opacity .18s ease, transform .18s ease; }
 .panel.closing { opacity: 0; transform: translateY(6px); pointer-events: none; }
 
 .panel-header { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
@@ -720,18 +720,20 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .pitch-deco-left  { left: 48px; }
 .pitch-deco-right { right: 48px; }
 
-.panel-support { bottom: var(--space); left: var(--space); }
+.panel-support {
+  bottom: var(--space); left: var(--space);
+  width: calc((100vw - 2 * var(--space) - 264px) / 6 + 24px);
+}
 .orb { position: absolute; border-radius: 50%; pointer-events: none; }
 .orb-1 { width:200px; height:160px; background:radial-gradient(ellipse,rgba(80,50,160,.45) 0%,transparent 70%); top:-50px; left:-40px; }
 .orb-2 { width:160px; height:130px; background:radial-gradient(ellipse,rgba(180,60,40,.32) 0%,transparent 70%); bottom:-30px; right:-20px; }
 .orb-3 { width:180px; height:140px; background:radial-gradient(ellipse,rgba(60,120,180,.32) 0%,transparent 70%); bottom:-30px; left:-30px; }
 
 .panel-cookie {
-  grid-column: 7 / span 6;
+  grid-column: 11 / span 2;
   position: relative;
-  width: 280px;
-  margin-bottom: 8px;
-  margin-left: auto;
+  width: auto;
+  margin-bottom: 16px;
   pointer-events: all;
   transition: opacity .18s ease, transform .18s ease;
 }
@@ -1047,13 +1049,13 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .show-meta {
     grid-column: 1 / -1 !important; grid-row: unset !important;
   }
-  .show-hero-divider {
-    grid-column: 1 / -1 !important; grid-row: unset !important;
+  .show-tracklist-section {
+    grid-template-columns: 1fr !important;
+    padding: 0 16px 32px !important;
+    gap: 16px !important;
   }
-  .show-tracklist-inline {
-    grid-column: 1 / -1 !important; grid-row: unset !important;
-    padding-bottom: 8px !important;
-  }
+  .show-hero-divider { grid-column: 1 / -1 !important; }
+  .show-tracklist-inline { grid-column: 1 / -1 !important; padding-bottom: 8px !important; }
   .show-title { font-size: clamp(22px, 6vw, 32px) !important; }
   .show-desc { font-size: 14px !important; }
   .show-actions { flex-wrap: wrap; gap: 10px; }
@@ -1244,7 +1246,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Show hero ── */
 .show-hero {
   position: relative; z-index: 1;
-  margin-top: calc(-1 * (var(--nav-h) + var(--space)));
   overflow: hidden;
 }
 .show-hero-bg {
@@ -1279,7 +1280,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  padding: calc(var(--nav-h) + var(--space) * 6) var(--space) 48px;
+  padding: calc(var(--nav-h) + var(--space) * 6) var(--space) 40px;
   align-items: start;
 }
 
@@ -1330,10 +1331,18 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; flex-direction: column; gap: 24px;
 }
 
+/* Tracklist section — son propre grid container (évite les conflits de grid-row) */
+.show-tracklist-section {
+  position: relative; z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  padding: 0 var(--space) 48px;
+}
+
 /* Séparateur horizontal pleine largeur (art + meta) */
 .show-hero-divider {
   grid-column: 3 / span 8;
-  grid-row: 2;
   border: none;
   border-top: 0.5px solid #737373;
   margin: 0;
@@ -1342,7 +1351,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Tracklist inline sous le séparateur */
 .show-tracklist-inline {
   grid-column: 3 / span 8;
-  grid-row: 3;
   padding-bottom: 16px;
 }
 .show-tracklist-inline .track {
@@ -1979,11 +1987,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
           </div>
         </div>
       </div>
-      <!-- Séparateur pleine largeur (art + meta) -->
-      <div class="show-hero-divider"></div>
-      <!-- Tracklist inline -->
-      <div class="show-tracklist-inline" id="show-tracklist-inline"></div>
     </div>
+  <!-- Tracklist section — grid container propre -->
+  <div class="show-tracklist-section">
+    <div class="show-hero-divider"></div>
+    <div class="show-tracklist-inline" id="show-tracklist-inline"></div>
+  </div>
   </section>
 
   <!-- Tracklist popup déplacé au niveau body -->
@@ -3188,7 +3197,7 @@ function setPlayIcon(state) {
   playBtn.appendChild(i);
   lucide.createIcons({ nodes: [playBtn] });
   const s = playBtn.querySelector('svg');
-  if (s) s.style.cssText = 'width:16px;height:16px;stroke:var(--fg-strong);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block;';
+  if (s) s.style.cssText = 'width:16px;height:16px;fill:currentColor;stroke:none;display:block;';
 }
 setPlayIcon(false);
 
