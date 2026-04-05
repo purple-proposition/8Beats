@@ -1031,78 +1031,39 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   }
 
   /* ── Show page ── */
-  /* Layout: hero is a block, art sits naturally, content overlaps via negative margin */
   .show-hero {
     display: block !important;
-    overflow: visible !important;
-    margin-top: calc(-1 * (var(--nav-h) + var(--space))) !important;
-    padding-top: 0 !important;
-  }
-  .show-hero::after { display: none !important; }
-
-  /* Show hero: artwork as background, content overlays */
-  .show-hero {
-    position: relative !important;
-    display: block !important;
-    overflow: visible !important;
-    margin-top: calc(-1 * (var(--nav-h) + var(--space))) !important;
-    padding-top: 0 !important;
+    padding: 0 !important;
   }
   .show-hero::after { display: none !important; }
 
   .show-art {
-    position: relative !important;
-    top: auto !important; left: auto !important;
-    right: auto !important; bottom: auto !important;
-    width: 100% !important; height: auto !important;
-    z-index: 0 !important;
+    grid-column: unset !important;
+    aspect-ratio: 4/3 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
     -webkit-mask-image: linear-gradient(to bottom,
-      black 45%,
-      rgba(0,0,0,.98) 48%,
-      rgba(0,0,0,.93) 51%,
-      rgba(0,0,0,.854) 54%,
-      rgba(0,0,0,.748) 57%,
-      rgba(0,0,0,.618) 60%,
-      rgba(0,0,0,.476) 63%,
-      rgba(0,0,0,.334) 66%,
-      rgba(0,0,0,.204) 69%,
-      rgba(0,0,0,.099) 72%,
-      rgba(0,0,0,.026) 75%,
-      transparent 78%
+      black 45%, rgba(0,0,0,.748) 57%, rgba(0,0,0,.476) 63%,
+      rgba(0,0,0,.204) 69%, rgba(0,0,0,.026) 75%, transparent 78%
     ) !important;
     mask-image: linear-gradient(to bottom,
-      black 45%,
-      rgba(0,0,0,.98) 48%,
-      rgba(0,0,0,.93) 51%,
-      rgba(0,0,0,.854) 54%,
-      rgba(0,0,0,.748) 57%,
-      rgba(0,0,0,.618) 60%,
-      rgba(0,0,0,.476) 63%,
-      rgba(0,0,0,.334) 66%,
-      rgba(0,0,0,.204) 69%,
-      rgba(0,0,0,.099) 72%,
-      rgba(0,0,0,.026) 75%,
-      transparent 78%
+      black 45%, rgba(0,0,0,.748) 57%, rgba(0,0,0,.476) 63%,
+      rgba(0,0,0,.204) 69%, rgba(0,0,0,.026) 75%, transparent 78%
     ) !important;
   }
-  .show-art svg { width: 100% !important; height: auto !important; display: block !important; }
-  .show-art img { width: 100% !important; height: auto !important; display: block !important; }
 
-  /* Body pulled up to sit on top of the faded artwork bottom */
   .show-body {
-    position: relative !important;
-    z-index: 2 !important;
-    display: flex !important;
-    flex-direction: column !important;
+    position: relative !important; inset: auto !important;
+    display: flex !important; flex-direction: column !important;
     margin-top: -25vw !important;
     padding: 0 16px 32px !important;
+    align-items: unset !important; pointer-events: all !important;
     gap: 0 !important;
   }
   .show-body-inner {
     grid-column: unset !important;
     width: 100% !important;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
   }
   .show-title { font-size: clamp(28px,7vw,40px); letter-spacing: -0.03em; margin-bottom: 12px; opacity: 1 !important; }
   .show-host { margin-bottom: 16px; }
@@ -1176,15 +1137,15 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
   /* ── Artist page ── */
   .artist-hero {
-    display: block !important; overflow: visible !important;
-    margin-top: calc(-1 * (var(--nav-h) + var(--space))) !important;
-    padding-top: 0 !important; min-height: unset !important;
+    display: block !important;
+    padding: 0 !important;
   }
   .artist-hero::after { display: none !important; }
   .artist-photo {
-    position: relative !important; top: auto !important; left: auto !important;
-    right: auto !important; bottom: auto !important;
-    width: 100% !important; height: auto !important; z-index: 0 !important;
+    grid-column: unset !important;
+    aspect-ratio: 4/3 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
     -webkit-mask-image: linear-gradient(to bottom,
       black 45%, rgba(0,0,0,.748) 57%, rgba(0,0,0,.476) 63%,
       rgba(0,0,0,.204) 69%, rgba(0,0,0,.026) 75%, transparent 78%
@@ -1194,12 +1155,12 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
       rgba(0,0,0,.204) 69%, rgba(0,0,0,.026) 75%, transparent 78%
     ) !important;
   }
-  .artist-photo img { width: 100% !important; height: auto !important; object-position: center top !important; }
-  .artist-photo svg { width: 100% !important; height: 60vw !important; }
+  .artist-photo img { object-position: center top !important; }
   .artist-body {
-    position: relative !important; z-index: 2 !important;
+    position: relative !important; inset: auto !important;
     display: flex !important; flex-direction: column !important;
-    margin-top: -25vw !important; padding: 0 16px 32px !important; gap: 0 !important;
+    margin-top: -25vw !important; padding: 0 16px 32px !important;
+    align-items: unset !important; pointer-events: all !important; gap: 0 !important;
   }
   .artist-body-inner { grid-column: unset !important; }
   .artist-name { font-size: clamp(28px, 9vw, 40px); margin-bottom: 12px; }
@@ -1291,9 +1252,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-hero {
   position: relative; z-index: 1;
   margin-top: calc(-1 * (var(--nav-h) + var(--space)));
-  padding-top: calc(var(--nav-h) + var(--space));
-  display: flex;
-  overflow: hidden;
+  padding: calc(var(--nav-h) + var(--space)) var(--space) 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
 }
 /* ── Grid debug overlay ── */
 #grid-debug {
@@ -1314,37 +1276,28 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 }
 
 .show-art {
-  position: absolute; top: 0; right: 0; bottom: 0;
-  /* col 5 start = var(--space) + 4*(col+gap) = calc(13px + 100%/3) */
-  left: calc(13px + 100% / 3);
-  z-index: 0; overflow: hidden;
+  grid-column: 5 / span 8;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  position: relative; z-index: 0;
   -webkit-mask-image: linear-gradient(to right,
-    rgba(0,0,0,0)    0%,
-    rgba(0,0,0,.026) 2.2%,
-    rgba(0,0,0,.099) 4.4%,
-    rgba(0,0,0,.204) 6.6%,
-    rgba(0,0,0,.334) 8.8%,
-    rgba(0,0,0,.476) 11%,
-    rgba(0,0,0,.618) 13.2%,
-    rgba(0,0,0,.748) 15.4%,
-    rgba(0,0,0,.93)  17.6%,
-    rgba(0,0,0,1)    20%
+    rgba(0,0,0,0)    0%,    rgba(0,0,0,.026) 3.7%,
+    rgba(0,0,0,.099) 7.3%,  rgba(0,0,0,.204) 11%,
+    rgba(0,0,0,.334) 14.7%, rgba(0,0,0,.476) 18.3%,
+    rgba(0,0,0,.618) 22%,   rgba(0,0,0,.748) 25.7%,
+    rgba(0,0,0,.93)  29.3%, rgba(0,0,0,1)    33%
   );
   mask-image: linear-gradient(to right,
-    rgba(0,0,0,0)    0%,
-    rgba(0,0,0,.026) 2.2%,
-    rgba(0,0,0,.099) 4.4%,
-    rgba(0,0,0,.204) 6.6%,
-    rgba(0,0,0,.334) 8.8%,
-    rgba(0,0,0,.476) 11%,
-    rgba(0,0,0,.618) 13.2%,
-    rgba(0,0,0,.748) 15.4%,
-    rgba(0,0,0,.93)  17.6%,
-    rgba(0,0,0,1)    20%
+    rgba(0,0,0,0)    0%,    rgba(0,0,0,.026) 3.7%,
+    rgba(0,0,0,.099) 7.3%,  rgba(0,0,0,.204) 11%,
+    rgba(0,0,0,.334) 14.7%, rgba(0,0,0,.476) 18.3%,
+    rgba(0,0,0,.618) 22%,   rgba(0,0,0,.748) 25.7%,
+    rgba(0,0,0,.93)  29.3%, rgba(0,0,0,1)    33%
   );
 }
-.show-art svg { width: 100%; height: auto; display: block; }
-.show-art img { width: 100%; height: auto; display: block; }
+.show-art svg { width: 100%; height: 100%; display: block; }
+.show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .show-hero::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
@@ -1363,13 +1316,15 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   );
 }
 .show-body {
-  position: relative; z-index: 2;
-  width: 100%;
+  position: absolute; inset: 0; z-index: 2;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  padding: 128px var(--space) 64px;
+  padding: calc(var(--nav-h) + var(--space) + 64px) var(--space) 48px;
+  align-items: end;
+  pointer-events: none;
 }
+.show-body > * { pointer-events: all; }
 .show-body-inner {
   grid-column: 3 / span 5;
   display: flex; flex-direction: column;
@@ -1447,39 +1402,31 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .artist-hero {
   position: relative; z-index: 1;
   margin-top: calc(-1 * (var(--nav-h) + var(--space)));
-  padding-top: calc(var(--nav-h) + var(--space));
-  display: flex;
-  overflow: hidden;
-  min-height: 65vh;
+  padding: calc(var(--nav-h) + var(--space)) var(--space) 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
 }
 
 .artist-photo {
-  position: absolute; top: 0; right: 0; bottom: 0;
-  left: calc(13px + 100% / 3);
-  z-index: 0; overflow: hidden;
+  grid-column: 5 / span 8;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  position: relative; z-index: 0;
   -webkit-mask-image: linear-gradient(to right,
-    rgba(0,0,0,0)    0%,
-    rgba(0,0,0,.026) 2.2%,
-    rgba(0,0,0,.099) 4.4%,
-    rgba(0,0,0,.204) 6.6%,
-    rgba(0,0,0,.334) 8.8%,
-    rgba(0,0,0,.476) 11%,
-    rgba(0,0,0,.618) 13.2%,
-    rgba(0,0,0,.748) 15.4%,
-    rgba(0,0,0,.93)  17.6%,
-    rgba(0,0,0,1)    20%
+    rgba(0,0,0,0)    0%,    rgba(0,0,0,.026) 3.7%,
+    rgba(0,0,0,.099) 7.3%,  rgba(0,0,0,.204) 11%,
+    rgba(0,0,0,.334) 14.7%, rgba(0,0,0,.476) 18.3%,
+    rgba(0,0,0,.618) 22%,   rgba(0,0,0,.748) 25.7%,
+    rgba(0,0,0,.93)  29.3%, rgba(0,0,0,1)    33%
   );
   mask-image: linear-gradient(to right,
-    rgba(0,0,0,0)    0%,
-    rgba(0,0,0,.026) 2.2%,
-    rgba(0,0,0,.099) 4.4%,
-    rgba(0,0,0,.204) 6.6%,
-    rgba(0,0,0,.334) 8.8%,
-    rgba(0,0,0,.476) 11%,
-    rgba(0,0,0,.618) 13.2%,
-    rgba(0,0,0,.748) 15.4%,
-    rgba(0,0,0,.93)  17.6%,
-    rgba(0,0,0,1)    20%
+    rgba(0,0,0,0)    0%,    rgba(0,0,0,.026) 3.7%,
+    rgba(0,0,0,.099) 7.3%,  rgba(0,0,0,.204) 11%,
+    rgba(0,0,0,.334) 14.7%, rgba(0,0,0,.476) 18.3%,
+    rgba(0,0,0,.618) 22%,   rgba(0,0,0,.748) 25.7%,
+    rgba(0,0,0,.93)  29.3%, rgba(0,0,0,1)    33%
   );
 }
 .artist-photo img {
@@ -1506,15 +1453,17 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 }
 
 .artist-body {
-  position: relative; z-index: 2;
-  width: 100%;
+  position: absolute; inset: 0; z-index: 2;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  padding: 128px var(--space) 64px;
+  padding: calc(var(--nav-h) + var(--space) + 64px) var(--space) 48px;
+  align-items: end;
+  pointer-events: none;
 }
+.artist-body > * { pointer-events: all; }
 .artist-body-inner {
-  grid-column: 2 / span 5;
+  grid-column: 3 / span 5;
   display: flex; flex-direction: column;
 }
 
@@ -2029,14 +1978,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   </section>
 
   <div class="content" style="margin-top:64px;">
-    <div class="section">
-      <div class="section-header">
-        <div class="section-header-text">
-          <h2><a href="#" class="section-link"><span id="artist-shows-title">Shows</span><i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
-        </div>
-      </div>
-      <div class="cards" id="artist-shows-cards"></div>
-    </div>
+    <div id="artist-series-sections"></div>
   </div>
 </div><!-- /#view-artist -->
 
@@ -2347,7 +2289,7 @@ document.addEventListener('click', e => {
 
 /* ── Explore / Search modal ── */
 const shows = [
-  {title:'International Radio Day',host:'Purple Proposition',date:'2024-08-13',genres:['Ambient','Downtempo','Drum & Bass'],themes:['classics'],games:['Hollow Knight','Celeste','Ori and the Blind Forest','Minecraft']},
+  {title:'International Radio Day',host:'Purple Proposition',date:'2024-02-13',genres:['Ambient','Downtempo','Drum & Bass'],themes:['classics'],games:['Hollow Knight','Celeste','Ori and the Blind Forest','Minecraft'],series:'My Virtual Fantasy'},
   {title:'Dusk',host:'Neon Waves',date:'2024-08-10',genres:['Synthwave'],themes:['cozy grooves'],games:['Outrun','Hotline Miami','Far Cry 3: Blood Dragon','Cyberpunk 2077']},
   {title:'Retro RPG Evening',host:'Koji & Friends',date:'2024-08-07',genres:['Chiptune'],themes:['retro'],games:['Final Fantasy VI','Chrono Trigger','Secret of Mana','Castlevania','Pokémon Red & Blue','The Legend of Zelda: A Link to the Past']},
   {title:'Midnight Walks Through the Forest & Field',host:'Sakura Records',date:'2024-05-05',genres:['Ambient'],themes:['cozy grooves'],games:['Journey','Flower','Abzû','Shadow of the Colossus','Minecraft','Stardew Valley']},
@@ -2357,13 +2299,11 @@ const shows = [
   {title:'Beach Day Mixtape',host:'JamesonEmpire',date:'2024-07-02',genres:['Chiptune','Folk','Lounge','Talk'],themes:['beach'],games:['Wave Race 64','Pilotwings Resort','Animal Crossing','Pokémon Scarlet & Violet']},
   {title:'Spooky Sounds Vol. 1',host:'8Beats Sound Team',date:'2021-10-30',genres:['Ambient','Electronic'],themes:['spooky'],games:['Silent Hill','Bloodborne','Amnesia: The Dark Descent','Resident Evil 2','Halo 3']},
   {title:'Winter Warmers',host:'Sakura Records',date:'2021-12-20',genres:['Acoustic','Lounge'],themes:['winter'],games:['The Long Dark','Firewatch','Alto\'s Odyssey','The Legend of Zelda: Breath of the Wild']},
-  {title:'Club Errera Opening Set',host:'Purple Proposition',date:'2022-03-12',genres:['House','Techno'],themes:['club errera'],games:['Halo 3: ODST','Grand Theft Auto V','Need for Speed Underground','Mass Effect']},
   {title:'Acid Trax',host:'Neon Waves',date:'2023-06-18',genres:['Acid','Techno'],themes:['club errera'],games:['Doom','Quake','Cyberpunk 2077','God of War: Ragnarök']},
   {title:'Hip-Hop Classics',host:'JamesonEmpire',date:'2021-09-05',genres:['Hip-Hop','Funk'],themes:['classics'],games:['NBA Street','Tony Hawk\'s Pro Skater','SSX','Grand Theft Auto: San Andreas']},
   {title:'Podcast: Game Music History',host:'Koji & Friends',date:'2022-11-14',genres:['Talk'],themes:['podcasts'],games:[]},
   {title:'Funk & Soul Session',host:'8Beats Sound Team',date:'2023-04-22',genres:['Funk','Jazz-Funk'],themes:['classics'],games:['Persona 4','Streets of Rage 4','Shenmue','Pokémon Gold & Silver']},
   {title:'Deep House Journeys',host:'Submerse',date:'2024-01-09',genres:['Deep House'],themes:['club errera'],games:['Mirror\'s Edge','Burnout Paradise','WipEout','Minecraft Dungeons']},
-  {title:'God of War Marathon',host:'Purple Proposition',date:'2023-11-02',genres:['Orchestral','Electronic'],themes:['classics'],games:['God of War','God of War II','God of War III','God of War: Ragnarök','God of War: Ascension']},
   {title:'Pokémon Generations',host:'Koji & Friends',date:'2023-09-15',genres:['Chiptune','Orchestral'],themes:['retro'],games:['Pokémon Red & Blue','Pokémon Gold & Silver','Pokémon Ruby & Sapphire','Pokémon Diamond & Pearl','Pokémon X & Y','Pokémon Sword & Shield']},
   {title:'Open World Ambient',host:'Sakura Records',date:'2023-07-20',genres:['Ambient','Orchestral'],themes:['cozy grooves'],games:['The Legend of Zelda: Breath of the Wild','Minecraft','The Elder Scrolls V: Skyrim','Red Dead Redemption 2']},
   {title:'Modern Warfare Sessions',host:'Neon Waves',date:'2023-03-10',genres:['Electronic','Ambient'],themes:['classics'],games:['Halo 2','Halo 3','Halo: Reach','Call of Duty: Modern Warfare','Battlefield 1']},
@@ -3810,8 +3750,14 @@ const ARTISTS = {
     photo: '/artists/purple-proposition.jpg',
     bio: 'Co-founder of 8Beats Radio. Purple Proposition weaves ambient, downtempo, and club-ready sounds into immersive journeys through the finest video game soundtracks.',
     since: '2022',
-    location: 'Paris',
-    social: { instagram: '#', soundcloud: '#' }
+    location: 'Lyon',
+    social: { instagram: '#', soundcloud: '#' },
+    series: [
+      {
+        name: 'My Virtual Fantasy',
+        art: 'https://images.ctfassets.net/jd1mlth317j4/Zf0xfLtkY6D28VvaJr2pq/e42b0f9a3c87b01fdb1669f15c7d968d/website.jpg?fm=webp&w=828&q=80',
+      }
+    ]
   },
   'Neon Waves': {
     role: 'Resident',
@@ -3950,7 +3896,7 @@ function openArtist(hostName) {
   followBtn.classList.remove('active');
   followBtn.innerHTML = `<i data-lucide="user-plus" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i> Follow`;
 
-  // Shows cards
+  // Shows — grouped by series
   const GRAD_PAIRS = [
     {g1:'#0d0020',g2:'#5c1080',rg:'#d060ff'},
     {g1:'#0a1628',g2:'#1a5fa0',rg:'#00d4ff'},
@@ -3958,18 +3904,41 @@ function openArtist(hostName) {
     {g1:'#001a0f',g2:'#007a40',rg:'#00ff88'},
   ];
   const resident = residents.find(r => r.name === hostName) || { initials: hostName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() };
-  document.getElementById('artist-shows-cards').innerHTML = artistShows
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 8)
-    .map((s, i) => {
-      const gp = GRAD_PAIRS[i % GRAD_PAIRS.length];
-      return makeRelatedCard({
+
+  // Group by series name
+  const bySeriesName = {};
+  artistShows.forEach(s => {
+    const key = s.series || 'Other';
+    (bySeriesName[key] = bySeriesName[key] || []).push(s);
+  });
+
+  let cardIndex = 0;
+  let sectionsHtml = '';
+  for (const [seriesName, seriesShows] of Object.entries(bySeriesName)) {
+    const sorted = [...seriesShows].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const cardsHtml = sorted.map(s => {
+      const gp = GRAD_PAIRS[cardIndex % GRAD_PAIRS.length];
+      const card = makeRelatedCard({
         title: s.title, host: s.host, initials: resident.initials,
         meta: formatDate(s.date), tags: s.genres.slice(0, 3),
-        gradId: 'art' + i, g1: gp.g1, g2: gp.g2, rg: gp.rg
-      }, i);
+        gradId: 'art' + cardIndex, g1: gp.g1, g2: gp.g2, rg: gp.rg
+      }, cardIndex);
+      cardIndex++;
+      return card;
     }).join('');
-  wireTagTooltips(document.getElementById('artist-shows-cards'));
+    sectionsHtml += `
+      <div class="section" style="margin-top:0;">
+        <div class="section-header">
+          <div class="section-header-text">
+            <h2><a href="#" class="section-link">${seriesName}<i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
+          </div>
+        </div>
+        <div class="cards">${cardsHtml}</div>
+      </div>`;
+  }
+  const sectionsEl = document.getElementById('artist-series-sections');
+  sectionsEl.innerHTML = sectionsHtml;
+  wireTagTooltips(sectionsEl);
 
   const artistEl = document.getElementById('view-artist');
   lucide.createIcons({ nodes: [artistEl] });
