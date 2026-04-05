@@ -1032,59 +1032,29 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   }
 
   /* ── Show page ── */
-  .show-hero {
-    display: block !important;
-    padding: 0 !important;
+  .show-hero-content {
+    grid-template-columns: 1fr !important;
+    padding: calc(var(--nav-h) + var(--space) + 24px) 16px 32px !important;
+    gap: 16px !important;
   }
-  .show-hero::after { display: none !important; }
-
   .show-art {
-    grid-column: unset !important;
-    margin-right: 0 !important;
-    align-self: unset !important;
-    aspect-ratio: 4/3 !important;
-    width: 100% !important;
-    border-radius: 0 !important;
+    grid-column: 1 / -1 !important; grid-row: unset !important;
+    width: 88px !important; height: 88px !important;
+    aspect-ratio: 1 !important; border-radius: var(--radius-sm) !important;
+    box-shadow: none !important;
   }
-  .show-art .hero-grad-left { display: none !important; }
-  .show-art .hero-grad-bottom {
-    height: 55% !important;
-    background: linear-gradient(to bottom,
-      rgba(var(--bg-rgb),1) 0%,    rgba(var(--bg-rgb),.987) 9.2%,
-      rgba(var(--bg-rgb),.951) 17.2%, rgba(var(--bg-rgb),.896) 24.3%,
-      rgba(var(--bg-rgb),.825) 30.6%, rgba(var(--bg-rgb),.741) 36.4%,
-      rgba(var(--bg-rgb),.648) 41.7%, rgba(var(--bg-rgb),.55) 46.7%,
-      rgba(var(--bg-rgb),.45) 51.8%,  rgba(var(--bg-rgb),.352) 56.9%,
-      rgba(var(--bg-rgb),.259) 62.3%, rgba(var(--bg-rgb),.175) 68.2%,
-      rgba(var(--bg-rgb),.104) 74.7%, rgba(var(--bg-rgb),.049) 82.1%,
-      rgba(var(--bg-rgb),.013) 90.5%, rgba(var(--bg-rgb),0) 100%
-    ) !important;
-    top: 0 !important; bottom: auto !important;
+  .show-meta {
+    grid-column: 1 / -1 !important; grid-row: unset !important;
   }
-
-  .show-body {
-    position: relative !important; inset: auto !important;
-    display: flex !important; flex-direction: column !important;
-    margin-top: -25vw !important;
-    padding: 0 16px 32px !important;
-    align-items: unset !important; pointer-events: all !important;
-    gap: 0 !important;
+  .show-footer {
+    grid-column: 1 / -1 !important; grid-row: unset !important;
+    padding-top: 0 !important;
   }
-  .show-body-inner {
-    grid-column: unset !important;
-    width: 100% !important;
-    display: flex; flex-direction: column;
-  }
-  .show-title { font-size: clamp(28px,7vw,40px); letter-spacing: -0.03em; margin-bottom: 12px; opacity: 1 !important; }
-  .show-host { margin-bottom: 16px; }
-  .show-host-name { font-size: 14px; opacity: 1 !important; }
-  .show-host-av { opacity: 1 !important; }
-  .show-desc { font-size: 14px !important; max-width: 100% !important; margin-bottom: 16px; }
-  .hero-tags { margin-bottom: 16px; }
-  .show-actions { flex-direction: row; gap: 16px; }
-  .show-actions-row { display: contents; }
-  .show-btn-play { flex: 1; justify-content: center; padding: 12px; }
-  .show-btn-ghost { flex: 0 0 auto; padding: 12px 16px; }
+  .show-title { font-size: clamp(22px, 6vw, 32px) !important; }
+  .show-desc { font-size: 14px !important; }
+  .show-actions { flex-wrap: wrap; gap: 10px; }
+  .show-btn-play { flex: 1 1 100%; justify-content: center; }
+  .show-btn-ghost { flex: 1; justify-content: center; padding: 11px 12px; }
   .show-btn-icon { width: 44px; height: 44px; flex-shrink: 0; }
 
   /* Show sections on mobile — stack vertically, full width */
@@ -1271,11 +1241,32 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-hero {
   position: relative; z-index: 1;
   margin-top: calc(-1 * (var(--nav-h) + var(--space)));
-  padding: 0 var(--space);
+  overflow: hidden;
+}
+.show-hero-bg {
+  position: absolute;
+  inset: -48px; /* overbleed prevents white blur edges */
+  z-index: 0;
+  background-size: cover; background-position: center;
+  filter: blur(48px) saturate(1.6) brightness(0.32);
+}
+.show-hero-scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(var(--bg-rgb),.45) 0%,
+    rgba(var(--bg-rgb),.72) 55%,
+    rgba(var(--bg-rgb),.96) 100%
+  );
+}
+.show-hero-content {
+  position: relative; z-index: 2;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
+  padding: calc(var(--nav-h) + var(--space) + 48px) var(--space) 48px;
+  align-items: start;
 }
+
 /* ── Grid debug overlay ── */
 #grid-debug {
   position: fixed; inset: 0; z-index: 99; pointer-events: none;
@@ -1294,19 +1285,40 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   cursor: pointer; backdrop-filter: blur(8px);
 }
 
+/* Art carré */
 .show-art {
-  grid-column: 7 / -1;
-  margin-right: calc(-1 * var(--space));
-  align-self: start;
-  aspect-ratio: 4/3;
+  grid-column: 3 / span 3;
+  grid-row: 1;
+  aspect-ratio: 1;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: var(--radius);
+  box-shadow: 0 20px 56px rgba(0,0,0,.55);
   position: relative; z-index: 0;
 }
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* ── Hero gradient overlays (Keakie method) ── */
+/* Meta (droite de l'art) */
+.show-meta {
+  grid-column: 6 / span 5;
+  grid-row: 1;
+  display: flex; flex-direction: column; gap: 14px;
+  padding-top: 4px;
+}
+.show-date {
+  font-size: 13px; color: var(--text-muted); letter-spacing: .15px;
+}
+
+/* Footer (description + boutons) */
+.show-footer {
+  grid-column: 3 / span 8;
+  grid-row: 2;
+  display: flex; flex-direction: column; gap: 20px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Hero gradient overlays (Keakie method — artist page only) ── */
 .hero-grad {
   position: absolute;
   pointer-events: none; touch-action: none;
@@ -1338,26 +1350,12 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     rgba(var(--bg-rgb),.013) 90.5%, rgba(var(--bg-rgb),0) 100%
   );
 }
-.show-body {
-  position: absolute; inset: 0; z-index: 2;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 24px;
-  padding: calc(var(--nav-h) + var(--space) + 64px) var(--space) 48px;
-  align-items: end;
-  pointer-events: none;
-}
-.show-body > * { pointer-events: all; }
-.show-body-inner {
-  grid-column: 3 / span 5;
-  display: flex; flex-direction: column;
-}
 .show-title {
-  font-size: clamp(36px,5vw,64px);
-  font-weight: 500; letter-spacing: -0.03em; line-height: 1.02;
-  color: var(--fg-strong); margin-bottom: 16px;
+  font-size: clamp(22px, 2.4vw, 38px);
+  font-weight: 500; letter-spacing: -0.03em; line-height: 1.06;
+  color: var(--fg-strong); margin: 0;
 }
-.show-host { display: flex; align-items: center; gap: 7px; margin-bottom: 32px; cursor: pointer; width: fit-content; }
+.show-host { display: flex; align-items: center; gap: 7px; margin: 0; cursor: pointer; width: fit-content; }
 .show-host-av {
   width: 18px; height: 18px; border-radius: 50%;
   background: rgba(100,20,160,.5); border: 1px solid rgba(255,255,255,.12);
@@ -1368,7 +1366,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-host-name { font-size: 16px; color: var(--text); transition: color .18s; }
 .show-host:hover .show-host-name { color: var(--text-muted); }
 
-.show-desc { font-size: 16px; color: var(--text-muted); line-height: 1.65; max-width: 480px; margin-bottom: 16px; }
+.show-desc { font-size: 15px; color: var(--text-muted); line-height: 1.65; margin: 0; }
 
 .show-actions { display: flex; align-items: center; gap: 16px; }
 .show-actions-row { display: contents; }
@@ -1888,22 +1886,28 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 ═══════════════════════════════════ -->
 <div id="view-show">
   <section class="show-hero" id="show-hero">
-    <div class="show-art" id="show-art">
-      <div id="show-art-media" style="width:100%;height:100%;"></div>
-      <div class="hero-grad hero-grad-left"></div>
-      <div class="hero-grad hero-grad-bottom"></div>
-    </div>
-    <div class="show-body">
-      <div class="show-body-inner">
+    <div class="show-hero-bg" id="show-hero-bg"></div>
+    <div class="show-hero-scrim"></div>
+    <div class="show-hero-content">
+      <!-- Art carré -->
+      <div class="show-art" id="show-art">
+        <div id="show-art-media" style="width:100%;height:100%;"></div>
+      </div>
+      <!-- Meta (titre, auteur, date, tags) -->
+      <div class="show-meta">
         <h1 class="show-title" id="show-title">International Radio Day</h1>
         <div class="show-host" id="show-host-wrap">
           <div class="show-host-av" id="show-host-av">PP</div>
           <span class="show-host-name" id="show-host-name">Purple Proposition</span>
         </div>
-        <p class="show-desc" id="show-desc">In celebration of International Radio Day, co-founder Purple Proposition has curated a one-hour nocturnal journey through ambient, downtempo, and drum'n'bass, weaving together some of his selected favorite tracks for 8Beats Radio programming.</p>
-        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;">
+        <div class="show-date" id="show-date">13 Feb 2024</div>
+        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
           <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
         </div>
+      </div>
+      <!-- Footer (description + boutons) -->
+      <div class="show-footer">
+        <p class="show-desc" id="show-desc">In celebration of International Radio Day, co-founder Purple Proposition has curated a one-hour nocturnal journey through ambient, downtempo, and drum'n'bass, weaving together some of his selected favorite tracks for 8Beats Radio programming.</p>
         <div class="show-actions">
           <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
             <i data-lucide="play" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i>
@@ -1921,6 +1925,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
               <i data-lucide="user-plus" style="width:16px;height:16px;fill:none;display:block;"></i>
             </button>
           </div>
+        </div>
       </div>
     </div>
   </section>
@@ -3465,9 +3470,29 @@ function openShow(key) {
   document.getElementById('show-desc').textContent = data.desc;
   document.getElementById('show-duration').textContent = data.duration;
   document.getElementById('show-more-title').textContent = `More from ${data.host}`;
-  document.getElementById('show-art-media').innerHTML = data.artImage
-    ? `<img src="${data.artImage}" style="width:100%;height:100%;object-fit:cover;display:block;" alt="${data.title || ''}">`
-    : makeArtSvg(data.artColors, data.artAccent);
+
+  // Art + blurred background
+  const artMediaEl = document.getElementById('show-art-media');
+  const bgEl = document.getElementById('show-hero-bg');
+  if (data.artImage) {
+    artMediaEl.innerHTML = `<img src="${data.artImage}" style="width:100%;height:100%;object-fit:cover;display:block;" alt="${key}">`;
+    bgEl.style.backgroundImage = `url(${data.artImage})`;
+    bgEl.style.filter = 'blur(48px) saturate(1.6) brightness(0.32)';
+  } else {
+    artMediaEl.innerHTML = makeArtSvg(data.artColors, data.artAccent);
+    bgEl.style.backgroundImage = `linear-gradient(135deg, ${(data.artColors||['#111','#333']).join(', ')})`;
+    bgEl.style.filter = 'blur(48px) brightness(0.4)';
+  }
+
+  // Date (format: "13 Feb 2024")
+  const dateEl = document.getElementById('show-date');
+  if (data.date) {
+    const d = new Date(data.date + 'T00:00:00');
+    dateEl.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    dateEl.style.display = '';
+  } else {
+    dateEl.style.display = 'none';
+  }
 
   // Tags — filtrer 'Classics', gap 6px
   const tagsEl = document.getElementById('show-tags');
