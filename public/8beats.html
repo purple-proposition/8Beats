@@ -1278,7 +1278,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  padding: calc(var(--nav-h) + var(--space) + 48px) var(--space) 48px;
+  padding: calc(var(--nav-h) + var(--space) * 3) var(--space) 48px;
   align-items: start;
 }
 
@@ -1317,16 +1317,17 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-meta {
   grid-column: 6 / span 5;
   grid-row: 1;
-  display: flex; flex-direction: column; gap: 14px;
-  padding-top: 4px;
+  display: flex; flex-direction: column; gap: 20px;
 }
+/* Groupe host + date collés */
+.show-meta-identity { display: flex; flex-direction: column; gap: 5px; }
 .show-date {
   font-size: 13px; color: var(--text-muted); letter-spacing: .15px;
 }
 
 /* Description + boutons (dans .show-meta) */
 .show-meta-footer {
-  display: flex; flex-direction: column; gap: 20px;
+  display: flex; flex-direction: column; gap: 24px;
 }
 
 /* Séparateur horizontal pleine largeur (art + meta) */
@@ -1334,7 +1335,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   grid-column: 3 / span 8;
   grid-row: 2;
   border: none;
-  border-top: 1px solid var(--border);
+  border-top: 0.5px solid #737373;
   margin: 0;
 }
 
@@ -1347,9 +1348,11 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
   padding: 13px 0;
-  border-bottom: 0.5px solid var(--border);
+  border-bottom: 0.5px solid #737373;
   cursor: default;
+  transition: background 140ms ease;
 }
+.show-tracklist-inline .track:hover { background: rgba(255,255,255,.03); }
 .show-tracklist-inline .track:first-child { border-top: none; }
 .show-tracklist-inline .track-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .show-tracklist-inline .track-name {
@@ -1948,11 +1951,13 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
       <!-- Meta (titre, auteur, date, tags, description, boutons) -->
       <div class="show-meta">
         <h1 class="show-title" id="show-title">International Radio Day</h1>
-        <div class="show-host" id="show-host-wrap">
-          <div class="show-host-av" id="show-host-av">PP</div>
-          <span class="show-host-name" id="show-host-name">Purple Proposition</span>
+        <div class="show-meta-identity">
+          <div class="show-host" id="show-host-wrap">
+            <div class="show-host-av" id="show-host-av">PP</div>
+            <span class="show-host-name" id="show-host-name">Purple Proposition</span>
+          </div>
+          <div class="show-date" id="show-date">13 Feb 2024</div>
         </div>
-        <div class="show-date" id="show-date">13 Feb 2024</div>
         <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
           <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
         </div>
