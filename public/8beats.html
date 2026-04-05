@@ -1039,6 +1039,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
   .show-art {
     grid-column: unset !important;
+    margin-right: 0 !important;
+    max-height: none !important;
     aspect-ratio: 4/3 !important;
     width: 100% !important;
     border-radius: 0 !important;
@@ -1150,6 +1152,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   .artist-hero::after { display: none !important; }
   .artist-photo {
     grid-column: unset !important;
+    margin-right: 0 !important;
+    max-height: none !important;
     aspect-ratio: 4/3 !important;
     width: 100% !important;
     border-radius: 0 !important;
@@ -1270,8 +1274,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  max-height: min(55vh, 480px);
-  overflow: hidden;
 }
 /* ── Grid debug overlay ── */
 #grid-debug {
@@ -1292,10 +1294,12 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 }
 
 .show-art {
-  grid-column: 5 / span 8;
+  grid-column: 7 / -1;
+  margin-right: calc(-1 * var(--space));
   aspect-ratio: 4/3;
+  max-height: min(55vh, 480px);
   overflow: hidden;
-  border-radius: var(--radius);
+  border-radius: 0;
   position: relative; z-index: 0;
 }
 .show-art svg { width: 100%; height: 100%; display: block; }
@@ -1424,15 +1428,15 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  max-height: min(55vh, 480px);
-  overflow: hidden;
 }
 
 .artist-photo {
-  grid-column: 5 / span 8;
+  grid-column: 7 / -1;
+  margin-right: calc(-1 * var(--space));
   aspect-ratio: 4/3;
+  max-height: min(55vh, 480px);
   overflow: hidden;
-  border-radius: var(--radius);
+  border-radius: 0;
   position: relative; z-index: 0;
 }
 .artist-photo img {
