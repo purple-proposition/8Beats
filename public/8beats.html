@@ -1042,14 +1042,21 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     aspect-ratio: 4/3 !important;
     width: 100% !important;
     border-radius: 0 !important;
-    -webkit-mask-image: linear-gradient(to bottom,
-      black 45%, rgba(0,0,0,.748) 57%, rgba(0,0,0,.476) 63%,
-      rgba(0,0,0,.204) 69%, rgba(0,0,0,.026) 75%, transparent 78%
+  }
+  .show-art .hero-grad-left { display: none !important; }
+  .show-art .hero-grad-bottom {
+    height: 55% !important;
+    background: linear-gradient(to bottom,
+      rgba(var(--bg-rgb),1) 0%,    rgba(var(--bg-rgb),.987) 9.2%,
+      rgba(var(--bg-rgb),.951) 17.2%, rgba(var(--bg-rgb),.896) 24.3%,
+      rgba(var(--bg-rgb),.825) 30.6%, rgba(var(--bg-rgb),.741) 36.4%,
+      rgba(var(--bg-rgb),.648) 41.7%, rgba(var(--bg-rgb),.55) 46.7%,
+      rgba(var(--bg-rgb),.45) 51.8%,  rgba(var(--bg-rgb),.352) 56.9%,
+      rgba(var(--bg-rgb),.259) 62.3%, rgba(var(--bg-rgb),.175) 68.2%,
+      rgba(var(--bg-rgb),.104) 74.7%, rgba(var(--bg-rgb),.049) 82.1%,
+      rgba(var(--bg-rgb),.013) 90.5%, rgba(var(--bg-rgb),0) 100%
     ) !important;
-    mask-image: linear-gradient(to bottom,
-      black 45%, rgba(0,0,0,.748) 57%, rgba(0,0,0,.476) 63%,
-      rgba(0,0,0,.204) 69%, rgba(0,0,0,.026) 75%, transparent 78%
-    ) !important;
+    top: 0 !important; bottom: auto !important;
   }
 
   .show-body {
@@ -1146,16 +1153,23 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     aspect-ratio: 4/3 !important;
     width: 100% !important;
     border-radius: 0 !important;
-    -webkit-mask-image: linear-gradient(to bottom,
-      black 45%, rgba(0,0,0,.748) 57%, rgba(0,0,0,.476) 63%,
-      rgba(0,0,0,.204) 69%, rgba(0,0,0,.026) 75%, transparent 78%
-    ) !important;
-    mask-image: linear-gradient(to bottom,
-      black 45%, rgba(0,0,0,.748) 57%, rgba(0,0,0,.476) 63%,
-      rgba(0,0,0,.204) 69%, rgba(0,0,0,.026) 75%, transparent 78%
-    ) !important;
   }
   .artist-photo img { object-position: center top !important; }
+  .artist-photo .hero-grad-left { display: none !important; }
+  .artist-photo .hero-grad-bottom {
+    height: 55% !important;
+    background: linear-gradient(to bottom,
+      rgba(var(--bg-rgb),1) 0%,    rgba(var(--bg-rgb),.987) 9.2%,
+      rgba(var(--bg-rgb),.951) 17.2%, rgba(var(--bg-rgb),.896) 24.3%,
+      rgba(var(--bg-rgb),.825) 30.6%, rgba(var(--bg-rgb),.741) 36.4%,
+      rgba(var(--bg-rgb),.648) 41.7%, rgba(var(--bg-rgb),.55) 46.7%,
+      rgba(var(--bg-rgb),.45) 51.8%,  rgba(var(--bg-rgb),.352) 56.9%,
+      rgba(var(--bg-rgb),.259) 62.3%, rgba(var(--bg-rgb),.175) 68.2%,
+      rgba(var(--bg-rgb),.104) 74.7%, rgba(var(--bg-rgb),.049) 82.1%,
+      rgba(var(--bg-rgb),.013) 90.5%, rgba(var(--bg-rgb),0) 100%
+    ) !important;
+    top: 0 !important; bottom: auto !important;
+  }
   .artist-body {
     position: relative !important; inset: auto !important;
     display: flex !important; flex-direction: column !important;
@@ -1281,26 +1295,40 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   overflow: hidden;
   border-radius: var(--radius);
   position: relative; z-index: 0;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
-  mask-image: linear-gradient(to right, transparent 0%, black 40%);
 }
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.show-hero::after {
-  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  /* Bottom fade only — same 9-stop ease, 17% zone */
-  background: linear-gradient(to bottom,
-    rgba(var(--bg-rgb),0)    83%,
-    rgba(var(--bg-rgb),.026) 84.9%,
-    rgba(var(--bg-rgb),.099) 86.8%,
-    rgba(var(--bg-rgb),.204) 88.7%,
-    rgba(var(--bg-rgb),.334) 90.6%,
-    rgba(var(--bg-rgb),.476) 92.5%,
-    rgba(var(--bg-rgb),.618) 94.4%,
-    rgba(var(--bg-rgb),.748) 96.3%,
-    rgba(var(--bg-rgb),.93)  98.2%,
-    var(--bg)                100%
+/* ── Hero gradient overlays (Keakie method) ── */
+.hero-grad {
+  position: absolute;
+  pointer-events: none; touch-action: none;
+  z-index: 1;
+}
+.hero-grad-left {
+  top: 0; left: 0; width: 50%; height: 100%;
+  background: linear-gradient(to right,
+    rgba(var(--bg-rgb),1) 0%,    rgba(var(--bg-rgb),.987) 9.2%,
+    rgba(var(--bg-rgb),.951) 17.2%, rgba(var(--bg-rgb),.896) 24.3%,
+    rgba(var(--bg-rgb),.825) 30.6%, rgba(var(--bg-rgb),.741) 36.4%,
+    rgba(var(--bg-rgb),.648) 41.7%, rgba(var(--bg-rgb),.55) 46.7%,
+    rgba(var(--bg-rgb),.45) 51.8%,  rgba(var(--bg-rgb),.352) 56.9%,
+    rgba(var(--bg-rgb),.259) 62.3%, rgba(var(--bg-rgb),.175) 68.2%,
+    rgba(var(--bg-rgb),.104) 74.7%, rgba(var(--bg-rgb),.049) 82.1%,
+    rgba(var(--bg-rgb),.013) 90.5%, rgba(var(--bg-rgb),0) 100%
+  );
+}
+.hero-grad-bottom {
+  bottom: 0; left: 0; width: 100%; height: 75%;
+  background: linear-gradient(to top,
+    rgba(var(--bg-rgb),1) 0%,    rgba(var(--bg-rgb),.987) 9.2%,
+    rgba(var(--bg-rgb),.951) 17.2%, rgba(var(--bg-rgb),.896) 24.3%,
+    rgba(var(--bg-rgb),.825) 30.6%, rgba(var(--bg-rgb),.741) 36.4%,
+    rgba(var(--bg-rgb),.648) 41.7%, rgba(var(--bg-rgb),.55) 46.7%,
+    rgba(var(--bg-rgb),.45) 51.8%,  rgba(var(--bg-rgb),.352) 56.9%,
+    rgba(var(--bg-rgb),.259) 62.3%, rgba(var(--bg-rgb),.175) 68.2%,
+    rgba(var(--bg-rgb),.104) 74.7%, rgba(var(--bg-rgb),.049) 82.1%,
+    rgba(var(--bg-rgb),.013) 90.5%, rgba(var(--bg-rgb),0) 100%
   );
 }
 .show-body {
@@ -1402,8 +1430,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   overflow: hidden;
   border-radius: var(--radius);
   position: relative; z-index: 0;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
-  mask-image: linear-gradient(to right, transparent 0%, black 40%);
 }
 .artist-photo img {
   width: 100%; height: 100%;
@@ -1411,22 +1437,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: block;
 }
 .artist-photo svg { width: 100%; height: 100%; display: block; }
-
-.artist-hero::after {
-  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(to bottom,
-    rgba(var(--bg-rgb),0)    83%,
-    rgba(var(--bg-rgb),.026) 84.9%,
-    rgba(var(--bg-rgb),.099) 86.8%,
-    rgba(var(--bg-rgb),.204) 88.7%,
-    rgba(var(--bg-rgb),.334) 90.6%,
-    rgba(var(--bg-rgb),.476) 92.5%,
-    rgba(var(--bg-rgb),.618) 94.4%,
-    rgba(var(--bg-rgb),.748) 96.3%,
-    rgba(var(--bg-rgb),.93)  98.2%,
-    var(--bg)                100%
-  );
-}
 
 .artist-body {
   position: absolute; inset: 0; z-index: 2;
@@ -1871,7 +1881,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   <section class="show-hero" id="show-hero">
     <div id="grid-debug"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <div class="show-art" id="show-art">
-      <!-- artwork SVG injected by JS -->
+      <div id="show-art-media" style="width:100%;height:100%;"></div>
+      <div class="hero-grad hero-grad-left"></div>
+      <div class="hero-grad hero-grad-bottom"></div>
     </div>
     <div class="show-body">
       <div class="show-body-inner">
@@ -1934,7 +1946,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 <div id="view-artist">
   <section class="artist-hero" id="artist-hero">
     <div class="artist-photo" id="artist-photo">
-      <!-- photo injected by JS -->
+      <div id="artist-photo-media" style="width:100%;height:100%;"></div>
+      <div class="hero-grad hero-grad-left"></div>
+      <div class="hero-grad hero-grad-bottom"></div>
     </div>
     <div class="artist-body">
       <div class="artist-body-inner">
@@ -3444,7 +3458,7 @@ function openShow(key) {
   document.getElementById('show-desc').textContent = data.desc;
   document.getElementById('show-duration').textContent = data.duration;
   document.getElementById('show-more-title').textContent = `More from ${data.host}`;
-  document.getElementById('show-art').innerHTML = data.artImage
+  document.getElementById('show-art-media').innerHTML = data.artImage
     ? `<img src="${data.artImage}" style="width:100%;height:100%;object-fit:cover;display:block;" alt="${data.title || ''}">`
     : makeArtSvg(data.artColors, data.artAccent);
 
@@ -3834,7 +3848,7 @@ function openArtist(hostName) {
   document.getElementById('artist-bio').textContent = artist.bio;
 
   // Photo
-  const photoEl = document.getElementById('artist-photo');
+  const photoEl = document.getElementById('artist-photo-media');
   if (artist.photo) {
     const img = document.createElement('img');
     img.onerror = () => { photoEl.innerHTML = makeArtistSvg(hostName); };
