@@ -839,7 +839,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; flex-direction: column;
 }
 /* Fixed 16px padding all sides — play button + text sit inside a consistent box */
-.player-bar-main { min-height: var(--player-h); display: flex; align-items: center; padding: 16px; gap: 16px; }
+.player-bar-main { min-height: var(--player-h); display: flex; align-items: center; padding: 24px; gap: 16px; }
 
 .play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--ghost-border); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 140ms ease, background 140ms ease; }
 .play-btn:hover { border-color: var(--ghost-border-hover); background: var(--ghost-bg-hover); }
@@ -1091,7 +1091,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     border-radius: var(--radius);
     border: 1px solid var(--border);
   }
-  .player-bar-main { padding: 16px; gap: 16px; min-height: 0; }
+  .player-bar-main { padding: 24px 16px; gap: 16px; min-height: 0; }
   .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: 8px; }
   .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; justify-content: center; }
   .player-info-top { gap: 6px; }
