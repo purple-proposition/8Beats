@@ -608,9 +608,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .section-header-text h2 { font-size: 24px; font-weight: 500; letter-spacing: -.4px; line-height: 1.1; }
 .section-header-text h3 { font-size: 16px; font-weight: 400; color: var(--text-muted); }
 
-.view-all { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--fg-strong); white-space: nowrap; transition: color .18s ease; }
-.view-all:hover { color: var(--text-muted); }
-.view-all svg { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
+/* section title with inline chevron */
+.section-link { display: inline-flex; align-items: center; gap: 6px; color: var(--fg-strong); text-decoration: none; transition: color .18s ease; }
+.section-link:hover { color: var(--text-muted); }
+.section-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; }
 
 /* ============================================================
    CARDS
@@ -656,7 +657,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .card-play:hover svg { stroke: var(--text-muted); }
 
 .card-body { padding: 16px 0 0; display: flex; flex-direction: column; flex: 1; }
-.card-body h3 { font-size: 20px; font-weight: 400; line-height: 28px; min-height: 56px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 8px; transition: color .18s ease; cursor: pointer; }
+.card-body h3 { font-size: 16px; font-weight: 400; line-height: 24px; min-height: 48px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 8px; transition: color .18s ease; cursor: pointer; }
 .card-body h3:hover { color: var(--text-muted); }
 
 .card-host { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
@@ -984,7 +985,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   .cards::-webkit-scrollbar { display: none; }
   .card { flex: 0 0 68vw; max-width: 280px; scroll-snap-align: start; height: auto; }
   .card-body { padding: 12px 0 0; }
-  .card-body h3 { font-size: 20px; line-height: 28px; min-height: 56px; margin-bottom: 8px; }
+  .card-body h3 { font-size: 16px; line-height: 24px; min-height: 48px; margin-bottom: 8px; }
   .card-host { margin-bottom: 8px; }
   .card-host .host-name { font-size: 12px; }
   .card-meta { font-size: 12px; }
@@ -1622,10 +1623,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   <div class="section">
     <header class="section-header">
       <div class="section-header-text">
-        <h2>Latest shows</h2>
+        <h2><a href="#" class="section-link">Latest shows<i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
         <h3>Fresh video game music mixes from our residents — new shows every week.</h3>
       </div>
-      <a href="#" class="view-all">View all <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
     </header>
 
     <div class="cards">
@@ -1683,10 +1683,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   <div class="section" style="margin-top: 64px;">
     <header class="section-header">
       <div class="section-header-text">
-        <h2>Cozy Grooves</h2>
+        <h2><a href="#" class="section-link">Cozy Grooves<i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
         <h3>Calming music for focus, relaxation, and sleep.</h3>
       </div>
-      <a href="#" class="view-all">View all <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
     </header>
 
     <div class="cards">
@@ -1828,9 +1827,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
       <div class="section-header">
         <div class="section-header-text">
-          <h2 id="show-more-title">More from Purple Proposition</h2>
+          <h2><a href="#" class="section-link"><span id="show-more-title">More from Purple Proposition</span><i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
         </div>
-        <a href="#" class="view-all">View all <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i></a>
       </div>
       <div class="cards" id="show-related-cards"></div>
 
@@ -2569,7 +2567,7 @@ const TRACKLISTS = {
 const DEFAULT_TRACKLIST = TRACKLISTS['International Radio Day'];
 
 /* ── Icon SVG constants ── */
-const ICON_PLAY  = '<polygon points="6 3 20 12 6 21 6 3"/>';
+const ICON_PLAY  = '<path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>';
 const ICON_PAUSE = '<rect x="5" y="3" width="4" height="18" rx="1"/><rect x="15" y="3" width="4" height="18" rx="1"/>';
 
 let activeCardId = null;
@@ -3309,7 +3307,7 @@ function makeRelatedCard(r, i) {
         <rect width="400" height="300" fill="url(#${r.gradId})"/>
         <rect width="400" height="300" fill="url(#${r.gradId}r)"/>
       </svg>
-      <div class="card-overlay"><button class="card-play" data-show="${r.title}" aria-label="Play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;display:block;"><polygon points="6 3 20 12 6 21 6 3"/></svg></button></div>
+      <div class="card-overlay"><button class="card-play" data-show="${r.title}" aria-label="Play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;display:block;"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></button></div>
     </div>
     <div class="card-body">
       <h3>${r.title}</h3>
