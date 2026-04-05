@@ -1046,9 +1046,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   .show-meta {
     grid-column: 1 / -1 !important; grid-row: unset !important;
   }
-  .show-footer {
-    grid-column: 1 / -1 !important; grid-row: unset !important;
+  .show-meta-footer {
     padding-top: 0 !important;
+    border-top: none !important;
   }
   .show-title { font-size: clamp(22px, 6vw, 32px) !important; }
   .show-desc { font-size: 14px !important; }
@@ -1309,12 +1309,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   font-size: 13px; color: var(--text-muted); letter-spacing: .15px;
 }
 
-/* Footer (description + boutons) */
-.show-footer {
-  grid-column: 3 / span 8;
-  grid-row: 2;
+/* Description + boutons (dans .show-meta) */
+.show-meta-footer {
   display: flex; flex-direction: column; gap: 20px;
-  padding-top: 32px;
+  padding-top: 6px;
   border-top: 1px solid var(--border);
 }
 
@@ -1893,7 +1891,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
       <div class="show-art" id="show-art">
         <div id="show-art-media" style="width:100%;height:100%;"></div>
       </div>
-      <!-- Meta (titre, auteur, date, tags) -->
+      <!-- Meta (titre, auteur, date, tags, description, boutons) -->
       <div class="show-meta">
         <h1 class="show-title" id="show-title">International Radio Day</h1>
         <div class="show-host" id="show-host-wrap">
@@ -1904,26 +1902,25 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
         <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
           <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
         </div>
-      </div>
-      <!-- Footer (description + boutons) -->
-      <div class="show-footer">
-        <p class="show-desc" id="show-desc">In celebration of International Radio Day, co-founder Purple Proposition has curated a one-hour nocturnal journey through ambient, downtempo, and drum'n'bass, weaving together some of his selected favorite tracks for 8Beats Radio programming.</p>
-        <div class="show-actions">
-          <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
-            <i data-lucide="play" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i>
-            <span id="show-duration">1:01:26</span>
-          </button>
-          <div class="show-actions-row">
-            <button class="show-btn-ghost" id="show-tracklist-btn" onclick="openShowTracklist()">
-              <i data-lucide="list-music" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-              Tracklist
+        <div class="show-meta-footer">
+          <p class="show-desc" id="show-desc">In celebration of International Radio Day, co-founder Purple Proposition has curated a one-hour nocturnal journey through ambient, downtempo, and drum'n'bass, weaving together some of his selected favorite tracks for 8Beats Radio programming.</p>
+          <div class="show-actions">
+            <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
+              <i data-lucide="play" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i>
+              <span id="show-duration">1:01:26</span>
             </button>
-            <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
-              <i data-lucide="bookmark" style="width:16px;height:16px;fill:none;display:block;"></i>
-            </button>
-            <button class="show-btn-icon" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
-              <i data-lucide="user-plus" style="width:16px;height:16px;fill:none;display:block;"></i>
-            </button>
+            <div class="show-actions-row">
+              <button class="show-btn-ghost" id="show-tracklist-btn" onclick="openShowTracklist()">
+                <i data-lucide="list-music" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+                Tracklist
+              </button>
+              <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
+                <i data-lucide="bookmark" style="width:16px;height:16px;fill:none;display:block;"></i>
+              </button>
+              <button class="show-btn-icon" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
+                <i data-lucide="user-plus" style="width:16px;height:16px;fill:none;display:block;"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -3484,11 +3481,12 @@ function openShow(key) {
     bgEl.style.filter = 'blur(48px) brightness(0.4)';
   }
 
-  // Date (format: "13 Feb 2024")
+  // Date (format: "13 Feb 2024 · 1:01:26")
   const dateEl = document.getElementById('show-date');
   if (data.date) {
     const d = new Date(data.date + 'T00:00:00');
-    dateEl.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    dateEl.textContent = data.duration ? `${dateStr} · ${data.duration}` : dateStr;
     dateEl.style.display = '';
   } else {
     dateEl.style.display = 'none';
