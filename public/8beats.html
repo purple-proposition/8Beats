@@ -1046,9 +1046,12 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   .show-meta {
     grid-column: 1 / -1 !important; grid-row: unset !important;
   }
-  .show-meta-footer {
-    padding-top: 0 !important;
-    border-top: none !important;
+  .show-hero-divider {
+    grid-column: 1 / -1 !important; grid-row: unset !important;
+  }
+  .show-tracklist-inline {
+    grid-column: 1 / -1 !important; grid-row: unset !important;
+    padding-bottom: 8px !important;
   }
   .show-title { font-size: clamp(22px, 6vw, 32px) !important; }
   .show-desc { font-size: 14px !important; }
@@ -1287,7 +1290,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 /* Art carré */
 .show-art {
-  grid-column: 3 / span 3;
+  grid-column: 3 / span 2;
   grid-row: 1;
   aspect-ratio: 1;
   overflow: hidden;
@@ -1300,7 +1303,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 /* Meta (droite de l'art) */
 .show-meta {
-  grid-column: 6 / span 5;
+  grid-column: 5 / span 6;
   grid-row: 1;
   display: flex; flex-direction: column; gap: 14px;
   padding-top: 4px;
@@ -1312,8 +1315,43 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 /* Description + boutons (dans .show-meta) */
 .show-meta-footer {
   display: flex; flex-direction: column; gap: 20px;
-  padding-top: 6px;
+}
+
+/* Séparateur horizontal pleine largeur (art + meta) */
+.show-hero-divider {
+  grid-column: 3 / span 8;
+  grid-row: 2;
+  border: none;
   border-top: 1px solid var(--border);
+  margin: 0;
+}
+
+/* Tracklist inline sous le séparateur */
+.show-tracklist-inline {
+  grid-column: 3 / span 8;
+  grid-row: 3;
+  padding-bottom: 16px;
+}
+.show-tracklist-inline .track {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+.show-tracklist-inline .track:first-child { border-top: none; }
+.show-tracklist-inline .track-num {
+  font-size: 12px; color: var(--text-muted); width: 24px; flex-shrink: 0; text-align: right;
+}
+.show-tracklist-inline .track-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; margin: 0 16px; }
+.show-tracklist-inline .track-name { font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.show-tracklist-inline .track-game { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.show-tracklist-inline .track-ts {
+  font-size: 12px; color: var(--text-muted); cursor: pointer; font-variant-numeric: tabular-nums;
+  transition: color 140ms ease;
+}
+.show-tracklist-inline .track-ts:hover { color: var(--fg-strong); }
+.show-tracklist-inline .track-stream-icon {
+  width: 13px; height: 13px; fill: #1DB954; opacity: .75; flex-shrink: 0;
 }
 
 /* ── Hero gradient overlays (Keakie method — artist page only) ── */
@@ -1910,10 +1948,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
               <span id="show-duration">1:01:26</span>
             </button>
             <div class="show-actions-row">
-              <button class="show-btn-ghost" id="show-tracklist-btn" onclick="openShowTracklist()">
-                <i data-lucide="list-music" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-                Tracklist
-              </button>
               <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
                 <i data-lucide="bookmark" style="width:16px;height:16px;fill:none;display:block;"></i>
               </button>
@@ -1924,6 +1958,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
           </div>
         </div>
       </div>
+      <!-- Séparateur pleine largeur (art + meta) -->
+      <hr class="show-hero-divider">
+      <!-- Tracklist inline -->
+      <div class="show-tracklist-inline" id="show-tracklist-inline"></div>
     </div>
   </section>
 
@@ -3498,32 +3536,21 @@ function openShow(key) {
   tagsEl.innerHTML = filteredTags.map(t => `<span class="tag">${t}</span>`).join('');
   wireTagTooltips(tagsEl);
 
-  // Tracklist — utilise TRACKLISTS (mêmes données que le player) avec Spotify
-  document.getElementById('show-tracklist-label').textContent = `Tracklist — ${key}`;
+  // Tracklist inline
   const tl = TRACKLISTS[key] || [];
-  document.getElementById('show-tracklist-body').innerHTML = tl.map((t, i) => `
-    <div class="track" style="padding:16px 0;${i > 0 ? 'border-top:1px solid var(--border);' : ''}">
+  document.getElementById('show-tracklist-inline').innerHTML = tl.map((t, i) => `
+    <div class="track">
+      <span class="track-num">${i + 1}</span>
       <div class="track-info">
         <span class="track-name">${t.name}</span>
-        <span class="track-game">${t.game}</span>
+        ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
       </div>
-      <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+      <div class="track-meta">
         ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg>
         <span style="width:1px;height:11px;background:var(--border);flex-shrink:0;opacity:.7;"></span>` : ''}
         <span class="track-ts" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</span>
       </div>
     </div>`).join('');
-  const tb = document.getElementById('show-tracklist-body');
-  if (tb) {
-    const fade = 'linear-gradient(to bottom,black calc(100% - 40px),transparent 100%)';
-    tb.style.maskImage = fade;
-    tb.style.webkitMaskImage = fade;
-    tb.addEventListener('scroll', () => {
-      const atBottom = tb.scrollHeight - tb.scrollTop <= tb.clientHeight + 2;
-      tb.style.maskImage = atBottom ? '' : fade;
-      tb.style.webkitMaskImage = atBottom ? '' : fade;
-    });
-  }
 
 
   // Related cards — triées du plus récent au plus ancien
