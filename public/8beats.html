@@ -1256,10 +1256,22 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(to bottom,
-    rgba(var(--bg-rgb),.45) 0%,
-    rgba(var(--bg-rgb),.72) 55%,
-    rgba(var(--bg-rgb),.96) 100%
+    rgba(var(--bg-rgb),.38) 0%,
+    rgba(var(--bg-rgb),.42) 8%,
+    rgba(var(--bg-rgb),.52) 20%,
+    rgba(var(--bg-rgb),.64) 35%,
+    rgba(var(--bg-rgb),.76) 50%,
+    rgba(var(--bg-rgb),.86) 63%,
+    rgba(var(--bg-rgb),.93) 75%,
+    rgba(var(--bg-rgb),.97) 86%,
+    rgba(var(--bg-rgb),1)   95%
   );
+}
+.show-hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 64px; z-index: 2; pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(var(--bg-rgb),1));
 }
 .show-hero-content {
   position: relative; z-index: 2;
@@ -1290,7 +1302,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 /* Art carré */
 .show-art {
-  grid-column: 3 / span 2;
+  grid-column: 3 / span 3;
   grid-row: 1;
   aspect-ratio: 1;
   overflow: hidden;
@@ -1303,7 +1315,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 /* Meta (droite de l'art) */
 .show-meta {
-  grid-column: 5 / span 6;
+  grid-column: 6 / span 5;
   grid-row: 1;
   display: flex; flex-direction: column; gap: 14px;
   padding-top: 4px;
@@ -1335,24 +1347,28 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
   padding: 13px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+  cursor: default;
 }
 .show-tracklist-inline .track:first-child { border-top: none; }
-.show-tracklist-inline .track-num {
-  font-size: 12px; color: var(--text-muted); width: 24px; flex-shrink: 0; text-align: right;
-}
-.show-tracklist-inline .track-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; margin: 0 16px; }
-.show-tracklist-inline .track-name { font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.show-tracklist-inline .track-game { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.show-tracklist-inline .track-ts {
-  font-size: 12px; color: var(--text-muted); cursor: pointer; font-variant-numeric: tabular-nums;
+.show-tracklist-inline .track-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.show-tracklist-inline .track-name {
+  font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   transition: color 140ms ease;
 }
-.show-tracklist-inline .track-ts:hover { color: var(--fg-strong); }
-.show-tracklist-inline .track-stream-icon {
-  width: 13px; height: 13px; fill: #1DB954; opacity: .75; flex-shrink: 0;
+.show-tracklist-inline .track-game { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.show-tracklist-inline .track:hover .track-name { color: var(--text-muted); }
+.show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 16px; }
+.show-tracklist-inline .track-ts {
+  font-size: 12px; color: var(--fg-strong); cursor: pointer; font-variant-numeric: tabular-nums;
+  transition: color 140ms ease, opacity 140ms ease;
 }
+.show-tracklist-inline .track:hover .track-ts { opacity: .55; }
+.show-tracklist-inline .track-stream-icon {
+  width: 13px; height: 13px; fill: rgba(255,255,255,.8); flex-shrink: 0; cursor: pointer;
+  transition: opacity 140ms ease;
+}
+.show-tracklist-inline .track-stream-icon:hover { opacity: .35; }
 
 /* ── Hero gradient overlays (Keakie method — artist page only) ── */
 .hero-grad {
@@ -1945,7 +1961,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
           <div class="show-actions">
             <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
               <i data-lucide="play" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i>
-              <span id="show-duration">1:01:26</span>
+              Play
             </button>
             <div class="show-actions-row">
               <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
@@ -3346,6 +3362,7 @@ addEventListener('resize', checkMarquee);
 const SHOW_DATA = {
   'International Radio Day': {
     host: 'Purple Proposition', initials: 'PP',
+    date: '2024-02-13',
     duration: '1:01:26',
     desc: 'In celebration of International Radio Day, co-founder Purple Proposition has curated a one-hour nocturnal journey through ambient, downtempo, and drum\'n\'bass, weaving together some of his selected favorite tracks for 8Beats Radio programming.',
     tags: ['Ambient','Downtempo','Drum & Bass','Classics'],
@@ -3503,7 +3520,7 @@ function openShow(key) {
   document.getElementById('show-host-av').textContent = data.initials;
   document.getElementById('show-host-name').textContent = data.host;
   document.getElementById('show-desc').textContent = data.desc;
-  document.getElementById('show-duration').textContent = data.duration;
+  // play button label is always "Play" — duration shown in date line
   document.getElementById('show-more-title').textContent = `More from ${data.host}`;
 
   // Art + blurred background
@@ -3538,9 +3555,8 @@ function openShow(key) {
 
   // Tracklist inline
   const tl = TRACKLISTS[key] || [];
-  document.getElementById('show-tracklist-inline').innerHTML = tl.map((t, i) => `
+  document.getElementById('show-tracklist-inline').innerHTML = tl.map((t) => `
     <div class="track">
-      <span class="track-num">${i + 1}</span>
       <div class="track-info">
         <span class="track-name">${t.name}</span>
         ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
@@ -3647,9 +3663,9 @@ function updateShowPlayBtn() {
   const btn = document.getElementById('show-play-btn');
   if (!btn) return;
   const data = currentShowKey ? SHOW_DATA[currentShowKey] : null;
-  const dur = data ? data.duration : '';
   const iconName = playing ? 'pause' : 'play';
-  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i><span id="show-duration">${dur}</span>`;
+  const label = playing ? 'Pause' : 'Play';
+  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;stroke:currentColor;fill:none;display:block;"></i>${label}`;
   lucide.createIcons({ nodes: [btn] });
 }
 
