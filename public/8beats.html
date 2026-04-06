@@ -177,7 +177,7 @@ a { text-decoration: none; color: inherit; }
 
 .label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -658,7 +658,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; }
 .section-header-text { display: flex; flex-direction: column; gap: 8px; }
 .section-header-text h2 { font-size: 24px; font-weight: 500; letter-spacing: -.4px; line-height: 1.1; }
-.section-header-text h3 { font-size: 16px; font-weight: 400; color: var(--text-muted); }
+.section-header-text h3 { font-size: 13px; font-weight: 400; color: var(--text-muted); }
 
 /* section title with inline chevron */
 .section-link { display: inline-flex; align-items: center; gap: 6px; color: var(--fg-strong); text-decoration: none; transition: color .18s ease; }
@@ -828,13 +828,13 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .track-stream-icon:hover { fill: var(--text-muted); }
 .replay-badge {
-  font-family: var(--font-mono); font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--text-muted);
 }
 .back-to-live {
   display: none; align-items: center; gap: 7px;
   background: none; border: none; cursor: pointer; padding: 0;
-  font-family: var(--font-mono); font-size: 8px; font-weight: 700;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--text); white-space: nowrap;
   transition: color .18s ease;
@@ -1148,7 +1148,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: 8px; }
   .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
   .player-info-top { gap: 8px; }
-  .player-info-top .label { font-size: 10px; }
+  .player-info-top .label { font-size: 11px; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 20px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 20px),transparent); }
   .player-title { font-size: 16px; font-weight: 400; }
   .player-game  { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1263,6 +1263,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .explore-close-btn svg { transition: stroke .18s ease; }
 .explore-close-btn:hover svg { stroke: var(--text) !important; }
 #explore-input::placeholder { color: var(--text-muted); }
+#filter-count { font-size: 10px; font-weight: 700; letter-spacing: .5px; background: var(--text); color: var(--bg); border-radius: 99px; padding: 1px 6px; }
 
 /* Genre tooltip */
 #genre-tooltip {
@@ -1438,7 +1439,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-tracklist-inline .track:hover .track-name { color: var(--text-muted); }
 .show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 16px; }
 .show-tracklist-inline .track-ts {
-  font-family: var(--font-mono); font-size: 14px; font-weight: 400; letter-spacing: 0;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 400; letter-spacing: 0;
   color: var(--fg-strong); cursor: pointer; font-variant-numeric: tabular-nums;
   transition: color 140ms ease, opacity 140ms ease;
 }
@@ -1814,7 +1815,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
       <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:16px 0;font-family:var(--font);font-size:14px;font-weight:500;color:var(--text-muted);transition:color .18s ease;">
         <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="width:14px;height:14px;stroke:var(--text-muted);fill:none;display:block;transition:stroke .18s ease;"></i>
         Filters
-        <span id="filter-count" style="display:none;font-size:8px;font-weight:700;letter-spacing:.5px;background:var(--text);color:var(--bg);border-radius:99px;padding:1px 6px;"></span>
+        <span id="filter-count" style="display:none;"></span>
       </button>
     </div>
 
