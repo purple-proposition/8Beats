@@ -1094,26 +1094,18 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     padding: calc(var(--nav-h) + var(--space) + 96px) var(--space) 32px !important;
     gap: var(--space) !important;
   }
+  .show-sidebar {
+    grid-column: 1 / -1 !important;
+    flex-direction: row !important; align-items: flex-start; gap: 16px !important;
+  }
   .show-art {
-    grid-column: 1 / -1 !important; grid-row: unset !important;
-    width: 88px !important; height: 88px !important;
+    width: 96px !important; height: 96px !important; flex-shrink: 0;
     aspect-ratio: 1 !important; border-radius: var(--radius-sm) !important;
     box-shadow: none !important;
   }
-  .show-meta {
-    grid-column: 1 / -1 !important; grid-row: unset !important;
-  }
-  .show-tracklist-section {
-    grid-template-columns: 1fr !important;
-    padding: 0 var(--space) 32px !important;
-    gap: var(--space) !important;
-  }
-  .show-tracklist-label { grid-column: 1 / -1 !important; }
-  .show-hero-divider { grid-column: 1 / -1 !important; }
-  .show-tracklist-inline { grid-column: 1 / -1 !important; padding-bottom: 8px !important; }
+  .show-main { grid-column: 1 / -1 !important; }
   .show-title { font-size: clamp(24px, 6vw, 32px) !important; }
-  .show-desc { font-size: 14px !important; }
-  .show-actions { flex-wrap: wrap; gap: 10px; }
+  .show-actions { flex-wrap: wrap; gap: 8px; }
   .show-btn-play { flex: 1 1 100%; justify-content: center; }
   .show-btn-ghost { flex: 1; justify-content: center; padding: 11px 12px; }
   .show-btn-icon { width: 44px; height: 44px; flex-shrink: 0; }
@@ -1271,12 +1263,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #genre-tooltip {
   position: fixed; z-index: 9999;
   max-width: 220px;
-  background: var(--surface);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border: 1px solid var(--border);
+  background: rgba(var(--bg-rgb), 0.48);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 12px 14px;
+  padding: 12px 16px;
   font-family: var(--font); font-size: 14px; line-height: 1.5;
   color: var(--text-muted);
   pointer-events: none;
@@ -1343,7 +1335,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  padding: calc(var(--nav-h) + var(--space) + 96px) var(--space) var(--space);
+  padding: calc(var(--nav-h) + var(--space) + 96px) var(--space) 96px;
   align-items: start;
 }
 
@@ -1365,63 +1357,58 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   cursor: pointer; backdrop-filter: blur(8px);
 }
 
-/* Art carré */
+/* LEFT column: title, submeta, actions, tracklist */
+.show-main {
+  grid-column: 3 / span 6;
+  display: flex; flex-direction: column; gap: 24px;
+}
+/* RIGHT column: cover art, tags, artist */
+.show-sidebar {
+  grid-column: 9 / span 4;
+  display: flex; flex-direction: column; gap: 16px;
+}
+/* Cover art fills sidebar width */
 .show-art {
-  grid-column: 3 / span 3;
-  grid-row: 1;
-  aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: var(--radius);
+  aspect-ratio: 1; width: 100%;
+  overflow: hidden; border-radius: var(--radius);
   position: relative; z-index: 0;
 }
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* Meta (droite de l'art) */
-.show-meta {
-  grid-column: 6 / span 5;
-  grid-row: 1;
-  display: flex; flex-direction: column; gap: 24px;
+/* Submeta row: host · date · tracks · duration */
+.show-submeta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  font-size: 14px; color: var(--text-muted);
 }
-/* Groupe host + date collés */
-.show-meta-identity { display: flex; flex-direction: column; gap: 8px; }
-.show-date {
-  font-size: 16px; color: var(--text-muted); letter-spacing: .15px;
+.show-submeta-dot { opacity: .45; }
+.show-submeta-host { color: var(--text); cursor: pointer; transition: color .18s; }
+.show-submeta-host:hover { color: var(--text-muted); }
+.show-date { font-size: 14px; color: var(--text-muted); }
+
+/* Tracklist wrapper */
+.show-tracklist-wrap { display: flex; flex-direction: column; }
+
+/* Tracklist header (Spotify-style) */
+.show-tl-header {
+  display: flex; align-items: center; padding-bottom: 8px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.show-tl-title-col { flex: 1; }
+.show-tl-dur-col { text-align: right; min-width: 48px; }
+
+/* Track number (shared by header and rows) */
+.track-num {
+  width: 32px; flex-shrink: 0; text-align: center;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
 }
 
-/* Description + boutons (dans .show-meta) */
-.show-meta-footer {
-  display: flex; flex-direction: column; gap: 24px;
-}
+/* Divider */
+.show-hero-divider { border: none; border-top: 0.5px solid var(--sep); margin: 0; }
 
-/* Tracklist section — son propre grid container (évite les conflits de grid-row) */
-.show-tracklist-section {
-  position: relative; z-index: 2;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: 24px; row-gap: 0;
-  padding: 0 var(--space) 96px;
-}
-
-/* Tracklist section label */
-.show-tracklist-label {
-  grid-column: 3 / span 8;
-  padding-bottom: var(--space);
-}
-
-/* Séparateur horizontal pleine largeur (art + meta) */
-.show-hero-divider {
-  grid-column: 3 / span 8;
-  border: none;
-  border-top: 0.5px solid var(--sep);
-  margin: 0;
-}
-
-/* Tracklist inline sous le séparateur */
-.show-tracklist-inline {
-  grid-column: 3 / span 8;
-  padding-bottom: 16px;
-}
+/* Tracklist inline */
+.show-tracklist-inline { padding-bottom: 16px; }
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 0;
@@ -2023,48 +2010,54 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     <div class="show-hero-bg" id="show-hero-bg"></div>
     <div class="show-hero-scrim"></div>
     <div class="show-hero-content">
-      <!-- Art carré -->
-      <div class="show-art" id="show-art">
-        <div id="show-art-media" style="width:100%;height:100%;"></div>
-      </div>
-      <!-- Meta (titre, auteur, date, tags, description, boutons) -->
-      <div class="show-meta">
+      <!-- LEFT: title, submeta, actions, tracklist -->
+      <div class="show-main">
         <h1 class="show-title" id="show-title">International Radio Day</h1>
-        <div class="show-meta-identity">
-          <div class="show-host" id="show-host-wrap">
-            <div class="show-host-av" id="show-host-av">PP</div>
-            <span class="show-host-name" id="show-host-name">Purple Proposition</span>
-          </div>
-          <div class="show-date" id="show-date">13 Feb 2024</div>
+        <div class="show-submeta">
+          <span class="show-submeta-host" id="show-submeta-host">Purple Proposition</span>
+          <span class="show-submeta-dot">·</span>
+          <span id="show-date">13 Feb 2024</span>
+          <span class="show-submeta-dot">·</span>
+          <span id="show-track-count"></span>
+          <span class="show-submeta-dot">·</span>
+          <span id="show-duration"></span>
         </div>
-        <div class="show-meta-footer">
-          <p class="show-desc" id="show-desc">In celebration of International Radio Day, co-founder Purple Proposition has curated a one-hour nocturnal journey through ambient, downtempo, and drum'n'bass, weaving together some of his selected favorite tracks for 8Beats Radio programming.</p>
-          <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
-            <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
+        <div class="show-actions">
+          <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
+            <i data-lucide="play" style="width:11px;height:11px;display:block;"></i>
+            Play
+          </button>
+          <button class="show-btn-icon" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
+            <i data-lucide="user-plus" style="width:16px;height:16px;fill:none;display:block;"></i>
+          </button>
+          <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
+            <i data-lucide="bookmark" style="width:16px;height:16px;fill:none;display:block;"></i>
+          </button>
+        </div>
+        <div class="show-tracklist-wrap">
+          <div class="show-tl-header">
+            <span class="track-num">#</span>
+            <span class="show-tl-title-col">Title</span>
+            <span class="show-tl-dur-col">Cue</span>
           </div>
-          <div class="show-actions">
-            <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
-              <i data-lucide="play" style="width:11px;height:11px;display:block;"></i>
-              Play
-            </button>
-            <div class="show-actions-row">
-              <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
-                <i data-lucide="bookmark" style="width:16px;height:16px;fill:none;display:block;"></i>
-              </button>
-              <button class="show-btn-icon" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
-                <i data-lucide="user-plus" style="width:16px;height:16px;fill:none;display:block;"></i>
-              </button>
-            </div>
-          </div>
+          <div class="show-hero-divider"></div>
+          <div class="show-tracklist-inline" id="show-tracklist-inline"></div>
+        </div>
+      </div>
+      <!-- RIGHT: cover art, tags, artist -->
+      <div class="show-sidebar">
+        <div class="show-art" id="show-art">
+          <div id="show-art-media" style="width:100%;height:100%;"></div>
+        </div>
+        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
+        </div>
+        <div class="show-host" id="show-host-wrap">
+          <div class="show-host-av" id="show-host-av">PP</div>
+          <span class="show-host-name" id="show-host-name">Purple Proposition</span>
         </div>
       </div>
     </div>
-  <!-- Tracklist section — grid container propre -->
-  <div class="show-tracklist-section">
-    <h2 class="label show-tracklist-label">Tracklist</h2>
-    <div class="show-hero-divider"></div>
-    <div class="show-tracklist-inline" id="show-tracklist-inline"></div>
-  </div>
   </section>
 
   <!-- Tracklist popup déplacé au niveau body -->
@@ -3593,9 +3586,12 @@ function openShow(key) {
   document.getElementById('show-title').textContent = key;
   document.getElementById('show-host-av').textContent = data.initials;
   document.getElementById('show-host-name').textContent = data.host;
-  document.getElementById('show-desc').textContent = data.desc;
-  // play button label is always "Play" — duration shown in date line
   document.getElementById('show-more-title').textContent = `More from ${data.host}`;
+
+  // Submeta host — click to open artist
+  const submetaHost = document.getElementById('show-submeta-host');
+  submetaHost.textContent = data.host;
+  submetaHost.onclick = () => openArtist(data.host);
 
   // Art + blurred background
   const artMediaEl = document.getElementById('show-art-media');
@@ -3610,16 +3606,23 @@ function openShow(key) {
     bgEl.style.filter = 'blur(48px) brightness(0.4)';
   }
 
-  // Date (format: "13 Feb 2024 · 1:01:26")
+  // Date (format: "13 Feb 2024")
   const dateEl = document.getElementById('show-date');
   if (data.date) {
     const d = new Date(data.date + 'T00:00:00');
-    const dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    dateEl.textContent = data.duration ? `${dateStr} · ${data.duration}` : dateStr;
+    dateEl.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
     dateEl.style.display = '';
   } else {
     dateEl.style.display = 'none';
   }
+
+  // Track count + total duration
+  const tl0 = TRACKLISTS[key] || [];
+  const trackCountEl = document.getElementById('show-track-count');
+  const durationEl = document.getElementById('show-duration');
+  trackCountEl.textContent = tl0.length ? `${tl0.length} tracks` : '';
+  const totalSecs = SHOW_DURATIONS[key];
+  durationEl.textContent = totalSecs ? fmtTime(totalSecs) : (data.duration || '');
 
   // Tags — filtrer 'Classics', gap 6px
   const tagsEl = document.getElementById('show-tags');
@@ -3629,8 +3632,9 @@ function openShow(key) {
 
   // Tracklist inline
   const tl = TRACKLISTS[key] || [];
-  document.getElementById('show-tracklist-inline').innerHTML = tl.map((t) => `
+  document.getElementById('show-tracklist-inline').innerHTML = tl.map((t, i) => `
     <div class="track">
+      <span class="track-num">${i + 1}</span>
       <div class="track-info">
         <span class="track-name">${t.name}</span>
         ${t.game ? `<span class="track-game"><i data-lucide="gamepad-2"></i>${t.game}</span>` : ''}
