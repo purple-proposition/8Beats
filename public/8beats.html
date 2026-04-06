@@ -1395,7 +1395,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   letter-spacing: .06em; text-transform: uppercase;
 }
 .show-tl-title-col { flex: 1; }
-.show-tl-dur-col { text-align: right; min-width: 48px; }
+.show-tl-streams-col { width: 24px; flex-shrink: 0; text-align: center; }
+.show-tl-time-col { min-width: 48px; text-align: right; }
 
 /* Track number (shared by header and rows) */
 .track-num {
@@ -1415,23 +1416,21 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   cursor: default;
   transition: background 140ms ease;
 }
-.show-tracklist-inline .track:hover { background: var(--track-hover); }
 .show-tracklist-inline .track:first-child { border-top: none; }
 .show-tracklist-inline .track-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .show-tracklist-inline .track-name {
   font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  transition: color 140ms ease;
 }
 .show-tracklist-inline .track-game { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .show-tracklist-inline .track-game svg { width: 11px; height: 11px; stroke: currentColor; fill: none; flex-shrink: 0; opacity: .7; }
-.show-tracklist-inline .track:hover .track-name { color: var(--text-muted); }
-.show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 16px; }
+.show-tracklist-inline .track-streams { width: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .show-tracklist-inline .track-ts {
+  min-width: 48px; text-align: right;
   font-size: 12px; font-weight: 400; letter-spacing: .06em;
-  color: var(--fg-strong); cursor: pointer; font-variant-numeric: tabular-nums;
-  transition: color 140ms ease, opacity 140ms ease;
+  color: var(--text-muted); cursor: pointer; font-variant-numeric: tabular-nums;
+  transition: color 140ms ease;
 }
-.show-tracklist-inline .track:hover .track-ts { opacity: .55; }
+.show-tracklist-inline .track-ts:hover { color: var(--fg-strong); }
 .show-tracklist-inline .track-stream-icon {
   width: 16px; height: 16px; fill: var(--icon-subtle); flex-shrink: 0; cursor: pointer;
   transition: opacity 140ms ease;
@@ -2047,7 +2046,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
           <div class="show-tl-header">
             <span class="track-num">#</span>
             <span class="show-tl-title-col">Title</span>
-            <span class="show-tl-dur-col">Cue</span>
+            <span class="show-tl-streams-col"></span>
+            <span class="show-tl-time-col">Time</span>
           </div>
           <div class="show-hero-divider"></div>
           <div class="show-tracklist-inline" id="show-tracklist-inline"></div>
@@ -3628,11 +3628,10 @@ function openShow(key) {
         <span class="track-name">${t.name}</span>
         ${t.game ? `<span class="track-game"><i data-lucide="gamepad-2"></i>${t.game}</span>` : ''}
       </div>
-      <div class="track-meta">
-        ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg>
-        <span style="width:1px;height:11px;background:var(--border);flex-shrink:0;opacity:.7;"></span>` : ''}
-        <span class="track-ts" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</span>
+      <div class="track-streams">
+        ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg>` : ''}
       </div>
+      <span class="track-ts" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</span>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
 
