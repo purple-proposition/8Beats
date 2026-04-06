@@ -1374,6 +1374,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.show-art-credit {
+  font-size: 11px; color: var(--text-muted); opacity: .5;
+  margin: 0; line-height: 1.5;
+}
 
 /* Submeta row: host · date · tracks · duration */
 .show-submeta {
@@ -1404,18 +1408,19 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 /* Divider */
-.show-hero-divider { border: none; border-top: 0.5px solid var(--sep); margin: 0; }
+.show-hero-divider { border: none; border-top: 1px solid var(--sep); margin: 0; }
 
 /* Tracklist inline */
 .show-tracklist-inline { padding-bottom: 16px; }
 .show-tracklist-inline .track {
   display: flex; align-items: flex-start; justify-content: space-between;
   padding: 12px 0;
-  border-bottom: 0.5px solid var(--sep);
+  border-bottom: 1px solid var(--sep);
   cursor: default;
   transition: background 140ms ease;
 }
 .show-tracklist-inline .track:first-child { border-top: none; }
+.show-tracklist-inline .track + .track { border-top: none; }
 .show-tracklist-inline .track-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .show-tracklist-inline .track-name {
   font-size: 14px; color: var(--text);
@@ -2007,22 +2012,23 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     <div class="show-hero-bg" id="show-hero-bg"></div>
     <div class="show-hero-scrim"></div>
     <div class="show-hero-content">
-      <!-- LEFT: cover art, tags, artist -->
+      <!-- LEFT: cover art, credit -->
       <div class="show-sidebar">
         <div class="show-art" id="show-art">
           <div id="show-art-media" style="width:100%;height:100%;"></div>
         </div>
-        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
-          <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
-        </div>
+        <p class="show-art-credit" id="show-art-credit"></p>
+      </div>
+      <!-- RIGHT: title, host, tags, submeta, desc, actions, tracklist -->
+      <div class="show-main">
+        <h1 class="show-title" id="show-title">International Radio Day</h1>
         <div class="show-host" id="show-host-wrap">
           <div class="show-host-av" id="show-host-av">PP</div>
           <span class="show-host-name" id="show-host-name">Purple Proposition</span>
         </div>
-      </div>
-      <!-- RIGHT: title, submeta, desc, actions, tracklist -->
-      <div class="show-main">
-        <h1 class="show-title" id="show-title">International Radio Day</h1>
+        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
+        </div>
         <div class="show-submeta">
           <span id="show-date">13 Feb 2024</span>
           <span class="show-submeta-dot">·</span>
@@ -3430,6 +3436,7 @@ const SHOW_DATA = {
     artColors: ['#0d0020','#280555','#5c1080'],
     artAccent: '#d060ff',
     artImage: 'https://images.ctfassets.net/jd1mlth317j4/Zf0xfLtkY6D28VvaJr2pq/e42b0f9a3c87b01fdb1669f15c7d968d/website.jpg?fm=webp&w=828&q=80',
+    artCredit: 'Spyro the Dragon — © Sony Computer Entertainment Inc. / Insomniac Games, Inc.',
     tracklist: [
       {ts:'00:00',name:'Yasunori Mitsuda – Reminiscence',game:'Chrono Cross'},
       {ts:'04:12',name:'Yoko Shimomura – Home, Dear Home',game:'Kingdom Hearts'},
@@ -3610,6 +3617,11 @@ function openShow(key) {
   // Duration
   const totalSecs = SHOW_DURATIONS[key];
   document.getElementById('show-duration').textContent = totalSecs ? fmtTime(totalSecs) : (data.duration || '');
+
+  // Art credit
+  const creditEl = document.getElementById('show-art-credit');
+  creditEl.textContent = data.artCredit || '';
+  creditEl.style.display = data.artCredit ? '' : 'none';
 
   // Tags — filtrer 'Classics', gap 6px
   const tagsEl = document.getElementById('show-tags');
