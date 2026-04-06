@@ -722,7 +722,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-meta   { font-size: 14px; color: var(--text-muted); }
 .card-tags   { display: none; }
 
-.tag { font-size: 12px; font-weight: 500; letter-spacing: .4px; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--border); border-radius: 4px; padding: 3px 7px; cursor: pointer; transition: color 140ms ease, border-color 140ms ease, background 140ms ease; }
+.tag { font-size: 14px; font-weight: 500; letter-spacing: .4px; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--border); border-radius: 4px; padding: 8px 16px; cursor: pointer; transition: color 140ms ease, border-color 140ms ease, background 140ms ease; }
 .tag:hover { color: var(--fg-strong); border-color: var(--ghost-border-hover); background: var(--ghost-bg-hover); }
 
 /* ============================================================
@@ -1364,7 +1364,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 /* LEFT column: cover art, tags, artist */
 .show-sidebar {
-  grid-column: 2 / span 3;
+  grid-column: 3 / span 3;
   display: flex; flex-direction: column; gap: 24px;
 }
 /* Cover art fills sidebar width */
@@ -1387,7 +1387,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-date { font-size: 14px; color: var(--text-muted); }
 
 /* Tracklist wrapper */
-.show-tracklist-wrap { display: flex; flex-direction: column; }
+.show-tracklist-wrap { display: flex; flex-direction: column; margin-top: 24px; }
 
 /* Tracklist header (Spotify-style) */
 .show-tl-header {
@@ -2027,11 +2027,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
       <div class="show-main">
         <h1 class="show-title" id="show-title">International Radio Day</h1>
         <div class="show-submeta">
-          <span class="show-submeta-host" id="show-submeta-host">Purple Proposition</span>
-          <span class="show-submeta-dot">·</span>
           <span id="show-date">13 Feb 2024</span>
-          <span class="show-submeta-dot">·</span>
-          <span id="show-track-count"></span>
           <span class="show-submeta-dot">·</span>
           <span id="show-duration"></span>
         </div>
@@ -3590,10 +3586,6 @@ function openShow(key) {
   document.getElementById('show-desc').textContent = data.desc || '';
   document.getElementById('show-more-title').textContent = `More from ${data.host}`;
 
-  // Submeta host — click to open artist
-  const submetaHost = document.getElementById('show-submeta-host');
-  submetaHost.textContent = data.host;
-  submetaHost.onclick = () => openArtist(data.host);
 
   // Art + blurred background
   const artMediaEl = document.getElementById('show-art-media');
@@ -3618,13 +3610,9 @@ function openShow(key) {
     dateEl.style.display = 'none';
   }
 
-  // Track count + total duration
-  const tl0 = TRACKLISTS[key] || [];
-  const trackCountEl = document.getElementById('show-track-count');
-  const durationEl = document.getElementById('show-duration');
-  trackCountEl.textContent = tl0.length ? `${tl0.length} tracks` : '';
+  // Duration
   const totalSecs = SHOW_DURATIONS[key];
-  durationEl.textContent = totalSecs ? fmtTime(totalSecs) : (data.duration || '');
+  document.getElementById('show-duration').textContent = totalSecs ? fmtTime(totalSecs) : (data.duration || '');
 
   // Tags — filtrer 'Classics', gap 6px
   const tagsEl = document.getElementById('show-tags');
