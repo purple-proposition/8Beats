@@ -362,14 +362,14 @@ html.light #nav-dropdown { background: var(--surface); }
 .nav-dd-item {
   display: flex; align-items: center; gap: 10px;
   font-size: 14px; color: var(--text);
-  padding: 14px 16px; text-decoration: none;
+  padding: 14px 24px; text-decoration: none;
   transition: color .18s ease;
   cursor: pointer; white-space: nowrap;
   position: relative;
 }
 .nav-dd-item:first-child { border-radius: var(--radius) var(--radius) 0 0; }
 .nav-dd-item + .nav-dd-item::before {
-  content: ''; position: absolute; top: 0; left: 16px; right: 16px;
+  content: ''; position: absolute; top: 0; left: 24px; right: 24px;
   height: 1px; background: var(--border);
 }
 .nav-dd-item:hover { color: var(--text-muted); }
@@ -378,24 +378,24 @@ html.light #nav-dropdown { background: var(--surface); }
   fill: none; stroke: currentColor; stroke-width: 1.75;
   stroke-linecap: round; stroke-linejoin: round;
 }
-.nav-dropdown-sep { height: 1px; background: var(--border); margin: 0 16px; }
+.nav-dropdown-sep { height: 1px; background: var(--border); margin: 0 24px; }
 .nav-dd-theme-row {
   display: flex; align-items: center; gap: 10px;
-  padding: 14px 16px;
+  padding: 14px 24px;
   position: relative;
 }
 .nav-dd-theme-row::before {
-  content: ''; position: absolute; top: 0; left: 16px; right: 16px;
+  content: ''; position: absolute; top: 0; left: 24px; right: 24px;
   height: 1px; background: var(--border);
 }
 .nav-dd-theme-label { font-size: 14px; color: var(--text); flex: 1; }
 .nav-dropdown-social {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px;
+  padding: 14px 24px;
   position: relative;
 }
 .nav-dropdown-social::before {
-  content: ''; position: absolute; top: 0; left: 16px; right: 16px;
+  content: ''; position: absolute; top: 0; left: 24px; right: 24px;
   height: 1px; background: var(--border);
 }
 .nav-dropdown-social button {
@@ -1250,7 +1250,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .show-hero-bg {
   position: absolute;
-  inset: -48px; /* overbleed prevents white blur edges */
+  inset: -150px; /* overbleed 3× blur radius — prevents fade-to-transparent edges */
   z-index: 0;
   background-size: cover; background-position: center;
   filter: blur(48px) saturate(1.6) brightness(0.32);
@@ -1280,7 +1280,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  padding: calc(var(--nav-h) + var(--space) * 4) var(--space) 40px;
+  padding: calc(var(--nav-h) + var(--space) * 4) var(--space) 48px;
   align-items: start;
 }
 
@@ -1295,7 +1295,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Dev mode toggle ── */
 #dev-grid-btn {
-  position: fixed; bottom: 80px; right: var(--space); z-index: 9999;
+  position: fixed; bottom: 80px; left: var(--space); z-index: 9999;
   background: rgba(99,102,241,.85); color: #fff;
   border: none; border-radius: 6px; padding: 6px 10px;
   font-family: var(--font); font-size: 11px; font-weight: 600; letter-spacing: .04em;
@@ -1318,10 +1318,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-meta {
   grid-column: 6 / span 5;
   grid-row: 1;
-  display: flex; flex-direction: column; gap: 20px;
+  display: flex; flex-direction: column; gap: 24px;
 }
 /* Groupe host + date collés */
-.show-meta-identity { display: flex; flex-direction: column; gap: 5px; }
+.show-meta-identity { display: flex; flex-direction: column; gap: 8px; }
 .show-date {
   font-size: 14px; color: var(--text-muted); letter-spacing: .15px;
 }
@@ -1364,10 +1364,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-tracklist-inline .track:first-child { border-top: none; }
 .show-tracklist-inline .track-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .show-tracklist-inline .track-name {
-  font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 16px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   transition: color 140ms ease;
 }
-.show-tracklist-inline .track-game { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.show-tracklist-inline .track-game { font-size: 14px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .show-tracklist-inline .track:hover .track-name { color: var(--text-muted); }
 .show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 16px; }
 .show-tracklist-inline .track-ts {
@@ -1966,11 +1966,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
           </div>
           <div class="show-date" id="show-date">13 Feb 2024</div>
         </div>
-        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
-          <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
-        </div>
         <div class="show-meta-footer">
           <p class="show-desc" id="show-desc">In celebration of International Radio Day, co-founder Purple Proposition has curated a one-hour nocturnal journey through ambient, downtempo, and drum'n'bass, weaving together some of his selected favorite tracks for 8Beats Radio programming.</p>
+          <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
+          </div>
           <div class="show-actions">
             <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
               <i data-lucide="play" style="width:11px;height:11px;display:block;"></i>
