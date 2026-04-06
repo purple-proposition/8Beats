@@ -770,7 +770,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .playlist-header + .track { padding-top: 0; }
 .track-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
 .track-name { font-size: 14px; line-height: 1.4; color: var(--fg-strong); }
-.track-game { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track-game { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track-game svg { width: 11px; height: 11px; stroke: currentColor; fill: none; flex-shrink: 0; opacity: .7; }
 .track-ago  { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
 
 /* Tracklist / replay mode */
@@ -1380,7 +1381,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: 16px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   transition: color 140ms ease;
 }
-.show-tracklist-inline .track-game { font-size: 14px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.show-tracklist-inline .track-game { display: inline-flex; align-items: center; gap: 5px; font-size: 14px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.show-tracklist-inline .track-game svg { width: 13px; height: 13px; stroke: currentColor; fill: none; flex-shrink: 0; opacity: .7; }
 .show-tracklist-inline .track:hover .track-name { color: var(--text-muted); }
 .show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 16px; }
 .show-tracklist-inline .track-ts {
@@ -2154,15 +2156,15 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
           </button>
         </div>
         <div class="track">
-          <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
+          <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game"><i data-lucide="gamepad-2"></i>Maboroshi Tsukiyo</span></div>
           <span class="track-ago">6m ago</span>
         </div>
         <div class="track">
-          <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
+          <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game"><i data-lucide="gamepad-2"></i>Jikkyou Powerful Pro Yakyuu 10</span></div>
           <span class="track-ago">11m ago</span>
         </div>
         <div class="track">
-          <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
+          <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game"><i data-lucide="gamepad-2"></i>What Lies In The Multiverse</span></div>
           <span class="track-ago">16m ago</span>
         </div>
       </div>
@@ -3019,7 +3021,7 @@ function switchToTracklist(showTitle) {
       <div class="track" style="${i===0?'padding-top:0;':''}">
         <div class="track-info">
           <span class="track-name">${t.name}</span>
-          <span class="track-game">${t.game}</span>
+          <span class="track-game"><i data-lucide="gamepad-2"></i>${t.game}</span>
         </div>
         <div style="display:flex;align-items:center;gap:0;flex-shrink:0;">
           ${t.avail ? `
@@ -3031,7 +3033,7 @@ function switchToTracklist(showTitle) {
       </div>
     `).join('')}
   `;
-
+  lucide.createIcons({ nodes: [plPanel] });
   plPanel.classList.add('tracklist');
 
   // Apply fade to tracklist inner
@@ -3100,15 +3102,15 @@ function backToLive() {
       </button>
     </div>
     <div class="track">
-      <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
+      <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game"><i data-lucide="gamepad-2"></i>Maboroshi Tsukiyo</span></div>
       <span class="track-ago">6m ago</span>
     </div>
     <div class="track">
-      <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
+      <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game"><i data-lucide="gamepad-2"></i>Jikkyou Powerful Pro Yakyuu 10</span></div>
       <span class="track-ago">11m ago</span>
     </div>
     <div class="track">
-      <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
+      <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game"><i data-lucide="gamepad-2"></i>What Lies In The Multiverse</span></div>
       <span class="track-ago">16m ago</span>
     </div>
   `;
@@ -3587,7 +3589,7 @@ function openShow(key) {
     <div class="track">
       <div class="track-info">
         <span class="track-name">${t.name}</span>
-        ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
+        ${t.game ? `<span class="track-game"><i data-lucide="gamepad-2"></i>${t.game}</span>` : ''}
       </div>
       <div class="track-meta">
         ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg>
@@ -3595,6 +3597,7 @@ function openShow(key) {
         <span class="track-ts" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</span>
       </div>
     </div>`).join('');
+  lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
 
 
   // Related cards — triées du plus récent au plus ancien
