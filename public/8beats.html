@@ -1349,7 +1349,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   position: relative; z-index: 2;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 24px;
+  column-gap: 24px; row-gap: 0;
   padding: 0 var(--space) 48px;
 }
 
@@ -1384,7 +1384,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-tracklist-inline .track:hover .track-name { color: var(--text-muted); }
 .show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 16px; }
 .show-tracklist-inline .track-ts {
-  font-family: var(--font-mono); font-size: 14px; color: var(--fg-strong); cursor: pointer; font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 400; letter-spacing: 0;
+  color: var(--fg-strong); cursor: pointer; font-variant-numeric: tabular-nums;
   transition: color 140ms ease, opacity 140ms ease;
 }
 .show-tracklist-inline .track:hover .track-ts { opacity: .55; }
