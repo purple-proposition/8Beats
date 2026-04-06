@@ -3110,7 +3110,7 @@ function switchToTracklist(showTitle) {
   // Apply fade to tracklist inner
   const tlInner = plPanel.querySelector('.playlist-inner');
   if (tlInner) {
-    function updateTlMask() {
+    const updateTlMask = () => {
       const atTop    = tlInner.scrollTop <= 2;
       const atBottom = tlInner.scrollHeight - tlInner.scrollTop <= tlInner.clientHeight + 2;
       let mask = '';
@@ -3123,8 +3123,8 @@ function switchToTracklist(showTitle) {
       }
       tlInner.style.maskImage = mask;
       tlInner.style.webkitMaskImage = mask;
-    }
-    updateTlMask();
+    };
+    requestAnimationFrame(updateTlMask);
     tlInner.addEventListener('scroll', updateTlMask);
   }
 
