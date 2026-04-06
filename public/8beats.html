@@ -208,11 +208,11 @@ a { text-decoration: none; color: inherit; }
    SHARED
    ============================================================ */
 .glass {
-  background: var(--bg-overlay);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: rgba(var(--bg-rgb), 0.48);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
 }
 
 .label {
@@ -841,17 +841,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .playlist.open { max-height: 284px; }
 .playlist.open.tracklist { max-height: 284px; }
 
-.playlist-inner { padding: 12px 24px 0; display: flex; flex-direction: column; overflow-y: auto; max-height: 284px; }
+.playlist-inner { padding: 24px 24px 0; display: flex; flex-direction: column; overflow-y: auto; max-height: 284px; }
 
-.playlist-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.playlist-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 
 .track { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; }
 .track + .track { border-top: 1px solid var(--border); }
 .playlist-header + .track { padding-top: 0; }
-.track-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+.track-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
 .track-name { font-size: 14px; line-height: 1.4; color: var(--fg); }
-.track-game { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--fg-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.track-game svg { width: 11px; height: 11px; stroke: currentColor; fill: none; flex-shrink: 0; opacity: .7; }
+.track-game { font-size: 14px; color: var(--fg-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .track-ago  { font-size: 12px; letter-spacing: .06em; color: var(--fg-tertiary); flex-shrink: 0; }
 
 /* Tracklist / replay mode */
@@ -872,9 +871,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   color: var(--fg-tertiary);
 }
 .back-to-live {
-  display: none; align-items: center; gap: 7px;
+  display: none; align-items: center; gap: 8px;
   background: none; border: none; cursor: pointer; padding: 0;
-  font-size: 12px; font-weight: 700;
+  font-size: 12px; font-weight: 400;
   letter-spacing: .06em; text-transform: uppercase;
   color: var(--fg-secondary); white-space: nowrap;
   transition: color .18s ease;
@@ -896,7 +895,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; align-items: center; gap: 12px;
 }
 .progress-bar-wrap.visible { height: 46px; padding: 0 24px 12px; }
-.progress-time { font-size: 12px; font-weight: 500; color: var(--fg-tertiary); font-variant-numeric: tabular-nums; flex-shrink: 0; min-width: 32px; }
+.progress-time { font-size: 12px; font-weight: 400; color: var(--fg-tertiary); font-variant-numeric: tabular-nums; flex-shrink: 0; min-width: 32px; }
 .progress-time.end { text-align: right; }
 .progress-track {
   flex: 1; height: 4px; background: var(--border);
@@ -939,7 +938,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .play-btn svg { fill: var(--fg); stroke: none; transition: fill 140ms ease; }
 
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
-.player-info-top { display: flex; align-items: center; gap: 12px; }
+.player-info-top { display: flex; align-items: center; gap: 8px; }
 
 .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
@@ -962,9 +961,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .ctrl-btn svg { width: 16px; height: 16px; stroke: var(--fg); fill: none; display: block; transition: stroke .18s ease; }
 .ctrl-btn:hover svg { stroke: var(--fg-tertiary); }
 #playlist-btn.active svg { stroke: var(--fg-tertiary); }
-#playlist-btn.active:hover svg { stroke: var(--fg-secondary); }
+#playlist-btn.active:hover svg { stroke: var(--fg-tertiary); }
 
-.vol-popup { position: fixed; width: 52px; padding: 16px 0; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; z-index: 9999; transform: translateY(6px); transition: opacity .18s ease, transform .18s ease; }
+.vol-popup { position: fixed; width: 52px; padding: 16px 0; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; z-index: 9999; transform: translateY(6px); transition: opacity .18s ease, transform .18s ease; background: rgba(var(--bg-rgb), 0.48); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); }
 .vol-popup.open { opacity: 1; pointer-events: all; transform: translateY(0); }
 #vol-btn.vol-open svg { stroke: var(--fg-tertiary) !important; }
 
@@ -1101,8 +1100,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     bottom: auto !important; left: auto !important; right: auto !important;
     width: auto !important;
     grid-column: 1 / -1;
-    border-radius: var(--radius);
-    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle) !important;
     flex-direction: row;
     align-items: center;
     gap: 12px;
@@ -2091,7 +2090,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
         <div class="show-tracklist-wrap">
           <div class="show-tl-header">
             <span class="track-num">#</span>
-            <span class="show-tl-title-col">Track</span>
+            <span class="show-tl-title-col">Track / Game</span>
             <span class="show-tl-time-col">Cue</span>
           </div>
           <div class="show-hero-divider"></div>
@@ -2168,7 +2167,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 </aside>
 
 <!-- VOLUME POPUP -->
-<div class="vol-popup glass" id="vol-popup">
+<div class="vol-popup" id="vol-popup">
   <div class="vol-track" id="vol-track">
     <div class="vol-fill" id="vol-fill" style="height:75%"></div>
     <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 5px)"></div>
@@ -2203,8 +2202,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
         <button class="play-btn" id="play-btn" aria-label="Play / Pause"></button>
         <div class="player-info">
           <div class="player-info-top">
-            <span class="live-dot"></span>
             <span class="label">Evening Program</span>
+            <span class="live-dot"></span>
           </div>
           <div class="player-title-wrap">
             <span class="player-title" id="player-title">Mark Mothersbaugh & Josh Mancell – Tiny Tiger</span>
@@ -2241,20 +2240,17 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
       <div class="playlist-inner">
         <div class="playlist-header">
           <span class="label">Last played tracks</span>
-          <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-            <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-          </button>
         </div>
         <div class="track">
-          <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game"><i data-lucide="gamepad-2"></i>Maboroshi Tsukiyo</span></div>
+          <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
           <span class="track-ago">6m ago</span>
         </div>
         <div class="track">
-          <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game"><i data-lucide="gamepad-2"></i>Jikkyou Powerful Pro Yakyuu 10</span></div>
+          <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
           <span class="track-ago">11m ago</span>
         </div>
         <div class="track">
-          <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game"><i data-lucide="gamepad-2"></i>What Lies In The Multiverse</span></div>
+          <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
           <span class="track-ago">16m ago</span>
         </div>
       </div>
@@ -3091,15 +3087,12 @@ function switchToTracklist(showTitle) {
   inner.innerHTML = `
     <div class="playlist-header">
       <span class="label">Tracklist — ${showTitle}</span>
-      <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-        <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-      </button>
     </div>
     ${tracks.map((t, i) => `
       <div class="track" style="${i===0?'padding-top:0;':''}">
         <div class="track-info">
           <span class="track-name">${t.name}</span>
-          <span class="track-game"><i data-lucide="gamepad-2"></i>${t.game}</span>
+          <span class="track-game">${t.game}</span>
         </div>
         <div style="display:flex;align-items:center;gap:0;flex-shrink:0;">
           ${t.avail ? `
@@ -3117,23 +3110,24 @@ function switchToTracklist(showTitle) {
   // Apply fade to tracklist inner
   const tlInner = plPanel.querySelector('.playlist-inner');
   if (tlInner) {
-    const fade = 'linear-gradient(to bottom,black calc(100% - 40px),transparent 100%)';
-    tlInner.style.maskImage = fade;
-    tlInner.style.webkitMaskImage = fade;
-    tlInner.addEventListener('scroll', function() {
+    function updateTlMask() {
+      const atTop    = tlInner.scrollTop <= 2;
       const atBottom = tlInner.scrollHeight - tlInner.scrollTop <= tlInner.clientHeight + 2;
-      tlInner.style.maskImage = atBottom ? '' : fade;
-      tlInner.style.webkitMaskImage = atBottom ? '' : fade;
-    });
+      let mask = '';
+      if (!atTop && !atBottom) {
+        mask = 'linear-gradient(to bottom,transparent 0%,black 40px,black calc(100% - 40px),transparent 100%)';
+      } else if (!atTop) {
+        mask = 'linear-gradient(to bottom,transparent 0%,black 40px,black 100%)';
+      } else if (!atBottom) {
+        mask = 'linear-gradient(to bottom,black calc(100% - 40px),transparent 100%)';
+      }
+      tlInner.style.maskImage = mask;
+      tlInner.style.webkitMaskImage = mask;
+    }
+    updateTlMask();
+    tlInner.addEventListener('scroll', updateTlMask);
   }
 
-  document.getElementById('playlist-close').addEventListener('click', e => {
-    e.stopPropagation();
-    plOpen = false;
-    plPanel.classList.remove('open');
-    plPanel.classList.remove('tracklist');
-    plBtnD.classList.remove('active');
-  });
 }
 
 function seekTo(ts) {
@@ -3180,22 +3174,18 @@ function backToLive() {
       </button>
     </div>
     <div class="track">
-      <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game"><i data-lucide="gamepad-2"></i>Maboroshi Tsukiyo</span></div>
+      <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
       <span class="track-ago">6m ago</span>
     </div>
     <div class="track">
-      <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game"><i data-lucide="gamepad-2"></i>Jikkyou Powerful Pro Yakyuu 10</span></div>
+      <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
       <span class="track-ago">11m ago</span>
     </div>
     <div class="track">
-      <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game"><i data-lucide="gamepad-2"></i>What Lies In The Multiverse</span></div>
+      <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
       <span class="track-ago">16m ago</span>
     </div>
   `;
-  document.getElementById('playlist-close').addEventListener('click', e => {
-    e.stopPropagation(); plOpen=false; plPanel.classList.remove('open'); plBtnD.classList.remove('active');
-  });
-
   // Reset card states
   activeCardId = null;
   syncCardButtons();
@@ -3316,7 +3306,6 @@ document.getElementById('cookie-close').addEventListener('click',  ()=>closePane
 /* ── Playlist ── */
 let plOpen = false;
 const plPanel  = document.getElementById('playlist');
-const plClose  = document.getElementById('playlist-close');
 const cookieEl = document.getElementById('panel-cookie');
 const plBtnD   = document.getElementById('playlist-btn');
 
@@ -3353,9 +3342,6 @@ function togglePlaylist(e) {
 }
 
 plBtnD.addEventListener('click', togglePlaylist);
-plClose.addEventListener('click', e => {
-  e.stopPropagation(); plOpen=false; plPanel.classList.remove('open'); plBtnD.classList.remove('active');
-});
 
 document.addEventListener('click', e => {
   if (plOpen && !plPanel.contains(e.target) && !plBtnD.contains(e.target)) {
