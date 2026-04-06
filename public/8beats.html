@@ -66,7 +66,7 @@
   --surface:           rgba(10,10,10,0.80);/* glass overlay */
   --surface-raised:    #1c1c1c;            /* neutral-900+ — elevated panels */
   --border:            #262626;            /* neutral-800  — default edge */
-  --border-subtle:     rgba(255,255,255,0.06); /* hairline dividers */
+  --border-subtle:     rgba(255,255,255,0.10); /* hairline dividers */
   --sep:               rgba(255,255,255,0.10); /* list separators */
   --text:              #d4d4d4;            /* neutral-300 */
   --text-muted:        #737373;            /* neutral-500 */
@@ -114,7 +114,7 @@ html.light {
   --surface:           rgba(255,255,255,0.80);
   --surface-raised:    #fafafa;            /* neutral-50 */
   --border:            #e5e5e5;            /* neutral-200 */
-  --border-subtle:     rgba(0,0,0,0.04);
+  --border-subtle:     rgba(0,0,0,0.08);
   --sep:               rgba(0,0,0,0.08);   /* list separators */
   --text:              #171717;            /* neutral-900 */
   --text-muted:        #737373;            /* neutral-500 */
@@ -248,7 +248,7 @@ a { text-decoration: none; color: inherit; }
   background: var(--surface);
   backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-subtle);
   border-radius: 99px;
   height: var(--nav-h);
   display: flex; align-items: center;
@@ -268,7 +268,7 @@ a { text-decoration: none; color: inherit; }
 /* ── Séparateur ── */
 .nav-sep {
   width: 1px; height: 16px;
-  background: var(--border); flex-shrink: 0;
+  background: var(--border-subtle); flex-shrink: 0;
   margin-left: 20px; margin-right: 20px;
 }
 
@@ -1395,7 +1395,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   letter-spacing: .06em; text-transform: uppercase;
 }
 .show-tl-title-col { flex: 1; }
-.show-tl-streams-col { width: 24px; flex-shrink: 0; text-align: center; }
 .show-tl-time-col { min-width: 48px; text-align: right; }
 
 /* Track number (shared by header and rows) */
@@ -1410,7 +1409,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Tracklist inline */
 .show-tracklist-inline { padding-bottom: 16px; }
 .show-tracklist-inline .track {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: flex-start; justify-content: space-between;
   padding: 12px 0;
   border-bottom: 0.5px solid var(--sep);
   cursor: default;
@@ -1419,10 +1418,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-tracklist-inline .track:first-child { border-top: none; }
 .show-tracklist-inline .track-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .show-tracklist-inline .track-name {
-  font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 14px; color: var(--text);
 }
 .show-tracklist-inline .track-game { display: block; font-size: 14px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.show-tracklist-inline .track-streams { width: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.show-tracklist-inline .track-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.show-tracklist-inline .track-right-sep { width: 1px; height: 12px; background: var(--border-subtle); flex-shrink: 0; }
 .show-tracklist-inline .track-ts {
   min-width: 48px; text-align: right;
   font-size: 12px; font-weight: 400; letter-spacing: .06em;
@@ -2045,7 +2045,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
           <div class="show-tl-header">
             <span class="track-num">#</span>
             <span class="show-tl-title-col">Track</span>
-            <span class="show-tl-streams-col">Streams</span>
             <span class="show-tl-time-col">Time</span>
           </div>
           <div class="show-hero-divider"></div>
@@ -3627,10 +3626,10 @@ function openShow(key) {
         <span class="track-name">${t.name}</span>
         ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
       </div>
-      <div class="track-streams">
-        ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg>` : ''}
+      <div class="track-right">
+        ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg><span class="track-right-sep"></span>` : ''}
+        <span class="track-ts" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</span>
       </div>
-      <span class="track-ts" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</span>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
 
