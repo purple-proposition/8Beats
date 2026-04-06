@@ -1390,7 +1390,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* Tracklist header (Spotify-style) */
 .show-tl-header {
-  display: flex; align-items: center; padding-bottom: 8px;
+  display: flex; align-items: center; gap: 16px; padding-bottom: 8px;
   font-size: 12px; color: var(--text-muted);
   letter-spacing: .06em; text-transform: uppercase;
 }
@@ -1421,8 +1421,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-tracklist-inline .track-name {
   font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.show-tracklist-inline .track-game { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.show-tracklist-inline .track-game svg { width: 11px; height: 11px; stroke: currentColor; fill: none; flex-shrink: 0; opacity: .7; }
+.show-tracklist-inline .track-game { display: block; font-size: 14px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .show-tracklist-inline .track-streams { width: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .show-tracklist-inline .track-ts {
   min-width: 48px; text-align: right;
@@ -2045,8 +2044,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
         <div class="show-tracklist-wrap">
           <div class="show-tl-header">
             <span class="track-num">#</span>
-            <span class="show-tl-title-col">Title</span>
-            <span class="show-tl-streams-col"></span>
+            <span class="show-tl-title-col">Track</span>
+            <span class="show-tl-streams-col">Streams</span>
             <span class="show-tl-time-col">Time</span>
           </div>
           <div class="show-hero-divider"></div>
@@ -3626,7 +3625,7 @@ function openShow(key) {
       <span class="track-num">${i + 1}</span>
       <div class="track-info">
         <span class="track-name">${t.name}</span>
-        ${t.game ? `<span class="track-game"><i data-lucide="gamepad-2"></i>${t.game}</span>` : ''}
+        ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
       </div>
       <div class="track-streams">
         ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg>` : ''}
