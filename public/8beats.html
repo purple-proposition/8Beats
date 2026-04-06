@@ -3640,7 +3640,7 @@ function openShow(key) {
         ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
       </div>
       <div class="track-right">
-        ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg><span class="track-right-sep"></span>` : ''}
+        ${t.avail ? `<svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg>` : ''}
         <span class="track-ts" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</span>
       </div>
     </div>`).join('');
