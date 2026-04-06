@@ -176,10 +176,9 @@ a { text-decoration: none; color: inherit; }
 }
 
 .label {
-  font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -813,30 +812,30 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .track-name { font-size: 14px; line-height: 1.4; color: var(--fg-strong); }
 .track-game { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .track-game svg { width: 11px; height: 11px; stroke: currentColor; fill: none; flex-shrink: 0; opacity: .7; }
-.track-ago  { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
+.track-ago  { font-size: 12px; letter-spacing: .06em; color: var(--text-muted); flex-shrink: 0; }
 
 /* Tracklist / replay mode */
 .track-ts {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--text);
-  flex-shrink: 0; letter-spacing: 0; font-variant-numeric: tabular-nums;
+  font-size: 12px; font-weight: 400; color: var(--text);
+  flex-shrink: 0; letter-spacing: .06em; font-variant-numeric: tabular-nums;
   cursor: pointer; transition: color .18s ease; min-width: 36px;
 }
 .track-ts:hover { color: var(--text-muted); }
-.track-duration { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.track-duration { font-size: 12px; letter-spacing: .06em; color: var(--text-muted); flex-shrink: 0; font-variant-numeric: tabular-nums; }
 .track-stream-icon {
   width: 16px; height: 16px; flex-shrink: 0; fill: var(--text);
   transition: fill .18s ease; cursor: pointer;
 }
 .track-stream-icon:hover { fill: var(--text-muted); }
 .replay-badge {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
   color: var(--text-muted);
 }
 .back-to-live {
   display: none; align-items: center; gap: 7px;
   background: none; border: none; cursor: pointer; padding: 0;
-  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
   color: var(--text); white-space: nowrap;
   transition: color .18s ease;
 }
@@ -1392,7 +1391,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Tracklist header (Spotify-style) */
 .show-tl-header {
   display: flex; align-items: center; padding-bottom: 8px;
-  font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+  font-size: 12px; color: var(--text-muted);
   letter-spacing: .06em; text-transform: uppercase;
 }
 .show-tl-title-col { flex: 1; }
@@ -1401,7 +1400,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Track number (shared by header and rows) */
 .track-num {
   width: 32px; flex-shrink: 0; text-align: center;
-  font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+  font-size: 12px; letter-spacing: .06em; color: var(--text-muted);
 }
 
 /* Divider */
@@ -1428,7 +1427,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-tracklist-inline .track:hover .track-name { color: var(--text-muted); }
 .show-tracklist-inline .track-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 16px; }
 .show-tracklist-inline .track-ts {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 400; letter-spacing: 0;
+  font-size: 12px; font-weight: 400; letter-spacing: .06em;
   color: var(--fg-strong); cursor: pointer; font-variant-numeric: tabular-nums;
   transition: color 140ms ease, opacity 140ms ease;
 }
