@@ -668,9 +668,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ============================================================
    CARDS
    ============================================================ */
-.cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; align-items: stretch; }
+.cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; align-items: start; }
 
-.card { display: flex; flex-direction: column; height: 100%; }
+.card { display: flex; flex-direction: column; }
 
 .card-thumb {
   aspect-ratio: 4/3; border-radius: var(--radius-sm);
@@ -708,11 +708,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-play svg { width: 22px; height: 22px; fill: var(--fg-strong); stroke: none; display: block; transition: fill 140ms ease; }
 .card-play:hover svg { fill: var(--fg-strong); }
 
-.card-body { padding: 16px 0 0; display: flex; flex-direction: column; flex: 1; }
-.card-body h3 { font-size: 16px; font-weight: 400; line-height: 24px; min-height: 48px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 8px; transition: color .18s ease; cursor: pointer; }
+.card-body { padding: 12px 0 0; display: flex; flex-direction: column; gap: 6px; }
+.card-body h3 { font-size: 16px; font-weight: 400; line-height: 24px; max-height: 48px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: color .18s ease; cursor: pointer; }
 .card-body h3:hover { color: var(--text-muted); }
 
-.card-host { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
+.card-host { display: flex; align-items: center; gap: 7px; }
 .avatar { width: 18px; height: 18px; border-radius: 50%; background: var(--border); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .3px; }
 .host-name { font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .18s ease; }
 .host-name:hover { color: var(--text-muted); }
@@ -1039,10 +1039,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     scroll-padding-left: var(--space);
   }
   .cards::-webkit-scrollbar { display: none; }
-  .card { flex: 0 0 68vw; max-width: 280px; scroll-snap-align: start; height: auto; }
-  .card-body { padding: 12px 0 0; }
-  .card-body h3 { font-size: 16px; line-height: 24px; min-height: 48px; margin-bottom: 8px; }
-  .card-host { margin-bottom: 8px; }
+  .card { flex: 0 0 68vw; max-width: 280px; scroll-snap-align: start; }
+  .card-body { padding: 12px 0 0; gap: 6px; }
+  .card-body h3 { font-size: 16px; line-height: 24px; max-height: 48px; }
   .card-host .host-name { font-size: 12px; }
   .card-meta { font-size: 12px; }
   .card-tags { padding-top: 10px; gap: 6px; }
