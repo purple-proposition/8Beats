@@ -1376,7 +1376,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .show-art-credit {
   font-size: 11px; color: var(--text-muted); opacity: .5;
-  margin: 0; line-height: 1.5;
+  margin-top: -12px; line-height: 1.5;
 }
 
 /* Submeta row: host · date · tracks · duration */
@@ -2026,15 +2026,15 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
           <div class="show-host-av" id="show-host-av">PP</div>
           <span class="show-host-name" id="show-host-name">Purple Proposition</span>
         </div>
-        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
-          <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
-        </div>
         <div class="show-submeta">
           <span id="show-date">13 Feb 2024</span>
           <span class="show-submeta-dot">·</span>
           <span id="show-duration"></span>
         </div>
         <p class="show-desc" id="show-desc"></p>
+        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
+        </div>
         <div class="show-actions">
           <button class="show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
             <i data-lucide="play" style="width:11px;height:11px;display:block;"></i>
