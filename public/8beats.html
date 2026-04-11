@@ -43,14 +43,14 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,600&display=swap">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
 @font-face {
   font-family: 'Alpha Lyrae';
   src: url('/fonts/AlphaLyrae-Medium.woff2') format('woff2'),
        url('/fonts/AlphaLyrae-Medium.woff') format('woff');
-  font-weight: 500;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -126,8 +126,8 @@
   /* ══════════════════════════════════════════
      SPACING / SIZING  (not colors)
      ══════════════════════════════════════════ */
-  --font:        'Geist', system-ui, sans-serif;
-  --font-mono:   'Geist Mono', 'Geist', monospace;
+  --font:        'Inter', system-ui, sans-serif;
+  --font-mono:   ui-monospace, monospace;
   --radius:      16px;
   --radius-sm:   10px;
   --space:       24px;
@@ -193,6 +193,7 @@ html { background: var(--bg); scroll-behavior: smooth; transition: background .3
 
 body {
   font-family: var(--font);
+  font-optical-sizing: auto;
   font-size: 14px;
   line-height: 1.5;
   color: var(--fg-secondary);
@@ -298,7 +299,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Wordmark ── */
 .nav-wordmark {
-  font-size: 14px; font-weight: 500; letter-spacing: -.3px;
+  font-size: 14px; font-weight: 400; letter-spacing: -.3px;
   color: var(--fg); text-decoration: none; white-space: nowrap; flex-shrink: 0;
   margin-right: 0;
   transition: color .18s ease;
@@ -640,14 +641,14 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   gap: 24px;
 }
 
-.hero-inner h1 { font-size: clamp(32px,5.5vw,64px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; }
+.hero-inner h1 { font-size: clamp(32px,5.5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; }
 .hero-inner p  { font-size: clamp(14px,1.2vw,16px); color: var(--fg-tertiary); line-height: 1.6; }
 
 .hero-inner h1,
 .show-title,
 .player-title,
 .card-body h3 {
-  font-family: 'Alpha Lyrae', 'Geist', system-ui, sans-serif;
+  font-family: 'Alpha Lyrae', 'Inter', system-ui, sans-serif;
   color: var(--fg);
 }
 .section-header-text h2 { color: var(--fg); }
@@ -659,7 +660,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 12px 16px;
-  font-family: var(--font); font-size: 14px; font-weight: 500;
+  font-family: var(--font); font-size: 14px; font-weight: 400;
   letter-spacing: -.1px;
   border-radius: var(--radius-sm); cursor: pointer;
   transition: opacity .18s ease, border-color .18s ease;
@@ -697,7 +698,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; }
 .section-header-text { display: flex; flex-direction: column; gap: 8px; }
-.section-header-text h2 { font-size: 24px; font-weight: 500; letter-spacing: -.4px; line-height: 1.1; }
+.section-header-text h2 { font-size: 24px; font-weight: 400; letter-spacing: -.4px; line-height: 1.1; }
 .section-header-text h3 { font-size: 12px; font-weight: 400; color: var(--fg-tertiary); }
 
 /* section title with inline chevron */
@@ -754,14 +755,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-body h3:hover { color: var(--fg-tertiary); }
 
 .card-host { display: flex; align-items: center; gap: 8px; }
-.avatar { width: 18px; height: 18px; border-radius: 50%; background: var(--border); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: var(--fg-tertiary); text-transform: uppercase; letter-spacing: .3px; }
+.avatar { width: 18px; height: 18px; border-radius: 50%; background: var(--border); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 600; color: var(--fg-tertiary); text-transform: uppercase; letter-spacing: .3px; }
 .host-name { font-size: 14px; color: var(--fg-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .18s ease; }
 .host-name:hover { color: var(--fg-tertiary); }
 
 .card-meta   { font-size: 14px; color: var(--fg-tertiary); }
 .card-tags   { display: none; }
 
-.tag { font-size: 12px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--fg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; cursor: pointer; transition: color 140ms ease, border-color 140ms ease, background 140ms ease; }
+.tag { font-size: 12px; font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--fg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; cursor: pointer; transition: color 140ms ease, border-color 140ms ease, background 140ms ease; }
 .tag:hover { color: var(--fg); border-color: var(--border-hover); background: var(--bg-hover); }
 
 /* ============================================================
@@ -775,7 +776,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel p { font-size: 14px; color: var(--fg-tertiary); line-height: 1.6; position: relative; z-index: 1; }
 .panel p strong { color: var(--fg-tertiary); font-weight: 400; }
 
-.panel-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 16px; font-family: var(--font); font-size: 14px; font-weight: 500; letter-spacing: -.1px; color: var(--bg); background: var(--fg); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity .18s ease; position: relative; z-index: 1; }
+.panel-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 16px; font-family: var(--font); font-size: 14px; font-weight: 400; letter-spacing: -.1px; color: var(--bg); background: var(--fg); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity .18s ease; position: relative; z-index: 1; }
 .panel-btn:hover { opacity: .8; }
 .panel-btn svg { width: 14px; height: 14px; stroke: var(--bg); fill: none; display: block; flex-shrink: 0; }
 
@@ -797,7 +798,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; flex-direction: column; align-items: center; gap: 20px;
 }
 .pitch-title {
-  font-size: clamp(24px, 3vw, 36px); font-weight: 700;
+  font-size: clamp(24px, 3vw, 36px); font-weight: 600;
   letter-spacing: 0.10em; text-transform: uppercase; color: var(--fg);
   line-height: 1.1;
 }
@@ -867,7 +868,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .track-stream-icon:hover { fill: var(--fg-tertiary); }
 .replay-badge {
-  font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   color: var(--fg-tertiary);
 }
 .back-to-live {
@@ -1264,7 +1265,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* Tabs */
 .explore-tab {
-  font-family: var(--font); font-size: 14px; font-weight: 500;
+  font-family: var(--font); font-size: 14px; font-weight: 400;
   color: var(--fg-tertiary); background: none; border: none;
   padding: 16px 8px; cursor: pointer; transition: color .18s;
   display: flex; align-items: center; gap: 8px;
@@ -1295,7 +1296,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .explore-close-btn svg { transition: stroke .18s ease; }
 .explore-close-btn:hover svg { stroke: var(--fg-secondary) !important; }
 #explore-input::placeholder { color: var(--fg-tertiary); }
-#filter-count { font-size: 12px; font-weight: 700; letter-spacing: .5px; background: var(--fg-secondary); color: var(--bg); border-radius: 99px; padding: 1px 6px; }
+#filter-count { font-size: 12px; font-weight: 600; letter-spacing: .5px; background: var(--fg-secondary); color: var(--bg); border-radius: 99px; padding: 1px 6px; }
 
 /* Genre tooltip */
 #genre-tooltip {
@@ -1515,7 +1516,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .show-title {
   font-size: clamp(24px, 2.4vw, 40px);
-  font-weight: 500; letter-spacing: -0.03em; line-height: 1.06;
+  font-weight: 400; letter-spacing: -0.03em; line-height: 1.06;
   color: var(--fg); margin: 0;
 }
 .show-host { display: flex; align-items: center; gap: 7px; margin: 0; cursor: pointer; width: fit-content; }
@@ -1523,7 +1524,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   width: 18px; height: 18px; border-radius: 50%;
   background: var(--badge-bg); border: 1px solid var(--badge-border);
   display: flex; align-items: center; justify-content: center;
-  font-size: 8px; font-weight: 700; text-transform: uppercase; color: var(--fg-tertiary);
+  font-size: 8px; font-weight: 600; text-transform: uppercase; color: var(--fg-tertiary);
   flex-shrink: 0;
 }
 .show-host-name { font-size: 16px; color: var(--fg-secondary); transition: color .18s; }
@@ -1536,7 +1537,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-btn-play {
   display: inline-flex; align-items: center; gap: 9px;
   background: var(--fg); color: var(--bg); border: none; border-radius: var(--radius-sm);
-  padding: 12px 16px; font-family: var(--font); font-size: 14px; font-weight: 500;
+  padding: 12px 16px; font-family: var(--font); font-size: 14px; font-weight: 400;
   letter-spacing: -.1px; cursor: pointer; transition: opacity 140ms ease;
 }
 .show-btn-play:hover { opacity: .82; }
@@ -1625,7 +1626,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .artist-name {
   font-size: clamp(36px, 5vw, 64px);
-  font-weight: 500; letter-spacing: -0.03em; line-height: 1.02;
+  font-weight: 400; letter-spacing: -0.03em; line-height: 1.02;
   color: var(--fg); margin-bottom: 16px; margin-top: 8px;
 }
 .artist-bio {
@@ -1646,7 +1647,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border-left: 1px solid var(--border);
 }
 .artist-stat-value {
-  font-size: 20px; font-weight: 500; letter-spacing: -0.03em;
+  font-size: 20px; font-weight: 400; letter-spacing: -0.03em;
   color: var(--fg); line-height: 1;
 }
 .artist-stat-label {
@@ -1843,7 +1844,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
     <!-- Filters toggle -->
     <div id="explore-filter-bar" class="explore-section-border" style="padding:0 16px;display:flex;align-items:center;gap:16px;">
-      <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:16px 0;font-family:var(--font);font-size:14px;font-weight:500;color:var(--fg-tertiary);transition:color .18s ease;">
+      <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:16px 0;font-family:var(--font);font-size:14px;font-weight:400;color:var(--fg-tertiary);transition:color .18s ease;">
         <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="width:14px;height:14px;stroke:var(--fg-tertiary);fill:none;display:block;transition:stroke .18s ease;"></i>
         Filters
         <span id="filter-count" style="display:none;"></span>
@@ -2590,7 +2591,7 @@ function makeFilterChip(label, isActive, onClick, showTooltip) {
   const btn = document.createElement('button');
   btn.textContent = label;
   const isMobile = window.innerWidth <= 768;
-  const base = `font-family:var(--font);font-size:12px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;padding:4px 8px;border-radius:4px;cursor:pointer;transition:color .18s ease,border-color .18s ease,background .18s ease;`;
+  const base = `font-family:var(--font);font-size:12px;font-weight:400;letter-spacing:.4px;text-transform:uppercase;padding:4px 8px;border-radius:4px;cursor:pointer;transition:color .18s ease,border-color .18s ease,background .18s ease;`;
   const activeStyle   = base + `border:1px solid var(--fg-secondary);background:var(--fg-secondary);color:var(--bg);`;
   const inactiveStyle = base + `border:1px solid var(--border);background:transparent;color:var(--fg-tertiary);`;
   btn.style.cssText = isActive ? activeStyle : inactiveStyle;
@@ -2684,9 +2685,9 @@ function renderShows(list, q) {
 function renderResidents(list) {
   return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;">` + list.map(r => `
     <div style="display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:background .18s ease;" onmouseenter="this.style.background='rgba(128,128,128,.06)'" onmouseleave="this.style.background='transparent'">
-      <div style="width:40px;height:40px;border-radius:50%;background:var(--border);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--fg-tertiary);flex-shrink:0;">${r.initials}</div>
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--border);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--fg-tertiary);flex-shrink:0;">${r.initials}</div>
       <div style="min-width:0;">
-        <div style="font-size:16px;color:var(--fg);font-weight:500;">${r.name}</div>
+        <div style="font-size:16px;color:var(--fg);font-weight:400;">${r.name}</div>
         <div style="font-size:12px;color:var(--fg-tertiary);margin-top:3px;">${r.frequency}</div>
       </div>
     </div>
@@ -4007,7 +4008,7 @@ function makeArtistSvg(hostName) {
     <rect width="400" height="600" fill="url(#${id}g)"/>
     <rect width="400" height="600" fill="url(#${id}r)"/>
     <text x="200" y="310" text-anchor="middle" dominant-baseline="middle"
-      font-family="Geist,system-ui,sans-serif" font-size="112" font-weight="500"
+      font-family="Inter,system-ui,sans-serif" font-size="112" font-weight="400"
       fill="rgba(255,255,255,0.10)" letter-spacing="-4">${initials}</text>
   </svg>`;
 }
