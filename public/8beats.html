@@ -1361,13 +1361,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: 16px; color: var(--fg-secondary); line-height: 1.6; margin: 0;
 }
 
-.schedule-days { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 0; }
+.schedule-days {
+  grid-column: 3 / span 8;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px;
+  align-items: start;
+}
 .schedule-day {
   display: grid;
   grid-template-columns: 80px 1fr;
   border-top: 1px solid var(--border);
 }
-.schedule-day:last-child { border-bottom: 1px solid var(--border); }
 .schedule-day-label {
   padding: 20px 0; display: flex; flex-direction: column; gap: 4px;
 }
@@ -1408,6 +1411,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border-radius: 100px;
 }
 .schedule-slot.is-live .schedule-slot-live-badge { display: flex; }
+.schedule-slot-new {
+  font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--accent); background: rgba(var(--accent-rgb, 180,80,255), .12);
+  border: 1px solid rgba(var(--accent-rgb, 180,80,255), .25);
+  border-radius: 100px; padding: 2px 7px; flex-shrink: 0;
+}
 .schedule-slot-genres { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
 .schedule-slot-genre-tag {
   font-size: 11px; color: var(--fg-tertiary);
@@ -1549,32 +1558,55 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .about-hero h1 { font-family: 'Alpha Lyrae', var(--font); font-size: clamp(48px, 7vw, 80px); line-height: 1; margin: 0; }
 .about-hero .about-tagline { font-size: 18px; color: var(--fg-secondary); line-height: 1.5; margin: 0; max-width: 560px; }
 
-.about-sections { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 48px; }
+.about-editorial {
+  grid-column: 3 / span 8;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
 .about-section { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--border); padding-top: 32px; }
 .about-section h2 { font-size: 22px; font-weight: 600; letter-spacing: -.3px; margin: 0; }
 .about-section p { font-size: 15px; color: var(--fg-secondary); line-height: 1.7; margin: 0; }
 
-.about-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
-.about-cta {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 20px; border-radius: var(--radius-sm);
-  font-size: 14px; font-weight: 600; font-family: var(--font);
-  cursor: pointer; text-decoration: none;
-  transition: opacity .15s;
+.about-contact {
+  grid-column: 3 / span 8;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+  border-top: 1px solid var(--border); padding-top: 48px;
 }
-.about-cta:hover { opacity: .8; }
-.about-cta-primary { background: var(--fg); color: var(--bg); border: none; }
-.about-cta-secondary {
-  background: none; color: var(--fg);
-  border: 1px solid var(--border);
+.about-contact-col { display: flex; flex-direction: column; gap: 12px; }
+.about-contact-col h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--fg); margin: 0; }
+.about-contact-col p { font-size: 14px; color: var(--fg-secondary); line-height: 1.6; margin: 0; flex: 1; }
+.about-contact-link {
+  font-size: 13px; font-weight: 600; color: var(--fg);
+  text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-color: var(--border-hover);
+  transition: color .15s;
 }
-.about-cta-secondary:hover { border-color: var(--border-hover); }
+.about-contact-link:hover { color: var(--fg-secondary); }
+
+.about-stats {
+  grid-column: 3 / span 8;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); overflow: hidden;
+}
+.about-stat {
+  background: var(--bg-subtle);
+  padding: 28px 24px; display: flex; flex-direction: column; gap: 6px;
+}
+.about-stat-number {
+  font-family: 'Alpha Lyrae', var(--font);
+  font-size: clamp(32px, 4vw, 48px); line-height: 1; color: var(--fg);
+}
+.about-stat-label { font-size: 12px; color: var(--fg-tertiary); }
 
 .about-meta { grid-column: 3 / span 8; padding-top: 32px; border-top: 1px solid var(--border); }
 .about-meta p { font-size: 13px; color: var(--fg-disabled); margin: 0; }
 
 @media (max-width: 1024px) {
-  .about-hero, .about-sections, .about-meta { grid-column: 2 / span 10; }
+  .about-hero, .about-stats, .about-editorial, .about-contact, .about-meta { grid-column: 2 / span 10; }
+}
+@media (max-width: 768px) {
+  .about-editorial, .about-contact { grid-template-columns: 1fr; }
+  .about-stats { grid-template-columns: 1fr; }
 }
 
 /* ── Schedule / Support responsive ── */
@@ -1584,6 +1616,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 @media (max-width: 768px) {
   .support-plans { grid-template-columns: 1fr; }
+  .schedule-days { grid-template-columns: 1fr; }
   .schedule-day { grid-template-columns: 60px 1fr; }
 }
 
@@ -2471,28 +2504,45 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
       <h1>Press play</h1>
       <p class="about-tagline">8Beats is an internet radio dedicated to video game music, based in Lyon, France.</p>
     </div>
-    <div class="about-sections">
+    <div class="about-stats" id="about-stats">
+      <div class="about-stat">
+        <span class="about-stat-number" data-target="18" data-suffix="">0</span>
+        <span class="about-stat-label">Shows broadcast</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-number" data-target="8" data-suffix="">0</span>
+        <span class="about-stat-label">Resident DJs</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-number" data-target="4000" data-suffix="">0</span>
+        <span class="about-stat-label">Monthly listeners</span>
+      </div>
+    </div>
+    <div class="about-editorial">
       <div class="about-section">
         <h2>A story of sharing</h2>
         <p>It started in school — a shared obsession with gaming soundtracks, a Facebook group, friends exchanging their favourite tracks. As the collection grew and the community widened, so did the ambition. After months of planning, navigating technical and financial obstacles together, the station officially launched in September 2021.</p>
       </div>
       <div class="about-section">
         <h2>Connecting cultures</h2>
-        <p>8Beats is a global venue for everyone who takes video game music seriously. Our goal is to build connections and celebrate the diverse creative community behind this subculture — composers, record labels, content makers, and DJs. The station runs round-the-clock thematic programming: carefully curated shows spanning classic gaming audio to contemporary independent discoveries.</p>
+        <p>8Beats is a global venue for everyone who takes video game music seriously. Our goal is to build connections and celebrate the diverse creative community behind this subculture — composers, record labels, content makers, and DJs. The station runs round-the-clock thematic programming, from classic gaming audio to contemporary independent discoveries.</p>
       </div>
-      <div class="about-section">
-        <h2>Hello World</h2>
-        <p>We love hearing from listeners, artists, and collaborators. Whether you have feedback, a question, a show pitch, or just want to say hi — reach out.</p>
-        <div class="about-cta-row">
-          <a href="mailto:contact@8beats.fm" class="about-cta about-cta-primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            Contact us
-          </a>
-          <a href="mailto:shows@8beats.fm" class="about-cta about-cta-secondary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
-            Submit a show proposal
-          </a>
-        </div>
+    </div>
+    <div class="about-contact">
+      <div class="about-contact-col">
+        <h3>Submit a show</h3>
+        <p>8Beats is always open to new show proposals. Residents, one-offs, or series — we listen to everything.</p>
+        <a href="mailto:shows@8beats.fm" class="about-contact-link">shows@8beats.fm</a>
+      </div>
+      <div class="about-contact-col">
+        <h3>Press</h3>
+        <p>For all press enquiries, interviews, and images about 8Beats and our residents.</p>
+        <a href="mailto:press@8beats.fm" class="about-contact-link">press@8beats.fm</a>
+      </div>
+      <div class="about-contact-col">
+        <h3>Get in touch</h3>
+        <p>Feedback, partnership enquiries, or just want to say hello — we'd love to hear from you.</p>
+        <a href="mailto:contact@8beats.fm" class="about-contact-link">contact@8beats.fm</a>
       </div>
     </div>
     <div class="about-meta">
@@ -4560,16 +4610,16 @@ const SCHEDULE_SHOWS = [
   { day: 0, time: '20:00', title: 'Retro RPG Evening',                     host: 'Koji & Friends',     genres: ['Chiptune'] },
   { day: 0, time: '22:00', title: 'Acid Trax',                             host: 'Neon Waves',         genres: ['Acid','Techno'] },
   { day: 1, time: '19:00', title: 'Open World Ambient',                    host: 'Sakura Records',     genres: ['Ambient','Orchestral'] },
-  { day: 1, time: '21:30', title: 'Deep House Journeys',                   host: 'Submerse',           genres: ['Deep House'] },
+  { day: 1, time: '21:30', title: 'Deep House Journeys',                   host: 'Submerse',           genres: ['Deep House'],            isNew: true },
   { day: 2, time: '20:00', title: 'Moody Jazz 2',                          host: '8Beats Sound Team',  genres: ['Jazz','Lounge'] },
   { day: 3, time: '20:00', title: 'Settings',                              host: 'ElFamosoDemon',      genres: ['Downtempo','Folk'] },
-  { day: 3, time: '22:00', title: 'Modern Warfare Sessions',               host: 'Neon Waves',         genres: ['Electronic'] },
+  { day: 3, time: '22:00', title: 'Modern Warfare Sessions',               host: 'Neon Waves',         genres: ['Electronic'],            isNew: true },
   { day: 4, time: '19:00', title: 'Funk & Soul Session',                   host: '8Beats Sound Team',  genres: ['Funk','Jazz-Funk'] },
-  { day: 4, time: '21:00', title: 'X2',                                    host: 'Submerse',           genres: ['Downtempo','New Age'] },
+  { day: 4, time: '21:00', title: 'X2',                                    host: 'Submerse',           genres: ['Downtempo','New Age'],    isNew: true },
   { day: 5, time: '18:00', title: 'Beach Day Mixtape',                     host: 'JamesonEmpire',      genres: ['Chiptune','Lounge'] },
   { day: 5, time: '20:00', title: 'Dusk',                                  host: 'Neon Waves',         genres: ['Synthwave'] },
   { day: 5, time: '22:00', title: 'International Radio Day',               host: 'Purple Proposition', genres: ['Ambient','Drum & Bass'] },
-  { day: 6, time: '16:00', title: 'Pokémon Generations',                   host: 'Koji & Friends',     genres: ['Chiptune','Orchestral'] },
+  { day: 6, time: '16:00', title: 'Pokémon Generations',                   host: 'Koji & Friends',     genres: ['Chiptune','Orchestral'],  isNew: true },
   { day: 6, time: '18:00', title: 'Midnight Walks Through the Forest & Field', host: 'Sakura Records', genres: ['Ambient'] },
   { day: 6, time: '21:00', title: 'Hip-Hop Classics',                      host: 'JamesonEmpire',      genres: ['Hip-Hop','Funk'] },
 ];
@@ -4624,6 +4674,7 @@ function renderSchedule() {
                 <span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>
                 Live
               </div>
+              ${slot.isNew ? `<span class="schedule-slot-new">New</span>` : ''}
               <div class="schedule-slot-genres">${genreTags}</div>
             </div>
           </div>`;
@@ -4841,6 +4892,24 @@ function toggleFaq(btn) {
 }
 
 /* ── About page ── */
+function animateCounters() {
+  const els = document.querySelectorAll('#about-stats .about-stat-number');
+  els.forEach(el => {
+    const target = parseInt(el.dataset.target, 10);
+    const duration = 1200;
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      // ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.round(eased * target);
+      el.textContent = value >= 1000 ? value.toLocaleString('fr-FR') : value;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+}
+
 function openAbout() {
   const aboutEl = document.getElementById('view-about');
   const homeEl  = document.getElementById('view-home');
@@ -4864,7 +4933,7 @@ function openAbout() {
     aboutEl.classList.add('active');
     window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
-    requestAnimationFrame(() => aboutEl.classList.add('visible'));
+    requestAnimationFrame(() => { aboutEl.classList.add('visible'); animateCounters(); });
   }, 280);
 
   const wordmark = document.querySelector('.nav-wordmark');
