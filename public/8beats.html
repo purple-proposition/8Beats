@@ -1345,57 +1345,44 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #view-schedule.active { display: block; }
 #view-schedule.visible { opacity: 1; }
 
-.schedule-hero {
-  padding: calc(var(--nav-h) + 48px) var(--space) 48px;
-  max-width: 800px;
-}
+/* .schedule-wrap = unique .content container, row-gap controls vertical rhythm */
+.schedule-wrap { padding-top: calc(var(--nav-h) + 48px); padding-bottom: 96px; row-gap: 48px; align-items: start; }
+
+.schedule-hero { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 12px; }
 .schedule-hero .page-eyebrow {
   font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 12px;
+  color: var(--accent);
 }
 .schedule-hero h1 {
   font-family: 'Alpha Lyrae', var(--font); font-size: clamp(32px, 5vw, 56px);
-  line-height: 1.05; margin: 0 0 16px;
+  line-height: 1.05; margin: 0;
 }
 .schedule-hero .page-desc {
   font-size: 16px; color: var(--fg-secondary); line-height: 1.6; margin: 0;
 }
 
-.schedule-days {
-  padding: 0 var(--space) 96px;
-  display: flex; flex-direction: column; gap: 2px;
-}
+.schedule-days { grid-column: 2 / span 10; display: flex; flex-direction: column; gap: 0; }
 .schedule-day {
   display: grid;
   grid-template-columns: 80px 1fr;
-  gap: 0;
   border-top: 1px solid var(--border);
 }
 .schedule-day:last-child { border-bottom: 1px solid var(--border); }
 .schedule-day-label {
   padding: 20px 0; display: flex; flex-direction: column; gap: 4px;
 }
-.schedule-day-label .day-name {
-  font-size: 13px; font-weight: 600; color: var(--fg);
-}
-.schedule-day-label .day-date {
-  font-size: 11px; color: var(--fg-tertiary);
-}
+.schedule-day-label .day-name { font-size: 13px; font-weight: 600; color: var(--fg); }
+.schedule-day-label .day-date { font-size: 11px; color: var(--fg-tertiary); }
 .schedule-day.today .day-name { color: var(--accent); }
 
-.schedule-slots {
-  padding: 12px 0; display: flex; flex-direction: column; gap: 2px;
-}
+.schedule-slots { padding: 12px 0; display: flex; flex-direction: column; gap: 2px; }
 .schedule-slot {
   display: flex; align-items: center; gap: 16px;
   padding: 10px 12px; border-radius: var(--radius-sm);
   cursor: pointer; transition: background .15s;
-  position: relative;
 }
 .schedule-slot:hover { background: var(--bg-hover); }
-.schedule-slot.is-live {
-  background: rgba(var(--accent-rgb, 180,80,255), .08);
-}
+.schedule-slot.is-live { background: rgba(var(--accent-rgb, 180,80,255), .08); }
 .schedule-slot-time {
   font-size: 12px; color: var(--fg-tertiary); flex-shrink: 0; width: 44px;
   font-variant-numeric: tabular-nums;
@@ -1403,7 +1390,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .schedule-slot.is-live .schedule-slot-time { color: var(--accent); }
 .schedule-slot-art {
   width: 40px; height: 40px; border-radius: 6px; flex-shrink: 0;
-  background: var(--bg-subtle); overflow: hidden;
+  background: var(--bg-elevated); overflow: hidden;
 }
 .schedule-slot-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .schedule-slot-body { flex: 1; min-width: 0; }
@@ -1411,12 +1398,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: 14px; font-weight: 600; color: var(--fg);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.schedule-slot-host {
-  font-size: 12px; color: var(--fg-tertiary); margin-top: 2px;
-}
-.schedule-slot-right {
-  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
-}
+.schedule-slot-host { font-size: 12px; color: var(--fg-tertiary); margin-top: 2px; }
+.schedule-slot-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .schedule-slot-live-badge {
   display: none; align-items: center; gap: 5px;
   font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
@@ -1425,16 +1408,13 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border-radius: 100px;
 }
 .schedule-slot.is-live .schedule-slot-live-badge { display: flex; }
-.schedule-slot-genres {
-  display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end;
-}
+.schedule-slot-genres { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
 .schedule-slot-genre-tag {
   font-size: 11px; color: var(--fg-tertiary);
   background: var(--bg-subtle); border-radius: 100px;
   padding: 3px 8px; flex-shrink: 0;
 }
 .schedule-empty {
-  display: flex; align-items: center;
   padding: 10px 12px;
   font-size: 13px; color: var(--fg-disabled);
 }
@@ -1448,42 +1428,33 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #view-support.active { display: block; }
 #view-support.visible { opacity: 1; }
 
-.support-hero {
-  padding: calc(var(--nav-h) + 48px) var(--space) 48px;
-  max-width: 640px;
-}
+.support-wrap { padding-top: calc(var(--nav-h) + 48px); padding-bottom: 96px; row-gap: 64px; align-items: start; }
+
+.support-hero { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 12px; }
 .support-hero .page-eyebrow {
   font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 12px;
+  color: var(--accent);
 }
 .support-hero h1 {
   font-family: 'Alpha Lyrae', var(--font); font-size: clamp(28px, 4vw, 48px);
-  line-height: 1.1; margin: 0 0 16px;
+  line-height: 1.1; margin: 0;
 }
 .support-hero .page-desc {
   font-size: 16px; color: var(--fg-secondary); line-height: 1.6; margin: 0;
 }
 
 .support-plans {
-  padding: 0 var(--space) 96px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  max-width: 960px;
+  grid-column: 2 / span 10;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
 }
 .support-plan {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--border); border-radius: var(--radius);
   padding: 32px 28px;
   display: flex; flex-direction: column; gap: 24px;
-  background: var(--bg-subtle);
-  position: relative;
+  background: var(--bg-subtle); position: relative;
   transition: border-color .2s, transform .2s;
 }
-.support-plan:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
-}
+.support-plan:hover { border-color: var(--border-hover); transform: translateY(-2px); }
 .support-plan.featured {
   border-color: var(--accent);
   background: linear-gradient(160deg, rgba(var(--accent-rgb, 180,80,255), .1) 0%, var(--bg-subtle) 60%);
@@ -1492,7 +1463,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: none; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
   font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   background: var(--accent); color: #fff;
-  padding: 4px 12px; border-radius: 100px;
+  padding: 4px 12px; border-radius: 100px; white-space: nowrap;
 }
 .support-plan.featured .support-plan-badge { display: block; }
 
@@ -1502,9 +1473,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   letter-spacing: .08em; color: var(--fg-secondary);
 }
 .support-plan.featured .support-plan-name { color: var(--accent); }
-.support-plan-price {
-  display: flex; align-items: baseline; gap: 4px;
-}
+.support-plan-price { display: flex; align-items: baseline; gap: 4px; }
 .support-plan-price .price-amount {
   font-family: 'Alpha Lyrae', var(--font);
   font-size: 40px; line-height: 1; color: var(--fg);
@@ -1512,74 +1481,51 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .support-plan-price .price-currency {
   font-size: 18px; color: var(--fg-secondary); align-self: flex-start; padding-top: 4px;
 }
-.support-plan-price .price-period {
-  font-size: 13px; color: var(--fg-tertiary);
-}
-.support-plan-desc {
-  font-size: 13px; color: var(--fg-tertiary); line-height: 1.5;
-}
+.support-plan-price .price-period { font-size: 13px; color: var(--fg-tertiary); }
+.support-plan-desc { font-size: 13px; color: var(--fg-tertiary); line-height: 1.5; }
 
 .support-plan-features {
-  flex: 1;
-  display: flex; flex-direction: column; gap: 10px;
+  flex: 1; display: flex; flex-direction: column; gap: 10px;
   padding: 0; margin: 0; list-style: none;
 }
 .support-plan-features li {
   display: flex; align-items: flex-start; gap: 10px;
   font-size: 13px; color: var(--fg-secondary); line-height: 1.4;
 }
-.support-plan-features li svg {
-  flex-shrink: 0; margin-top: 1px;
-  stroke: var(--fg-tertiary);
-}
+.support-plan-features li svg { flex-shrink: 0; margin-top: 1px; stroke: var(--fg-tertiary); }
 .support-plan.featured .support-plan-features li svg { stroke: var(--accent); }
 .support-plan-features li.unavailable { color: var(--fg-disabled); }
 .support-plan-features li.unavailable svg { stroke: var(--fg-disabled); opacity: .4; }
 
 .support-plan-cta {
-  width: 100%;
-  padding: 13px 0; border-radius: var(--radius-sm);
-  font-size: 14px; font-weight: 600;
-  cursor: pointer; border: none; transition: opacity .15s;
+  width: 100%; padding: 13px 0; border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 600; font-family: var(--font);
+  cursor: pointer; border: 1px solid var(--border);
+  background: var(--bg-hover); color: var(--fg);
+  transition: opacity .15s;
 }
 .support-plan-cta:hover { opacity: .85; }
-.support-plan .support-plan-cta {
-  background: var(--bg-hover);
-  color: var(--fg);
-  border: 1px solid var(--border);
-}
-.support-plan.featured .support-plan-cta {
-  background: var(--accent); color: #fff; border: none;
-}
+.support-plan.featured .support-plan-cta { background: var(--accent); color: #fff; border: none; }
 
-.support-faq {
-  padding: 0 var(--space) 96px;
-  max-width: 640px;
-}
-.support-faq h2 {
-  font-size: 20px; font-weight: 600; margin: 0 0 24px;
-}
+.support-faq { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 24px; }
+.support-faq h2 { font-size: 20px; font-weight: 600; margin: 0; }
 .support-faq-items { display: flex; flex-direction: column; }
-.support-faq-item {
-  border-top: 1px solid var(--border);
-  padding: 20px 0;
-}
+.support-faq-item { border-top: 1px solid var(--border); padding: 20px 0; }
 .support-faq-item:last-child { border-bottom: 1px solid var(--border); }
-.support-faq-item dt {
-  font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 8px;
-}
-.support-faq-item dd {
-  font-size: 14px; color: var(--fg-secondary); line-height: 1.6; margin: 0;
-}
+.support-faq-item dt { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 8px; }
+.support-faq-item dd { font-size: 14px; color: var(--fg-secondary); line-height: 1.6; margin: 0; }
 
+/* ── Schedule / Support responsive ── */
+@media (max-width: 1024px) {
+  .schedule-hero { grid-column: 2 / span 10; }
+  .schedule-days { grid-column: 1 / span 12; }
+  .support-hero { grid-column: 2 / span 10; }
+  .support-plans { grid-column: 1 / span 12; }
+  .support-faq { grid-column: 2 / span 10; }
+}
 @media (max-width: 768px) {
-  .support-plans {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-  }
-  .schedule-day {
-    grid-template-columns: 60px 1fr;
-  }
+  .support-plans { grid-template-columns: 1fr; }
+  .schedule-day { grid-template-columns: 60px 1fr; }
 }
 
 /* ── Show hero ── */
@@ -2403,42 +2349,46 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 <!-- SCHEDULE VIEW -->
 <div id="view-schedule">
-  <div class="schedule-hero content">
-    <p class="page-eyebrow">Weekly Program</p>
-    <h1>Schedule</h1>
-    <p class="page-desc">What's on this week. From ambient journeys to club nights — every show, every slot.</p>
+  <div class="content schedule-wrap">
+    <div class="schedule-hero">
+      <p class="page-eyebrow">Weekly Program</p>
+      <h1>Schedule</h1>
+      <p class="page-desc">What's on this week. From ambient journeys to club nights — every show, every slot.</p>
+    </div>
+    <div class="schedule-days" id="schedule-days"></div>
   </div>
-  <div class="schedule-days content" id="schedule-days"></div>
 </div><!-- /#view-schedule -->
 
 <!-- SUPPORT VIEW -->
 <div id="view-support">
-  <div class="support-hero content">
-    <p class="page-eyebrow">Support 8Beats</p>
-    <h1>Keep the beat going</h1>
-    <p class="page-desc">8Beats runs on no algorithm, no label money — just people who believe video game music deserves its own stage. Your support keeps us independent, ad-free, and broadcasting.</p>
-  </div>
-  <div class="support-plans content" id="support-plans"></div>
-  <div class="support-faq content">
-    <h2>Questions</h2>
-    <dl class="support-faq-items">
-      <div class="support-faq-item">
-        <dt>Is 8Beats really free?</dt>
-        <dd>Yes. The radio will always be free to listen to. Supporting us is optional but it makes a real difference for a small independent station like ours.</dd>
-      </div>
-      <div class="support-faq-item">
-        <dt>Where does my money go?</dt>
-        <dd>Directly into server costs, streaming infrastructure, and compensating our resident DJs for their time and work. No middlemen, no label cuts.</dd>
-      </div>
-      <div class="support-faq-item">
-        <dt>Can I cancel anytime?</dt>
-        <dd>Absolutely. Monthly and annual plans can be cancelled at any time from your account settings. No questions asked.</dd>
-      </div>
-      <div class="support-faq-item">
-        <dt>Do I need an account to listen?</dt>
-        <dd>Not at all. You can tune in without signing up. An account is only needed if you want to follow residents, save shows, or access supporter perks.</dd>
-      </div>
-    </dl>
+  <div class="content support-wrap">
+    <div class="support-hero">
+      <p class="page-eyebrow">Support 8Beats</p>
+      <h1>Keep the beat going</h1>
+      <p class="page-desc">8Beats runs on no algorithm, no label money — just people who believe video game music deserves its own stage. Your support keeps us independent, ad-free, and broadcasting.</p>
+    </div>
+    <div class="support-plans" id="support-plans"></div>
+    <div class="support-faq">
+      <h2>Questions</h2>
+      <dl class="support-faq-items">
+        <div class="support-faq-item">
+          <dt>Is 8Beats really free?</dt>
+          <dd>Yes. The radio will always be free to listen to. Supporting us is optional but it makes a real difference for a small independent station like ours.</dd>
+        </div>
+        <div class="support-faq-item">
+          <dt>Where does my money go?</dt>
+          <dd>Directly into server costs, streaming infrastructure, and compensating our resident DJs for their time and work. No middlemen, no label cuts.</dd>
+        </div>
+        <div class="support-faq-item">
+          <dt>Can I cancel anytime?</dt>
+          <dd>Absolutely. Monthly and annual plans can be cancelled at any time from your account settings. No questions asked.</dd>
+        </div>
+        <div class="support-faq-item">
+          <dt>Do I need an account to listen?</dt>
+          <dd>Not at all. You can tune in without signing up. An account is only needed if you want to follow residents, save shows, or access supporter perks.</dd>
+        </div>
+      </dl>
+    </div>
   </div>
 </div><!-- /#view-support -->
 
