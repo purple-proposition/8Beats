@@ -1515,6 +1515,49 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .support-faq-item dt { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 8px; }
 .support-faq-item dd { font-size: 14px; color: var(--fg-secondary); line-height: 1.6; margin: 0; }
 
+/* ── About view ── */
+#view-about {
+  display: none; opacity: 0;
+  position: relative; z-index: 1;
+  transition: opacity .3s cubic-bezier(.4,0,.2,1);
+}
+#view-about.active { display: block; }
+#view-about.visible { opacity: 1; }
+
+.about-wrap { padding-top: calc(var(--nav-h) + 64px); padding-bottom: 96px; row-gap: 64px; align-items: start; }
+.about-hero { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 16px; }
+.about-hero .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.about-hero h1 { font-family: 'Alpha Lyrae', var(--font); font-size: clamp(48px, 7vw, 80px); line-height: 1; margin: 0; }
+.about-hero .about-tagline { font-size: 18px; color: var(--fg-secondary); line-height: 1.5; margin: 0; max-width: 560px; }
+
+.about-sections { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 48px; }
+.about-section { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--border); padding-top: 32px; }
+.about-section h2 { font-size: 22px; font-weight: 600; letter-spacing: -.3px; margin: 0; }
+.about-section p { font-size: 15px; color: var(--fg-secondary); line-height: 1.7; margin: 0; }
+
+.about-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.about-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px; border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 600; font-family: var(--font);
+  cursor: pointer; text-decoration: none;
+  transition: opacity .15s;
+}
+.about-cta:hover { opacity: .8; }
+.about-cta-primary { background: var(--fg); color: var(--bg); border: none; }
+.about-cta-secondary {
+  background: none; color: var(--fg);
+  border: 1px solid var(--border);
+}
+.about-cta-secondary:hover { border-color: var(--border-hover); }
+
+.about-meta { grid-column: 3 / span 8; padding-top: 32px; border-top: 1px solid var(--border); }
+.about-meta p { font-size: 13px; color: var(--fg-disabled); margin: 0; }
+
+@media (max-width: 1024px) {
+  .about-hero, .about-sections, .about-meta { grid-column: 2 / span 10; }
+}
+
 /* ── Schedule / Support responsive ── */
 @media (max-width: 1024px) {
   .schedule-hero { grid-column: 2 / span 10; }
@@ -1880,7 +1923,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
       <i data-lucide="shopping-bag" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
       Shop
     </a>
-    <a href="#" class="nav-dd-item">
+    <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openAbout()">
       <i data-lucide="info" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
       About
     </a>
@@ -1942,7 +1985,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
           <span class="mno-link-left"><i data-lucide="shopping-bag" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Shop</span>
           <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
         </a>
-        <a href="#" class="mno-link">
+        <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openAbout()">
           <span class="mno-link-left"><i data-lucide="info" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>About</span>
           <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
         </a>
@@ -1987,7 +2030,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
       <i data-lucide="shopping-bag" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>
       <span class="nav-label">Shop</span>
     </a>
-    <a href="#" class="nav-item nav-collapsible-item" id="nav-about" aria-label="About">
+    <a href="#" class="nav-item nav-collapsible-item" id="nav-about" aria-label="About" onclick="event.preventDefault();openAbout()">
       <i data-lucide="info" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>
       <span class="nav-label">About</span>
     </a>
@@ -2391,6 +2434,44 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     </div>
   </div>
 </div><!-- /#view-support -->
+
+<!-- ABOUT VIEW -->
+<div id="view-about">
+  <div class="content about-wrap">
+    <div class="about-hero">
+      <p class="page-eyebrow">Lyon, France · Since 2021</p>
+      <h1>Press play</h1>
+      <p class="about-tagline">8Beats is an internet radio dedicated to video game music, based in Lyon, France.</p>
+    </div>
+    <div class="about-sections">
+      <div class="about-section">
+        <h2>A story of sharing</h2>
+        <p>It started in school — a shared obsession with gaming soundtracks, a Facebook group, friends exchanging their favourite tracks. As the collection grew and the community widened, so did the ambition. After months of planning, navigating technical and financial obstacles together, the station officially launched in September 2021.</p>
+      </div>
+      <div class="about-section">
+        <h2>Connecting cultures</h2>
+        <p>8Beats is a global venue for everyone who takes video game music seriously. Our goal is to build connections and celebrate the diverse creative community behind this subculture — composers, record labels, content makers, and DJs. The station runs round-the-clock thematic programming: carefully curated shows spanning classic gaming audio to contemporary independent discoveries.</p>
+      </div>
+      <div class="about-section">
+        <h2>Hello World</h2>
+        <p>We love hearing from listeners, artists, and collaborators. Whether you have feedback, a question, a show pitch, or just want to say hi — reach out.</p>
+        <div class="about-cta-row">
+          <a href="mailto:contact@8beats.fm" class="about-cta about-cta-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Contact us
+          </a>
+          <a href="mailto:shows@8beats.fm" class="about-cta about-cta-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
+            Submit a show proposal
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="about-meta">
+      <p>© 8Beats Radio 2026 · <a href="#" onclick="event.preventDefault();openSupport()" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Support us</a> · <a href="#" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Privacy Policy</a></p>
+    </div>
+  </div>
+</div><!-- /#view-about -->
 
 <aside class="panel panel-support glass" id="panel-support">
   <div class="orb orb-1"></div><div class="orb orb-2"></div>
@@ -4125,13 +4206,22 @@ function updateScrollFade(el) {
   el.style.webkitMaskImage = atBottom ? '' : fade;
 }
 function initScrollFade(el, fadeSize) {
-  const fade = `linear-gradient(to bottom,black calc(100% - ${fadeSize}px),transparent 100%)`;
   const check = () => {
+    const atTop    = el.scrollTop <= 2;
     const atBottom = el.scrollHeight - el.scrollTop <= el.clientHeight + 2;
-    el.style.maskImage = atBottom ? '' : fade;
-    el.style.webkitMaskImage = atBottom ? '' : fade;
+    let mask = '';
+    if (!atTop && !atBottom) {
+      mask = `linear-gradient(to bottom,transparent 0%,black ${fadeSize}px,black calc(100% - ${fadeSize}px),transparent 100%)`;
+    } else if (!atTop) {
+      mask = `linear-gradient(to bottom,transparent 0%,black ${fadeSize}px,black 100%)`;
+    } else if (!atBottom) {
+      mask = `linear-gradient(to bottom,black calc(100% - ${fadeSize}px),transparent 100%)`;
+    }
+    el.style.maskImage = mask;
+    el.style.webkitMaskImage = mask;
   };
   el.addEventListener('scroll', check);
+  el.addEventListener('wheel', () => requestAnimationFrame(check), { passive: true });
   check();
 }
 
@@ -4701,6 +4791,54 @@ function closeSupport() {
   supportEl.classList.remove('visible');
   setTimeout(() => {
     supportEl.classList.remove('active');
+    homeEl.style.display = '';
+    homeEl.style.pointerEvents = '';
+    requestAnimationFrame(() => { homeEl.style.opacity = '1'; });
+    window.scrollTo(0, 0);
+    navCollapsed = false; navPill.classList.remove('collapsed');
+    const wordmark = document.querySelector('.nav-wordmark');
+    wordmark.onclick = null; wordmark.title = '';
+  }, 280);
+}
+
+/* ── About page ── */
+function openAbout() {
+  const aboutEl = document.getElementById('view-about');
+  const homeEl  = document.getElementById('view-home');
+  const showEl  = document.getElementById('view-show');
+  const artistEl = document.getElementById('view-artist');
+  const schedEl = document.getElementById('view-schedule');
+  const supportEl = document.getElementById('view-support');
+
+  let fromEl = homeEl, prevView = 'home';
+  if (showEl.classList.contains('active'))    { prevView = 'show';    fromEl = showEl; }
+  else if (artistEl.classList.contains('active')) { prevView = 'artist'; fromEl = artistEl; }
+  else if (schedEl.classList.contains('active'))  { prevView = 'schedule'; fromEl = schedEl; }
+  else if (supportEl.classList.contains('active')){ prevView = 'support'; fromEl = supportEl; }
+
+  aboutEl._prevView = prevView;
+  fromEl.style.opacity = '0';
+  fromEl.style.pointerEvents = 'none';
+  setTimeout(() => {
+    if (prevView === 'home') homeEl.style.display = 'none';
+    else fromEl.classList.remove('active');
+    aboutEl.classList.add('active');
+    window.scrollTo(0, 0);
+    navCollapsed = false; navPill.classList.remove('collapsed');
+    requestAnimationFrame(() => aboutEl.classList.add('visible'));
+  }, 280);
+
+  const wordmark = document.querySelector('.nav-wordmark');
+  wordmark.onclick = (e) => { e.preventDefault(); closeAbout(); };
+  wordmark.title = 'Back';
+}
+
+function closeAbout() {
+  const aboutEl = document.getElementById('view-about');
+  const homeEl  = document.getElementById('view-home');
+  aboutEl.classList.remove('visible');
+  setTimeout(() => {
+    aboutEl.classList.remove('active');
     homeEl.style.display = '';
     homeEl.style.pointerEvents = '';
     requestAnimationFrame(() => { homeEl.style.opacity = '1'; });
