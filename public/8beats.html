@@ -106,6 +106,7 @@
      ACCENT
      ══════════════════════════════════════════ */
   --accent:        #E05A4A;
+  --accent-rgb:    224,90,74;
 
   /* ══════════════════════════════════════════
      COMPONENT-SPECIFIC
@@ -742,13 +743,17 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-thumb.is-playing .card-overlay { opacity: 1; }
 
 .card-play {
-  background: none; border: none; padding: 0;
+  width: 44px; height: 44px; border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; pointer-events: all;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.30);
   color: var(--fg);
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
 }
-.card-play svg { width: 22px; height: 22px; fill: var(--fg); stroke: none; display: block; transition: fill 140ms ease; }
-.card-play:hover svg { fill: var(--fg); }
+.card-play svg { width: 18px; height: 18px; fill: var(--fg); stroke: none; display: block; transition: fill 140ms ease; }
+.card-play:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.50); }
+.card-play:hover svg { fill: rgba(255,255,255,0.60); }
 
 .card-body { padding: 12px 0 0; display: flex; flex-direction: column; gap: 8px; }
 .card-body h3 { font-size: 16px; font-weight: 400; line-height: 24px; max-height: 48px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: color .18s ease; cursor: pointer; }
@@ -934,7 +939,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Fixed 16px padding all sides — play button + text sit inside a consistent box */
 .player-bar-main { min-height: var(--player-h); display: flex; align-items: center; padding: 24px; gap: 24px; }
 
-.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 140ms ease, background 140ms ease; color: #fff; }
+.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-subtle); border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 140ms ease, background 140ms ease; color: #fff; }
 .play-btn:hover { border-color: var(--border-hover); background: var(--bg-hover); }
 .play-btn svg { fill: var(--fg); stroke: none; transition: fill 140ms ease; }
 
@@ -952,21 +957,23 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-game { font-size: 14px; color: var(--fg-tertiary); }
 .player-controls { display: flex; align-items: center; gap: 24px; flex-shrink: 0; }
 
-.spotify-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; }
-.spotify-btn svg { width: 20px; height: 20px; fill: var(--fg); stroke: none; transition: fill .18s ease; }
+.spotify-btn { width: 40px; height: 40px; border-radius: 10px; background: transparent; border: 1px solid var(--border-subtle); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 140ms ease, background 140ms ease; }
+.spotify-btn svg { width: 18px; height: 18px; fill: var(--fg); stroke: none; transition: fill 140ms ease; }
+.spotify-btn:hover { border-color: var(--border-hover); background: var(--bg-hover); }
 .spotify-btn:hover svg { fill: var(--fg-tertiary); }
 
 .divider { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; }
 
-.ctrl-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
-.ctrl-btn svg { width: 16px; height: 16px; stroke: var(--fg); fill: none; display: block; transition: stroke .18s ease; }
-.ctrl-btn:hover svg { stroke: var(--fg-tertiary); }
-#playlist-btn.active svg { stroke: var(--fg-tertiary); }
-#playlist-btn.active:hover svg { stroke: var(--fg-tertiary); }
+.ctrl-btn { background: transparent; border: 1px solid var(--border-subtle); border-radius: 10px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; color: var(--fg); transition: border-color 140ms ease, background 140ms ease, color 140ms ease; }
+.ctrl-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; transition: stroke 140ms ease; }
+.ctrl-btn:hover { border-color: var(--border-hover); background: var(--bg-hover); color: var(--fg-tertiary); }
+#playlist-btn.active { border-color: var(--border-hover); background: var(--bg-hover); color: var(--fg-tertiary); }
+#playlist-btn.active:hover { color: var(--fg-tertiary); }
 
-.vol-popup { position: fixed; width: 52px; padding: 16px 0; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; z-index: 9999; transform: translateY(6px); transition: opacity .18s ease, transform .18s ease; background: rgba(var(--bg-rgb), 0.48); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); }
-.vol-popup.open { opacity: 1; pointer-events: all; transform: translateY(0); }
-#vol-btn.vol-open svg { stroke: var(--fg-tertiary) !important; }
+.vol-wrap { display: flex; align-items: center; gap: 8px; }
+.vol-slider { width: 0; overflow: hidden; opacity: 0; transition: width 200ms ease, opacity 200ms ease; display: flex; align-items: center; }
+.vol-wrap:hover .vol-slider,
+.vol-wrap.vol-open .vol-slider { width: 88px; opacity: 1; }
 
 /* ── Progressive blur ── */
 .prog-blur {
@@ -981,9 +988,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   -webkit-mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
   mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
 }
-.vol-track { height: 80px; width: 4px; background: var(--border); border-radius: 99px; position: relative; cursor: pointer; user-select: none; }
-.vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--fg); border-radius: 99px; }
-.vol-knob  { position: absolute; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; border-radius: 50%; background: var(--fg); }
+.vol-track { width: 80px; height: 4px; background: var(--border-hover); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }
+.vol-fill  { position: absolute; left: 0; top: 0; bottom: 0; background: var(--fg); border-radius: 99px; }
+.vol-knob  { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; border-radius: 50%; background: var(--fg); }
 
 /* ============================================================
    MOBILE — max-width: 768px
@@ -1346,7 +1353,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #view-schedule.visible { opacity: 1; }
 
 /* .schedule-wrap = unique .content container, row-gap controls vertical rhythm */
-.schedule-wrap { padding-top: calc(var(--nav-h) + 48px); padding-bottom: 96px; row-gap: 48px; align-items: start; }
+.schedule-wrap { padding-top: calc(var(--nav-h) + 96px); padding-bottom: 96px; row-gap: 48px; align-items: start; }
 
 .schedule-hero { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 12px; }
 .schedule-hero .page-eyebrow {
@@ -1363,68 +1370,80 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .schedule-days {
   grid-column: 3 / span 8;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
   align-items: start;
 }
 .schedule-day {
-  display: grid;
-  grid-template-columns: 80px 1fr;
+  display: flex; flex-direction: column;
   border-top: 1px solid var(--border);
 }
-.schedule-day-label {
-  padding: 20px 0; display: flex; flex-direction: column; gap: 4px;
+.schedule-day-header {
+  padding: 20px 0 12px;
+  display: flex; align-items: baseline; gap: 6px;
 }
-.schedule-day-label .day-name { font-size: 13px; font-weight: 600; color: var(--fg); }
-.schedule-day-label .day-date { font-size: 11px; color: var(--fg-tertiary); }
-.schedule-day.today .day-name { color: var(--accent); }
+.schedule-day-header .day-name { font-size: 24px; font-weight: 600; color: #737373; }
+.schedule-day-header .day-date { font-size: 24px; font-weight: 600; color: #737373; }
+.schedule-day.today .day-name { color: var(--fg); }
+.schedule-day.today .day-date { color: var(--fg); }
 
-.schedule-slots { padding: 12px 0; display: flex; flex-direction: column; gap: 2px; }
+.schedule-slots { display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px; }
 .schedule-slot {
-  display: flex; align-items: center; gap: 16px;
-  padding: 10px 12px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; gap: 24px;
+  padding: 8px 8px; border-radius: var(--radius-sm);
+  margin: 0 -8px;
   cursor: pointer; transition: background .15s;
 }
 .schedule-slot:hover { background: var(--bg-hover); }
-.schedule-slot.is-live { background: rgba(var(--accent-rgb, 180,80,255), .08); }
+.schedule-slot.is-live { background: rgba(var(--accent-rgb), .08); }
 .schedule-slot-time {
-  font-size: 12px; color: var(--fg-tertiary); flex-shrink: 0; width: 44px;
+  font-size: 12px; color: var(--fg-tertiary); flex-shrink: 0; width: 40px;
   font-variant-numeric: tabular-nums;
 }
 .schedule-slot.is-live .schedule-slot-time { color: var(--accent); }
-.schedule-slot-art {
-  width: 40px; height: 40px; border-radius: 6px; flex-shrink: 0;
-  background: var(--bg-elevated); overflow: hidden;
-}
-.schedule-slot-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .schedule-slot-body { flex: 1; min-width: 0; }
 .schedule-slot-title {
-  font-size: 14px; font-weight: 600; color: var(--fg);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  display: flex; align-items: center; gap: 8px; min-width: 0;
+  font-size: 16px; font-weight: 600; color: var(--fg);
 }
-.schedule-slot-host { font-size: 12px; color: var(--fg-tertiary); margin-top: 2px; }
-.schedule-slot-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.schedule-slot-title .slot-title-text {
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1;
+}
+.schedule-slot-host {
+  font-size: 14px; color: var(--fg-tertiary); margin-top: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.schedule-slot-avatar {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  overflow: hidden; background: var(--bg-elevated);
+}
+.schedule-slot-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.schedule-slot-avatar svg { width: 100%; height: 100%; display: block; }
+.schedule-slot-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+.schedule-slot-alert {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--fg-tertiary); cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.schedule-slot-alert:hover { background: var(--bg-hover); color: var(--fg); border-color: var(--border-hover); }
+.schedule-slot-alert.alerted { background: rgba(var(--accent-rgb), .1); border-color: rgba(var(--accent-rgb), .35); color: var(--accent); }
 .schedule-slot-live-badge {
   display: none; align-items: center; gap: 5px;
   font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
   color: var(--accent); padding: 3px 8px;
-  border: 1px solid rgba(var(--accent-rgb, 180,80,255), .3);
+  border: 1px solid rgba(var(--accent-rgb), .3);
   border-radius: 100px;
 }
 .schedule-slot.is-live .schedule-slot-live-badge { display: flex; }
 .schedule-slot-new {
-  font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
-  color: var(--accent); background: rgba(var(--accent-rgb, 180,80,255), .12);
-  border: 1px solid rgba(var(--accent-rgb, 180,80,255), .25);
+  font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--fg-secondary); background: var(--bg-subtle);
+  border: 1px solid var(--border);
   border-radius: 100px; padding: 2px 7px; flex-shrink: 0;
 }
-.schedule-slot-genres { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
-.schedule-slot-genre-tag {
-  font-size: 11px; color: var(--fg-tertiary);
-  background: var(--bg-subtle); border-radius: 100px;
-  padding: 3px 8px; flex-shrink: 0;
-}
 .schedule-empty {
-  padding: 10px 12px;
+  padding: 8px 10px;
   font-size: 13px; color: var(--fg-disabled);
 }
 
@@ -1552,7 +1571,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #view-about.active { display: block; }
 #view-about.visible { opacity: 1; }
 
-.about-wrap { padding-top: calc(var(--nav-h) + 64px); padding-bottom: 96px; row-gap: 64px; align-items: start; }
+.about-wrap { padding-top: calc(var(--nav-h) + 96px); padding-bottom: 96px; row-gap: 64px; align-items: start; }
 .about-hero { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 16px; }
 .about-hero .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
 .about-hero h1 { font-family: 'Alpha Lyrae', var(--font); font-size: clamp(48px, 7vw, 80px); line-height: 1; margin: 0; }
@@ -1568,7 +1587,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .about-contact {
   grid-column: 3 / span 8;
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 24px;
   border-top: 1px solid var(--border); padding-top: 48px;
 }
 .about-contact-col { display: flex; flex-direction: column; gap: 12px; }
@@ -1581,17 +1600,46 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   transition: color .15s;
 }
 .about-contact-link:hover { color: var(--fg-secondary); }
+.about-contact-btn {
+  display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+  padding: 10px 16px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  text-decoration: none;
+}
+.about-contact-btn-mail {
+  background: transparent; border: 1px solid var(--border); color: var(--fg);
+}
+.about-contact-btn-mail:hover { background: var(--bg-hover); border-color: var(--border-hover); }
+.about-contact-btn-proposal {
+  background: var(--fg); border: 1px solid var(--fg); color: var(--bg);
+}
+.about-contact-btn-proposal:hover { background: var(--fg-secondary); border-color: var(--fg-secondary); }
+.about-soc-btn {
+  width: 52px; height: 52px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: 12px; cursor: pointer; text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.about-soc-btn svg { width: 20px; height: 20px; fill: var(--fg-secondary); transition: fill .15s; }
+.about-soc-btn:hover { background: var(--bg-elevated); border-color: var(--border-hover); }
+.about-soc-btn:hover svg { fill: var(--fg); }
 
 .about-stats {
   grid-column: 3 / span 8;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-  background: var(--border); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); overflow: hidden;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
 }
 .about-stat {
-  background: var(--bg-subtle);
-  padding: 28px 24px; display: flex; flex-direction: column; gap: 6px;
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 24px; display: flex; flex-direction: column; gap: 24px;
 }
+.about-stat-icon {
+  width: 24px; height: 24px; color: var(--fg-secondary);
+  display: flex; align-items: center; justify-content: center;
+}
+.about-stat-bottom { display: flex; flex-direction: column; gap: 8px; }
 .about-stat-number {
   font-family: 'Alpha Lyrae', var(--font);
   font-size: clamp(32px, 4vw, 48px); line-height: 1; color: var(--fg);
@@ -1605,7 +1653,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .about-hero, .about-stats, .about-editorial, .about-contact, .about-meta { grid-column: 2 / span 10; }
 }
 @media (max-width: 768px) {
-  .about-editorial, .about-contact { grid-template-columns: 1fr; }
+  .about-editorial { grid-template-columns: 1fr; }
+  .about-contact { grid-template-columns: 1fr 1fr; }
   .about-stats { grid-template-columns: 1fr; }
 }
 
@@ -1834,14 +1883,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .show-btn-ghost:hover { border-color: var(--border-hover); background: var(--bg-hover); color: var(--fg); }
 .show-btn-icon {
-  width: 42px; height: 42px; border-radius: var(--radius-sm);
-  background: transparent; border: 1px solid var(--border-subtle); color: var(--fg-tertiary);
+  width: 44px; height: 44px; border-radius: 10px;
+  background: transparent; border: 1px solid var(--border-subtle); color: var(--fg);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; flex-shrink: 0;
   transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
 }
 .show-btn-icon svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-.show-btn-icon:hover { border-color: var(--border-hover); background: var(--bg-hover); color: var(--fg); }
+.show-btn-icon:hover { border-color: var(--border-hover); background: var(--bg-hover); color: var(--fg-tertiary); }
 .show-btn-icon.active { border-color: var(--fg); color: var(--fg); }
 
 /* ── Show sections — uses .content / .section from homepage ── */
@@ -2443,7 +2492,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 <div id="view-schedule">
   <div class="content schedule-wrap">
     <div class="schedule-hero">
-      <p class="page-eyebrow">Weekly Program</p>
       <h1>Schedule</h1>
       <p class="page-desc">What's on this week. From ambient journeys to club nights — every show, every slot.</p>
     </div>
@@ -2500,22 +2548,30 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 <div id="view-about">
   <div class="content about-wrap">
     <div class="about-hero">
-      <p class="page-eyebrow">Lyon, France · Since 2021</p>
       <h1>Press play</h1>
       <p class="about-tagline">8Beats is an internet radio dedicated to video game music, based in Lyon, France.</p>
     </div>
     <div class="about-stats" id="about-stats">
       <div class="about-stat">
-        <span class="about-stat-number" data-target="18" data-suffix="">0</span>
-        <span class="about-stat-label">Shows broadcast</span>
+        <div class="about-stat-icon"><i data-lucide="headphones" style="width:24px;height:24px;"></i></div>
+        <div class="about-stat-bottom">
+          <span class="about-stat-number" data-target="4000">0</span>
+          <span class="about-stat-label">Monthly listeners</span>
+        </div>
       </div>
       <div class="about-stat">
-        <span class="about-stat-number" data-target="8" data-suffix="">0</span>
-        <span class="about-stat-label">Resident DJs</span>
+        <div class="about-stat-icon"><i data-lucide="radio" style="width:24px;height:24px;"></i></div>
+        <div class="about-stat-bottom">
+          <span class="about-stat-number" data-target="502">0</span>
+          <span class="about-stat-label">Shows broadcast</span>
+        </div>
       </div>
       <div class="about-stat">
-        <span class="about-stat-number" data-target="4000" data-suffix="">0</span>
-        <span class="about-stat-label">Monthly listeners</span>
+        <div class="about-stat-icon"><i data-lucide="mic-2" style="width:24px;height:24px;"></i></div>
+        <div class="about-stat-bottom">
+          <span class="about-stat-number" data-target="51">0</span>
+          <span class="about-stat-label">Artists</span>
+        </div>
       </div>
     </div>
     <div class="about-editorial">
@@ -2532,17 +2588,35 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
       <div class="about-contact-col">
         <h3>Submit a show</h3>
         <p>8Beats is always open to new show proposals. Residents, one-offs, or series — we listen to everything.</p>
-        <a href="mailto:shows@8beats.fm" class="about-contact-link">shows@8beats.fm</a>
+        <a href="/submit" class="about-contact-btn about-contact-btn-proposal">
+          <i data-lucide="file-text" style="width:14px;height:14px;flex-shrink:0;"></i>
+          Proposal
+        </a>
       </div>
       <div class="about-contact-col">
         <h3>Press</h3>
         <p>For all press enquiries, interviews, and images about 8Beats and our residents.</p>
-        <a href="mailto:press@8beats.fm" class="about-contact-link">press@8beats.fm</a>
+        <a href="mailto:press@8beats.fm" class="about-contact-btn about-contact-btn-mail">
+          <i data-lucide="mail" style="width:14px;height:14px;flex-shrink:0;"></i>
+          Contact
+        </a>
       </div>
       <div class="about-contact-col">
         <h3>Get in touch</h3>
         <p>Feedback, partnership enquiries, or just want to say hello — we'd love to hear from you.</p>
-        <a href="mailto:contact@8beats.fm" class="about-contact-link">contact@8beats.fm</a>
+        <a href="mailto:contact@8beats.fm" class="about-contact-btn about-contact-btn-mail">
+          <i data-lucide="mail" style="width:14px;height:14px;flex-shrink:0;"></i>
+          Contact
+        </a>
+      </div>
+      <div class="about-contact-col">
+        <h3>Follow us</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          <a href="https://instagram.com/8beats" target="_blank" rel="noopener" class="about-soc-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="#" target="_blank" rel="noopener" class="about-soc-btn" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="#" target="_blank" rel="noopener" class="about-soc-btn" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></a>
+          <a href="#" target="_blank" rel="noopener" class="about-soc-btn" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></a>
+        </div>
       </div>
     </div>
     <div class="about-meta">
@@ -2563,13 +2637,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   <button class="panel-btn" onclick="document.getElementById('panel-support').style.display='none';openSupport()"><i data-lucide="heart" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Support 8Beats</button>
 </aside>
 
-<!-- VOLUME POPUP -->
-<div class="vol-popup" id="vol-popup">
-  <div class="vol-track" id="vol-track">
-    <div class="vol-fill" id="vol-fill" style="height:75%"></div>
-    <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 5px)"></div>
-  </div>
-</div>
 
 <!-- TRACKLIST POPUP -->
 <div id="show-tracklist-scrim"></div>
@@ -2615,8 +2682,15 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
           <button class="spotify-btn" id="spotify-btn" aria-label="Spotify">
             <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
           </button>
-          <div class="divider"></div>
-          <button class="ctrl-btn" id="vol-btn" aria-label="Volume"></button>
+          <div class="vol-wrap" id="vol-wrap">
+            <div class="vol-slider" id="vol-slider">
+              <div class="vol-track" id="vol-track">
+                <div class="vol-fill" id="vol-fill" style="width:75%"></div>
+                <div class="vol-knob" id="vol-knob" style="left:calc(75% - 5px)"></div>
+              </div>
+            </div>
+            <button class="ctrl-btn" id="vol-btn" aria-label="Volume"></button>
+          </div>
           <button class="ctrl-btn" id="playlist-btn" aria-label="Playlist">
             <i data-lucide="list-music" style="width:16px;height:16px;fill:none;display:block;"></i>
           </button>
@@ -3748,9 +3822,9 @@ document.addEventListener('click', e => {
 });
 
 /* ── Volume ── */
-let volOpen=false, dragging=false, volPct=75;
+let dragging=false, volPct=75;
 const volBtn   = document.getElementById('vol-btn');
-const volPopup = document.getElementById('vol-popup');
+const volWrap  = document.getElementById('vol-wrap');
 const volFill  = document.getElementById('vol-fill');
 const volKnob  = document.getElementById('vol-knob');
 const volTrack = document.getElementById('vol-track');
@@ -3764,21 +3838,15 @@ const VOL = {
 function renderVol() { const icon=volPct===0?VOL.mute:volPct<50?VOL.low:VOL.high; volBtn.innerHTML=''; volBtn.appendChild(mkSvg(icon,16)); }
 renderVol();
 
-function posVol() { const r=volBtn.getBoundingClientRect(); volPopup.style.left=`${r.left+r.width/2-26}px`; volPopup.style.top=`${r.top-80-40-12}px`; }
-volBtn.addEventListener('click', e=>{ e.stopPropagation(); volOpen=!volOpen; if(volOpen) posVol(); volPopup.classList.toggle('open',volOpen); volBtn.classList.toggle('vol-open',volOpen); });
-document.addEventListener('click', e=>{ if(volOpen&&!volBtn.contains(e.target)&&!volPopup.contains(e.target)){ volOpen=false; volPopup.classList.remove('open'); volBtn.classList.remove('vol-open'); }});
-
 function setVol(pct) {
   let v = Math.max(0, Math.min(100, Math.round(pct)));
-  // Cran magnétique à 50%
   if (v >= 46 && v <= 54) v = 50;
   volPct = v;
-  volFill.style.height = `${volPct}%`;
-  volKnob.style.bottom = `calc(${volPct}% - 5px)`;
+  volFill.style.width = `${volPct}%`;
+  volKnob.style.left = `calc(${volPct}% - 5px)`;
   renderVol();
-  if (volOpen) posVol();
 }
-function pctFrom(e) { const r=volTrack.getBoundingClientRect(),y=e.touches?e.touches[0].clientY:e.clientY; return (1-(y-r.top)/r.height)*100; }
+function pctFrom(e) { const r=volTrack.getBoundingClientRect(),x=e.touches?e.touches[0].clientX:e.clientX; return (x-r.left)/r.width*100; }
 volTrack.addEventListener('mousedown', e=>{ dragging=true; setVol(pctFrom(e)); e.stopPropagation(); e.preventDefault(); });
 document.addEventListener('mousemove', e=>{ if(dragging) setVol(pctFrom(e)); });
 document.addEventListener('mouseup',   ()=>{ dragging=false; });
@@ -4627,6 +4695,78 @@ const SCHEDULE_SHOWS = [
 const DAY_NAMES = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const SHORT_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+/* ── Schedule alerts ── */
+function getAlerts() {
+  try { return new Set(JSON.parse(localStorage.getItem('8beats-alerts') || '[]')); }
+  catch { return new Set(); }
+}
+function saveAlerts(set) {
+  localStorage.setItem('8beats-alerts', JSON.stringify([...set]));
+}
+
+function toggleAlert(btn, key, dayOffset, time, title) {
+  const alerts = getAlerts();
+  const wasAlerted = alerts.has(key);
+
+  const activate = () => {
+    alerts.add(key);
+    saveAlerts(alerts);
+    btn.classList.add('alerted');
+    btn.title = 'Rappel activé';
+    btn.innerHTML = '<i data-lucide="bell-ring" style="width:13px;height:13px;pointer-events:none;"></i>';
+    lucide.createIcons({ nodes: [btn] });
+    scheduleOneNotif(dayOffset, time, title);
+  };
+  const deactivate = () => {
+    alerts.delete(key);
+    saveAlerts(alerts);
+    btn.classList.remove('alerted');
+    btn.title = 'Me rappeler';
+    btn.innerHTML = '<i data-lucide="bell" style="width:13px;height:13px;pointer-events:none;"></i>';
+    lucide.createIcons({ nodes: [btn] });
+  };
+
+  if (wasAlerted) { deactivate(); return; }
+
+  if (!('Notification' in window)) { activate(); return; }
+  if (Notification.permission === 'granted') { activate(); return; }
+  if (Notification.permission === 'denied') { activate(); return; } // store anyway, no notif
+  Notification.requestPermission().then(() => activate());
+}
+
+function scheduleOneNotif(dayOffset, time, title) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = new Date();
+  const show = new Date(now);
+  show.setDate(now.getDate() + dayOffset);
+  const [h, m] = time.split(':').map(Number);
+  show.setHours(h, m, 0, 0);
+  const delay = show.getTime() - Date.now() - 5 * 60 * 1000; // 5 min avant
+  if (delay <= 0) return;
+  setTimeout(() => {
+    new Notification('8Beats · Dans 5 minutes', {
+      body: title,
+      icon: '/favicon.ico'
+    });
+  }, delay);
+}
+
+function scheduleAllNotifs() {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const alerts = getAlerts();
+  if (!alerts.size) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayDow = new Date().getDay();
+  alerts.forEach(key => {
+    const [dayStr, time, ...rest] = key.split('|');
+    const dow = parseInt(dayStr);
+    // find which day offset matches this dow in the next 7 days
+    for (let i = 0; i < 7; i++) {
+      if ((todayDow + i) % 7 === dow) { scheduleOneNotif(i, time, rest.join('|')); break; }
+    }
+  });
+}
+
 function renderSchedule() {
   const container = document.getElementById('schedule-days');
   if (!container) return;
@@ -4650,32 +4790,45 @@ function renderSchedule() {
     } else {
       for (const slot of daySlots) {
         const showData = SHOW_DATA[slot.title];
-        const artImg = showData?.artImage ? `<img src="${showData.artImage}" alt="">` : '';
         // Is it live? (mock: if today and within 2h of slot time)
         const [sh, sm] = slot.time.split(':').map(Number);
         const slotMinutes = sh * 60 + sm;
         const nowMinutes = today.getHours() * 60 + today.getMinutes();
         const isLive = isToday && nowMinutes >= slotMinutes && nowMinutes < slotMinutes + 120;
 
-        const genreTags = slot.genres.slice(0,2).map(g =>
-          `<span class="schedule-slot-genre-tag">${g}</span>`
-        ).join('');
+        const artistData = ARTISTS[slot.host];
+        const avatarHtml = artistData?.photo
+          ? `<img src="${artistData.photo}" alt="${slot.host}">`
+          : makeArtistSvg(slot.host);
+
+        const alertKey = `${slot.day}|${slot.time}|${slot.title}`;
+        const isAlerted = getAlerts().has(alertKey);
+        const alertIcon = isAlerted ? 'bell-ring' : 'bell';
+        const safeTitle = slot.title.replace(/'/g, "\\'");
 
         slotsHtml += `
-          <div class="schedule-slot${isLive ? ' is-live' : ''}" onclick="${showData ? `openShow('${slot.title.replace(/'/g,"\\'")}')` : ''}">
+          <div class="schedule-slot${isLive ? ' is-live' : ''}" onclick="${showData ? `openShow('${safeTitle}')` : ''}">
             <span class="schedule-slot-time">${slot.time}</span>
-            <div class="schedule-slot-art">${artImg}</div>
             <div class="schedule-slot-body">
-              <div class="schedule-slot-title">${slot.title}</div>
-              <div class="schedule-slot-host">${slot.host}</div>
+              <div class="schedule-slot-title">
+                <span class="slot-title-text">${slot.title}</span>
+                ${slot.isNew ? `<span class="schedule-slot-new">New</span>` : ''}
+              </div>
+              <div class="schedule-slot-host">
+                <div class="schedule-slot-avatar">${avatarHtml}</div>
+                ${slot.host}
+              </div>
             </div>
             <div class="schedule-slot-right">
               <div class="schedule-slot-live-badge">
                 <span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>
                 Live
               </div>
-              ${slot.isNew ? `<span class="schedule-slot-new">New</span>` : ''}
-              <div class="schedule-slot-genres">${genreTags}</div>
+              <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
+                title="${isAlerted ? 'Rappel activé' : 'Me rappeler'}"
+                onclick="event.stopPropagation(); toggleAlert(this, '${alertKey}', ${i}, '${slot.time}', '${safeTitle}')">
+                <i data-lucide="${alertIcon}" style="width:13px;height:13px;pointer-events:none;"></i>
+              </button>
             </div>
           </div>`;
       }
@@ -4683,9 +4836,9 @@ function renderSchedule() {
 
     html += `
       <div class="schedule-day${isToday ? ' today' : ''}">
-        <div class="schedule-day-label">
-          <span class="day-name">${isToday ? 'Today' : DAY_NAMES[dow]}</span>
-          <span class="day-date">${dateStr}</span>
+        <div class="schedule-day-header">
+          <span class="day-name">${isToday ? 'Today' : DAY_NAMES[dow]},</span>
+          <span class="day-date">${dateStr}.</span>
         </div>
         <div class="schedule-slots">${slotsHtml}</div>
       </div>`;
@@ -4697,6 +4850,7 @@ let schedulePreviousView = 'home';
 
 function openSchedule() {
   renderSchedule();
+  scheduleAllNotifs();
   const schedEl = document.getElementById('view-schedule');
   lucide.createIcons({ nodes: [schedEl] });
 
@@ -4933,7 +5087,11 @@ function openAbout() {
     aboutEl.classList.add('active');
     window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
-    requestAnimationFrame(() => { aboutEl.classList.add('visible'); animateCounters(); });
+    requestAnimationFrame(() => {
+      aboutEl.classList.add('visible');
+      lucide.createIcons({ nodes: [aboutEl] });
+      animateCounters();
+    });
   }, 280);
 
   const wordmark = document.querySelector('.nav-wordmark');
