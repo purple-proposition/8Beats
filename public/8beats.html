@@ -1361,7 +1361,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: 16px; color: var(--fg-secondary); line-height: 1.6; margin: 0;
 }
 
-.schedule-days { grid-column: 2 / span 10; display: flex; flex-direction: column; gap: 0; }
+.schedule-days { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 0; }
 .schedule-day {
   display: grid;
   grid-template-columns: 80px 1fr;
@@ -1444,7 +1444,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 .support-plans {
-  grid-column: 2 / span 10;
+  grid-column: 3 / span 8;
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
 }
 .support-plan {
@@ -1510,10 +1510,29 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .support-faq { grid-column: 3 / span 8; display: flex; flex-direction: column; gap: 24px; }
 .support-faq h2 { font-size: 20px; font-weight: 600; margin: 0; }
 .support-faq-items { display: flex; flex-direction: column; }
-.support-faq-item { border-top: 1px solid var(--border); padding: 20px 0; }
+.support-faq-item { border-top: 1px solid var(--border); }
 .support-faq-item:last-child { border-bottom: 1px solid var(--border); }
-.support-faq-item dt { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 8px; }
-.support-faq-item dd { font-size: 14px; color: var(--fg-secondary); line-height: 1.6; margin: 0; }
+.support-faq-trigger {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  width: 100%; background: none; border: none; cursor: pointer;
+  padding: 20px 0; text-align: left; font-family: var(--font);
+  color: var(--fg);
+}
+.support-faq-trigger:hover .faq-q { color: var(--fg-secondary); }
+.faq-q { font-size: 14px; font-weight: 600; flex: 1; }
+.faq-chevron {
+  flex-shrink: 0; width: 16px; height: 16px;
+  stroke: var(--fg-tertiary); fill: none; display: block;
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+}
+.support-faq-item.open .faq-chevron { transform: rotate(180deg); }
+.support-faq-item.open .faq-q { color: var(--fg); }
+.faq-body {
+  overflow: hidden; max-height: 0;
+  transition: max-height .3s cubic-bezier(.4,0,.2,1);
+}
+.support-faq-item.open .faq-body { max-height: 300px; }
+.faq-answer { font-size: 14px; color: var(--fg-secondary); line-height: 1.6; padding-bottom: 20px; }
 
 /* ── About view ── */
 #view-about {
@@ -1560,11 +1579,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Schedule / Support responsive ── */
 @media (max-width: 1024px) {
-  .schedule-hero { grid-column: 2 / span 10; }
-  .schedule-days { grid-column: 1 / span 12; }
-  .support-hero { grid-column: 2 / span 10; }
-  .support-plans { grid-column: 1 / span 12; }
-  .support-faq { grid-column: 2 / span 10; }
+  .schedule-hero, .schedule-days,
+  .support-hero, .support-plans, .support-faq { grid-column: 2 / span 10; }
 }
 @media (max-width: 768px) {
   .support-plans { grid-template-columns: 1fr; }
@@ -2415,20 +2431,32 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
       <h2>Questions</h2>
       <dl class="support-faq-items">
         <div class="support-faq-item">
-          <dt>Is 8Beats really free?</dt>
-          <dd>Yes. The radio will always be free to listen to. Supporting us is optional but it makes a real difference for a small independent station like ours.</dd>
+          <button class="support-faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">Is 8Beats really free?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body"><p class="faq-answer">Yes. The radio will always be free to listen to. Supporting us is optional but it makes a real difference for a small independent station like ours.</p></div>
         </div>
         <div class="support-faq-item">
-          <dt>Where does my money go?</dt>
-          <dd>Directly into server costs, streaming infrastructure, and compensating our resident DJs for their time and work. No middlemen, no label cuts.</dd>
+          <button class="support-faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">Where does my money go?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body"><p class="faq-answer">Directly into server costs, streaming infrastructure, and compensating our resident DJs for their time and work. No middlemen, no label cuts.</p></div>
         </div>
         <div class="support-faq-item">
-          <dt>Can I cancel anytime?</dt>
-          <dd>Absolutely. Monthly and annual plans can be cancelled at any time from your account settings. No questions asked.</dd>
+          <button class="support-faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">Can I cancel anytime?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body"><p class="faq-answer">Absolutely. Monthly and annual plans can be cancelled at any time from your account settings. No questions asked.</p></div>
         </div>
         <div class="support-faq-item">
-          <dt>Do I need an account to listen?</dt>
-          <dd>Not at all. You can tune in without signing up. An account is only needed if you want to follow residents, save shows, or access supporter perks.</dd>
+          <button class="support-faq-trigger" onclick="toggleFaq(this)">
+            <span class="faq-q">Do I need an account to listen?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body"><p class="faq-answer">Not at all. You can tune in without signing up. An account is only needed if you want to follow residents, save shows, or access supporter perks.</p></div>
         </div>
       </dl>
     </div>
@@ -4799,6 +4827,17 @@ function closeSupport() {
     const wordmark = document.querySelector('.nav-wordmark');
     wordmark.onclick = null; wordmark.title = '';
   }, 280);
+}
+
+/* ── FAQ accordion ── */
+function toggleFaq(btn) {
+  const item = btn.closest('.support-faq-item');
+  const isOpen = item.classList.contains('open');
+  // Close all others
+  item.closest('.support-faq-items').querySelectorAll('.support-faq-item.open').forEach(el => {
+    if (el !== item) el.classList.remove('open');
+  });
+  item.classList.toggle('open', !isOpen);
 }
 
 /* ── About page ── */
