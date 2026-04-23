@@ -280,21 +280,19 @@ a { text-decoration: none; color: inherit; }
    NAV
    ============================================================ */
 .nav-wrap {
-  position: sticky; top: var(--space); z-index: 100;
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 var(--space); margin: var(--space) 0 0;
-  pointer-events: none;
+  position: fixed; top: var(--space); left: var(--space);
+  z-index: 100; pointer-events: none;
 }
 
 .nav-pill {
-  background: var(--bg-overlay);
+  background: rgba(5,5,5,0.48);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  height: var(--nav-h);
-  display: flex; align-items: center;
-  padding: 0 20px;
+  border-radius: 10px;
+  width: 292px;
+  display: flex; flex-direction: column;
+  padding: 24px;
   pointer-events: all;
 }
 
@@ -309,51 +307,33 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Séparateur ── */
 .nav-sep {
-  width: 1px; height: 16px;
+  width: 100%; height: 1px;
   background: var(--border-subtle); flex-shrink: 0;
-  margin-left: 20px; margin-right: 20px;
+  margin: 16px 0;
 }
 
 /* ── Items de nav ── */
 .nav-item {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 12px;
   background: none; border: none; cursor: pointer; padding: 0;
   font-family: var(--font); font-size: 14px; font-weight: 400;
-  color: var(--fg); white-space: nowrap; text-decoration: none;
-  flex-shrink: 0; margin-right: 20px;
+  color: var(--fg-tertiary); white-space: nowrap; text-decoration: none;
+  flex-shrink: 0; width: 100%;
   transition: color .18s ease;
 }
-.nav-item:hover { color: var(--fg-tertiary); }
+.nav-item:hover { color: var(--fg-secondary); }
 .nav-item svg {
   width: 16px; height: 16px; flex-shrink: 0; display: block;
   fill: none; stroke: currentColor; stroke-width: 1.75;
   stroke-linecap: round; stroke-linejoin: round;
 }
-/* Dernier item avant un séparateur — pas de marge droite */
-#nav-about { margin-right: 0; }
 
-/* ── Label collapse ── */
-.nav-label {
-  display: inline-block; overflow: hidden;
-  max-width: 120px; opacity: 1; white-space: nowrap;
-  transition: max-width .32s cubic-bezier(.4,0,.15,1), opacity .18s ease;
-}
+/* ── Label ── */
+.nav-label { display: inline; }
 
-/* ── Collapsible items ── */
-.nav-collapsible-item {
-  overflow: hidden;
-  max-width: 200px; opacity: 1;
-  transition: max-width .32s cubic-bezier(.4,0,.15,1),
-              opacity .2s ease,
-              margin-right .32s cubic-bezier(.4,0,.15,1);
-}
-.nav-sep.sep-collapsible {
-  max-width: 1px; overflow: hidden; opacity: 1;
-  transition: max-width .32s cubic-bezier(.4,0,.15,1),
-              opacity .2s ease,
-              margin-left .32s cubic-bezier(.4,0,.15,1),
-              margin-right .32s cubic-bezier(.4,0,.15,1);
-}
+/* ── Collapsible items — always visible in vertical nav ── */
+.nav-collapsible-item { overflow: visible; max-width: none; opacity: 1; }
+.nav-sep.sep-collapsible { overflow: visible; max-width: 100%; opacity: 1; }
 
 /* ── Theme toggle ── */
 .theme-toggle {
@@ -415,13 +395,12 @@ html.light .theme-knob { transform: translateX(20px); }
 .nav-dots { display: flex; align-items: center; justify-content: center; gap: 4px; }
 .nav-ic.nav-dots:hover span { background: var(--fg-tertiary) !important; }
 
-/* ── COLLAPSED STATE ── */
-.nav-pill.collapsed .nav-collapsible-item { max-width: 0; opacity: 0; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-sep.sep-collapsible { max-width: 0; opacity: 0; margin-left: 0 !important; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-soc { max-width: 0; opacity: 0; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-label { max-width: 0; opacity: 0; }
-.nav-pill.collapsed .theme-toggle.nav-collapsible-item { max-width: 0; opacity: 0; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-dots-collapsed { max-width: 24px; opacity: 1; margin-right: 20px !important; }
+/* ── Hide horizontal-only elements ── */
+.nav-soc, .nav-dots-collapsed, .theme-toggle,
+#sep-main-3, #sep-main-4, .hamburger, .nav-sep-mobile { display: none !important; }
+
+/* ── panel-support never re-appears ── */
+#panel-support { display: none !important; }
 
 /* Dropdown */
 .nav-dropdown-wrap { position: relative; }
@@ -1027,32 +1006,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
   body { padding-bottom: calc(var(--player-h) + var(--space) + env(safe-area-inset-bottom,0px) + 8px); overflow-x: hidden; }
 
-  /* ── Nav ── */
-  .nav-wrap { margin: var(--space) 0 0; padding: 0 var(--space); }
-  .nav-sep-mobile, .hamburger, .drawer-overlay, .drawer { display: none !important; }
-  .nav-pill { padding: 0 16px; width: fit-content; height: 48px; border-radius: 12px; transition: none !important; animation: none !important; }
+  /* ── Nav — mobile: compact centered pill ── */
+  .nav-wrap { position: sticky; top: var(--space); left: auto; margin: var(--space) 0 0; padding: 0 var(--space); display: flex; justify-content: center; pointer-events: none; }
+  .nav-pill { flex-direction: row; align-items: center; width: fit-content; height: 48px; padding: 0 16px; border-radius: 12px; gap: 0; }
   .nav-pill, .nav-pill * { transition: none !important; animation: none !important; }
-  .nav-wordmark { font-size: 14px; margin-right: 0 !important; }
-  .nav-sep#sep-main-1 { margin-left: var(--space) !important; margin-right: var(--space) !important; }
-  #search-btn { margin-right: 0 !important; }
-  .nav-pill .nav-collapsible-item,
-  .nav-pill .nav-sep.sep-collapsible,
-  .nav-pill .nav-soc { max-width: 0 !important; opacity: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
-  .nav-pill .nav-label { max-width: 0 !important; opacity: 0 !important; }
-  .nav-pill .nav-dots-collapsed { max-width: 32px !important; opacity: 1 !important; margin-right: 0 !important; }
-  #nav-dots-btn .dot-span { display: none; }
-  #nav-dots-btn .burger-icon { display: flex; flex-direction: column; gap: 4px; }
-  #nav-dots-btn .burger-icon span {
-    display: block; width: 16px; height: 1.5px;
-    background: var(--fg-secondary); border-radius: 1px;
-    transition: transform .2s ease, opacity .2s ease;
-    transform-origin: center;
-  }
-  #mobile-nav-overlay.open ~ .nav-wrap #nav-dots-btn .burger-icon span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
-  #mobile-nav-overlay.open ~ .nav-wrap #nav-dots-btn .burger-icon span:nth-child(2) { opacity: 0; }
-  #mobile-nav-overlay.open ~ .nav-wrap #nav-dots-btn .burger-icon span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
-  #sep-main-3 { display: none !important; }
-  #theme-toggle { display: none !important; }
+  .nav-sep { width: 1px; height: 16px; margin: 0 12px; }
+  .nav-item { width: auto; color: var(--fg); }
+  .nav-collapsible-item { display: none !important; }
+  .nav-sep.sep-collapsible { display: none !important; }
+  .nav-soc, .nav-dots-collapsed, .theme-toggle,
+  #sep-main-3, #sep-main-4, .hamburger, .nav-sep-mobile { display: none !important; }
 
   /* ── Hero ── */
   .hero {
@@ -2750,7 +2713,7 @@ let navCollapsed = false;
 const SCROLL_THRESHOLD = 60;
 
 function updateNavCollapse() {
-  if (window.innerWidth <= 768) return;
+  return; // vertical nav — no scroll collapse
   const scrolled = window.scrollY > SCROLL_THRESHOLD;
   if (scrolled === navCollapsed) return;
   navCollapsed = scrolled;
