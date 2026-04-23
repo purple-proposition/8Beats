@@ -1,0 +1,40 @@
+name: Cleanup old Vercel deployments
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Vercel deployment
+        run: sleep 90
+
+      - name: Delete old deployments (keep last 3)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          PROJECT_ID="prj_ZcEdZsck34hkzw9CxRE0wZ41wBhO"
+          TEAM_ID="purple-proposition"
+
+          # Fetch all deployments sorted by creation date (newest first)
+          DEPLOYMENTS=$(curl -s \
+            "https://api.vercel.com/v6/deployments?projectId=${PROJECT_ID}&teamId=${TEAM_ID}&limit=100" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            | jq -r '.deployments[].uid')
+
+          # Skip first 3, delete the rest
+          COUNT=0
+          for UID in $DEPLOYMENTS; do
+            COUNT=$((COUNT + 1))
+            if [ $COUNT -le 3 ]; then
+              echo "Keeping deployment $COUNT: $UID"
+              continue
+            fi
+            echo "Deleting deployment: $UID"
+            curl -s -X DELETE \
+              "https://api.vercel.com/v13/deployments/${UID}?teamId=${TEAM_ID}" \
+              -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+              -o /dev/null -w "Status: %{http_code}\n"
+          done
