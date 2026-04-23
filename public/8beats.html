@@ -1226,46 +1226,27 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Explore modal theming ── */
 .explore-card {
-  background: var(--bg-overlay);
-  border: 1px solid var(--border);
+  background: rgba(5,5,5,0.5);
+  border: 1px solid #282828;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
 /* Tabs */
 .explore-tab {
-  font-family: var(--font); font-size: 14px; font-weight: 400;
-  color: var(--fg-tertiary); background: none; border: none;
-  padding: 16px 8px; cursor: pointer; transition: color .18s;
-  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font); font-size: 14px; font-weight: 500;
+  color: #898989; background: none; border: none;
+  padding: 0; cursor: pointer; transition: color .18s;
+  display: flex; align-items: center; gap: 12px;
 }
-.explore-tab:hover { color: var(--fg-secondary); }
-.explore-tab-active { color: var(--fg); cursor: default; }
+.explore-tab:hover { color: #bfbfbf; }
+.explore-tab-active { color: #f2f2f2; cursor: default; }
 
-/* Filter toggle hover */
-#filter-toggle-btn:hover { color: var(--fg-secondary) !important; }
-#filter-toggle-btn:hover #filter-toggle-icon { stroke: var(--fg-secondary) !important; }
-
-/* Show rows hover — titre uniquement */
-.explore-show-row { display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer; }
-.explore-show-title { font-size:14px;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .18s ease; }
-.explore-show-row:hover .explore-show-title { color: var(--fg-tertiary); }
-.explore-section-border {
-  position: relative;
-}
-.explore-section-border::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 16px;
-  right: 16px;
-  height: 1px;
-  background: var(--border);
-}
-.explore-close-btn svg { transition: stroke .18s ease; }
-.explore-close-btn:hover svg { stroke: var(--fg-secondary) !important; }
-#explore-input::placeholder { color: var(--fg-tertiary); }
-#filter-count { font-size: 12px; font-weight: 600; letter-spacing: .5px; background: var(--fg-secondary); color: var(--bg); border-radius: 99px; padding: 1px 6px; }
+/* Show rows */
+.explore-show-row { display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0;cursor:pointer; }
+.explore-show-title { font-size:14px;color:#f2f2f2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .18s ease; }
+.explore-show-row:hover .explore-show-title { color: #898989; }
+#explore-input::placeholder { color: #898989; }
 
 /* Genre tooltip */
 #genre-tooltip {
@@ -2120,49 +2101,35 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 <!-- EXPLORE MODAL -->
 <div id="explore" style="display:none;position:fixed;inset:0;z-index:500;padding:var(--space) var(--space) calc(var(--player-h) + var(--space) + var(--space)) var(--space);align-items:center;justify-content:center;opacity:0;transition:opacity .2s ease;">
-  <!-- Backdrop -->
   <div id="explore-backdrop" style="position:fixed;inset:0;background:transparent;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);z-index:-1;transition:background .25s ease,backdrop-filter .25s ease;"></div>
-  <!-- Card -->
-  <div id="explore-card" class="explore-card" style="max-width:760px;width:100%;height:640px;display:flex;flex-direction:column;border-radius:12px;overflow:hidden;transform:translateY(12px);transition:transform .2s ease;">
+  <div id="explore-card" class="explore-card" style="max-width:760px;width:100%;max-height:calc(100vh - var(--player-h) - var(--space)*5);display:flex;flex-direction:column;border-radius:12px;overflow:hidden;transform:translateY(12px);transition:transform .2s ease;">
 
-    <!-- Search bar -->
-    <div class="explore-section-border" style="padding:16px;display:flex;align-items:center;gap:12px;">
-      <i data-lucide="search" style="width:16px;height:16px;stroke:var(--fg-tertiary);fill:none;display:block;"></i>
-      <input id="explore-input" placeholder="Search shows, residents, games, genres…" oninput="handleSearch(this.value)" class="explore-input" style="flex:1;background:none;border:none;outline:none;font-family:var(--font);font-size:14px;color:var(--fg-secondary);"/>
-    </div>
+    <!-- Inner layout: padding 24px, gap 24px between sections -->
+    <div style="display:flex;flex-direction:column;gap:24px;padding:24px;flex:1;overflow:hidden;min-height:0;">
 
-    <!-- Tabs -->
-    <div class="explore-section-border" style="display:flex;gap:0;padding:0;">
-      <button id="tab-shows" onclick="setTab('shows')" class="explore-tab explore-tab-active" style="padding-left:16px;"><i data-lucide="music-2" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Shows</button>
-      <button id="tab-residents" onclick="setTab('residents')" class="explore-tab"><i data-lucide="users" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Residents</button>
-    </div>
-
-    <!-- Filters toggle -->
-    <div id="explore-filter-bar" class="explore-section-border" style="padding:0 16px;display:flex;align-items:center;gap:16px;">
-      <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:16px 0;font-family:var(--font);font-size:14px;font-weight:400;color:var(--fg-tertiary);transition:color .18s ease;">
-        <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="width:14px;height:14px;stroke:var(--fg-tertiary);fill:none;display:block;transition:stroke .18s ease;"></i>
-        Filters
-        <span id="filter-count" style="display:none;"></span>
-      </button>
-    </div>
-
-    <!-- Filters panel (shows only) -->
-    <div id="explore-filters" style="max-height:0;overflow:hidden;transition:max-height .3s cubic-bezier(.4,0,.2,1);">
-      <div class="explore-section-border" style="padding:16px 16px;display:flex;flex-direction:column;gap:12px;">
-        <div style="display:flex;align-items:flex-start;gap:12px;">
-          <span class="label" style="padding-top:5px;white-space:nowrap;flex-shrink:0;min-width:48px;">Genre</span>
-          <div id="filter-genre" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span class="label" style="white-space:nowrap;flex-shrink:0;min-width:48px;">Time</span>
-          <div id="filter-time" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-        </div>
+      <!-- Search bar -->
+      <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+        <i data-lucide="search" style="width:14px;height:14px;stroke:#898989;fill:none;display:block;flex-shrink:0;"></i>
+        <input id="explore-input" placeholder="Search shows, residents, games, genres…" oninput="handleSearch(this.value)" class="explore-input" style="flex:1;background:none;border:none;outline:none;font-family:var(--font);font-size:14px;font-weight:500;color:var(--fg-secondary);"/>
       </div>
+
+      <!-- Divider -->
+      <hr style="border:none;border-top:1px solid #282828;margin:0;flex-shrink:0;">
+
+      <!-- Tabs -->
+      <div style="display:flex;gap:24px;flex-shrink:0;">
+        <button id="tab-shows" onclick="setTab('shows')" class="explore-tab explore-tab-active"><i data-lucide="music-2" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Shows</button>
+        <button id="tab-residents" onclick="setTab('residents')" class="explore-tab"><i data-lucide="users" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Residents</button>
+        <button id="tab-schedule" onclick="setTab('schedule')" class="explore-tab"><i data-lucide="calendar" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Schedule</button>
+      </div>
+
+      <!-- Divider -->
+      <hr style="border:none;border-top:1px solid #282828;margin:0;flex-shrink:0;">
+
+      <!-- Results -->
+      <div id="explore-content" style="flex:1;overflow-y:auto;min-height:0;transition:opacity .18s ease;"></div>
+
     </div>
-
-    <!-- Results -->
-    <div id="explore-content" style="padding:0;flex:1;overflow-y:auto;transition:opacity .18s ease;"></div>
-
   </div>
 </div>
 
@@ -3093,70 +3060,94 @@ function applyFilters() {
 
 function renderShows(list, q) {
   q = (q || '').toLowerCase();
-  return list.map(s => {
-    const matchedGames = q && s.games ? s.games.filter(g => g.toLowerCase().includes(q)) : [];
-    const gameHint = matchedGames.length
-      ? `<span style="font-size:12px;color:var(--fg-tertiary);margin-top:2px;display:block;">
-           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:3px;margin-top:-1px;"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01M6 12h.01M18 12h.01M12 8v8"/></svg>
-           ${matchedGames.slice(0,2).join(', ')}
-         </span>`
-      : '';
-    return `
+  const rows = list.map(s => `
     <div class="explore-show-row" onclick="closeExplore();openShow('${s.title.replace(/'/g, "\\'")}')">
-      <div style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;">
+      <div style="display:flex;flex-direction:column;gap:6px;min-width:0;flex:1;">
         <span class="explore-show-title">${s.title}</span>
-        <span style="font-size:12px;color:var(--fg-tertiary);">${s.host} · ${s.date}</span>
-        ${gameHint}
+        <span style="font-size:12px;color:#898989;">${s.host} · ${s.date}</span>
       </div>
-      <div style="display:flex;gap:8px;flex-shrink:0;margin-left:16px;">
+      <div style="display:flex;gap:8px;flex-shrink:0;">
         ${s.genres.slice(0,2).map(t=>`<span class="tag">${t}</span>`).join('')}
       </div>
-    </div>
-  `}).join('');
+    </div>`).join('');
+  return `<div style="display:flex;flex-direction:column;gap:24px;">${rows}</div>`;
 }
+
 function renderResidents(list) {
-  return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;">` + list.map(r => `
-    <div style="display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:background .18s ease;" onmouseenter="this.style.background='rgba(128,128,128,.06)'" onmouseleave="this.style.background='transparent'">
-      <div style="width:40px;height:40px;border-radius:50%;background:var(--border);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--fg-tertiary);flex-shrink:0;">${r.initials}</div>
+  return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">` + list.map(r => `
+    <div style="display:flex;align-items:center;gap:16px;padding:16px;border:1px solid #282828;border-radius:12px;cursor:pointer;transition:background .18s ease;" onmouseenter="this.style.background='rgba(255,255,255,.04)'" onmouseleave="this.style.background='transparent'">
+      <div style="width:40px;height:40px;border-radius:50%;background:#1a1a1a;border:1px solid #282828;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#898989;flex-shrink:0;">${r.initials}</div>
       <div style="min-width:0;">
-        <div style="font-size:16px;color:var(--fg);font-weight:400;">${r.name}</div>
-        <div style="font-size:12px;color:var(--fg-tertiary);margin-top:3px;">${r.frequency}</div>
+        <div style="font-size:14px;color:#f2f2f2;font-weight:400;">${r.name}</div>
+        <div style="font-size:12px;color:#898989;margin-top:4px;">${r.frequency}</div>
       </div>
-    </div>
-  `).join('') + `</div>`;
+    </div>`).join('') + `</div>`;
+}
+
+function renderSchedule() {
+  const days = [];
+  const today = new Date();
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  for (let i = -3; i <= 3; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    days.push({ offset: i, name: dayNames[d.getDay()], date: `${d.getDate()} ${monthNames[d.getMonth()]}`, isToday: i === 0 });
+  }
+  const scheduleData = [
+    { day: -3, time: '10:00', title: 'Summer Memories', host: 'Julien Goyon', genres: ['Downtempo','Folk','Orchestral'] },
+    { day: -2, time: '14:00', title: 'From the OST — Shortlist 2', host: 'GST Channel', genres: ['Chiptune'] },
+    { day: -1, time: '20:00', title: 'X3', host: 'Submerse', genres: ['Ambient','House','Jazz'] },
+    { day:  0, time: '09:00', title: 'Winter Getaway', host: 'Aamn', genres: [], isNew: true },
+    { day:  0, time: '21:00', title: 'Best of VGM: December 2025', host: 'Peternel6', genres: ['Ambient','Metal','New Age'] },
+    { day:  1, time: '12:00', title: 'International Radio Day', host: 'Purple Proposition', genres: ['Ambient','Downtempo'] },
+    { day:  2, time: '18:00', title: 'Retro RPG Evening', host: 'Koji & Friends', genres: ['Chiptune','OST'] },
+    { day:  3, time: '16:00', title: 'Dusk', host: 'Neon Waves', genres: ['Synthwave'] },
+  ];
+
+  const header = `<div style="display:flex;gap:0;border-bottom:1px solid #282828;padding-bottom:16px;margin-bottom:16px;overflow-x:auto;">` +
+    days.map(d => `<div style="flex:1;min-width:80px;font-size:12px;color:${d.isToday ? '#f2f2f2' : '#898989'};font-weight:${d.isToday ? '500' : '400'};">${d.name}, ${d.date}</div>`).join('') +
+    `</div>`;
+
+  const rows = scheduleData.map(s => {
+    const day = days.find(d => d.offset === s.day);
+    const isPast = s.day < 0;
+    return `<div class="explore-show-row" style="opacity:${isPast ? '0.45' : '1'}">
+      <div style="font-size:12px;color:#898989;min-width:40px;flex-shrink:0;">${s.time}</div>
+      <div style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1;">
+        <span class="explore-show-title">${s.title}</span>
+        <span style="font-size:12px;color:#898989;">${s.host} · ${day ? day.name : ''}</span>
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0;align-items:center;">
+        ${s.isNew ? '<span style="font-size:10px;font-weight:600;letter-spacing:.08em;background:#f2f2f2;color:#000;border-radius:4px;padding:2px 6px;">NEW</span>' : ''}
+        ${s.genres.slice(0,2).map(t=>`<span class="tag">${t}</span>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  return `<div style="display:flex;flex-direction:column;gap:0;">${header}<div style="display:flex;flex-direction:column;gap:20px;">${rows}</div></div>`;
 }
 
 function setTab(t) {
   exploreTab = t;
-  const inp = document.getElementById('explore-input');
-  inp.value = '';
-  document.getElementById('tab-shows').className    = 'explore-tab' + (t==='shows'     ? ' explore-tab-active' : '');
-  document.getElementById('tab-residents').className = 'explore-tab' + (t==='residents' ? ' explore-tab-active' : '');
-  const bar     = document.getElementById('explore-filter-bar');
-  const panel   = document.getElementById('explore-filters');
+  document.getElementById('explore-input').value = '';
+  ['shows','residents','schedule'].forEach(id => {
+    const el = document.getElementById('tab-' + id);
+    if (el) el.className = 'explore-tab' + (t === id ? ' explore-tab-active' : '');
+  });
   const content = document.getElementById('explore-content');
-
   content.style.opacity = '0';
-
   setTimeout(() => {
     if (t === 'shows') {
-      bar.style.display = 'flex';
       applyFilters();
-    } else {
-      if (filtersOpen) {
-        panel.style.maxHeight = '0';
-        filtersOpen = false;
-        const btn  = document.getElementById('filter-toggle-btn');
-        const icon = document.getElementById('filter-toggle-icon');
-        if (btn)  btn.style.color = 'var(--fg-tertiary)';
-        if (icon) icon.style.stroke = 'var(--fg-tertiary)';
-      }
-      bar.style.display = 'none';
-      const q = (document.getElementById('explore-input').value || '').toLowerCase();
+    } else if (t === 'residents') {
+      const q = '';
       const f = q ? residents.filter(r => r.name.toLowerCase().includes(q)) : residents;
-      content.innerHTML = f.length ? renderResidents(f) : '<p style="font-size:14px;color:var(--fg-tertiary);padding:16px 8px;">No residents found.</p>';
+      content.innerHTML = f.length ? renderResidents(f) : '<p style="font-size:14px;color:#898989;">No residents found.</p>';
       initScrollFade(content, 48);
       wireTagTooltips(content);
+    } else if (t === 'schedule') {
+      content.innerHTML = renderSchedule();
+      initScrollFade(content, 48);
     }
     content.style.opacity = '1';
   }, 180);
@@ -3181,12 +3172,6 @@ function openExplore() {
   if (exploreClosing) return;
   activeGenres.clear(); activeThemes.clear(); activeTime = null;
   filtersOpen = false;
-  const panel = document.getElementById('explore-filters');
-  if (panel) panel.style.maxHeight = '0';
-  const btn = document.getElementById('filter-toggle-btn');
-  const icon = document.getElementById('filter-toggle-icon');
-  if (btn) btn.style.color = 'var(--fg-tertiary)';
-  if (icon) icon.style.stroke = 'var(--fg-tertiary)';
   const backdrop = document.getElementById('explore-backdrop');
   exploreEl.style.display = 'flex';
   requestAnimationFrame(() => requestAnimationFrame(() => {
