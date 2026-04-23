@@ -288,10 +288,10 @@ a { text-decoration: none; color: inherit; }
 
 .nav-pill {
   background: var(--bg-overlay);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border: 1px solid var(--border-subtle);
-  border-radius: 99px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   height: var(--nav-h);
   display: flex; align-items: center;
   padding: 0 20px;
@@ -659,8 +659,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
    BUTTONS
    ============================================================ */
 .btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 12px 16px;
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 13px 17px;
   font-family: var(--font); font-size: 14px; font-weight: 400;
   letter-spacing: -.1px;
   border-radius: var(--radius-sm); cursor: pointer;
@@ -767,7 +767,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-meta   { font-size: 14px; color: var(--fg-tertiary); }
 .card-tags   { display: none; }
 
-.tag { font-size: 12px; font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--fg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; cursor: pointer; transition: color 140ms ease, border-color 140ms ease, background 140ms ease; }
+.tag { font-size: 12px; font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--fg-tertiary); border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; cursor: pointer; transition: color 140ms ease, border-color 140ms ease, background 140ms ease; }
 .tag:hover { color: var(--fg); border-color: var(--border-hover); background: var(--bg-hover); }
 
 /* ============================================================
@@ -828,10 +828,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .orb-3 { width:180px; height:140px; background:radial-gradient(ellipse,var(--orb-3) 0%,transparent 70%); bottom:-30px; left:-30px; }
 
 .panel-cookie {
-  grid-column: 11 / span 2;
   position: relative;
   width: auto;
-  margin-bottom: var(--space);
+  margin-bottom: 16px;
   pointer-events: all;
   transition: opacity .18s ease, transform .18s ease;
 }
@@ -839,9 +838,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ============================================================
    PLAYER — desktop
    ============================================================ */
-.player-wrap { position: fixed; bottom: var(--space); left: var(--space); right: var(--space); display: grid; grid-template-columns: repeat(12,1fr); column-gap: 24px; row-gap: 0; z-index: 50; pointer-events: none; }
+.player-wrap { position: fixed; bottom: var(--space); left: var(--space); right: var(--space); display: flex; flex-direction: column; align-items: flex-end; z-index: 50; pointer-events: none; }
 
-.player-inner { grid-column: 7/span 6; pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; background: var(--bg-overlay); backdrop-filter: blur(20px) saturate(1.8); -webkit-backdrop-filter: blur(20px) saturate(1.8); }
+.player-inner { width: calc(50% - 12px); flex-shrink: 0; pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: 12px; border: 1px solid #282828; overflow: hidden; background: rgba(5,5,5,0.50); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 
 .playlist { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
 .playlist.open { max-height: 284px; }
@@ -937,16 +936,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; flex-direction: column;
 }
 /* Fixed 16px padding all sides — play button + text sit inside a consistent box */
-.player-bar-main { min-height: var(--player-h); display: flex; align-items: center; padding: 24px; gap: 24px; }
+.player-bar-main { display: flex; padding: 24px; align-items: center; gap: 24px; align-self: stretch; }
 
-.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-subtle); border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 140ms ease, background 140ms ease; color: #fff; }
+.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid #282828; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 140ms ease, background 140ms ease; color: #fff; }
 .play-btn:hover { border-color: var(--border-hover); background: var(--bg-hover); }
 .play-btn svg { fill: var(--fg); stroke: none; transition: fill 140ms ease; }
 
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
 .player-info-top { display: flex; align-items: center; gap: 8px; }
 
-.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 .player-title-wrap { overflow: hidden; mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); }
@@ -955,16 +954,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
 .player-game { font-size: 14px; color: var(--fg-tertiary); }
-.player-controls { display: flex; align-items: center; gap: 24px; flex-shrink: 0; }
+.player-controls { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 
-.spotify-btn { width: 40px; height: 40px; border-radius: 10px; background: transparent; border: 1px solid var(--border-subtle); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 140ms ease, background 140ms ease; }
+.spotify-btn { width: 40px; height: 40px; border-radius: 12px; background: transparent; border: 1px solid #282828; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 140ms ease, background 140ms ease; }
 .spotify-btn svg { width: 18px; height: 18px; fill: var(--fg); stroke: none; transition: fill 140ms ease; }
 .spotify-btn:hover { border-color: var(--border-hover); background: var(--bg-hover); }
 .spotify-btn:hover svg { fill: var(--fg-tertiary); }
 
 .divider { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; }
 
-.ctrl-btn { background: transparent; border: 1px solid var(--border-subtle); border-radius: 10px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; color: var(--fg); transition: border-color 140ms ease, background 140ms ease, color 140ms ease; }
+.ctrl-btn { background: transparent; border: 1px solid #282828; border-radius: 12px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; color: var(--fg); transition: border-color 140ms ease, background 140ms ease, color 140ms ease; }
 .ctrl-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; transition: stroke 140ms ease; }
 .ctrl-btn:hover { border-color: var(--border-hover); background: var(--bg-hover); color: var(--fg-tertiary); }
 #playlist-btn.active { border-color: var(--border-hover); background: var(--bg-hover); color: var(--fg-tertiary); }
@@ -1030,7 +1029,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   /* ── Nav ── */
   .nav-wrap { margin: var(--space) 0 0; padding: 0 var(--space); }
   .nav-sep-mobile, .hamburger, .drawer-overlay, .drawer { display: none !important; }
-  .nav-pill { padding: 0 16px; width: fit-content; height: 48px; border-radius: 99px; transition: none !important; animation: none !important; }
+  .nav-pill { padding: 0 16px; width: fit-content; height: 48px; border-radius: 12px; transition: none !important; animation: none !important; }
   .nav-pill, .nav-pill * { transition: none !important; animation: none !important; }
   .nav-wordmark { font-size: 14px; margin-right: 0 !important; }
   .nav-sep#sep-main-1 { margin-left: var(--space) !important; margin-right: var(--space) !important; }
@@ -1175,16 +1174,15 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
   /* ── Player ── */
   .player-wrap {
-    display: flex; flex-direction: column; gap: var(--space);
-    left: var(--space); right: var(--space);
+    align-items: stretch;
     bottom: calc(var(--space) + env(safe-area-inset-bottom,0px));
   }
   .player-inner {
-    grid-column: unset;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #282828;
   }
-  .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; }
+  .player-bar-main { padding: 16px; gap: 16px; }
   .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: 8px; }
   .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
   .player-info-top { gap: 8px; }
@@ -1266,8 +1264,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .explore-card {
   background: var(--bg-overlay);
   border: 1px solid var(--border);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Tabs */
@@ -2161,7 +2159,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   <!-- Backdrop -->
   <div id="explore-backdrop" style="position:fixed;inset:0;background:transparent;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);z-index:-1;transition:background .25s ease,backdrop-filter .25s ease;"></div>
   <!-- Card -->
-  <div id="explore-card" class="explore-card" style="max-width:760px;width:100%;height:640px;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(12px);transition:transform .2s ease;">
+  <div id="explore-card" class="explore-card" style="max-width:760px;width:100%;height:640px;display:flex;flex-direction:column;border-radius:12px;overflow:hidden;transform:translateY(12px);transition:transform .2s ease;">
 
     <!-- Search bar -->
     <div class="explore-section-border" style="padding:16px;display:flex;align-items:center;gap:12px;">
