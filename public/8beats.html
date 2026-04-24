@@ -228,10 +228,10 @@
   --dur-short:   180ms;   /* hover bg · border · indicateur */
   --dur-medium:  260ms;   /* dropdown · popup · small panel */
   --dur-large:   340ms;   /* overlay · modal · drawer */
-  --dur-tooltip: 150ms;   /* tooltip enter/exit — entre micro et short */
+  --dur-tooltip: 152ms;   /* tooltip enter/exit — entre micro et short */
 
   /* Stagger — discret, jamais cinématique */
-  --stagger-tight:  18ms;
+  --stagger-tight:  20ms;
   --stagger-medium: 36ms;
 
   /* Délai contenu — le contenu commence légèrement après le conteneur */
@@ -1652,20 +1652,22 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #filter-toggle-btn:hover { color: var(--text-secondary) !important; }
 #filter-toggle-btn:hover #filter-toggle-icon { stroke: var(--text-secondary) !important; }
 
-/* ── Show row reveal — fade+slide+blur à l'insertion DOM ── */
+/* ── Show row reveal — opacity monte vite, blur s'attarde (même principe que sidebar) ── */
 @keyframes rowReveal {
-  from { opacity: 0; transform: translateY(3px); filter: blur(4px); }
-  to   { opacity: 1; transform: translateY(0);   filter: blur(0px); }
+  0%   { opacity: 0; transform: translateY(3px); filter: blur(6px); }
+  40%  { opacity: 1; transform: translateY(0);   filter: blur(3px); }
+  100% { opacity: 1; transform: translateY(0);   filter: blur(0px); }
 }
 
 /* ── Section reveal — header sections inside Explorer / Schedule card ──
-   Réinitialise à chaque ouverture grâce au display:none→flex du parent. */
+   3 étapes : texte pleinement visible dès 40%, blur se dissout ensuite. */
 @keyframes sectionReveal {
-  from { opacity: 0; transform: translateY(4px); filter: blur(6px); }
-  to   { opacity: 1; transform: translateY(0);   filter: blur(0px); }
+  0%   { opacity: 0; transform: translateY(4px); filter: blur(8px); }
+  40%  { opacity: 1; transform: translateY(0);   filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0);   filter: blur(0px); }
 }
 #explore-card > .explore-section-border {
-  animation: sectionReveal var(--dur-short) var(--ease-standard) both;
+  animation: sectionReveal 240ms cubic-bezier(0, 0, 0.58, 1) both;
   animation-delay: var(--delay-content);
 }
 #explore-card > .explore-section-border:nth-child(2) {
@@ -1676,17 +1678,17 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 /* Settings card — tab bar + body reveal */
 #settings-card > .sp-day-bar {
-  animation: sectionReveal var(--dur-short) var(--ease-standard) both;
+  animation: sectionReveal 240ms cubic-bezier(0, 0, 0.58, 1) both;
   animation-delay: var(--delay-content);
 }
 #settings-card > #settings-body {
-  animation: sectionReveal var(--dur-short) var(--ease-standard) both;
+  animation: sectionReveal 240ms cubic-bezier(0, 0, 0.58, 1) both;
   animation-delay: calc(var(--delay-content) + var(--stagger-tight));
 }
 
 /* Schedule card — day bar + content */
 #schedule-card > * {
-  animation: sectionReveal var(--dur-short) var(--ease-standard) both;
+  animation: sectionReveal 240ms cubic-bezier(0, 0, 0.58, 1) both;
   animation-delay: var(--delay-content);
 }
 #schedule-card > *:nth-child(2) {
@@ -1695,7 +1697,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .explore-show-row {
   display:flex;align-items:center;justify-content:space-between;
   padding:var(--space-3) var(--space-5);cursor:pointer;
-  animation: rowReveal var(--dur-short) var(--ease-standard) both;
+  animation: rowReveal 240ms cubic-bezier(0, 0, 0.58, 1) both;
 }
 .explore-show-row:hover .explore-show-title { color: var(--text-secondary); }
 .explore-show-title { transition: color var(--dur-micro) var(--ease-hover); }
