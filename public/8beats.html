@@ -1476,22 +1476,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .artist-stats { margin-bottom: var(--space-5); }
 }
 
-/* ── Explore backdrop ── */
-#explore-backdrop.open {
-  background: var(--overlay);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-}
-
-/* ── Schedule backdrop (same pattern) ── */
-#schedule-backdrop.open {
-  background: var(--overlay);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-}
-
-/* ── Settings backdrop ── */
+/* ── Backdrops — overlay only, pas de backdrop-filter animé (trop coûteux) ── */
+#explore-backdrop.open,
+#schedule-backdrop.open,
 #settings-backdrop.open {
   background: var(--overlay);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }
 
 /* ── Settings inline kbd tags ── */
@@ -1629,19 +1618,18 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: var(--space-4);
 }
 
-/* ── Explore card — animation d'entrée/sortie avec blur ──
-   Même logique mirror que le sidebar : easings croisés par direction.
-   Open  : transform ease-out + filter ease-in (blur s'attarde pendant que le card apparaît)
-   Close : transform ease-in  + filter ease-out (blur monte vite pendant que le card est visible) */
-#explore-card {
-  filter: blur(0px);
-  transition: transform 260ms cubic-bezier(0, 0, 0.58, 1),
-              filter    260ms cubic-bezier(0.42, 0, 1, 1);
+/* ── Modal cards — transform + opacity uniquement, aucun blur animé ──
+   Open  : ease-out (décélération naturelle, carte qui atterrit)
+   Close : ease-in  (accélération, carte qui repart vite) */
+#explore-card,
+#schedule-card,
+#settings-card {
+  transition: transform 200ms cubic-bezier(0, 0, 0.58, 1);
 }
-#explore-card.is-closing {
-  filter: blur(12px);
-  transition: transform 260ms cubic-bezier(0.42, 0, 1, 1),
-              filter    260ms cubic-bezier(0, 0, 0.58, 1);
+#explore-card.is-closing,
+#schedule-card.is-closing,
+#settings-card.is-closing {
+  transition: transform 180ms cubic-bezier(0.42, 0, 1, 1);
 }
 
 /* ── Explore modal theming ── */
@@ -1667,19 +1655,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #filter-toggle-btn:hover { color: var(--text-secondary) !important; }
 #filter-toggle-btn:hover #filter-toggle-icon { stroke: var(--text-secondary) !important; }
 
-/* ── Show row reveal — opacity monte vite, blur s'attarde (même principe que sidebar) ── */
+/* ── Show row reveal — transform + opacity uniquement ── */
 @keyframes rowReveal {
-  0%   { opacity: 0; transform: translateY(3px); filter: blur(6px); }
-  40%  { opacity: 1; transform: translateY(0);   filter: blur(3px); }
-  100% { opacity: 1; transform: translateY(0);   filter: blur(0px); }
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Section reveal — header sections inside Explorer / Schedule card ──
-   3 étapes : texte pleinement visible dès 40%, blur se dissout ensuite. */
+/* ── Section reveal — headers Explorer / Schedule / Settings ── */
 @keyframes sectionReveal {
-  0%   { opacity: 0; transform: translateY(4px); filter: blur(8px); }
-  40%  { opacity: 1; transform: translateY(0);   filter: blur(4px); }
-  100% { opacity: 1; transform: translateY(0);   filter: blur(0px); }
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 #explore-card > .explore-section-border {
   animation: sectionReveal 240ms cubic-bezier(0, 0, 0.58, 1) both;
@@ -3159,9 +3144,9 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 <!-- EXPLORE MODAL -->
 <div id="explore" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;opacity:0;transition:opacity var(--dur-fade) var(--ease-hover);">
   <!-- Backdrop -->
-  <div id="explore-backdrop" style="position:fixed;inset:0;background:transparent;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);z-index:-1;transition:background var(--dur-large) var(--ease-hover),backdrop-filter var(--dur-large) var(--ease-hover);"></div>
+  <div id="explore-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background 200ms var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);filter:blur(12px);">
+  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);">
 
     <!-- Search bar -->
     <div class="explore-section-border" style="padding:var(--space-5);display:flex;align-items:center;gap:var(--space-4);">
@@ -3644,9 +3629,9 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 <!-- SCHEDULE MODAL (Explorer pattern — centered, no title, click-outside closes) -->
 <div id="schedule" role="dialog" aria-label="Schedule" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;opacity:0;transition:opacity var(--dur-fade) var(--ease-hover);">
   <!-- Backdrop -->
-  <div id="schedule-backdrop" style="position:fixed;inset:0;background:transparent;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);z-index:-1;transition:background var(--dur-large) var(--ease-hover),backdrop-filter var(--dur-large) var(--ease-hover);"></div>
+  <div id="schedule-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background 200ms var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="schedule-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);transition:transform var(--dur-panel) var(--ease-panel);">
+  <div id="schedule-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);">
     <!-- Day picker — rendered by JS -->
     <div id="sp-day-bar" class="sp-day-bar"></div>
     <!-- Slot list — scrollable body -->
@@ -3657,9 +3642,9 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 <!-- SETTINGS MODAL (Explorer pattern — centered card, click-outside closes) -->
 <div id="settings" role="dialog" aria-modal="true" aria-label="Settings" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;opacity:0;transition:opacity var(--dur-fade) var(--ease-hover);">
   <!-- Backdrop -->
-  <div id="settings-backdrop" style="position:fixed;inset:0;background:transparent;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);z-index:-1;transition:background var(--dur-large) var(--ease-hover),backdrop-filter var(--dur-large) var(--ease-hover);"></div>
+  <div id="settings-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background 200ms var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="settings-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);transition:transform var(--dur-panel) var(--ease-panel);">
+  <div id="settings-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);">
 
     <!-- Section tab bar -->
     <div class="sp-day-bar" id="settings-tab-bar">
@@ -4570,12 +4555,11 @@ function openExplore() {
   if (btn) btn.style.color = 'var(--text-tertiary)';
   if (icon) icon.style.stroke = 'var(--text-tertiary)';
   const backdrop = document.getElementById('explore-backdrop');
-  exploreCard.classList.remove('is-closing'); // transition open : ease-in filter (blur s'attarde)
+  exploreCard.classList.remove('is-closing');
   exploreEl.style.display = 'flex';
   requestAnimationFrame(() => requestAnimationFrame(() => {
     exploreEl.style.opacity = '1';
     exploreCard.style.transform = 'translateY(0)';
-    exploreCard.style.filter = 'blur(0px)';
     if (backdrop) { backdrop.classList.add('open'); }
   }));
   setTimeout(() => {
@@ -4593,17 +4577,16 @@ function openExplore() {
 function closeExplore() {
   exploreClosing = true;
   const backdrop = document.getElementById('explore-backdrop');
-  exploreCard.classList.add('is-closing'); // transition close : ease-out filter (blur monte vite)
+  exploreCard.classList.add('is-closing');
   exploreEl.style.opacity = '0';
   exploreCard.style.transform = 'translateY(8px)';
-  exploreCard.style.filter = 'blur(12px)';
   if (backdrop) { backdrop.classList.remove('open'); }
   setTimeout(() => {
     exploreEl.style.display = 'none';
     document.getElementById('explore-input').value = '';
     exploreClosing = false;
     OM.clear('explore');
-  }, 260);
+  }, 200);
 }
 
 document.getElementById('explore-backdrop').addEventListener('click', closeExplore);
@@ -6453,7 +6436,7 @@ function openSchedulePanel() {
   requestAnimationFrame(() => requestAnimationFrame(() => {
     el.style.opacity = '1';
     const card = document.getElementById('schedule-card');
-    if (card) card.style.transform = 'translateY(0)';
+    if (card) { card.classList.remove('is-closing'); card.style.transform = 'translateY(0)'; }
     const bd = document.getElementById('schedule-backdrop');
     if (bd) bd.classList.add('open');
   }));
@@ -6465,14 +6448,14 @@ function closeSchedulePanel() {
   _schedPanelClosing = true;
   el.style.opacity = '0';
   const card = document.getElementById('schedule-card');
-  if (card) card.style.transform = 'translateY(8px)';
+  if (card) { card.classList.add('is-closing'); card.style.transform = 'translateY(8px)'; }
   const bd = document.getElementById('schedule-backdrop');
   if (bd) bd.classList.remove('open');
   setTimeout(() => {
     el.style.display = 'none';
     _schedPanelClosing = false;
     OM.clear('schedule');
-  }, 250);
+  }, 200);
 }
 
 function toggleSchedulePanel() {
@@ -6536,6 +6519,7 @@ function openSettings() {
   syncSettingsShortcuts();
   // Show with entrance animation
   const bd = document.getElementById('settings-backdrop');
+  _settingsCard.classList.remove('is-closing');
   _settingsEl.style.display = 'flex';
   requestAnimationFrame(() => requestAnimationFrame(() => {
     _settingsEl.style.opacity = '1';
@@ -6558,6 +6542,7 @@ function openSettings() {
 function closeSettings() {
   _settingsClosing = true;
   const bd = document.getElementById('settings-backdrop');
+  _settingsCard.classList.add('is-closing');
   _settingsEl.style.opacity = '0';
   _settingsCard.style.transform = 'translateY(8px)';
   if (bd) bd.classList.remove('open');
@@ -6565,7 +6550,7 @@ function closeSettings() {
     _settingsEl.style.display = 'none';
     _settingsClosing = false;
     OM.clear('settings');
-  }, 250);
+  }, 200);
 }
 
 function toggleSettings() {
