@@ -1652,18 +1652,17 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #filter-toggle-btn:hover { color: var(--text-secondary) !important; }
 #filter-toggle-btn:hover #filter-toggle-icon { stroke: var(--text-secondary) !important; }
 
-/* ── Show row reveal — fade+slide discret à l'insertion DOM ── */
+/* ── Show row reveal — fade+slide+blur à l'insertion DOM ── */
 @keyframes rowReveal {
-  from { opacity: 0; transform: translateY(3px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(3px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0);   filter: blur(0px); }
 }
 
 /* ── Section reveal — header sections inside Explorer / Schedule card ──
-   Réinitialise à chaque ouverture grâce au display:none→flex du parent.
-   translateY(4px) subtil : le contenu monte doucement vers sa position finale. */
+   Réinitialise à chaque ouverture grâce au display:none→flex du parent. */
 @keyframes sectionReveal {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(4px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0);   filter: blur(0px); }
 }
 #explore-card > .explore-section-border {
   animation: sectionReveal var(--dur-short) var(--ease-standard) both;
@@ -2706,12 +2705,12 @@ body { padding-top: var(--space-9); }
   font-size: var(--text-base); font-weight: 400; letter-spacing: -.3px;
   color: var(--text-primary); text-decoration: none; white-space: nowrap;
   flex: 1; min-width: 0; overflow: hidden;
-  /* Expand: wordmark bounces in last */
+  /* Expand: même synchronisation que les labels */
   transform: translateX(0); filter: blur(0px);
-  transition: opacity   420ms cubic-bezier(0.16, 1, 0.3, 1) 170ms,
-              filter    420ms cubic-bezier(0.16, 1, 0.3, 1) 170ms,
-              transform 400ms var(--ease-spring) 130ms,
-              max-width 260ms cubic-bezier(0.16, 1, 0.3, 1) 80ms,
+  transition: opacity   360ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
+              filter    360ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
+              transform 380ms var(--ease-spring) 20ms,
+              max-width 300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms,
               color var(--dur-short) var(--ease-hover);
 }
 .nav-wordmark:hover { color: var(--text-secondary); }
@@ -2807,11 +2806,11 @@ body { padding-top: var(--space-9); }
 .nav-label {
   display: inline-block; overflow: hidden; white-space: nowrap;
   max-width: 160px; opacity: 1; transform: translateX(0); filter: blur(0px);
-  /* Expand: slot opens → text bounces in from center */
-  transition: max-width 260ms cubic-bezier(0.16, 1, 0.3, 1) 80ms,
-              opacity   420ms cubic-bezier(0.16, 1, 0.3, 1) 170ms,
-              filter    420ms cubic-bezier(0.16, 1, 0.3, 1) 170ms,
-              transform 400ms var(--ease-spring) 130ms;
+  /* Expand: slot + texte démarrent ensemble — le blur se dissout pendant que le texte glisse */
+  transition: max-width 300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms,
+              opacity   360ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
+              filter    360ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
+              transform 380ms var(--ease-spring) 20ms;
 }
 /* Collapse: text slides left toward icon + fades */
 .nav-pill.sb-icons .nav-label {
@@ -2861,8 +2860,10 @@ body { padding-top: var(--space-9); }
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  .nav-pill, .nav-wordmark, .nav-label, .nav-item, .sidebar-theme-toggle {
-    transition-duration: 0ms !important;
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
   }
 }
