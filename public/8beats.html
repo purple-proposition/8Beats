@@ -2767,8 +2767,10 @@ body { padding-top: var(--space-9); }
   background: none; cursor: pointer;
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   text-decoration: none; white-space: nowrap; flex-shrink: 0;
-  /* gap/padding snap instantly — only color/bg transition */
-  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
+  /* Expand: icon glides left as text reappears */
+  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover),
+              padding-inline-start 220ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
+              padding-inline-end   220ms cubic-bezier(0.16, 1, 0.3, 1) 40ms;
 }
 /* Inset separator — centered in the 24px gap between items */
 .nav-item::after {
@@ -2805,22 +2807,21 @@ body { padding-top: var(--space-9); }
 .nav-sep, .nav-dots-collapsed, .hamburger, .nav-sep-mobile { display: none !important; }
 
 /* ── Compact (icon-only) ────────────────────────────────────────────────────
-   compact = state, NOT a redesign.
-   Identical heights, padding-y, separators, gaps, radius.
-   Only changes: width, padding-inline (→ 0), icon-size (14px), labels hidden.
-   Icons are centered via justify-content:center — no padding needed.
+   Icons centered via animated padding-inline-start — no justify-content snap.
    ──────────────────────────────────────────────────────────────────────── */
 
 /* Header: center the collapse-btn group, zero gap so hidden wordmark doesn't shift it */
 .nav-pill.sb-icons .sidebar-header        { justify-content: center; gap: 0; }
 .nav-pill.sb-icons .sidebar-header-btns  { margin-left: 0; }
-/* Items: remove side padding, center icon, collapse gaps between hidden children */
+/* Items: icon centered via padding (animatable), no justify-content snap */
 .nav-pill.sb-icons .nav-item {
-  padding-inline: var(--sidebar-padding-x-compact);  /* 0 */
-  justify-content: center;
+  padding-inline-start: calc((var(--sidebar-icon) - var(--sidebar-icon-size)) / 2);
+  padding-inline-end: 0;
   gap: 0;
-  /* gap/padding snap instantly — icons land in final position at t=0 */
-  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
+  /* Collapse: icon glides right to center as text fades */
+  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover),
+              padding-inline-start 180ms cubic-bezier(0.4, 0, 0.2, 1),
+              padding-inline-end   180ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 /* Kbd hints hidden in compact mode — absolute pos removes layout interference */
 .nav-pill.sb-icons .nav-kbd { max-width: 0 !important; min-width: 0 !important; opacity: 0 !important; overflow: hidden; pointer-events: none; }
