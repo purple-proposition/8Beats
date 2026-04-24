@@ -2672,11 +2672,11 @@ body { padding-top: var(--space-9); }
   overflow: hidden;
   pointer-events: all;
   will-change: width;
-  /* Expand: sidebar opens first — labels will follow via their own delayed transition */
-  transition: width 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity var(--dur-fade) var(--ease-hover);
+  /* Expand: ease-out — conteneur s'ouvre vite puis décélère */
+  transition: width 240ms cubic-bezier(0, 0, 0.58, 1), opacity var(--dur-fade) var(--ease-hover);
 }
-/* Collapse: labels disappear first (150ms), then sidebar narrows (120ms delay) */
-.nav-pill.sb-icons { width: var(--sidebar-width-compact); transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1) 120ms, opacity var(--dur-fade) var(--ease-hover); }
+/* Collapse: ease-in — miroir exact de l'ouverture */
+.nav-pill.sb-icons { width: var(--sidebar-width-compact); transition: width 240ms cubic-bezier(0.42, 0, 1, 1), opacity var(--dur-fade) var(--ease-hover); }
 .nav-pill.sb-closed { width: 0; opacity: 0; pointer-events: none; }
 
 /* ── Sidebar header ── */
@@ -2705,23 +2705,23 @@ body { padding-top: var(--space-9); }
   font-size: var(--text-base); font-weight: 400; letter-spacing: -.3px;
   color: var(--text-primary); text-decoration: none; white-space: nowrap;
   flex: 1; min-width: 0; overflow: hidden;
-  /* Expand: même synchronisation que les labels */
-  transform: translateX(0); filter: blur(0px);
-  transition: opacity   360ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
-              filter    360ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
-              transform 380ms var(--ease-spring) 20ms,
-              max-width 300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms,
+  /* Expand: opacity ease-out (apparaît vite) + filter ease-in (blur persiste) = miroir collapse */
+  transform: translateX(0); filter: blur(0px); max-width: 180px;
+  transition: opacity   240ms cubic-bezier(0, 0, 0.58, 1),
+              filter    240ms cubic-bezier(0.42, 0, 1, 1),
+              transform 240ms cubic-bezier(0, 0, 0.58, 1),
+              max-width 240ms cubic-bezier(0, 0, 0.58, 1),
               color var(--dur-short) var(--ease-hover);
 }
 .nav-wordmark:hover { color: var(--text-secondary); }
-/* Collapse: wordmark slides left + fades */
+/* Collapse: opacity ease-in (texte reste visible) + filter ease-out (blur monte vite) = miroir expand */
 .nav-pill.sb-icons .nav-wordmark {
   opacity: 0; pointer-events: none; max-width: 0;
   transform: translateX(-12px); filter: blur(8px);
-  transition: opacity   150ms cubic-bezier(0.4, 0, 1, 1),
-              filter    150ms cubic-bezier(0.4, 0, 1, 1),
-              transform 150ms cubic-bezier(0.4, 0, 1, 1),
-              max-width 200ms cubic-bezier(0.4, 0, 0.2, 1),
+  transition: opacity   240ms cubic-bezier(0.42, 0, 1, 1),
+              filter    240ms cubic-bezier(0, 0, 0.58, 1),
+              transform 240ms cubic-bezier(0.42, 0, 1, 1),
+              max-width 240ms cubic-bezier(0.42, 0, 1, 1),
               color var(--dur-short) var(--ease-hover);
 }
 
@@ -2759,12 +2759,12 @@ body { padding-top: var(--space-9); }
 /* ── Theme toggle (inside nav-item row) ── */
 .sidebar-theme-toggle {
   flex-shrink: 0; margin-left: auto;
-  /* Expand: slot follows container, element materialises inside */
-  transition: opacity 180ms ease 160ms, max-width 220ms cubic-bezier(0.16, 1, 0.3, 1) 60ms;
+  /* Expand: miroir collapse */
+  transition: opacity 240ms cubic-bezier(0, 0, 0.58, 1), max-width 240ms cubic-bezier(0, 0, 0.58, 1);
   overflow: hidden; max-width: 44px;
 }
-/* Collapse: coupled fade */
-.nav-pill.sb-icons .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; transition: opacity 180ms cubic-bezier(0, 0, 0.2, 1), max-width 200ms cubic-bezier(0.4, 0, 0.2, 1); }
+/* Collapse: miroir expand */
+.nav-pill.sb-icons .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; transition: opacity 240ms cubic-bezier(0.42, 0, 1, 1), max-width 240ms cubic-bezier(0.42, 0, 1, 1); }
 
 /* ── Nav items: row-style (explorer grammar) ── */
 .nav-item {
@@ -2779,10 +2779,10 @@ body { padding-top: var(--space-9); }
   background: none; cursor: pointer;
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   text-decoration: none; white-space: nowrap; flex-shrink: 0;
-  /* Expand: icon bounces back to its position */
+  /* Expand: ease-out — miroir collapse */
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover),
-              padding-inline-start 380ms var(--ease-spring) 20ms,
-              padding-inline-end   280ms cubic-bezier(0.16, 1, 0.3, 1) 20ms;
+              padding-inline-start 240ms cubic-bezier(0, 0, 0.58, 1),
+              padding-inline-end   240ms cubic-bezier(0, 0, 0.58, 1);
 }
 /* Inset separator — centered in the 24px gap between items */
 .nav-item::after {
@@ -2806,20 +2806,20 @@ body { padding-top: var(--space-9); }
 .nav-label {
   display: inline-block; overflow: hidden; white-space: nowrap;
   max-width: 160px; opacity: 1; transform: translateX(0); filter: blur(0px);
-  /* Expand: slot + texte démarrent ensemble — le blur se dissout pendant que le texte glisse */
-  transition: max-width 300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms,
-              opacity   360ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
-              filter    360ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
-              transform 380ms var(--ease-spring) 20ms;
+  /* Expand: opacity ease-out (apparaît vite) + filter ease-in (blur persiste) = miroir collapse */
+  transition: max-width 240ms cubic-bezier(0, 0, 0.58, 1),
+              opacity   240ms cubic-bezier(0, 0, 0.58, 1),
+              filter    240ms cubic-bezier(0.42, 0, 1, 1),
+              transform 240ms cubic-bezier(0, 0, 0.58, 1);
 }
-/* Collapse: text slides left toward icon + fades */
+/* Collapse: opacity ease-in (texte reste visible) + filter ease-out (blur monte vite) = miroir expand */
 .nav-pill.sb-icons .nav-label {
   max-width: 0; opacity: 0; min-width: 0; overflow: hidden;
   transform: translateX(-12px); filter: blur(8px);
-  transition: opacity   150ms cubic-bezier(0.4, 0, 1, 1),
-              filter    150ms cubic-bezier(0.4, 0, 1, 1),
-              transform 150ms cubic-bezier(0.4, 0, 1, 1),
-              max-width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity   240ms cubic-bezier(0.42, 0, 1, 1),
+              filter    240ms cubic-bezier(0, 0, 0.58, 1),
+              transform 240ms cubic-bezier(0.42, 0, 1, 1),
+              max-width 240ms cubic-bezier(0.42, 0, 1, 1);
 }
 
 /* ── Sidebar footer (compat, hidden) ── */
@@ -2840,10 +2840,10 @@ body { padding-top: var(--space-9); }
   padding-inline-start: calc((var(--sidebar-icon) - var(--sidebar-icon-size)) / 2);
   padding-inline-end: 0;
   gap: 0;
-  /* Collapse: icon glides right to center as text fades */
+  /* Collapse: ease-in — miroir expand */
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover),
-              padding-inline-start 180ms cubic-bezier(0.4, 0, 0.2, 1),
-              padding-inline-end   180ms cubic-bezier(0.4, 0, 0.2, 1);
+              padding-inline-start 240ms cubic-bezier(0.42, 0, 1, 1),
+              padding-inline-end   240ms cubic-bezier(0.42, 0, 1, 1);
 }
 /* Kbd hints hidden in compact mode — absolute pos removes layout interference */
 .nav-pill.sb-icons .nav-kbd { max-width: 0 !important; min-width: 0 !important; opacity: 0 !important; overflow: hidden; pointer-events: none; }
