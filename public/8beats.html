@@ -1857,7 +1857,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   padding: var(--space-5);
   font-size: var(--text-base); color: var(--text-tertiary);
 }
-#filter-count { font-size: var(--text-sm); font-weight: 600; letter-spacing: .5px; background: var(--text-secondary); color: var(--surface-page); border-radius: 99px; padding: var(--space-1) var(--space-2); }
+#filter-count { font-size: 10px; font-weight: 700; letter-spacing: .3px; line-height: 1; background: var(--text-secondary); color: var(--surface-page); border-radius: 99px; padding: 2px 5px; vertical-align: middle; }
 
 /* Genre tooltip */
 #genre-tooltip {
@@ -4291,7 +4291,7 @@ function renderShows(list, q) {
     <div class="explore-show-row" role="button" tabindex="0" onclick="closeExplore();openShow('${s.title.replace(/'/g, "\\'")}')">
       <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
         <span class="explore-show-title">${s.title}</span>
-        <span style="font-size:var(--text-base);color:var(--text-secondary);">${s.host} · ${s.date}</span>
+        <span style="font-size:var(--text-base);color:var(--text-secondary);">${s.host} · ${formatDate(s.date)}</span>
         ${gameHint}
       </div>
       <div style="display:flex;gap:var(--space-2);flex-shrink:0;margin-left:var(--space-4);">
@@ -4369,7 +4369,7 @@ function _renderExploreScheduleDaySlots(ri) {
   const dayLabel = isToday ? 'Today' : SP_DAY_SHORT[dayIndex];
   const daySlots = (SCHEDULE_SHOWS || []).filter(s => s.day === dayIndex).sort((a, b) => a.time.localeCompare(b.time));
 
-  let html = `<div class="sp-day-section-header">${dayLabel}, ${dateStr}.</div>`;
+  let html = '';
   if (daySlots.length === 0) {
     html += `<div class="sp-empty" style="padding:var(--space-3) var(--space-5);">No shows scheduled</div>`;
   } else {
@@ -6299,7 +6299,7 @@ function _renderSchedulePanelDaySlots(ri) {
   const dayLabel = isToday ? 'Today' : SP_DAY_SHORT[dayIndex];
   const daySlots = (SCHEDULE_SHOWS || []).filter(s => s.day === dayIndex).sort((a, b) => a.time.localeCompare(b.time));
 
-  let html = `<div class="sp-day-section-header">${dayLabel}, ${dateStr}.</div>`;
+  let html = '';
   if (daySlots.length === 0) {
     html += `<div class="sp-empty" style="padding:var(--space-3) var(--space-5);">No shows scheduled</div>`;
   } else {
