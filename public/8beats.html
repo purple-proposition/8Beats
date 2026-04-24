@@ -2673,8 +2673,8 @@ body { padding-top: var(--space-9); }
   overflow: hidden;
   pointer-events: all;
   will-change: width;
-  /* Expand: spring gives a living snap-open feel */
-  transition: width 260ms var(--ease-spring), opacity var(--dur-fade) var(--ease-hover);
+  /* Expand: container opens first, clean expo-out */
+  transition: width 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity var(--dur-fade) var(--ease-hover);
 }
 /* Collapse: container closes with text, slight lag for weight */
 .nav-pill.sb-icons { width: var(--sidebar-width-compact); transition: width 240ms cubic-bezier(0.4, 0, 0.2, 1) 30ms, opacity var(--dur-fade) var(--ease-hover); }
@@ -2706,8 +2706,8 @@ body { padding-top: var(--space-9); }
   font-size: var(--text-base); font-weight: 400; letter-spacing: -.3px;
   color: var(--text-primary); text-decoration: none; white-space: nowrap;
   flex: 1; min-width: 0; overflow: hidden;
-  /* Expand: text fades in coupled to slot opening */
-  transition: opacity 200ms ease 40ms, max-width 240ms cubic-bezier(0.16, 1, 0.3, 1), color var(--dur-short) var(--ease-hover);
+  /* Expand: slot follows container, wordmark materialises inside */
+  transition: opacity 180ms ease 160ms, max-width 220ms cubic-bezier(0.16, 1, 0.3, 1) 60ms, color var(--dur-short) var(--ease-hover);
 }
 .nav-wordmark:hover { color: var(--text-secondary); }
 /* Collapse: text fades out fluidly with the slot, same duration so they feel coupled */
@@ -2747,8 +2747,8 @@ body { padding-top: var(--space-9); }
 /* ── Theme toggle (inside nav-item row) ── */
 .sidebar-theme-toggle {
   flex-shrink: 0; margin-left: auto;
-  /* Expand: coupled to slot */
-  transition: opacity 200ms ease 40ms, max-width 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Expand: slot follows container, element materialises inside */
+  transition: opacity 180ms ease 160ms, max-width 220ms cubic-bezier(0.16, 1, 0.3, 1) 60ms;
   overflow: hidden; max-width: 44px;
 }
 /* Collapse: coupled fade */
@@ -2792,8 +2792,8 @@ body { padding-top: var(--space-9); }
 .nav-label {
   display: inline-block; overflow: hidden; white-space: nowrap;
   max-width: 160px; opacity: 1;
-  /* Expand: opacity and slot open together — organic materialisation */
-  transition: max-width 240ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease 40ms;
+  /* Expand: slot follows container, text materialises inside */
+  transition: max-width 220ms cubic-bezier(0.16, 1, 0.3, 1) 60ms, opacity 180ms ease 160ms;
 }
 /* Collapse: opacity and slot close together — fluid, logical */
 .nav-pill.sb-icons .nav-label { max-width: 0; opacity: 0; min-width: 0; overflow: hidden; transition: opacity 180ms cubic-bezier(0, 0, 0.2, 1), max-width 200ms cubic-bezier(0.4, 0, 0.2, 1); }
