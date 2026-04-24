@@ -2673,8 +2673,8 @@ body { padding-top: var(--space-9); }
   overflow: hidden;
   pointer-events: all;
   will-change: width;
-  /* Expand: generous open — container leads */
-  transition: width 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity var(--dur-fade) var(--ease-hover);
+  /* Expand: spring bounce as container opens */
+  transition: width 380ms var(--ease-spring), opacity var(--dur-fade) var(--ease-hover);
 }
 /* Collapse: container closes with text, slight lag for weight */
 .nav-pill.sb-icons { width: var(--sidebar-width-compact); transition: width 240ms cubic-bezier(0.4, 0, 0.2, 1) 30ms, opacity var(--dur-fade) var(--ease-hover); }
@@ -2706,10 +2706,10 @@ body { padding-top: var(--space-9); }
   font-size: var(--text-base); font-weight: 400; letter-spacing: -.3px;
   color: var(--text-primary); text-decoration: none; white-space: nowrap;
   flex: 1; min-width: 0; overflow: hidden;
-  /* Expand: wordmark settles in last, most generous timing */
+  /* Expand: wordmark bounces in last */
   transform: translateX(0);
   transition: opacity   280ms cubic-bezier(0.16, 1, 0.3, 1) 170ms,
-              transform 320ms cubic-bezier(0.16, 1, 0.3, 1) 150ms,
+              transform 400ms var(--ease-spring) 130ms,
               max-width 260ms cubic-bezier(0.16, 1, 0.3, 1) 80ms,
               color var(--dur-short) var(--ease-hover);
 }
@@ -2778,9 +2778,9 @@ body { padding-top: var(--space-9); }
   background: none; cursor: pointer;
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   text-decoration: none; white-space: nowrap; flex-shrink: 0;
-  /* Expand: icon glides left, leads the reveal */
+  /* Expand: icon bounces back to its position */
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover),
-              padding-inline-start 280ms cubic-bezier(0.16, 1, 0.3, 1) 20ms,
+              padding-inline-start 380ms var(--ease-spring) 20ms,
               padding-inline-end   280ms cubic-bezier(0.16, 1, 0.3, 1) 20ms;
 }
 /* Inset separator — centered in the 24px gap between items */
@@ -2805,10 +2805,10 @@ body { padding-top: var(--space-9); }
 .nav-label {
   display: inline-block; overflow: hidden; white-space: nowrap;
   max-width: 160px; opacity: 1; transform: translateX(0);
-  /* Expand: slot opens → text slides in from center, settles softly */
+  /* Expand: slot opens → text bounces in from center */
   transition: max-width 260ms cubic-bezier(0.16, 1, 0.3, 1) 80ms,
               opacity   280ms cubic-bezier(0.16, 1, 0.3, 1) 170ms,
-              transform 320ms cubic-bezier(0.16, 1, 0.3, 1) 150ms;
+              transform 400ms var(--ease-spring) 130ms;
 }
 /* Collapse: text slides left toward icon + fades */
 .nav-pill.sb-icons .nav-label {
