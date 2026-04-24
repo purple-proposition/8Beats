@@ -3912,28 +3912,34 @@ const sidebarReopen = document.getElementById('sidebar-reopen');
 
 let _sidebarTransitioning = false;
 function _prepExpandLabels() {
-  // Snap labels to left-start position so expand slides left→right
-  const els = navPill.querySelectorAll('.nav-label, .nav-wordmark');
+  // 1. Snap to left-start, kill transitions
+  const els = [...navPill.querySelectorAll('.nav-label, .nav-wordmark')];
   els.forEach(el => { el.style.transition = 'none'; el.style.transform = 'translateX(-8px)'; el.style.opacity = '0'; });
-  navPill.getBoundingClientRect(); // commit snapshot as "previous" value
-  els.forEach(el => { el.style.transition = ''; el.style.transform = ''; el.style.opacity = ''; });
+  navPill.getBoundingClientRect(); // commit -8px/0 as "from" value
+  // 2. Re-enable transitions — keep inline transform+opacity so compact CSS rule can't revert to +8px
+  els.forEach(el => { el.style.transition = ''; });
+  // Return cleanup: call AFTER sb-icons is removed + reflow — releases inline styles → fires transition -8px→0
+  return () => {
+    navPill.getBoundingClientRect();
+    els.forEach(el => { el.style.transform = ''; el.style.opacity = ''; });
+  };
 }
 function toggleSidebarLabels() {
   const expanding = navPill.classList.contains('sb-icons');
-  if (expanding) _prepExpandLabels();
+  const cleanup = expanding ? _prepExpandLabels() : null;
   navPill.classList.toggle('sb-icons');
   const isIcons = navPill.classList.contains('sb-icons');
   document.body.classList.toggle('sb-icons', isIcons);
   document.body.classList.remove('sb-closed');
+  if (cleanup) cleanup(); // release inline → transition fires left→right
   // Swap icon: panel-left-close (full) ↔ panel-left-open (compact)
   const iconEl = document.querySelector('#sidebar-icon-btn [data-lucide]');
   if (iconEl) {
     iconEl.setAttribute('data-lucide', isIcons ? 'panel-left-open' : 'panel-left-close');
     lucide.createIcons({ nodes: [iconEl.parentElement] });
   }
-  // Guard ⌘K during animation to prevent interference
   _sidebarTransitioning = true;
-  setTimeout(() => { _sidebarTransitioning = false; }, 350);
+  setTimeout(() => { _sidebarTransitioning = false; }, 450);
 }
 function closeSidebar() {
   navPill.classList.add('sb-closed');
@@ -3943,9 +3949,10 @@ function closeSidebar() {
   if (sidebarReopen) sidebarReopen.classList.add('visible');
 }
 function openSidebar() {
-  if (navPill.classList.contains('sb-icons')) _prepExpandLabels();
+  const cleanup = navPill.classList.contains('sb-icons') ? _prepExpandLabels() : null;
   navPill.classList.remove('sb-closed', 'sb-icons');
   document.body.classList.remove('sb-closed', 'sb-icons');
+  if (cleanup) cleanup();
   if (sidebarReopen) sidebarReopen.classList.remove('visible');
 }
 
