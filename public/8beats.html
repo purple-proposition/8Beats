@@ -3125,7 +3125,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     </div>
 
     <!-- Results -->
-    <div id="explore-content" style="flex:1;overflow-y:auto;transition:opacity var(--dur-fade) var(--ease-hover);"></div>
+    <div id="explore-content" style="flex:1;overflow-y:auto;transition:opacity 160ms ease-in-out;"></div>
 
   </div>
 </div>
@@ -4351,115 +4351,91 @@ function setTab(t) {
       bar.style.display = 'none';
       renderExploreSchedule(content);
     }
-    content.style.opacity = '1';
-  }, 80);  /* 80ms — half the --dur-fade, content invisible before swap */
+    requestAnimationFrame(() => { content.style.opacity = '1'; });
+  }, 170);  /* 170ms — full 160ms fade-out completes before content swap */
 }
 
 /* ── Schedule sub-tab inside Explore ── */
-let _exploreSchedObserver = null;
+function _renderExploreScheduleDaySlots(ri) {
+  const slotsEl = document.getElementById('es-slots');
+  if (!slotsEl) return;
+  const today    = new Date();
+  const todayDow = (today.getDay() + 6) % 7;
+  const nowMin   = today.getHours() * 60 + today.getMinutes();
+  const dayIndex = (todayDow + ri) % 7;
+  const d        = new Date(today); d.setDate(today.getDate() + ri);
+  const isToday  = ri === 0;
+  const dateStr  = d.getDate() + ' ' + SHORT_MONTHS[d.getMonth()];
+  const dayLabel = isToday ? 'Today' : SP_DAY_SHORT[dayIndex];
+  const daySlots = (SCHEDULE_SHOWS || []).filter(s => s.day === dayIndex).sort((a, b) => a.time.localeCompare(b.time));
 
-function _setupExploreSchedObserver(container) {
-  if (_exploreSchedObserver) { _exploreSchedObserver.disconnect(); _exploreSchedObserver = null; }
-  const sections = container.querySelectorAll('.sp-day-section[id^="es-section-"]');
-  if (!sections.length) return;
-  _exploreSchedObserver = new IntersectionObserver(entries => {
-    let top = null;
-    for (const e of entries) {
-      if (e.isIntersecting && (!top || e.boundingClientRect.top < top.boundingClientRect.top)) top = e;
-    }
-    if (top) {
-      const ri = parseInt(top.target.id.replace('es-section-', ''), 10);
-      if (!isNaN(ri)) {
-        const bar = document.getElementById('es-day-bar');
-        if (bar) bar.querySelectorAll('.sp-day-tab').forEach((t, idx) => t.classList.toggle('active', idx === ri));
+  let html = `<div class="sp-day-section-header">${dayLabel}, ${dateStr}.</div>`;
+  if (daySlots.length === 0) {
+    html += `<div class="sp-empty" style="padding:var(--space-3) var(--space-5);">No shows scheduled</div>`;
+  } else {
+    html += daySlots.map(slot => {
+      const showData  = SHOW_DATA && SHOW_DATA[slot.title];
+      const [sh, sm]  = slot.time.split(':').map(Number);
+      const isLive    = isToday && nowMin >= sh * 60 + sm && nowMin < sh * 60 + sm + 360;
+      const alertKey  = `${slot.day}|${slot.time}|${slot.title}`;
+      const isAlerted = getAlerts().has(alertKey);
+      const safeTitle = slot.title.replace(/'/g, "\\'");
+      const dayIdx    = _dowToIdx(dayIndex);
+      let showTitle = slot.title, artistName = null;
+      if (showData) { artistName = showData.host !== 'Resident' ? showData.host : null; }
+      else if (slot.host === 'Resident') {
+        const entry = Object.entries(SHOW_DATA || {}).find(([, d]) => d.host === slot.title);
+        if (entry) { showTitle = entry[0]; artistName = slot.title; }
       }
-    }
-  }, { root: container, threshold: 0.25 });
-  sections.forEach(s => _exploreSchedObserver.observe(s));
+      const genreTags = (slot.genres || []).slice(0, 2).map(g => `<span class="tag">${g}</span>`).join('');
+      return `
+        <div class="sp-slot-row" role="button" tabindex="0"
+          onclick="${showData ? `closeExplore();openShow('${safeTitle}')` : ''}">
+          <div class="sp-slot-time">${slot.time}</div>
+          <div class="sp-slot-info">
+            <div style="display:flex;align-items:center;gap:var(--space-5);">
+              <div class="sp-slot-name explore-show-title">${showTitle}</div>
+              ${isLive ? `<span class="sp-live"><span class="live-dot"></span>Live</span>` : ''}
+            </div>
+            ${artistName ? `<div class="sp-slot-meta"><span>${artistName}</span></div>` : ''}
+          </div>
+          <div class="sp-slot-right">
+            ${genreTags}
+            <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
+              title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
+              onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeTitle}')">
+              <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+  slotsEl.innerHTML = html;
+  lucide.createIcons({ nodes: [slotsEl] });
 }
 
 function selectExploreScheduleDay(ri) {
-  const section = document.getElementById(`es-section-${ri}`);
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else {
-    const content = document.getElementById('explore-content');
-    if (content) renderExploreSchedule(content);
-  }
+  const bar = document.getElementById('es-day-bar');
+  if (bar) bar.querySelectorAll('.sp-day-tab').forEach((t, idx) => t.classList.toggle('active', idx === ri));
+  _renderExploreScheduleDaySlots(ri);
+  const content = document.getElementById('explore-content');
+  if (content) content.scrollTop = 0;
 }
 
 function renderExploreSchedule(container) {
   const today    = new Date();
   const todayDow = (today.getDay() + 6) % 7;
-  const nowMin   = today.getHours() * 60 + today.getMinutes();
 
-  const dayBarHtml = `<div class="sp-day-bar" id="es-day-bar">` +
+  container.style.paddingTop = '0';
+  container.innerHTML = `<div class="sp-day-bar" id="es-day-bar">` +
     Array.from({length: 7}, (_, ri) => {
       const dow = (todayDow + ri) % 7;
       return `<button class="sp-day-tab${ri === 0 ? ' active' : ''}" id="es-tab-${ri}" onclick="selectExploreScheduleDay(${ri})">${_dayTabLabel(dow, todayDow, today)}</button>`;
-    }).join('') + `</div>`;
-
-  let slotsHtml = '';
-  for (let ri = 0; ri < 7; ri++) {
-    const dayIndex = (todayDow + ri) % 7;
-    const d = new Date(today); d.setDate(today.getDate() + ri);
-    const isToday  = ri === 0;
-    const dateStr  = d.getDate() + ' ' + SHORT_MONTHS[d.getMonth()];
-    const dayLabel = isToday ? 'Today' : SP_DAY_SHORT[dayIndex];
-    const daySlots = (SCHEDULE_SHOWS || []).filter(s => s.day === dayIndex).sort((a, b) => a.time.localeCompare(b.time));
-
-    slotsHtml += `<div class="sp-day-section" id="es-section-${ri}">`;
-    slotsHtml += `<div class="sp-day-section-header">${dayLabel}, ${dateStr}.</div>`;
-
-    if (daySlots.length === 0) {
-      slotsHtml += `<div class="sp-empty" style="padding:var(--space-3) var(--space-5);">No shows scheduled</div>`;
-    } else {
-      slotsHtml += daySlots.map(slot => {
-        const showData  = SHOW_DATA && SHOW_DATA[slot.title];
-        const [sh, sm]  = slot.time.split(':').map(Number);
-        const isLive    = isToday && nowMin >= sh * 60 + sm && nowMin < sh * 60 + sm + 360;
-        const alertKey  = `${slot.day}|${slot.time}|${slot.title}`;
-        const isAlerted = getAlerts().has(alertKey);
-        const safeTitle = slot.title.replace(/'/g, "\\'");
-        const dayIdx    = _dowToIdx(dayIndex);
-        let showTitle = slot.title, artistName = null;
-        if (showData) { artistName = showData.host !== 'Resident' ? showData.host : null; }
-        else if (slot.host === 'Resident') {
-          const entry = Object.entries(SHOW_DATA || {}).find(([, d]) => d.host === slot.title);
-          if (entry) { showTitle = entry[0]; artistName = slot.title; }
-        }
-        const genreTags = (slot.genres || []).slice(0, 2).map(g => `<span class="tag">${g}</span>`).join('');
-        return `
-          <div class="sp-slot-row" role="button" tabindex="0"
-            onclick="${showData ? `closeExplore();openShow('${safeTitle}')` : ''}">
-            <div class="sp-slot-time">${slot.time}</div>
-            <div class="sp-slot-info">
-              <div style="display:flex;align-items:center;gap:var(--space-5);">
-                <div class="sp-slot-name explore-show-title">${showTitle}</div>
-                ${isLive ? `<span class="sp-live"><span class="live-dot"></span>Live</span>` : ''}
-              </div>
-              ${artistName ? `<div class="sp-slot-meta"><span>${artistName}</span></div>` : ''}
-            </div>
-            <div class="sp-slot-right">
-              ${genreTags}
-              <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
-                title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
-                onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeTitle}')">
-                <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
-              </button>
-            </div>
-          </div>`;
-      }).join('');
-    }
-    slotsHtml += `</div>`;
-  }
-
-  container.style.paddingTop = '0';
-  container.innerHTML = dayBarHtml + slotsHtml;
-  lucide.createIcons({ nodes: [container] });
+    }).join('') +
+    `</div><div id="es-slots"></div>`;
+  _renderExploreScheduleDaySlots(0);
   requestAnimationFrame(() => {
     container.scrollTop = 0;
-    _setupExploreSchedObserver(container);
     initScrollFade(container, 48);
   });
 }
@@ -4529,10 +4505,13 @@ function openExplore() {
   setTimeout(() => {
     buildFilters();
     setTab('shows');
-    document.getElementById('explore-input').focus();
     const ec = document.getElementById('explore-content');
     if (ec) { ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
   }, 40);
+  setTimeout(() => {
+    const inp = document.getElementById('explore-input');
+    if (inp) inp.focus();
+  }, 230);
 }
 
 function closeExplore() {
@@ -5511,7 +5490,7 @@ function openShow(key) {
   const dateEl = document.getElementById('show-date');
   if (data.date) {
     const d = new Date(data.date + 'T00:00:00');
-    dateEl.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    dateEl.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     dateEl.style.display = '';
   } else {
     dateEl.style.display = 'none';
@@ -6307,121 +6286,81 @@ function _dayTabLabel(i, todayDow, today) {
   return `${prefix}, ${d.getDate()} ${SHORT_MONTHS[d.getMonth()]}.`;
 }
 
-let _schedObserver = null;
-
-function _setupScheduleObserver() {
-  if (_schedObserver) { _schedObserver.disconnect(); _schedObserver = null; }
+function _renderSchedulePanelDaySlots(ri) {
   const body = document.getElementById('schedule-panel-body');
   if (!body) return;
-  const sections = body.querySelectorAll('.sp-day-section');
-  if (!sections.length) return;
-  _schedObserver = new IntersectionObserver(entries => {
-    let topEntry = null;
-    for (const e of entries) {
-      if (e.isIntersecting) {
-        if (!topEntry || e.boundingClientRect.top < topEntry.boundingClientRect.top) topEntry = e;
+  const today    = new Date();
+  const todayDow = (today.getDay() + 6) % 7;
+  const nowMin   = today.getHours() * 60 + today.getMinutes();
+  const dayIndex = (todayDow + ri) % 7;
+  const d        = new Date(today); d.setDate(today.getDate() + ri);
+  const isToday  = ri === 0;
+  const dateStr  = d.getDate() + ' ' + SHORT_MONTHS[d.getMonth()];
+  const dayLabel = isToday ? 'Today' : SP_DAY_SHORT[dayIndex];
+  const daySlots = (SCHEDULE_SHOWS || []).filter(s => s.day === dayIndex).sort((a, b) => a.time.localeCompare(b.time));
+
+  let html = `<div class="sp-day-section-header">${dayLabel}, ${dateStr}.</div>`;
+  if (daySlots.length === 0) {
+    html += `<div class="sp-empty" style="padding:var(--space-3) var(--space-5);">No shows scheduled</div>`;
+  } else {
+    html += daySlots.map(slot => {
+      const showData    = SHOW_DATA && SHOW_DATA[slot.title];
+      const [sh, sm]    = slot.time.split(':').map(Number);
+      const isLive      = isToday && nowMin >= sh * 60 + sm && nowMin < sh * 60 + sm + 360;
+      const alertKey    = `${slot.day}|${slot.time}|${slot.title}`;
+      const isAlerted   = getAlerts().has(alertKey);
+      const safeTitle   = slot.title.replace(/'/g, "\\'");
+      const dayIdx      = _dowToIdx(dayIndex);
+      let showTitle = slot.title, artistName = null;
+      if (showData) { artistName = showData.host !== 'Resident' ? showData.host : null; }
+      else if (slot.host === 'Resident') {
+        const entry = Object.entries(SHOW_DATA || {}).find(([, d]) => d.host === slot.title);
+        if (entry) { showTitle = entry[0]; artistName = slot.title; }
       }
-    }
-    if (topEntry) {
-      const i = parseInt(topEntry.target.id.replace('sp-section-', ''), 10);
-      if (!isNaN(i)) {
-        document.querySelectorAll('.sp-day-tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
-      }
-    }
-  }, { root: body, threshold: 0.25 });
-  sections.forEach(s => _schedObserver.observe(s));
+      const genreTags   = (slot.genres || []).slice(0, 2).map(g => `<span class="tag">${g}</span>`).join('');
+      return `
+        <div class="sp-slot-row" role="button" tabindex="0"
+          onclick="${showData ? `closeSchedulePanel();openShow('${safeTitle}')` : ''}">
+          <div class="sp-slot-time">${slot.time}</div>
+          <div class="sp-slot-info">
+            <div style="display:flex;align-items:center;gap:var(--space-5);">
+              <div class="sp-slot-name explore-show-title">${showTitle}</div>
+              ${isLive ? `<span class="sp-live"><span class="live-dot"></span>Live</span>` : ''}
+            </div>
+            ${artistName ? `<div class="sp-slot-meta"><span>${artistName}</span></div>` : ''}
+          </div>
+          <div class="sp-slot-right">
+            ${genreTags}
+            <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
+              title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
+              onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeTitle}')">
+              <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+  body.innerHTML = html;
+  body.scrollTop = 0;
+  lucide.createIcons({ nodes: [body] });
 }
 
 function renderSchedulePanel() {
   const dayBar = document.getElementById('sp-day-bar');
-  const body   = document.getElementById('schedule-panel-body');
-  if (!dayBar || !body) return;
-
+  if (!dayBar) return;
   const today    = new Date();
   const todayDow = (today.getDay() + 6) % 7;
-  const nowMin   = today.getHours() * 60 + today.getMinutes();
-
-  /* ── Day picker tabs — ordered starting from today (renderIndex 0 = today) ── */
   dayBar.innerHTML = Array.from({length: 7}, (_, ri) => {
     const dow = (todayDow + ri) % 7;
     return `<button class="sp-day-tab${ri === 0 ? ' active' : ''}" id="sp-tab-${ri}" onclick="selectScheduleDay(${ri})">${_dayTabLabel(dow, todayDow, today)}</button>`;
   }).join('');
-
-  /* ── All 7 days — continuous vertical list ── */
-  let html = '';
-  for (let ri = 0; ri < 7; ri++) {
-    const dayIndex = (todayDow + ri) % 7;  // actual Mon=0..Sun=6 day
-    const d        = new Date(today);
-    d.setDate(today.getDate() + ri);
-    const isToday  = ri === 0;
-    const dateStr  = d.getDate() + ' ' + SHORT_MONTHS[d.getMonth()];
-    const dayLabel = isToday ? 'Today' : SP_DAY_SHORT[dayIndex];
-    const daySlots = (SCHEDULE_SHOWS || []).filter(s => s.day === dayIndex).sort((a, b) => a.time.localeCompare(b.time));
-
-    html += `<div class="sp-day-section" id="sp-section-${ri}">`;
-    html += `<div class="sp-day-section-header">${dayLabel}, ${dateStr}.</div>`;
-
-    if (daySlots.length === 0) {
-      html += `<div class="sp-empty" style="padding:var(--space-3) var(--space-5);">No shows scheduled</div>`;
-    } else {
-      html += daySlots.map(slot => {
-        const showData    = SHOW_DATA && SHOW_DATA[slot.title];
-        const [sh, sm]    = slot.time.split(':').map(Number);
-        const isLive      = isToday && nowMin >= sh * 60 + sm && nowMin < sh * 60 + sm + 360;
-        const alertKey    = `${slot.day}|${slot.time}|${slot.title}`;
-        const isAlerted   = getAlerts().has(alertKey);
-        const safeTitle   = slot.title.replace(/'/g, "\\'");
-        const dayIdx      = _dowToIdx(dayIndex);  /* days from today for notification */
-        let showTitle = slot.title, artistName = null;
-        if (showData) { artistName = showData.host !== 'Resident' ? showData.host : null; }
-        else if (slot.host === 'Resident') {
-          const entry = Object.entries(SHOW_DATA || {}).find(([, d]) => d.host === slot.title);
-          if (entry) { showTitle = entry[0]; artistName = slot.title; }
-        }
-        const genreTags   = (slot.genres || []).slice(0, 2).map(g => `<span class="tag">${g}</span>`).join('');
-        return `
-          <div class="sp-slot-row" role="button" tabindex="0"
-            onclick="${showData ? `closeSchedulePanel();openShow('${safeTitle}')` : ''}">
-            <div class="sp-slot-time">${slot.time}</div>
-            <div class="sp-slot-info">
-              <div style="display:flex;align-items:center;gap:var(--space-5);">
-                <div class="sp-slot-name explore-show-title">${showTitle}</div>
-                ${isLive ? `<span class="sp-live"><span class="live-dot"></span>Live</span>` : ''}
-              </div>
-              ${artistName ? `<div class="sp-slot-meta"><span>${artistName}</span></div>` : ''}
-            </div>
-            <div class="sp-slot-right">
-              ${genreTags}
-              <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
-                title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
-                onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeTitle}')">
-                <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
-              </button>
-            </div>
-          </div>`;
-      }).join('');
-    }
-    html += `</div>`;
-  }
-  body.innerHTML = html;
-  lucide.createIcons({ nodes: [document.getElementById('schedule-card')] });
-
-  /* Today is always renderIndex 0 — just reset scroll to top, then observe */
-  requestAnimationFrame(() => {
-    body.scrollTop = 0;
-    _setupScheduleObserver();
-  });
+  _renderSchedulePanelDaySlots(0);
 }
 
-function selectScheduleDay(dow) {
-  _schedActiveDow = dow;
-  /* Scroll to section if body is populated; otherwise re-render */
-  const section = document.getElementById(`sp-section-${dow}`);
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else {
-    renderSchedulePanel();
-  }
+function selectScheduleDay(ri) {
+  _schedActiveDow = ri;
+  document.querySelectorAll('#sp-day-bar .sp-day-tab').forEach((t, idx) => t.classList.toggle('active', idx === ri));
+  _renderSchedulePanelDaySlots(ri);
 }
 
 function openSchedulePanel() {
