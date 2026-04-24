@@ -937,7 +937,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .tag:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
 
 /* ── Panels ── */
-.panel { position: fixed; width: calc((100vw - 2 * var(--space) - 264px) / 6 + 24px); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
+.panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
 .panel.glass { background: rgba(var(--surface-page-rgb), 0.48); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); }
 .panel.closing {
   opacity: 0; transform: translateY(4px); pointer-events: none;
@@ -996,7 +996,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 /* ── Player ── */
-.player-wrap { position: fixed; bottom: var(--space); right: var(--space); width: calc(50vw - var(--space)); z-index: var(--z-player); pointer-events: none; }
+.player-wrap { position: fixed; bottom: var(--space); right: var(--space); width: var(--modal-6col); z-index: var(--z-player); pointer-events: none; }
 
 .player-inner { pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); background: rgba(var(--surface-page-rgb), 0.48); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); position: relative; z-index: var(--z-player-inner); will-change: transform; transform: translateZ(0); }
 /* When player is in the top half: flip playlist below player-bar (JS toggles this) */
@@ -1211,12 +1211,18 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .hero { padding: var(--space-9) var(--space); }
   .hero-inner { grid-column: 4 / span 6; }
 
-  /* Content: section takes more columns — handled by .col-editorial */
-
   /* Cards: 2 columns instead of 4 */
   .cards { grid-template-columns: repeat(2, 1fr); gap: var(--space); }
-  /* Nav: start collapsing labels */
-  .nav-pill { padding: 0 var(--space-5); }
+
+  /* Nav: force compact (1 grid) — same visual as .sb-icons */
+  :root { --sidebar-width: var(--sidebar-icon); }
+  .nav-pill .nav-wordmark { opacity: 0; pointer-events: none; max-width: 0; }
+  .nav-pill .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; }
+  .nav-pill .nav-label { max-width: 0; opacity: 0; min-width: 0; overflow: hidden; }
+  .nav-pill .sidebar-header { justify-content: center; gap: 0; }
+  .nav-pill .sidebar-header-btns { margin-left: 0; }
+  .nav-pill .nav-item { padding-inline: 0; justify-content: center; gap: 0; }
+  .nav-pill .nav-kbd { max-width: 0 !important; min-width: 0 !important; opacity: 0 !important; overflow: hidden; pointer-events: none; }
 }
 
 @media (max-width: 768px) {
