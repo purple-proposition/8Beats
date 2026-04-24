@@ -1629,6 +1629,21 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: var(--space-4);
 }
 
+/* ── Explore card — animation d'entrée/sortie avec blur ──
+   Même logique mirror que le sidebar : easings croisés par direction.
+   Open  : transform ease-out + filter ease-in (blur s'attarde pendant que le card apparaît)
+   Close : transform ease-in  + filter ease-out (blur monte vite pendant que le card est visible) */
+#explore-card {
+  filter: blur(0px);
+  transition: transform 260ms cubic-bezier(0, 0, 0.58, 1),
+              filter    260ms cubic-bezier(0.42, 0, 1, 1);
+}
+#explore-card.is-closing {
+  filter: blur(12px);
+  transition: transform 260ms cubic-bezier(0.42, 0, 1, 1),
+              filter    260ms cubic-bezier(0, 0, 0.58, 1);
+}
+
 /* ── Explore modal theming ── */
 .explore-card {
   background: rgba(5, 5, 5, 0.50);
@@ -3146,7 +3161,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <!-- Backdrop -->
   <div id="explore-backdrop" style="position:fixed;inset:0;background:transparent;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);z-index:-1;transition:background var(--dur-large) var(--ease-hover),backdrop-filter var(--dur-large) var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);transition:transform var(--dur-panel) var(--ease-panel);">
+  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);filter:blur(12px);">
 
     <!-- Search bar -->
     <div class="explore-section-border" style="padding:var(--space-5);display:flex;align-items:center;gap:var(--space-4);">
@@ -4555,10 +4570,12 @@ function openExplore() {
   if (btn) btn.style.color = 'var(--text-tertiary)';
   if (icon) icon.style.stroke = 'var(--text-tertiary)';
   const backdrop = document.getElementById('explore-backdrop');
+  exploreCard.classList.remove('is-closing'); // transition open : ease-in filter (blur s'attarde)
   exploreEl.style.display = 'flex';
   requestAnimationFrame(() => requestAnimationFrame(() => {
     exploreEl.style.opacity = '1';
     exploreCard.style.transform = 'translateY(0)';
+    exploreCard.style.filter = 'blur(0px)';
     if (backdrop) { backdrop.classList.add('open'); }
   }));
   setTimeout(() => {
@@ -4576,15 +4593,17 @@ function openExplore() {
 function closeExplore() {
   exploreClosing = true;
   const backdrop = document.getElementById('explore-backdrop');
+  exploreCard.classList.add('is-closing'); // transition close : ease-out filter (blur monte vite)
   exploreEl.style.opacity = '0';
   exploreCard.style.transform = 'translateY(8px)';
+  exploreCard.style.filter = 'blur(12px)';
   if (backdrop) { backdrop.classList.remove('open'); }
   setTimeout(() => {
     exploreEl.style.display = 'none';
     document.getElementById('explore-input').value = '';
     exploreClosing = false;
     OM.clear('explore');
-  }, 250);
+  }, 260);
 }
 
 document.getElementById('explore-backdrop').addEventListener('click', closeExplore);
