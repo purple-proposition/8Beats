@@ -3911,7 +3911,16 @@ const navPill      = document.getElementById('nav-pill');
 const sidebarReopen = document.getElementById('sidebar-reopen');
 
 let _sidebarTransitioning = false;
+function _prepExpandLabels() {
+  // Snap labels to left-start position so expand slides left→right
+  const els = navPill.querySelectorAll('.nav-label, .nav-wordmark');
+  els.forEach(el => { el.style.transition = 'none'; el.style.transform = 'translateX(-8px)'; el.style.opacity = '0'; });
+  navPill.getBoundingClientRect(); // commit snapshot as "previous" value
+  els.forEach(el => { el.style.transition = ''; el.style.transform = ''; el.style.opacity = ''; });
+}
 function toggleSidebarLabels() {
+  const expanding = navPill.classList.contains('sb-icons');
+  if (expanding) _prepExpandLabels();
   navPill.classList.toggle('sb-icons');
   const isIcons = navPill.classList.contains('sb-icons');
   document.body.classList.toggle('sb-icons', isIcons);
@@ -3934,6 +3943,7 @@ function closeSidebar() {
   if (sidebarReopen) sidebarReopen.classList.add('visible');
 }
 function openSidebar() {
+  if (navPill.classList.contains('sb-icons')) _prepExpandLabels();
   navPill.classList.remove('sb-closed', 'sb-icons');
   document.body.classList.remove('sb-closed', 'sb-icons');
   if (sidebarReopen) sidebarReopen.classList.remove('visible');
