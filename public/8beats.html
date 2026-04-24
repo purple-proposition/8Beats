@@ -1206,6 +1206,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ============================================================
    7. RESPONSIVE
    ============================================================ */
+@media (max-width: 1280px) {
+  /* Player: grow to 8 grids — first expansion step */
+  .player-wrap { width: calc(8 * var(--grid-col) + 7 * var(--space-5)); }
+}
+
 @media (max-width: 1024px) {
   /* Hero: expand columns to fill more width */
   .hero { padding: var(--space-9) var(--space); }
@@ -1214,14 +1219,18 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   /* Cards: 2 columns instead of 4 */
   .cards { grid-template-columns: repeat(2, 1fr); gap: var(--space); }
 
+  /* Player: fill all available width right of compact nav */
+  .player-wrap { width: calc(100vw - var(--space) * 3 - var(--sidebar-icon)); }
+
   /* Nav: force compact (1 grid) — same visual as .sb-icons */
   :root { --sidebar-width: var(--sidebar-icon); }
-  .nav-pill .nav-wordmark { opacity: 0; pointer-events: none; max-width: 0; }
-  .nav-pill .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; }
-  .nav-pill .nav-label { max-width: 0; opacity: 0; min-width: 0; overflow: hidden; }
-  .nav-pill .sidebar-header { justify-content: center; gap: 0; }
-  .nav-pill .sidebar-header-btns { margin-left: 0; }
-  .nav-pill .nav-item { padding-inline: 0; justify-content: center; gap: 0; }
+  .nav-pill:not(.sb-closed) { width: var(--sidebar-icon) !important; }
+  .nav-pill .nav-wordmark { opacity: 0 !important; pointer-events: none; max-width: 0 !important; }
+  .nav-pill .sidebar-theme-toggle { max-width: 0 !important; min-width: 0; opacity: 0 !important; pointer-events: none; margin-left: 0; overflow: hidden; }
+  .nav-pill .nav-label { max-width: 0 !important; opacity: 0 !important; min-width: 0; overflow: hidden; }
+  .nav-pill .sidebar-header { justify-content: center !important; gap: 0 !important; }
+  .nav-pill .sidebar-header-btns { margin-left: 0 !important; }
+  .nav-pill .nav-item { padding-inline: 0 !important; justify-content: center !important; gap: 0 !important; }
   .nav-pill .nav-kbd { max-width: 0 !important; min-width: 0 !important; opacity: 0 !important; overflow: hidden; pointer-events: none; }
 }
 
