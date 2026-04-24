@@ -1097,8 +1097,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .progress-tooltip {
   position: fixed; z-index: var(--z-top);
-  background: var(--surface-overlay); border: 1px solid var(--border-default);
-  backdrop-filter: blur(20px) saturate(1.8); -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  background: rgba(5, 5, 5, 0.50); border: 1px solid var(--border-default);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border-radius: var(--radius-sm); padding: var(--space-2) var(--space-4);
   font-family: var(--font);
   pointer-events: none; white-space: nowrap;
@@ -1616,10 +1616,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Explore modal theming ── */
 .explore-card {
-  background: var(--surface-overlay);
+  background: rgba(5, 5, 5, 0.50);
   border: 1px solid var(--border-default);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /* Tabs */
@@ -1720,9 +1721,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: none; flex-direction: column;  /* JS sets display:flex to open */
   border-radius: var(--radius);
   border: 1px solid var(--border-default);
-  background: var(--surface-overlay);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  background: rgba(5, 5, 5, 0.50);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   overflow: hidden;
   pointer-events: none;
   z-index: var(--z-nav);
@@ -2495,7 +2496,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   transform: translate(-50%, -50%) scale(0.96);
   width: 480px; max-width: calc(100vw - 32px); z-index: var(--z-tracklist);
   border-radius: var(--radius); border: 1px solid var(--border-default); overflow: hidden;
-  background: var(--surface-overlay); backdrop-filter: blur(20px) saturate(1.8); -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  background: rgba(5, 5, 5, 0.50); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   box-shadow: var(--shadow-lg);
   opacity: 0; transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard);
 }
