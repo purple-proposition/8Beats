@@ -2673,11 +2673,11 @@ body { padding-top: var(--space-9); }
   overflow: hidden;
   pointer-events: all;
   will-change: width;
-  /* Expand: spring overshoot gives an alive, organic snap-open */
-  transition: width 400ms var(--ease-spring), opacity var(--dur-fade) var(--ease-hover);
+  /* Expand: spring gives a living snap-open feel */
+  transition: width 260ms var(--ease-spring), opacity var(--dur-fade) var(--ease-hover);
 }
-/* Collapse: text gone → space collapses → container closes last */
-.nav-pill.sb-icons { width: var(--sidebar-width-compact); transition: width 320ms cubic-bezier(0.4, 0, 0.15, 1) 160ms, opacity var(--dur-fade) var(--ease-hover); }
+/* Collapse: brief delay after text fades, then container closes */
+.nav-pill.sb-icons { width: var(--sidebar-width-compact); transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1) 20ms, opacity var(--dur-fade) var(--ease-hover); }
 .nav-pill.sb-closed { width: 0; opacity: 0; pointer-events: none; }
 
 /* ── Sidebar header ── */
@@ -2706,12 +2706,12 @@ body { padding-top: var(--space-9); }
   font-size: var(--text-base); font-weight: 400; letter-spacing: -.3px;
   color: var(--text-primary); text-decoration: none; white-space: nowrap;
   flex: 1; min-width: 0; overflow: hidden;
-  /* Expand: max-width opens immediately, opacity materializes late */
-  transition: opacity 160ms ease 240ms, max-width 340ms var(--ease-panel), color var(--dur-short) var(--ease-hover);
+  /* Expand: slot opens immediately, text appears after */
+  transition: opacity 120ms ease 160ms, max-width 220ms cubic-bezier(0.16, 1, 0.3, 1), color var(--dur-short) var(--ease-hover);
 }
 .nav-wordmark:hover { color: var(--text-secondary); }
-/* Collapse: dissolve fast, then slot closes */
-.nav-pill.sb-icons .nav-wordmark { opacity: 0; pointer-events: none; max-width: 0; transition: opacity 90ms ease-in, max-width 280ms cubic-bezier(0.4, 0, 0.15, 1) 80ms, color var(--dur-short) var(--ease-hover); }
+/* Collapse: soft fade then slot closes — no abrupt cut */
+.nav-pill.sb-icons .nav-wordmark { opacity: 0; pointer-events: none; max-width: 0; transition: opacity 80ms cubic-bezier(0, 0, 0.2, 1), max-width 180ms cubic-bezier(0.4, 0, 0.2, 1), color var(--dur-short) var(--ease-hover); }
 
 /* ── Header buttons ── */
 .sidebar-hdr-btn {
@@ -2747,12 +2747,12 @@ body { padding-top: var(--space-9); }
 /* ── Theme toggle (inside nav-item row) ── */
 .sidebar-theme-toggle {
   flex-shrink: 0; margin-left: auto;
-  /* Expand: slot opens, then toggle fades in */
-  transition: opacity 160ms ease 240ms, max-width 340ms var(--ease-panel);
+  /* Expand: slot opens, toggle appears after */
+  transition: opacity 120ms ease 160ms, max-width 220ms cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden; max-width: 44px;
 }
-/* Collapse: dissolve fast, then slot closes */
-.nav-pill.sb-icons .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; transition: opacity 90ms ease-in, max-width 280ms cubic-bezier(0.4, 0, 0.15, 1) 80ms; }
+/* Collapse: soft fade, slot closes */
+.nav-pill.sb-icons .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; transition: opacity 80ms cubic-bezier(0, 0, 0.2, 1), max-width 180ms cubic-bezier(0.4, 0, 0.2, 1); }
 
 /* ── Nav items: row-style (explorer grammar) ── */
 .nav-item {
@@ -2767,8 +2767,8 @@ body { padding-top: var(--space-9); }
   background: none; cursor: pointer;
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   text-decoration: none; white-space: nowrap; flex-shrink: 0;
-  /* Expand: gap/padding open with container */
-  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover), gap 360ms var(--ease-panel), padding-inline 360ms var(--ease-panel);
+  /* gap/padding snap instantly — only color/bg transition */
+  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
 /* Inset separator — centered in the 24px gap between items */
 .nav-item::after {
@@ -2792,11 +2792,11 @@ body { padding-top: var(--space-9); }
 .nav-label {
   display: inline-block; overflow: hidden; white-space: nowrap;
   max-width: 160px; opacity: 1;
-  /* Expand: slot opens immediately, text materializes late */
-  transition: max-width 340ms var(--ease-panel), opacity 160ms ease 240ms;
+  /* Expand: slot opens immediately, text appears after */
+  transition: max-width 220ms cubic-bezier(0.16, 1, 0.3, 1), opacity 120ms ease 160ms;
 }
-/* Collapse: text dissolves fast, then slot closes */
-.nav-pill.sb-icons .nav-label { max-width: 0; opacity: 0; min-width: 0; overflow: hidden; transition: opacity 90ms ease-in, max-width 280ms cubic-bezier(0.4, 0, 0.15, 1) 80ms; }
+/* Collapse: soft fade, slot closes — all simultaneous so icons stay still */
+.nav-pill.sb-icons .nav-label { max-width: 0; opacity: 0; min-width: 0; overflow: hidden; transition: opacity 80ms cubic-bezier(0, 0, 0.2, 1), max-width 180ms cubic-bezier(0.4, 0, 0.2, 1); }
 
 /* ── Sidebar footer (compat, hidden) ── */
 .sidebar-footer { display: none !important; }
@@ -2819,8 +2819,8 @@ body { padding-top: var(--space-9); }
   padding-inline: var(--sidebar-padding-x-compact);  /* 0 */
   justify-content: center;
   gap: 0;
-  /* Collapse: space collapses after text dissolves */
-  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover), gap 280ms cubic-bezier(0.4, 0, 0.15, 1) 80ms, padding-inline 280ms cubic-bezier(0.4, 0, 0.15, 1) 80ms;
+  /* gap/padding snap instantly — icons land in final position at t=0 */
+  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
 /* Kbd hints hidden in compact mode — absolute pos removes layout interference */
 .nav-pill.sb-icons .nav-kbd { max-width: 0 !important; min-width: 0 !important; opacity: 0 !important; overflow: hidden; pointer-events: none; }
