@@ -1001,35 +1001,23 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* When player is in the top half: flip playlist below player-bar (JS toggles this) */
 .player-inner.playlist-below { flex-direction: column; }
 
-/* Playlist panel — grid-template-rows reveal (no max-height guessing, content-aware) */
+/* Playlist panel — JS-driven height animation (overflow: hidden, header-first reveal) */
 .playlist {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--dur-panel) var(--ease-standard);
-}
-.playlist.open {
-  grid-template-rows: 1fr;
-}
-/* Close: container collapses after content exits (80ms delay = content fade duration) */
-.playlist.pl-closing {
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--dur-panel) var(--ease-hover) 80ms;
-}
-
-/* Grid clip layer — required for 0fr trick */
-.playlist-scroll {
-  min-height: 0;
+  height: 0;
   overflow: hidden;
+  will-change: height;
+  transition: height var(--dur-panel) var(--ease-standard);
 }
 
 /* Content + scroll container */
 .playlist-inner {
   padding: var(--space-4) var(--space-5) var(--space-3);
   display: flex; flex-direction: column;
+  gap: 24px;
   max-height: 320px; overflow-y: auto;
   opacity: 0;
   transform: translateY(6px);
-  /* Open: container reveals first, then content glides in */
+  /* Same easing open and close — removing .open class reverses automatically */
   transition: opacity var(--dur-fade) var(--ease-hover) var(--delay-content),
               transform var(--dur-panel) var(--ease-standard) var(--delay-content);
 }
@@ -1037,29 +1025,21 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   opacity: 1;
   transform: translateY(0);
 }
-/* Close: content exits fast, mirrored direction — no delay */
-.playlist.pl-closing .playlist-inner {
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 80ms var(--ease-hover),
-              transform var(--dur-short) var(--ease-hover);
-}
 
-.playlist-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); gap: var(--space-3); }
+.playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .playlist-header-meta { font-size: var(--text-xs); color: var(--text-tertiary); letter-spacing: .04em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: right; }
 
-.track { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) 0; border-radius: 0; }
-.track.is-current { border-left: 2px solid var(--accent); }
-.track + .track { border-top: 1px solid var(--border-default); }
-.playlist-header + .track { padding-top: 0; }
+.track { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); border-radius: 0; }
+.track.is-current .track-name { color: var(--accent); }
+/* No separators between tracks — spacing handled by parent gap: 24px */
+.track-num { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 16px; text-align: right; line-height: 1; }
 .track-info { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; flex: 1; }
 .track-name { font-size: var(--text-base); line-height: 1.4; color: var(--text-primary); }
-.track-game { font-size: var(--text-base); color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .track-ago  { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; }
 
 /* ── Tracklist mode — show-page visual language inside player panel ── */
-.playlist.tracklist .track-name { font-size: var(--text-sm); line-height: 1.35; }
-.playlist.tracklist .track-game { font-size: var(--text-xs); margin-top: 2px; }
+/* font-size stays at 14px (--text-base) for both track-name and track-game — same as base */
 .playlist.tracklist .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 .playlist.tracklist .track-stream-btn {
   width: 28px; height: 28px; flex-shrink: 0;
@@ -1274,16 +1254,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   /* Player: fill all available width right of compact nav */
   .player-wrap { width: calc(100vw - var(--space) * 3 - var(--sidebar-icon)); }
 
-  /* Nav: force compact (1 grid) — same visual as .sb-icons */
-  :root { --sidebar-width: var(--sidebar-icon); }
-  .nav-pill:not(.sb-closed) { width: var(--sidebar-icon) !important; }
-  .nav-pill .nav-wordmark { opacity: 0 !important; pointer-events: none; max-width: 0 !important; }
-  .nav-pill .sidebar-theme-toggle { max-width: 0 !important; min-width: 0; opacity: 0 !important; pointer-events: none; margin-left: 0; overflow: hidden; }
-  .nav-pill .nav-label { max-width: 0 !important; opacity: 0 !important; min-width: 0; overflow: hidden; }
-  .nav-pill .sidebar-header { justify-content: center !important; gap: 0 !important; }
-  .nav-pill .sidebar-header-btns { margin-left: 0 !important; }
-  .nav-pill .nav-item { padding-inline: 0 !important; justify-content: center !important; gap: 0 !important; }
-  .nav-pill .nav-kbd { max-width: 0 !important; min-width: 0 !important; opacity: 0 !important; overflow: hidden; pointer-events: none; }
+  /* Nav compact: handled entirely by JS (_updateNavCompact) via .sb-icons class (240ms transition).
+     No CSS compact rules here — they would snap instantly and block the JS animation. */
 }
 
 @media (max-width: 768px) {
@@ -3934,26 +3906,27 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     </div>
 
     <div class="playlist" id="playlist">
-      <div class="playlist-scroll">
-        <div class="playlist-inner">
-          <div class="playlist-header">
-            <span class="label">Last played tracks</span>
-            <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-              <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-            </button>
-          </div>
-          <div class="track">
-            <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
-            <span class="track-ago">6m ago</span>
-          </div>
-          <div class="track">
-            <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
-            <span class="track-ago">11m ago</span>
-          </div>
-          <div class="track">
-            <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
-            <span class="track-ago">16m ago</span>
-          </div>
+      <div class="playlist-inner">
+        <div class="playlist-header">
+          <span class="label">Last played tracks</span>
+          <button class="panel-close" id="playlist-close" aria-label="Close playlist">
+            <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+          </button>
+        </div>
+        <div class="track">
+          <span class="track-num">1</span>
+          <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
+          <span class="track-ago">6m ago</span>
+        </div>
+        <div class="track">
+          <span class="track-num">2</span>
+          <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
+          <span class="track-ago">11m ago</span>
+        </div>
+        <div class="track">
+          <span class="track-num">3</span>
+          <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
+          <span class="track-ago">16m ago</span>
         </div>
       </div>
     </div>
@@ -5178,20 +5151,30 @@ function getPlayerHeight() {
 
 
 function _closePl() {
-  /* Asymmetric close: content exits first (80ms), then container collapses */
   plOpen = false;
   plBtnD.classList.remove('active');
-  plPanel.classList.remove('open');
-  plPanel.classList.add('pl-closing');
-  // Total close: 80ms content fade + 260ms container collapse = 340ms
-  setTimeout(() => plPanel.classList.remove('pl-closing'), 380);
+  /* Mirror of open: pin current height first (can't animate from 'auto'), then collapse */
+  plPanel.style.height = plPanel.scrollHeight + 'px';
+  plPanel.offsetHeight; // force reflow
+  plPanel.style.height = '0';
+  plPanel.classList.remove('open'); // content transitions reverse automatically (same easing)
 }
 
 function _openPl() {
   plOpen = true;
   plBtnD.classList.add('active');
-  plPanel.classList.remove('pl-closing');
+  /* Measure natural height with transition suspended */
+  plPanel.style.transition = 'none';
+  plPanel.style.height = 'auto';
+  const targetH = plPanel.scrollHeight;
+  plPanel.style.height = '0';
+  plPanel.offsetHeight; // force reflow
+  plPanel.style.transition = ''; // restore CSS transition
+  /* Animate height and fade content in together */
+  plPanel.style.height = targetH + 'px';
   plPanel.classList.add('open');
+  /* After animation completes, switch to 'auto' so dynamic content changes are safe */
+  setTimeout(() => { if (plOpen) plPanel.style.height = 'auto'; }, 300);
   // Scroll mask — only in tracklist mode with long content
   const inner = plPanel.querySelector('.playlist-inner');
   if (inner && plPanel.classList.contains('tracklist')) {
@@ -5290,6 +5273,44 @@ function closeVol() { volPopup.classList.remove('vol-open'); }
 // Init player layout direction and keep it in sync on resize
 requestAnimationFrame(_updatePlayerLayout);
 window.addEventListener('resize', _updatePlayerLayout);
+
+/* ── Nav auto-compact — smooth 240ms transition (same as manual toggle) ── */
+const NAV_COMPACT_BREAKPOINT = 1024; // px
+function _updateNavCompact() {
+  if (mq.matches) return; // mobile layout — sidebar handled differently
+  const shouldCompact = window.innerWidth <= NAV_COMPACT_BREAKPOINT;
+  const isCompact = navPill.classList.contains('sb-icons');
+  if (shouldCompact === isCompact) return;
+  navPill.classList.toggle('sb-icons', shouldCompact);
+  document.body.classList.toggle('sb-icons', shouldCompact);
+  // Sync toggle icon
+  const iconEl = document.querySelector('#sidebar-icon-btn [data-lucide]');
+  if (iconEl) {
+    iconEl.setAttribute('data-lucide', shouldCompact ? 'panel-left-open' : 'panel-left-close');
+    lucide.createIcons({ nodes: [iconEl.parentElement] });
+  }
+}
+window.addEventListener('resize', _updateNavCompact);
+/* Initial load: apply compact state instantly (no animation) to match CSS paint-time state */
+(function() {
+  if (mq.matches) return;
+  const shouldCompact = window.innerWidth <= NAV_COMPACT_BREAKPOINT;
+  if (!shouldCompact) return;
+  // Suppress all transitions on nav for this frame only
+  const navEls = [navPill, ...navPill.querySelectorAll('*')];
+  navEls.forEach(el => el.style.transition = 'none');
+  navPill.classList.add('sb-icons');
+  document.body.classList.add('sb-icons');
+  const iconEl = document.querySelector('#sidebar-icon-btn [data-lucide]');
+  if (iconEl) {
+    iconEl.setAttribute('data-lucide', 'panel-left-open');
+    lucide.createIcons({ nodes: [iconEl.parentElement] });
+  }
+  // Restore transitions after reflow so resize events animate normally
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    navEls.forEach(el => el.style.transition = '');
+  }));
+})();
 
 function setVol(pct) {
   let v = Math.max(0, Math.min(100, Math.round(pct)));
