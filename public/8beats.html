@@ -72,7 +72,13 @@
   --surface-elevated:       #424242;
   --surface-elevated-rgb:   29,29,29;  /* base RGB pour glass effects */
   --surface-overlay:        rgba(11,11,11,0.92);
-  --surface-glass:          rgba(29,29,29,0.88);  /* glass = elevated, pas page */
+  /* ── Glass system — surface unique pour tous les contenants ──
+     Une seule base : noir 70%, blur 16px, border blanc 10%.
+     Même valeur sur sidebar, player, modals, cards, tooltips, popups. */
+  --glass-bg:               rgba(0, 0, 0, 0.70);
+  --glass-blur:             16px;
+  --glass-border:           rgba(255, 255, 255, 0.10);
+  --surface-glass:          var(--glass-bg);
 
   /* ── Semantic — Text (3 rôles) ── */
   --text-primary:       #f2f2f2;   /* titres, CTA, track names — moins agressif que #fafafa */
@@ -264,7 +270,7 @@ html.light {
   --surface-elevated:       #e4e4e4;
   --surface-elevated-rgb:   228,228,228;
   --surface-overlay:        rgba(247,247,247,0.92);
-  --surface-glass:          rgba(228,228,228,0.88);
+  --surface-glass:          var(--glass-bg);
 
   --text-primary:           #0b0b0b;
   --text-primary-rgb:       11,11,11;
@@ -389,10 +395,10 @@ h1,
 
 /* ── Glass surface ── */
 .glass {
-  background: rgba(var(--surface-page-rgb), 0.48);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
 }
 
@@ -408,8 +414,8 @@ h1,
   z-index: var(--z-drawer);
   opacity: 0; pointer-events: none;
   transition: opacity var(--dur-large) var(--ease-hover);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   display: none;
 }
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
@@ -419,13 +425,13 @@ h1,
   width: 280px; z-index: var(--z-drawer-content);
   display: none;
   flex-direction: column;
-  border-left: 1px solid var(--border-default);
+  border-left: 1px solid var(--glass-border);
   border-radius: var(--radius) 0 0 var(--radius);
   transform: translateX(100%);
   transition: transform var(--dur-large) var(--ease-standard);
-  background: var(--surface-overlay);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 .drawer.open { transform: translateX(0); }
 
@@ -457,10 +463,10 @@ h1,
 }
 
 .nav-pill {
-  background: rgba(var(--surface-page-rgb), 0.48);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   height: var(--nav-h);
   display: flex; align-items: center;
@@ -600,12 +606,12 @@ html.light .theme-knob { transform: translateX(20px); }
   position: fixed;
   width: fit-content;
   min-width: 210px;
-  background: rgba(var(--surface-page-rgb), 0.48);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   z-index: var(--z-top);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   opacity: 0;
   transform: translateY(5px);
   transition: opacity var(--dur-short) var(--ease-standard), transform var(--dur-short) var(--ease-standard);
@@ -681,11 +687,11 @@ html.light .theme-knob { transform: translateX(20px); }
   display: none; position: fixed; z-index: var(--z-mno);
   left: 16px; right: 16px;
   top: 50%; transform: translateY(calc(-50% + 8px));
-  background: rgba(var(--surface-page-rgb), 0.48);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
   opacity: 0;
   transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard);
@@ -938,7 +944,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Panels ── */
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
-.panel.glass { background: rgba(var(--surface-page-rgb), 0.48); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); }
+.panel.glass { background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); }
 .panel.closing {
   opacity: 0; transform: translateY(4px); pointer-events: none;
   /* Exit plus rapide que l'entrée (180ms vs 260ms) */
@@ -998,7 +1004,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Player ── */
 .player-wrap { position: fixed; bottom: var(--space); right: var(--space); width: var(--modal-6col); z-index: var(--z-player); pointer-events: none; }
 
-.player-inner { pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); background: rgba(var(--surface-page-rgb), 0.48); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); position: relative; z-index: var(--z-player-inner); will-change: transform; transform: translateZ(0); }
+.player-inner { pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); position: relative; z-index: var(--z-player-inner); will-change: transform; transform: translateZ(0); }
 /* When player is in the top half: flip playlist below player-bar (JS toggles this) */
 .player-inner.playlist-below { flex-direction: column; }
 
@@ -1097,8 +1103,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .progress-tooltip {
   position: fixed; z-index: var(--z-top);
-  background: rgba(5, 5, 5, 0.50); border: 1px solid var(--border-default);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
   border-radius: var(--radius-sm); padding: var(--space-2) var(--space-4);
   font-family: var(--font);
   pointer-events: none; white-space: nowrap;
@@ -1164,10 +1170,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .vol-popup:not(.vol-open):hover { background: var(--surface-btn-hover); border-color: var(--border-hover); }
 .vol-popup.vol-open {
   height: 148px; border-radius: var(--radius-control);
-  background: rgba(var(--surface-page-rgb), 0.48);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  border-color: var(--border-hover);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-color: var(--glass-border);
 }
 .vol-track-area {
   flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center;
@@ -1634,11 +1640,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Explore modal theming ── */
 .explore-card {
-  background: rgba(5, 5, 5, 0.50);
-  border: 1px solid var(--border-default);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 /* Tabs */
@@ -1736,10 +1742,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   max-height: var(--tool-panel-max-h);
   display: none; flex-direction: column;  /* JS sets display:flex to open */
   border-radius: var(--radius);
-  border: 1px solid var(--border-default);
-  background: rgba(5, 5, 5, 0.50);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
   pointer-events: none;
   z-index: var(--z-nav);
@@ -1858,7 +1864,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
   text-transform: uppercase; letter-spacing: .08em;
   position: sticky; top: 0;
-  background: var(--surface-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
   z-index: 1; border-bottom: 1px solid var(--border-subtle);
 }
 .sp-live {
@@ -1880,10 +1886,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #genre-tooltip {
   position: fixed; z-index: var(--z-top);
   max-width: 220px;
-  background: rgba(var(--surface-page-rgb), 0.48);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   padding: var(--space-3) var(--space-4);
   font-family: var(--font); font-size: var(--text-base); line-height: 1.5;
@@ -2511,8 +2517,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(0.96);
   width: 480px; max-width: calc(100vw - 32px); z-index: var(--z-tracklist);
-  border-radius: var(--radius); border: 1px solid var(--border-default); overflow: hidden;
-  background: rgba(5, 5, 5, 0.50); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius); border: 1px solid var(--glass-border); overflow: hidden;
+  background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
   box-shadow: var(--shadow-lg);
   opacity: 0; transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard);
 }
@@ -2667,10 +2673,10 @@ body { padding-top: var(--space-9); }
   display: flex; flex-direction: column; align-items: stretch;
   padding: 0;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-subtle);
-  background: rgba(var(--surface-page-rgb), 0.48);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
   pointer-events: all;
   will-change: width;
@@ -2944,11 +2950,11 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   top: var(--space); left: var(--space);
   width: 40px; height: 40px;
   display: none; align-items: center; justify-content: center;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-control);
-  background: rgba(var(--surface-page-rgb), 0.48);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   cursor: pointer; color: var(--text-secondary);
   z-index: var(--z-nav);
   transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
