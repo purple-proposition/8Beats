@@ -1146,14 +1146,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #playlist-btn.active:hover { color: var(--text-primary); }
 
 /* ── Volume growing button ── */
-/* vol-wrap: invisible spacer in player bar — vol-popup is the visual element */
-.vol-wrap { flex-shrink: 0; width: 40px; height: 40px; }
+/* vol-wrap: flow anchor in player bar — vol-popup is absolutely positioned inside it */
+.vol-wrap { flex-shrink: 0; width: 40px; height: 40px; position: relative; }
 
-/* vol-popup: fixed growing button (track + face in one pill) */
+/* vol-popup: growing button (track + face in one pill), anchored to vol-wrap */
 .vol-popup {
-  position: fixed;
-  z-index: var(--z-top);
-  left: -200px; /* off-screen until JS positions it */
+  position: absolute;
+  bottom: 0; left: 0;
+  z-index: 10;
   display: flex; flex-direction: column; align-items: center;
   background: transparent;
   border: 1px solid var(--border-btn); border-radius: var(--radius-control);
@@ -3858,7 +3858,17 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <button class="spotify-btn" id="spotify-btn" aria-label="Spotify">
             <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
           </button>
-          <div class="vol-wrap" id="vol-wrap"></div>
+          <div class="vol-wrap" id="vol-wrap">
+            <div class="vol-popup" id="vol-popup">
+              <div class="vol-track-area" id="vol-slider">
+                <div class="vol-track" id="vol-track">
+                  <div class="vol-fill" id="vol-fill" style="height:75%"></div>
+                  <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 4px)"></div>
+                </div>
+              </div>
+              <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
+            </div>
+          </div>
           <button class="ctrl-btn" id="playlist-btn" aria-label="Playlist">
             <i data-lucide="list-music" style="width:12px;height:12px;fill:none;display:block;"></i>
           </button>
@@ -3895,17 +3905,6 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       </div>
     </div>
   </div>
-</div>
-
-<!-- Vol portal — growing button (track + face in one pill), fixed above everything -->
-<div class="vol-popup" id="vol-popup">
-  <div class="vol-track-area" id="vol-slider">
-    <div class="vol-track" id="vol-track">
-      <div class="vol-fill" id="vol-fill" style="height:75%"></div>
-      <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 4px)"></div>
-    </div>
-  </div>
-  <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
 </div>
 
 <script>
@@ -5152,9 +5151,6 @@ function togglePlaylist(e) {
   plOpen = !plOpen;
   plPanel.classList.toggle('open', plOpen);
   plBtnD.classList.toggle('active', plOpen);
-  // Vol position: lightweight during animation, full update after transition settles
-  requestAnimationFrame(_positionVolOnly);
-  setTimeout(positionVolPopup, 360);
   if (plOpen) {
     const inner = plPanel.querySelector('.playlist-inner');
     if (inner && plPanel.classList.contains('tracklist')) {
@@ -5178,7 +5174,6 @@ plBtnD.addEventListener('click', togglePlaylist);
 document.addEventListener('click', e => {
   if (plOpen && !plPanel.contains(e.target) && !plBtnD.contains(e.target)) {
     plOpen=false; plPanel.classList.remove('open'); plBtnD.classList.remove('active');
-    requestAnimationFrame(_positionVolOnly); setTimeout(positionVolPopup, 360);
   }
 });
 
@@ -5221,66 +5216,27 @@ function _updatePlayerLayout() {
   inner.classList.toggle('playlist-below', resolvePopupDir(r, 284) === 'below');
 }
 
-/** Full update: reposition vol-popup AND recalculate playlist direction. Use at stable moments only (page load, resize, drag-end). */
-function positionVolPopup() {
-  const r = volWrap.getBoundingClientRect();
-  if (!r.width) { requestAnimationFrame(positionVolPopup); return; }
-  const dir = resolvePopupDir(r, 148);
-  volPopup.dataset.dir = dir;
-  volPopup.style.left = r.left + 'px';
-  if (dir === 'above') {
-    volPopup.style.bottom = (window.innerHeight - r.bottom) + 'px';
-    volPopup.style.top    = 'auto';
-  } else {
-    volPopup.style.top    = r.top + 'px';
-    volPopup.style.bottom = 'auto';
-  }
-  _updatePlayerLayout();
-}
-
-/** Lightweight: only repositions vol-popup, never flips flex-direction. Safe to call during drag and animations. */
-function _positionVolOnly() {
-  if (!volWrap || !volPopup) return;
-  const r = volWrap.getBoundingClientRect();
-  if (!r.width) return;
-  const dir = resolvePopupDir(r, 148);
-  volPopup.dataset.dir = dir;
-  volPopup.style.left = r.left + 'px';
-  if (dir === 'above') {
-    volPopup.style.bottom = (window.innerHeight - r.bottom) + 'px';
-    volPopup.style.top    = 'auto';
-  } else {
-    volPopup.style.top    = r.top + 'px';
-    volPopup.style.bottom = 'auto';
-  }
-}
-
-requestAnimationFrame(positionVolPopup);
-window.addEventListener('resize', positionVolPopup);
-// During animation/resize: only reposition vol, never flip layout mid-frame
-const playerInnerEl = document.querySelector('.player-inner');
-if (playerInnerEl && window.ResizeObserver) {
-  new ResizeObserver(() => requestAnimationFrame(_positionVolOnly)).observe(playerInnerEl);
-}
-
 function openVol() {
-  /* Resolve direction & position fresh at open time — never stale after a drag */
+  /* vol-popup is position:absolute inside vol-wrap — no pixel coords needed, just direction */
   const r   = volWrap.getBoundingClientRect();
   const dir = resolvePopupDir(r, 148);
   volPopup.dataset.dir = dir;
-  volPopup.style.left  = r.left + 'px';
   if (dir === 'above') {
-    volPopup.style.bottom = (window.innerHeight - r.bottom) + 'px';
+    volPopup.style.bottom = '0';
     volPopup.style.top    = 'auto';
     volPopup.style.flexDirection = 'column';
   } else {
-    volPopup.style.top    = r.top + 'px';
+    volPopup.style.top    = '0';
     volPopup.style.bottom = 'auto';
     volPopup.style.flexDirection = 'column-reverse';
   }
   volPopup.classList.add('vol-open');
 }
 function closeVol() { volPopup.classList.remove('vol-open'); }
+
+// Init player layout direction and keep it in sync on resize
+requestAnimationFrame(_updatePlayerLayout);
+window.addEventListener('resize', _updatePlayerLayout);
 
 function setVol(pct) {
   let v = Math.max(0, Math.min(100, Math.round(pct)));
@@ -5770,7 +5726,6 @@ function openShowTracklist() {
   if (plOpen && plPanel && plPanel.classList.contains('tracklist')) {
     plOpen = false; plPanel.classList.remove('open');
     if (plBtnD) plBtnD.classList.remove('active');
-    requestAnimationFrame(_positionVolOnly); setTimeout(positionVolPopup, 360);
   }
   const popup = document.getElementById('show-tracklist-popup');
   const scrim = document.getElementById('show-tracklist-scrim');
@@ -6889,10 +6844,6 @@ const FWM = (() => {
         sidOff += h + GAP;
       }
     }
-    // After a non-immediate (CSS-transitioned) resolve, sync vol-popup position
-    if (!immediate && typeof _positionVolOnly === 'function') {
-      requestAnimationFrame(_positionVolOnly);
-    }
   }
 
   /* ── Snap hint (shared singleton) ────────────────────── */
@@ -6944,7 +6895,7 @@ const FWM = (() => {
       node.el.style.bottom = 'auto';
       node.el.style.left   = startL + 'px';
       node.el.style.top    = startT + 'px';
-      // Collapse vol-popup during drag to prevent stale positioning
+      // Close vol-popup when player drag starts (clean UX — reopen if needed after)
       const vp = document.getElementById('vol-popup');
       if (vp) vp.classList.remove('vol-open');
       window.addEventListener('mousemove', onMove);
@@ -6961,8 +6912,6 @@ const FWM = (() => {
       node.el.style.top  = (startT + dy) + 'px';
       const r = node.el.getBoundingClientRect();
       _showHint(getSnapCorner(r.left + r.width / 2, r.top + r.height / 2));
-      // Keep vol-popup anchor in sync during drag — lightweight, no layout flip
-      if (id === 'player' && typeof _positionVolOnly === 'function') _positionVolOnly();
     }
 
     function onUp() {
@@ -6977,8 +6926,6 @@ const FWM = (() => {
       const r = node.el.getBoundingClientRect();
       node.corner = getSnapCorner(r.left + r.width / 2, r.top + r.height / 2);
       scheduleResolve();  // CSS transition animates snap to new slot
-      // Reposition vol-popup once snap transition completes
-      setTimeout(() => { if (typeof positionVolPopup === 'function') positionVolPopup(); }, 260);
     }
 
     node.handleEl.classList.add('fwm-drag-handle');
@@ -7156,7 +7103,6 @@ function setPlayerCornerOnly(corner) {
   document.querySelectorAll('#player-layout-picker .layout-option').forEach(opt => {
     opt.classList.toggle('active', opt.dataset.corner === corner);
   });
-  setTimeout(() => { if (typeof positionVolPopup === 'function') positionVolPopup(); }, 280);
 }
 
 function setMenuCornerOnly(corner) {
