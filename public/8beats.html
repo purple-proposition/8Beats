@@ -1001,25 +1001,52 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* When player is in the top half: flip playlist below player-bar (JS toggles this) */
 .player-inner.playlist-below { flex-direction: column; }
 
+/* Playlist panel — grid-template-rows reveal (no max-height guessing, content-aware) */
 .playlist {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-panel) var(--ease-standard);
+}
+.playlist.open {
+  grid-template-rows: 1fr;
+}
+/* Close: container collapses after content exits (80ms delay = content fade duration) */
+.playlist.pl-closing {
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-panel) var(--ease-hover) 80ms;
+}
+
+/* Grid clip layer — required for 0fr trick */
+.playlist-scroll {
+  min-height: 0;
   overflow: hidden;
-  max-height: 0;
-  transition: max-height var(--dur-panel) var(--ease-panel);
-  will-change: max-height;
 }
-.playlist.open { max-height: 340px; }
 
+/* Content + scroll container */
 .playlist-inner {
-  padding: var(--space-5) var(--space-5) 0;
-  display: flex; flex-direction: column; overflow-y: auto; max-height: 284px;
+  padding: var(--space-4) var(--space-5) var(--space-3);
+  display: flex; flex-direction: column;
+  max-height: 320px; overflow-y: auto;
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(6px);
+  /* Open: container reveals first, then content glides in */
   transition: opacity var(--dur-fade) var(--ease-hover) var(--delay-content),
-              transform var(--dur-panel) var(--ease-panel) var(--delay-content);
+              transform var(--dur-panel) var(--ease-standard) var(--delay-content);
 }
-.playlist.open .playlist-inner { opacity: 1; transform: translateY(0); }
+.playlist.open .playlist-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Close: content exits fast, mirrored direction — no delay */
+.playlist.pl-closing .playlist-inner {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 80ms var(--ease-hover),
+              transform var(--dur-short) var(--ease-hover);
+}
 
-.playlist-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
+.playlist-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); gap: var(--space-3); }
+.playlist-header-meta { font-size: var(--text-xs); color: var(--text-tertiary); letter-spacing: .04em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: right; }
 
 .track { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) 0; border-radius: 0; }
 .track.is-current { border-left: 2px solid var(--accent); }
@@ -1030,11 +1057,33 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .track-game { font-size: var(--text-base); color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .track-ago  { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; }
 
-/* Tracklist / replay mode */
+/* ── Tracklist mode — show-page visual language inside player panel ── */
+.playlist.tracklist .track-name { font-size: var(--text-sm); line-height: 1.35; }
+.playlist.tracklist .track-game { font-size: var(--text-xs); margin-top: 2px; }
+.playlist.tracklist .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+.playlist.tracklist .track-stream-btn {
+  width: 28px; height: 28px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
+  cursor: pointer; color: var(--icon-secondary);
+  transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+.playlist.tracklist .track-stream-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.playlist.tracklist .track-stream-btn svg { width: 12px; height: 12px; fill: currentColor; stroke: none; display: block; }
+.playlist.tracklist .track-ts-btn {
+  height: 28px; padding: 0 var(--space-2);
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
+  cursor: pointer; font-size: var(--text-xs); letter-spacing: .04em;
+  color: var(--icon-secondary); font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
+  transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+.playlist.tracklist .track-ts-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+
+/* Legacy — kept for compat */
 .track-ts {
   font-size: var(--text-sm); font-weight: 400; color: var(--text-secondary);
-  flex-shrink: 0; letter-spacing: .06em;
-  font-family: 'Inter', system-ui, sans-serif;
+  flex-shrink: 0; letter-spacing: .06em; font-family: 'Inter', system-ui, sans-serif;
   cursor: pointer; transition: color var(--dur-short) var(--ease-hover); min-width: 36px;
 }
 .track-ts:hover { color: var(--text-secondary); }
@@ -1429,8 +1478,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .explore-show-row { padding: var(--space) !important; }
 
   /* ── Playlist ── */
-  .playlist.open { max-height: 300px; }
-  .playlist-inner { padding: var(--space) var(--space) 0; }
+  .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; }
   .playlist-header { margin-bottom: var(--space); }
   .track { padding: var(--space-3) 0; border-radius: 0; }
   .track-name { font-size: var(--text-base); }
@@ -3886,21 +3934,26 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     </div>
 
     <div class="playlist" id="playlist">
-      <div class="playlist-inner">
-        <div class="playlist-header">
-          <span class="label">Last played tracks</span>
-        </div>
-        <div class="track">
-          <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
-          <span class="track-ago">6m ago</span>
-        </div>
-        <div class="track">
-          <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
-          <span class="track-ago">11m ago</span>
-        </div>
-        <div class="track">
-          <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
-          <span class="track-ago">16m ago</span>
+      <div class="playlist-scroll">
+        <div class="playlist-inner">
+          <div class="playlist-header">
+            <span class="label">Last played tracks</span>
+            <button class="panel-close" id="playlist-close" aria-label="Close playlist">
+              <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+            </button>
+          </div>
+          <div class="track">
+            <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
+            <span class="track-ago">6m ago</span>
+          </div>
+          <div class="track">
+            <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
+            <span class="track-ago">11m ago</span>
+          </div>
+          <div class="track">
+            <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
+            <span class="track-ago">16m ago</span>
+          </div>
         </div>
       </div>
     </div>
@@ -4895,7 +4948,11 @@ function switchToTracklist(showTitle) {
 
   inner.innerHTML = `
     <div class="playlist-header">
-      <span class="label">Tracklist — ${showTitle}</span>
+      <span class="label">Tracklist</span>
+      <span class="playlist-header-meta">${showTitle}</span>
+      <button class="panel-close" id="playlist-close" aria-label="Close playlist">
+        <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+      </button>
     </div>
     ${tracks.map((t, i) => `
       <div class="track" style="${i===0?'padding-top:0;':''}">
@@ -4903,41 +4960,17 @@ function switchToTracklist(showTitle) {
           <span class="track-name">${t.name}</span>
           <span class="track-game">${t.game}</span>
         </div>
-        <div style="display:flex;align-items:center;gap:0;flex-shrink:0;">
-          ${t.avail ? `
-            <svg class="track-stream-icon" viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg>
-            <span style="width:1px;height:12px;background:var(--border-default);margin:0 16px;flex-shrink:0;opacity:.6;"></span>
-          ` : ''}
-          <span class="track-ts" onclick="seekTo('${t.ts}')">${t.ts}</span>
+        <div class="track-right">
+          ${t.avail ? `<button class="track-stream-btn" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
+          <button class="track-ts-btn" onclick="seekTo('${t.ts}')">${t.ts}</button>
         </div>
       </div>
     `).join('')}
   `;
   lucide.createIcons({ nodes: [plPanel] });
   plPanel.classList.add('tracklist');
-
-  // Apply fade to tracklist inner
-  const tlInner = plPanel.querySelector('.playlist-inner');
-  if (tlInner) {
-    const updateTlMask = () => {
-      const atTop    = tlInner.scrollTop <= 2;
-      const atBottom = tlInner.scrollHeight - tlInner.scrollTop <= tlInner.clientHeight + 2;
-      let mask = '';
-      if (!atTop && !atBottom) {
-        mask = 'linear-gradient(to bottom,transparent 0%,black 40px,black calc(100% - 40px),transparent 100%)';
-      } else if (!atTop) {
-        mask = 'linear-gradient(to bottom,transparent 0%,black 40px,black 100%)';
-      } else if (!atBottom) {
-        mask = 'linear-gradient(to bottom,black calc(100% - 40px),transparent 100%)';
-      }
-      tlInner.style.maskImage = mask;
-      tlInner.style.webkitMaskImage = mask;
-    };
-    requestAnimationFrame(updateTlMask);
-    tlInner.addEventListener('scroll', updateTlMask);
-    tlInner.addEventListener('wheel', () => requestAnimationFrame(updateTlMask), { passive: true });
-  }
-
+  // Mask applied by _openPl if panel is open, or on next open
+  inner.style.maskImage = inner.style.webkitMaskImage = '';
 }
 
 function seekTo(ts) {
@@ -4996,6 +5029,8 @@ function backToLive() {
       <span class="track-ago">16m ago</span>
     </div>
   `;
+  inner.style.maskImage = inner.style.webkitMaskImage = '';
+  lucide.createIcons({ nodes: [plPanel] });
   // Reset card states
   activeCardId = null;
   syncCardButtons();
@@ -5142,39 +5177,57 @@ function getPlayerHeight() {
 
 
 
+function _closePl() {
+  /* Asymmetric close: content exits first (80ms), then container collapses */
+  plOpen = false;
+  plBtnD.classList.remove('active');
+  plPanel.classList.remove('open');
+  plPanel.classList.add('pl-closing');
+  // Total close: 80ms content fade + 260ms container collapse = 340ms
+  setTimeout(() => plPanel.classList.remove('pl-closing'), 380);
+}
+
+function _openPl() {
+  plOpen = true;
+  plBtnD.classList.add('active');
+  plPanel.classList.remove('pl-closing');
+  plPanel.classList.add('open');
+  // Scroll mask — only in tracklist mode with long content
+  const inner = plPanel.querySelector('.playlist-inner');
+  if (inner && plPanel.classList.contains('tracklist')) {
+    const updateMask = () => {
+      const atTop    = inner.scrollTop <= 2;
+      const atBottom = inner.scrollHeight - inner.scrollTop <= inner.clientHeight + 2;
+      let mask = '';
+      if (!atTop && !atBottom)  mask = 'linear-gradient(to bottom,transparent 0%,black 32px,black calc(100% - 32px),transparent 100%)';
+      else if (!atTop)          mask = 'linear-gradient(to bottom,transparent 0%,black 32px,black 100%)';
+      else if (!atBottom)       mask = 'linear-gradient(to bottom,black calc(100% - 32px),transparent 100%)';
+      inner.style.maskImage = inner.style.webkitMaskImage = mask;
+    };
+    requestAnimationFrame(updateMask);
+    inner.addEventListener('scroll', updateMask, { passive: true });
+    inner.addEventListener('wheel', () => requestAnimationFrame(updateMask), { passive: true });
+  } else if (inner) {
+    inner.style.maskImage = inner.style.webkitMaskImage = '';
+  }
+}
+
 function togglePlaylist(e) {
   e.stopPropagation();
-  // Close show-page tracklist popup if open
   if (tracklistPopupOpen) closeShowTracklist();
-  // Close vol if open — prevents position jump during playlist height animation
   if (volPopup && volPopup.classList.contains('vol-open')) closeVol();
-  plOpen = !plOpen;
-  plPanel.classList.toggle('open', plOpen);
-  plBtnD.classList.toggle('active', plOpen);
-  if (plOpen) {
-    const inner = plPanel.querySelector('.playlist-inner');
-    if (inner && plPanel.classList.contains('tracklist')) {
-      const fade = 'linear-gradient(to bottom,black calc(100% - 40px),transparent 100%)';
-      inner.style.maskImage = fade;
-      inner.style.webkitMaskImage = fade;
-      inner.addEventListener('scroll', function onScroll() {
-        const atBottom = inner.scrollHeight - inner.scrollTop <= inner.clientHeight + 2;
-        inner.style.maskImage = atBottom ? '' : fade;
-        inner.style.webkitMaskImage = atBottom ? '' : fade;
-      });
-    } else if (inner) {
-      inner.style.maskImage = '';
-      inner.style.webkitMaskImage = '';
-    }
-  }
+  plOpen ? _closePl() : _openPl();
 }
 
 plBtnD.addEventListener('click', togglePlaylist);
 
+// Close on X button
+plPanel.addEventListener('click', e => {
+  if (e.target.closest('#playlist-close')) { e.stopPropagation(); _closePl(); }
+});
+
 document.addEventListener('click', e => {
-  if (plOpen && !plPanel.contains(e.target) && !plBtnD.contains(e.target)) {
-    plOpen=false; plPanel.classList.remove('open'); plBtnD.classList.remove('active');
-  }
+  if (plOpen && !plPanel.contains(e.target) && !plBtnD.contains(e.target)) _closePl();
 });
 
 /* ── Volume ── */
