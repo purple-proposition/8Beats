@@ -997,7 +997,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Player ── */
 .player-wrap { position: fixed; bottom: var(--space); right: var(--space); width: var(--modal-6col); z-index: var(--z-player); pointer-events: none; }
 
-.player-inner { pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); position: relative; z-index: var(--z-player-inner); will-change: transform; transform: translateZ(0); }
+.player-inner { pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: var(--radius-btn); border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); position: relative; z-index: var(--z-player-inner); will-change: transform; transform: translateZ(0); }
 /* When player is in the top half: flip playlist below player-bar (JS toggles this) */
 .player-inner.playlist-below { flex-direction: column; }
 
@@ -1013,7 +1013,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   padding: var(--space-5) var(--space-5) 0;
   display: flex; flex-direction: column; overflow-y: auto; max-height: 284px;
   opacity: 0;
-  transform: translateY(6px);
+  transform: translateY(8px);
   transition: opacity var(--dur-fade) var(--ease-hover) var(--delay-content),
               transform var(--dur-panel) var(--ease-panel) var(--delay-content);
 }
@@ -1034,11 +1034,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .track-ts {
   font-size: var(--text-sm); font-weight: 400; color: var(--text-secondary);
   flex-shrink: 0; letter-spacing: .06em;
-  font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
+  font-family: 'Inter', system-ui, sans-serif;
   cursor: pointer; transition: color var(--dur-short) var(--ease-hover); min-width: 36px;
 }
 .track-ts:hover { color: var(--text-secondary); }
-.track-duration { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none; }
+.track-duration { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; font-family: 'Inter', system-ui, sans-serif; }
 .track-stream-icon {
   width: 16px; height: 16px; flex-shrink: 0; fill: var(--text-secondary);
   transition: fill var(--dur-short) var(--ease-hover); cursor: pointer;
@@ -1059,7 +1059,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .back-to-live:hover { color: var(--text-primary); }
 .back-to-live:hover .back-live-dot { opacity: 1; }
 .back-live-dot {
-  width: 7px; height: 7px; border-radius: 50%;
+  width: 8px; height: 8px; border-radius: 50%;
   background: var(--color-live); flex-shrink: 0;
   animation: blink 1.4s ease-in-out infinite;
   opacity: .7; transition: opacity var(--dur-micro) var(--ease-hover);
@@ -1072,8 +1072,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   padding: 0 var(--space-5);
   display: flex; align-items: center; gap: var(--space-3);
 }
-.progress-bar-wrap.visible { height: 46px; padding: 0 var(--space-5) var(--space-3); }
-.progress-time { font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none; }
+.progress-bar-wrap.visible { height: 48px; padding: 0 var(--space-5) var(--space-3); }
+.progress-time { font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: 'Inter', system-ui, sans-serif; }
 .progress-time.end { text-align: right; }
 .progress-track {
   flex: 1; height: 4px; background: var(--border-default);
@@ -1082,14 +1082,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .progress-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--text-secondary); border-radius: 99px; width: 5%; transition: width .1s linear; }
 .progress-knob {
   position: absolute; top: 50%; transform: translate(-50%, -50%);
-  width: 10px; height: 10px; border-radius: 50%;
+  width: 8px; height: 8px; border-radius: 50%;
   background: var(--text-secondary); left: 5%;
   transition: left .1s linear;
   z-index: 2;
 }
 .progress-marker {
   position: absolute; top: -1px; bottom: -1px; width: 2px;
-  background: var(--surface-overlay);
+  background: var(--text-tertiary);
   transform: translateX(-50%); pointer-events: none;
   border-radius: 0;
   z-index: var(--z-base);
@@ -1098,7 +1098,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   position: fixed; z-index: var(--z-top);
   background: var(--glass-bg); border: 1px solid var(--glass-border);
   backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-radius: var(--radius-sm); padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-btn); padding: var(--space-2) var(--space-4);
   font-family: var(--font);
   pointer-events: none; white-space: nowrap;
   opacity: 0; transform: translateY(4px);
@@ -1110,19 +1110,19 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .player-bar-main { min-height: 0; display: flex; align-items: center; padding: var(--space-5); gap: var(--space-5); }
 
-.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover), transform 50ms var(--ease-hover); color: var(--icon-secondary); }
+.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); color: var(--icon-secondary); }
 .play-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
-.play-btn:active { transform: scale(0.94); }
+.play-btn:active { transform: scale(0.92); }
 .play-btn svg { fill: currentColor; stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
 
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; height: 68px; gap: 0; }
-.player-info-top { display: flex; align-items: center; gap: var(--space-2); }
+.player-info-top { display: flex; align-items: center; gap: var(--space-3); }
 
-.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 .player-title-wrap { overflow: hidden; mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); }
-.player-title { font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; }
+.player-title { font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; color: var(--text-primary); }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
@@ -1130,16 +1130,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
 .spotify-btn { width: 40px; height: 40px; border-radius: var(--radius-control); background: transparent; border: 1px solid var(--border-btn); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover); }
-.spotify-btn svg { width: 18px; height: 18px; fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
+.spotify-btn svg { width: 12px; height: 12px; fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
 .spotify-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); }
 .spotify-btn:hover svg { fill: var(--text-primary); }
 
 .divider { width: 1px; height: 16px; background: var(--border-default); flex-shrink: 0; }
 
-.ctrl-btn { background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; color: var(--icon-secondary); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover), transform 50ms var(--ease-hover); }
-.ctrl-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; transition: stroke var(--dur-micro) var(--ease-hover); }
+.ctrl-btn { background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; color: var(--icon-secondary); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); }
+.ctrl-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; display: block; transition: stroke var(--dur-micro) var(--ease-hover); }
 .ctrl-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
-.ctrl-btn:active { transform: scale(0.9); }
+.ctrl-btn:active { transform: scale(0.92); }
 #playlist-btn.active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 #playlist-btn.active:hover { color: var(--text-primary); }
 
@@ -1193,14 +1193,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   -webkit-mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
   mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
 }
-.vol-track { width: 4px; height: 90px; background: var(--border-hover); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }
+.vol-track { width: 4px; height: 88px; background: var(--border-hover); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }
 .vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
-.vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 10px; height: 10px; border-radius: 50%; background: var(--text-primary); }
+.vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
 .vol-btn-face { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: var(--icon-secondary); padding: 0; transition: color var(--dur-micro) var(--ease-hover); }
 .vol-btn-face:hover { color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face { color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face:hover { color: var(--text-primary); }
-.vol-btn-face svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; }
+.vol-btn-face svg { width: 12px; height: 12px; stroke: currentColor; fill: none; display: block; }
 
 /* ============================================================
    7. RESPONSIVE
@@ -3852,11 +3852,11 @@ html.fwm-is-dragging { cursor: grabbing !important; }
             Back to live
           </button>
           <button class="spotify-btn" id="spotify-btn" aria-label="Spotify">
-            <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
           </button>
           <div class="vol-wrap" id="vol-wrap"></div>
           <button class="ctrl-btn" id="playlist-btn" aria-label="Playlist">
-            <i data-lucide="list-music" style="width:16px;height:16px;fill:none;display:block;"></i>
+            <i data-lucide="list-music" style="width:12px;height:12px;fill:none;display:block;"></i>
           </button>
         </div>
       </div>
@@ -3898,7 +3898,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <div class="vol-track-area" id="vol-slider">
     <div class="vol-track" id="vol-track">
       <div class="vol-fill" id="vol-fill" style="height:75%"></div>
-      <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 5px)"></div>
+      <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 4px)"></div>
     </div>
   </div>
   <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
@@ -5097,7 +5097,7 @@ function setPlayIcon(state) {
   playBtn.appendChild(i);
   lucide.createIcons({ nodes: [playBtn] });
   const s = playBtn.querySelector('svg');
-  if (s) s.style.cssText = 'width:16px;height:16px;fill:currentColor;stroke:none;display:block;';
+  if (s) s.style.cssText = 'width:12px;height:12px;fill:currentColor;stroke:none;display:block;';
 }
 setPlayIcon(false);
 
@@ -5283,7 +5283,7 @@ function setVol(pct) {
   if (v >= 46 && v <= 54) v = 50;
   volPct = v;
   volFill.style.height = `${volPct}%`;
-  volKnob.style.bottom = `calc(${volPct}% - 5px)`;
+  volKnob.style.bottom = `calc(${volPct}% - 4px)`;
   renderVol();
 }
 function pctFrom(e) {
