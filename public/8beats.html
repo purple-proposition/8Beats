@@ -1000,6 +1000,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-inner { pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: var(--radius-btn); border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); position: relative; z-index: var(--z-player-inner); will-change: transform; transform: translateZ(0); }
 /* When player is in the top half: flip playlist below player-bar (JS toggles this) */
 .player-inner.playlist-below { flex-direction: column; }
+/* Player focus convention — inset indicators for all interactive elements.
+   Applies uniformly to all player buttons (dense layout, glassmorphic container,
+   mixed overflow context). vol-btn-face is listed separately as it lives outside
+   .player-inner in the DOM (vol-popup portal). */
+.player-inner button:focus-visible,
+.vol-btn-face:focus-visible { outline-offset: -2px; }
 
 .playlist {
   overflow: hidden;
