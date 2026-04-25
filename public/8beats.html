@@ -1073,7 +1073,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; align-items: center; gap: var(--space-3);
 }
 .progress-bar-wrap.visible { height: 48px; padding: 0 var(--space-5) var(--space-3); }
-.progress-time { font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: 'Inter', system-ui, sans-serif; }
+.progress-time { font-size: var(--text-sm); font-weight: 400; line-height: 1; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: 'Inter', system-ui, sans-serif; }
 .progress-time.end { text-align: right; }
 .progress-track {
   flex: 1; height: 4px; background: var(--border-default);
@@ -1088,7 +1088,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   z-index: 2;
 }
 .progress-marker {
-  position: absolute; top: -1px; bottom: -1px; width: 2px;
+  position: absolute; top: -2px; bottom: -2px; width: 2px;
   background: var(--text-tertiary);
   transform: translateX(-50%); pointer-events: none;
   border-radius: 0;
@@ -1117,6 +1117,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; height: 68px; gap: 0; }
 .player-info-top { display: flex; align-items: center; gap: var(--space-3); }
+.player-info-top .label { line-height: 1; }
 
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
@@ -1126,7 +1127,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game { font-size: var(--text-base); color: var(--text-secondary); }
+.player-game { font-size: var(--text-base); line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
 .spotify-btn { width: 40px; height: 40px; border-radius: var(--radius-control); background: transparent; border: 1px solid var(--border-btn); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover); }
@@ -5193,7 +5194,7 @@ const VOL = {
   high: '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
 };
 
-function renderVol() { const icon=volPct===0?VOL.mute:volPct<50?VOL.low:VOL.high; volBtn.innerHTML=''; volBtn.appendChild(mkSvg(icon,16,'currentColor')); }
+function renderVol() { const icon=volPct===0?VOL.mute:volPct<50?VOL.low:VOL.high; volBtn.innerHTML=''; volBtn.appendChild(mkSvg(icon,12,'currentColor')); }
 renderVol();
 
 /**
