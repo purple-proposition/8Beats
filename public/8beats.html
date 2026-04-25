@@ -410,12 +410,10 @@ h1,
 /* ── Drawer ── */
 .drawer-overlay {
   position: fixed; inset: 0;
-  background: var(--overlay);
+  background: var(--glass-bg);
   z-index: var(--z-drawer);
   opacity: 0; pointer-events: none;
   transition: opacity var(--dur-large) var(--ease-hover);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
   display: none;
 }
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
@@ -675,12 +673,11 @@ html.light .theme-knob { transform: translateX(20px); }
 /* Backdrop: separate element, starts transparent, animates via JS */
 #mno-backdrop {
   display: none; position: fixed; inset: 0; z-index: var(--z-backdrop);
-  background: transparent; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
-  transition: background var(--dur-large) var(--ease-hover), backdrop-filter var(--dur-large) var(--ease-hover);
+  background: transparent;
+  transition: background var(--dur-large) var(--ease-hover);
 }
 #mno-backdrop.open {
-  background: var(--overlay);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: var(--glass-bg);
 }
 /* Popup window: fixed centered, same as tracklist */
 #mobile-nav-overlay {
@@ -780,14 +777,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: none;
   position: fixed; inset: 0; z-index: var(--z-nav-backdrop);
   background: transparent;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-  transition: background var(--dur-large) var(--ease-hover), backdrop-filter var(--dur-large) var(--ease-hover);
+  transition: background var(--dur-large) var(--ease-hover);
 }
 #nav-backdrop.open {
-  background: var(--overlay);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--glass-bg);
 }
 @media (min-width: 769px) { #nav-backdrop { display: none !important; } }
 
@@ -1482,11 +1475,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .artist-stats { margin-bottom: var(--space-5); }
 }
 
-/* ── Backdrops — overlay only, pas de backdrop-filter animé (trop coûteux) ── */
+/* ── Backdrops plein écran — couleur uniforme, pas de blur (coût GPU trop élevé) ── */
 #explore-backdrop.open,
 #schedule-backdrop.open,
 #settings-backdrop.open {
-  background: var(--overlay);
+  background: var(--glass-bg);
 }
 
 /* ── Settings inline kbd tags ── */
@@ -2511,7 +2504,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: none; position: fixed; inset: 0; z-index: var(--z-tracklist-scrim);
   background: transparent; transition: background var(--dur-short) var(--ease-hover);
 }
-#show-tracklist-scrim.open { background: var(--scrim); }
+#show-tracklist-scrim.open { background: var(--glass-bg); }
 #show-tracklist-popup {
   display: none; position: fixed;
   top: 50%; left: 50%;
