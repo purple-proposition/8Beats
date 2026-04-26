@@ -1059,7 +1059,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 /* Glass shell — FIXED oversized height so blur surface never resizes.
-   .playlist overflow:hidden clips it visually as height animates. */
+   NO border-radius here — .playlist (the overflow:hidden parent) handles the clip.
+   This eliminates the "glass corner bump" artifact at the final frames of close:
+   as height → 0, the container's rounded clip fades content cleanly into the arcs. */
 .playlist-glass {
   position: absolute;
   top: 0; left: 0; right: 0;
@@ -1069,15 +1071,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border: 1px solid var(--glass-border);
   z-index: 0;
 }
-/* Match radius — border on the side that faces away from player-inner */
-.player-wrap:not(.playlist-below) .playlist-glass {
-  border-radius: var(--radius-btn) var(--radius-btn) 0 0;
-  border-bottom: none;
-}
-.player-wrap.playlist-below .playlist-glass {
-  border-radius: 0 0 var(--radius-btn) var(--radius-btn);
-  border-top: none;
-}
+/* Only suppress the border on the seam side — no radius needed (parent clips) */
+.player-wrap:not(.playlist-below) .playlist-glass { border-bottom: none; }
+.player-wrap.playlist-below .playlist-glass { border-top: none; }
 
 /* Content + scroll container */
 .playlist-inner {
@@ -4996,13 +4992,13 @@ function switchToTracklist(showTitle) {
   inner.innerHTML = `
     <div class="playlist-header">
       <span class="label">Tracklist</span>
-      <span class="playlist-header-meta">${showTitle}</span>
       <button class="panel-close" id="playlist-close" aria-label="Close playlist">
         <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
       </button>
     </div>
     ${tracks.map((t, i) => `
       <div class="track" style="${i===0?'padding-top:0;':''}">
+        <span class="track-num">${i + 1}</span>
         <div class="track-info">
           <span class="track-name">${t.name}</span>
           <span class="track-game">${t.game}</span>
@@ -5226,20 +5222,54 @@ function _plContentH() {
   return inner ? inner.offsetHeight : 0;
 }
 
+/* Stored reference so _openPl can cancel a pending close handler on quick re-open */
+let _closePlEndHandler = null;
+
+function _snapPlayerRadius() {
+  /* Snap player-inner radius instantly (no CSS transition) — called when height=0 */
+  if (!plOpen) {
+    playerInner.style.transition = 'none';
+    playerInner.classList.remove('playlist-open');
+    playerInner.offsetHeight; // force layout commit
+    playerInner.style.transition = '';
+  }
+}
+
 function _closePl() {
   plOpen = false;
   plBtnD.classList.remove('active');
-  /* Animate height from current px value to 0.
-     Never use height:auto — keeps the transition reliable on every cycle.
-     player-inner is a sibling → its blur surface NEVER repaints here. */
   plPanel.style.height = '0';
   plPanel.classList.remove('open');
-  /* Remove seam after transition */
-  setTimeout(() => { if (!plOpen) playerInner.classList.remove('playlist-open'); }, 260);
+
+  /* Primary: snap radius at EXACTLY height=0 via transitionend (precise, no visible
+     radius animation after panel disappears). */
+  if (_closePlEndHandler) plPanel.removeEventListener('transitionend', _closePlEndHandler);
+  _closePlEndHandler = function _onCloseEnd(e) {
+    if (e.propertyName !== 'height') return;
+    plPanel.removeEventListener('transitionend', _closePlEndHandler);
+    _closePlEndHandler = null;
+    _snapPlayerRadius();
+  };
+  plPanel.addEventListener('transitionend', _closePlEndHandler);
+
+  /* Fallback: if transitionend doesn't fire (reduced motion, eval context, etc.)
+     snap after the transition duration + small buffer. */
+  setTimeout(() => {
+    if (_closePlEndHandler) { // handler still pending = transitionend didn't fire
+      plPanel.removeEventListener('transitionend', _closePlEndHandler);
+      _closePlEndHandler = null;
+      _snapPlayerRadius();
+    }
+  }, 280);
 }
 
 function _openPl() {
   plOpen = true;
+  /* Cancel any pending close-end handler (quick re-open before height=0) */
+  if (_closePlEndHandler) {
+    plPanel.removeEventListener('transitionend', _closePlEndHandler);
+    _closePlEndHandler = null;
+  }
   plBtnD.classList.add('active');
   /* Seam: adjust player-inner border/radius before panel animates in */
   playerInner.classList.add('playlist-open');
