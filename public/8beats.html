@@ -995,22 +995,93 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 /* ── Player ── */
-.player-wrap { position: fixed; bottom: var(--space); right: var(--space); width: var(--modal-6col); z-index: var(--z-player); pointer-events: none; }
+/* player-wrap is the flex column container — playlist + player-inner are siblings */
+.player-wrap {
+  position: fixed; bottom: var(--space); right: var(--space);
+  width: var(--modal-6col); z-index: var(--z-player);
+  pointer-events: none;
+  display: flex; flex-direction: column; align-items: stretch;
+}
+/* When player is near top: flip so playlist opens below player-bar */
+.player-wrap.playlist-below { flex-direction: column-reverse; }
 
-.player-inner { pointer-events: all; display: flex; flex-direction: column-reverse; border-radius: var(--radius-btn); border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); position: relative; z-index: var(--z-player-inner); will-change: transform; transform: translateZ(0); }
-/* When player is in the top half: flip playlist below player-bar (JS toggles this) */
-.player-inner.playlist-below { flex-direction: column; }
+/* player-inner is fixed-size — backdrop-filter NEVER repaints */
+.player-inner {
+  pointer-events: all; flex-shrink: 0;
+  border-radius: var(--radius-btn); border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  position: relative; z-index: var(--z-player-inner);
+  will-change: transform; transform: translateZ(0);
+  /* Seam: remove radius + border where playlist attaches */
+  transition: border-radius var(--dur-panel) var(--ease-standard),
+              border-top-color var(--dur-panel) var(--ease-standard);
+}
+/* Playlist above player-bar: remove bottom radius + border */
+.player-inner.playlist-open {
+  border-radius: 0 0 var(--radius-btn) var(--radius-btn);
+  border-top-color: transparent;
+}
+/* Playlist below player-bar: remove top radius + border */
+.player-wrap.playlist-below .player-inner.playlist-open {
+  border-radius: var(--radius-btn) var(--radius-btn) 0 0;
+  border-top-color: var(--glass-border);
+  border-bottom-color: transparent;
+}
 
-/* Playlist panel — JS-driven height animation (overflow: hidden, header-first reveal) */
+/* ── Playlist panel — height collapse + fixed-size glass blur ── */
+/*
+ * Root fix for flicker:
+ *  1. player-inner is a fixed-size sibling → its blur NEVER repaints.
+ *  2. playlist-glass has a fixed oversized height (not inset:0) →
+ *     its blur surface NEVER resizes → zero blur repaint during animation.
+ *  3. Only .playlist height changes — that's a pure layout change on a
+ *     separate compositing layer, with no blur involved.
+ */
 .playlist {
+  position: relative;
   height: 0;
+  min-height: 0; /* override flex min-height:auto so item can fully collapse to 0 */
   overflow: hidden;
+  pointer-events: none;
   will-change: height;
   transition: height var(--dur-panel) var(--ease-standard);
+}
+.playlist.open {
+  pointer-events: all;
+}
+/* Seam radius matches where the panel attaches */
+.player-wrap:not(.playlist-below) .playlist {
+  border-radius: var(--radius-btn) var(--radius-btn) 0 0;
+}
+.player-wrap.playlist-below .playlist {
+  border-radius: 0 0 var(--radius-btn) var(--radius-btn);
+}
+
+/* Glass shell — FIXED oversized height so blur surface never resizes.
+   .playlist overflow:hidden clips it visually as height animates. */
+.playlist-glass {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 400px; /* larger than max content — blur surface is static, no repaint */
+  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  z-index: 0;
+}
+/* Match radius — border on the side that faces away from player-inner */
+.player-wrap:not(.playlist-below) .playlist-glass {
+  border-radius: var(--radius-btn) var(--radius-btn) 0 0;
+  border-bottom: none;
+}
+.player-wrap.playlist-below .playlist-glass {
+  border-radius: 0 0 var(--radius-btn) var(--radius-btn);
+  border-top: none;
 }
 
 /* Content + scroll container */
 .playlist-inner {
+  position: relative; z-index: 1;
   padding: var(--space-4) var(--space-5) var(--space-3);
   display: flex; flex-direction: column;
   gap: 24px;
@@ -1032,7 +1103,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .track { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); border-radius: 0; }
 .track.is-current .track-name { color: var(--accent); }
 /* No separators between tracks — spacing handled by parent gap: 24px */
-.track-num { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 16px; text-align: right; line-height: 1; }
+/* track numbers: only shown in .tracklist mode (show tracklist popup) */
+.track-num { display: none; font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 16px; text-align: right; line-height: 1; }
+.playlist.tracklist .track-num { display: block; }
 .track-info { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; flex: 1; }
 .track-name { font-size: var(--text-base); line-height: 1.4; color: var(--text-primary); }
 .track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -3856,6 +3929,33 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 
 <!-- PLAYER -->
 <div class="player-wrap">
+  <!-- Playlist panel: sibling of player-inner, NOT a child.
+       Separating it means player-inner's backdrop-filter never repaints.
+       clip-path animation on .playlist is GPU-composited (no layout change). -->
+  <div class="playlist" id="playlist">
+    <div class="playlist-glass"></div>
+    <div class="playlist-inner">
+      <div class="playlist-header">
+        <span class="label">Last played tracks</span>
+        <button class="panel-close" id="playlist-close" aria-label="Close playlist">
+          <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+        </button>
+      </div>
+      <div class="track">
+        <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
+        <span class="track-ago">6m ago</span>
+      </div>
+      <div class="track">
+        <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
+        <span class="track-ago">11m ago</span>
+      </div>
+      <div class="track">
+        <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
+        <span class="track-ago">16m ago</span>
+      </div>
+    </div>
+  </div>
+
   <div class="player-inner">
     <div class="player-bar">
       <div class="player-bar-main">
@@ -3902,32 +4002,6 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <div class="progress-knob" id="progress-knob"></div>
         </div>
         <span class="progress-time end" id="progress-total">00:00</span>
-      </div>
-    </div>
-
-    <div class="playlist" id="playlist">
-      <div class="playlist-inner">
-        <div class="playlist-header">
-          <span class="label">Last played tracks</span>
-          <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-            <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-          </button>
-        </div>
-        <div class="track">
-          <span class="track-num">1</span>
-          <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
-          <span class="track-ago">6m ago</span>
-        </div>
-        <div class="track">
-          <span class="track-num">2</span>
-          <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
-          <span class="track-ago">11m ago</span>
-        </div>
-        <div class="track">
-          <span class="track-num">3</span>
-          <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
-          <span class="track-ago">16m ago</span>
-        </div>
       </div>
     </div>
   </div>
@@ -5139,42 +5213,45 @@ function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.d
 
 /* ── Playlist ── */
 let plOpen = false;
-const plPanel  = document.getElementById('playlist');
-const cookieEl = document.getElementById('panel-cookie');
-const plBtnD   = document.getElementById('playlist-btn');
+const plPanel    = document.getElementById('playlist');
+const playerWrap = document.querySelector('.player-wrap');
+const playerInner = document.querySelector('.player-inner');
+const cookieEl   = document.getElementById('panel-cookie');
+const plBtnD     = document.getElementById('playlist-btn');
 
-function getPlayerHeight() {
-  const progressH = document.getElementById('progress-bar-wrap').classList.contains('visible') ? 46 : 0;
-  return 108 + 20 + 20 + progressH;
+/* Measure real panel height via .playlist-inner — avoids the fixed-size .playlist-glass
+   (position:absolute, 400px) inflating plPanel.scrollHeight to 400 instead of content height. */
+function _plContentH() {
+  const inner = plPanel.querySelector('.playlist-inner');
+  return inner ? inner.offsetHeight : 0;
 }
-
-
 
 function _closePl() {
   plOpen = false;
   plBtnD.classList.remove('active');
-  /* Mirror of open: pin current height first (can't animate from 'auto'), then collapse */
-  plPanel.style.height = plPanel.scrollHeight + 'px';
-  plPanel.offsetHeight; // force reflow
+  /* Animate height from current px value to 0.
+     Never use height:auto — keeps the transition reliable on every cycle.
+     player-inner is a sibling → its blur surface NEVER repaints here. */
   plPanel.style.height = '0';
-  plPanel.classList.remove('open'); // content transitions reverse automatically (same easing)
+  plPanel.classList.remove('open');
+  /* Remove seam after transition */
+  setTimeout(() => { if (!plOpen) playerInner.classList.remove('playlist-open'); }, 260);
 }
 
 function _openPl() {
   plOpen = true;
   plBtnD.classList.add('active');
-  /* Measure natural height with transition suspended */
+  /* Seam: adjust player-inner border/radius before panel animates in */
+  playerInner.classList.add('playlist-open');
+  /* Measure real content height (never use plPanel.scrollHeight — glass inflates it to 400px).
+     Suspend transition so the browser commits height:0 before animating to target. */
   plPanel.style.transition = 'none';
-  plPanel.style.height = 'auto';
-  const targetH = plPanel.scrollHeight;
   plPanel.style.height = '0';
-  plPanel.offsetHeight; // force reflow
-  plPanel.style.transition = ''; // restore CSS transition
-  /* Animate height and fade content in together */
-  plPanel.style.height = targetH + 'px';
+  plPanel.offsetHeight; // force layout commit at 0
+  plPanel.style.transition = '';
+  plPanel.style.height = _plContentH() + 'px'; // animate to content height (px, never auto)
   plPanel.classList.add('open');
-  /* After animation completes, switch to 'auto' so dynamic content changes are safe */
-  setTimeout(() => { if (plOpen) plPanel.style.height = 'auto'; }, 300);
+  /* No auto timeout — keep as px so _closePl() can always animate back to 0 reliably */
   // Scroll mask — only in tracklist mode with long content
   const inner = plPanel.querySelector('.playlist-inner');
   if (inner && plPanel.classList.contains('tracklist')) {
@@ -5243,13 +5320,12 @@ function resolvePopupDir(triggerRect, panelH) {
   return (spaceAbove < panelH && spaceBelow > spaceAbove) ? 'below' : 'above';
 }
 
-/** Flip player-inner flex-direction so playlist opens away from the nearest edge. */
+/** Flip player-wrap flex-direction so playlist opens away from the nearest edge. */
 function _updatePlayerLayout() {
-  const inner = document.querySelector('.player-inner');
-  if (!inner) return;
-  const r = inner.getBoundingClientRect();
+  if (!playerWrap || !playerInner) return;
+  const r = playerInner.getBoundingClientRect();
   if (!r.width) return;
-  inner.classList.toggle('playlist-below', resolvePopupDir(r, 284) === 'below');
+  playerWrap.classList.toggle('playlist-below', resolvePopupDir(r, 284) === 'below');
 }
 
 function openVol() {
