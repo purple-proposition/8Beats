@@ -1789,52 +1789,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── During initial open the card fade is the only entrance.
-   Content animations are suppressed — no delay, no stagger, no late text.
-   Class removed after card is fully open; tab-switch reveals work normally. ── */
-.explore-card.no-reveal > *,
-.explore-card.no-reveal .explore-show-row { animation: none !important; }
-#explore-card > .explore-section-border {
-  animation: sectionReveal var(--dur-fade) var(--ease-hover) both;
-  animation-delay: var(--delay-content);
-}
-#explore-card > .explore-section-border:nth-child(2) {
-  animation-delay: calc(var(--delay-content) + var(--stagger-tight));
-}
-#explore-card > .explore-section-border:nth-child(3) {
-  animation-delay: calc(var(--delay-content) + 2 * var(--stagger-tight));
-}
-/* Settings card — tab bar + body reveal */
-#settings-card > .sp-day-bar {
-  animation: sectionReveal var(--dur-fade) var(--ease-hover) both;
-  animation-delay: var(--delay-content);
-}
-#settings-card > #settings-body {
-  animation: sectionReveal var(--dur-fade) var(--ease-hover) both;
-  animation-delay: calc(var(--delay-content) + var(--stagger-tight));
-}
-
-/* Schedule card — day bar + content */
-#schedule-card > * {
-  animation: sectionReveal var(--dur-fade) var(--ease-hover) both;
-  animation-delay: var(--delay-content);
-}
-#schedule-card > *:nth-child(2) {
-  animation-delay: calc(var(--delay-content) + var(--stagger-tight));
-}
 .explore-show-row {
   display:flex;align-items:center;justify-content:space-between;
   padding:var(--space-3) var(--space-5);cursor:pointer;
-  animation: rowReveal var(--dur-fade) var(--ease-hover) both;
 }
 .explore-show-row:hover .explore-show-title { color: var(--text-secondary); }
 .explore-show-title { transition: color var(--dur-micro) var(--ease-hover); }
-/* Stagger très léger — seulement les 5 premiers items */
-.explore-show-row:nth-child(2) { animation-delay: var(--stagger-tight); }
-.explore-show-row:nth-child(3) { animation-delay: calc(2 * var(--stagger-tight)); }
-.explore-show-row:nth-child(4) { animation-delay: calc(3 * var(--stagger-tight)); }
-.explore-show-row:nth-child(5) { animation-delay: calc(4 * var(--stagger-tight)); }
-.explore-show-row:nth-child(n+6) { animation-delay: calc(5 * var(--stagger-tight)); }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
 .explore-show-title { font-size:var(--text-base);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .explore-section-border {
@@ -4700,10 +4660,6 @@ function openExplore() {
   if (icon) icon.style.stroke = 'var(--text-tertiary)';
   const backdrop = document.getElementById('explore-backdrop');
   exploreCard.classList.remove('is-closing');
-  // Suppress section/row reveal animations during the entrance so content
-  // appears instantly with the card — no late text, no partial-reveal state.
-  // Removed after the card has fully settled; tab-switch reveals work normally.
-  exploreCard.classList.add('no-reveal');
 
   // Make wrapper visible; card stays opacity:0 until rAF below.
   exploreEl.style.display = 'flex';
@@ -4721,8 +4677,6 @@ function openExplore() {
     exploreCard.style.opacity = '1';
     exploreCard.style.transform = 'translateY(0)';
     if (backdrop) backdrop.classList.add('open');
-    // Re-enable reveal animations once card is fully open
-    setTimeout(() => exploreCard.classList.remove('no-reveal'), 300);
   }));
 
   // Focus after transform lands (--dur-panel = 260ms)
@@ -6594,7 +6548,7 @@ function openSchedulePanel() {
   if (!el) return;
   const card = document.getElementById('schedule-card');
   const bd = document.getElementById('schedule-backdrop');
-  if (card) { card.classList.remove('is-closing'); card.classList.add('no-reveal'); }
+  if (card) card.classList.remove('is-closing');
   el.style.display = 'flex';
   // Build content before animation so no DOM mutation mid-transition
   scheduleAllNotifs();
@@ -6602,7 +6556,6 @@ function openSchedulePanel() {
   requestAnimationFrame(() => requestAnimationFrame(() => {
     if (card) { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }
     if (bd) bd.classList.add('open');
-    setTimeout(() => { if (card) card.classList.remove('no-reveal'); }, 300);
   }));
 }
 
@@ -6683,13 +6636,11 @@ function openSettings() {
   // Show with entrance animation — opacity on card, not wrapper
   const bd = document.getElementById('settings-backdrop');
   _settingsCard.classList.remove('is-closing');
-  _settingsCard.classList.add('no-reveal');
   _settingsEl.style.display = 'flex';
   requestAnimationFrame(() => requestAnimationFrame(() => {
     _settingsCard.style.opacity = '1';
     _settingsCard.style.transform = 'translateY(0)';
     if (bd) bd.classList.add('open');
-    setTimeout(() => _settingsCard.classList.remove('no-reveal'), 300);
   }));
   // Re-init Lucide icons inside the card
   setTimeout(() => lucide.createIcons({ nodes: [_settingsCard] }), 40);
