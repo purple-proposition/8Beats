@@ -1736,19 +1736,22 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: var(--space-4);
 }
 
-/* ── Modal cards — transform uniquement, aucun blur animé ──
-   Open  : ease-standard (décélération ressort, carte qui atterrit)
-   Close : ease-collapse  (accélération douce, carte qui repart) */
+/* ── Modal cards — opacity sur la carte (pas le wrapper) pour que le
+   backdrop-filter soit déjà composité avant l'animation ──
+   Open  : opacity fast (--dur-fade) + transform long (--dur-panel), ease-standard
+   Close : opacity + transform synchro (--dur-panel), ease-collapse */
 #explore-card,
 #schedule-card,
 #settings-card {
-  transition: transform var(--dur-panel) var(--ease-standard);
-  will-change: transform;
+  transition: opacity var(--dur-fade) var(--ease-standard),
+              transform var(--dur-panel) var(--ease-standard);
+  will-change: transform, opacity;
 }
 #explore-card.is-closing,
 #schedule-card.is-closing,
 #settings-card.is-closing {
-  transition: transform var(--dur-panel) var(--ease-collapse);
+  transition: opacity var(--dur-panel) var(--ease-collapse),
+              transform var(--dur-panel) var(--ease-collapse);
 }
 
 /* ── Explore modal theming ── */
@@ -1774,16 +1777,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #filter-toggle-btn:hover { color: var(--text-secondary) !important; }
 #filter-toggle-btn:hover #filter-toggle-icon { stroke: var(--text-secondary) !important; }
 
-/* ── Show row reveal — transform + opacity uniquement ── */
+/* ── Show row reveal — transform seul (la carte gère l'opacité globale) ── */
 @keyframes rowReveal {
-  from { opacity: 0; transform: translateY(3px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(3px); }
+  to   { transform: translateY(0); }
 }
 
 /* ── Section reveal — headers Explorer / Schedule / Settings ── */
 @keyframes sectionReveal {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(4px); }
+  to   { transform: translateY(0); }
 }
 #explore-card > .explore-section-border {
   animation: sectionReveal var(--dur-fade) var(--ease-hover) both;
@@ -3272,11 +3275,11 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 </button>
 
 <!-- EXPLORE MODAL -->
-<div id="explore" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;opacity:0;transition:opacity var(--dur-fade) var(--ease-hover);">
+<div id="explore" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;">
   <!-- Backdrop -->
   <div id="explore-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background var(--dur-panel) var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);">
+  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);opacity:0;">
 
     <!-- Search bar -->
     <div class="explore-section-border" style="padding:var(--space-5);display:flex;align-items:center;gap:var(--space-4);">
@@ -3756,11 +3759,11 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 </aside>
 
 <!-- SCHEDULE MODAL (Explorer pattern — centered, no title, click-outside closes) -->
-<div id="schedule" role="dialog" aria-label="Schedule" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;opacity:0;transition:opacity var(--dur-fade) var(--ease-hover);">
+<div id="schedule" role="dialog" aria-label="Schedule" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;">
   <!-- Backdrop -->
   <div id="schedule-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background var(--dur-panel) var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="schedule-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);">
+  <div id="schedule-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);opacity:0;">
     <!-- Day picker — rendered by JS -->
     <div id="sp-day-bar" class="sp-day-bar"></div>
     <!-- Slot list — scrollable body -->
@@ -3769,11 +3772,11 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 </div>
 
 <!-- SETTINGS MODAL (Explorer pattern — centered card, click-outside closes) -->
-<div id="settings" role="dialog" aria-modal="true" aria-label="Settings" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;opacity:0;transition:opacity var(--dur-fade) var(--ease-hover);">
+<div id="settings" role="dialog" aria-modal="true" aria-label="Settings" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;">
   <!-- Backdrop -->
   <div id="settings-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background var(--dur-panel) var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="settings-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);">
+  <div id="settings-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);opacity:0;">
 
     <!-- Section tab bar -->
     <div class="sp-day-bar" id="settings-tab-bar">
@@ -4691,18 +4694,28 @@ function openExplore() {
   if (icon) icon.style.stroke = 'var(--text-tertiary)';
   const backdrop = document.getElementById('explore-backdrop');
   exploreCard.classList.remove('is-closing');
+
+  // Make wrapper visible but keep card at opacity:0 so we can
+  // build content while nothing is rendered yet — no flash possible.
   exploreEl.style.display = 'flex';
+
+  // Build content synchronously before any animation frame,
+  // so there is zero DOM mutation while the card is transitioning.
+  buildFilters();
+  setTab('shows');
+  const ec = document.getElementById('explore-content');
+  if (ec) { ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
+
+  // Two rAFs: first commits display:flex and sets up compositor layers
+  // (backdrop-filter on card is now composited before we start opacity).
+  // Second starts the actual transition so the browser can paint one frame first.
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    exploreEl.style.opacity = '1';
+    exploreCard.style.opacity = '1';
     exploreCard.style.transform = 'translateY(0)';
-    if (backdrop) { backdrop.classList.add('open'); }
+    if (backdrop) backdrop.classList.add('open');
   }));
-  setTimeout(() => {
-    buildFilters();
-    setTab('shows');
-    const ec = document.getElementById('explore-content');
-    if (ec) { ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
-  }, 40);
+
+  // Focus after transform lands (--dur-panel = 260ms)
   setTimeout(() => {
     const inp = document.getElementById('explore-input');
     if (inp) inp.focus();
@@ -4713,9 +4726,9 @@ function closeExplore() {
   exploreClosing = true;
   const backdrop = document.getElementById('explore-backdrop');
   exploreCard.classList.add('is-closing');
-  exploreEl.style.opacity = '0';
+  exploreCard.style.opacity = '0';
   exploreCard.style.transform = 'translateY(8px)';
-  if (backdrop) { backdrop.classList.remove('open'); }
+  if (backdrop) backdrop.classList.remove('open');
   setTimeout(() => {
     exploreEl.style.display = 'none';
     document.getElementById('explore-input').value = '';
@@ -6567,16 +6580,17 @@ function openSchedulePanel() {
   if (_schedPanelClosing) return;
   OM.open('schedule', closeSchedulePanel);
   _schedActiveDow = -1;  // reset to today on open
-  scheduleAllNotifs();
-  renderSchedulePanel();
   const el = document.getElementById('schedule');
   if (!el) return;
+  const card = document.getElementById('schedule-card');
+  const bd = document.getElementById('schedule-backdrop');
+  if (card) card.classList.remove('is-closing');
   el.style.display = 'flex';
+  // Build content before animation so no DOM mutation mid-transition
+  scheduleAllNotifs();
+  renderSchedulePanel();
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    el.style.opacity = '1';
-    const card = document.getElementById('schedule-card');
-    if (card) { card.classList.remove('is-closing'); card.style.transform = 'translateY(0)'; }
-    const bd = document.getElementById('schedule-backdrop');
+    if (card) { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }
     if (bd) bd.classList.add('open');
   }));
 }
@@ -6585,9 +6599,8 @@ function closeSchedulePanel() {
   const el = document.getElementById('schedule');
   if (!el) return;
   _schedPanelClosing = true;
-  el.style.opacity = '0';
   const card = document.getElementById('schedule-card');
-  if (card) { card.classList.add('is-closing'); card.style.transform = 'translateY(8px)'; }
+  if (card) { card.classList.add('is-closing'); card.style.opacity = '0'; card.style.transform = 'translateY(8px)'; }
   const bd = document.getElementById('schedule-backdrop');
   if (bd) bd.classList.remove('open');
   setTimeout(() => {
@@ -6656,12 +6669,12 @@ function openSettings() {
   syncSettingsCompact();
   syncLayoutPicker();
   syncSettingsShortcuts();
-  // Show with entrance animation
+  // Show with entrance animation — opacity on card, not wrapper
   const bd = document.getElementById('settings-backdrop');
   _settingsCard.classList.remove('is-closing');
   _settingsEl.style.display = 'flex';
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    _settingsEl.style.opacity = '1';
+    _settingsCard.style.opacity = '1';
     _settingsCard.style.transform = 'translateY(0)';
     if (bd) bd.classList.add('open');
   }));
@@ -6682,7 +6695,7 @@ function closeSettings() {
   _settingsClosing = true;
   const bd = document.getElementById('settings-backdrop');
   _settingsCard.classList.add('is-closing');
-  _settingsEl.style.opacity = '0';
+  _settingsCard.style.opacity = '0';
   _settingsCard.style.transform = 'translateY(8px)';
   if (bd) bd.classList.remove('open');
   setTimeout(() => {
