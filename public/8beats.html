@@ -1779,15 +1779,21 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Show row reveal — transform seul (la carte gère l'opacité globale) ── */
 @keyframes rowReveal {
-  from { transform: translateY(3px); }
-  to   { transform: translateY(0); }
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ── Section reveal — headers Explorer / Schedule / Settings ── */
 @keyframes sectionReveal {
-  from { transform: translateY(4px); }
-  to   { transform: translateY(0); }
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── During initial open the card fade is the only entrance.
+   Content animations are suppressed — no delay, no stagger, no late text.
+   Class removed after card is fully open; tab-switch reveals work normally. ── */
+.explore-card.no-reveal > *,
+.explore-card.no-reveal .explore-show-row { animation: none !important; }
 #explore-card > .explore-section-border {
   animation: sectionReveal var(--dur-fade) var(--ease-hover) both;
   animation-delay: var(--delay-content);
@@ -4694,25 +4700,29 @@ function openExplore() {
   if (icon) icon.style.stroke = 'var(--text-tertiary)';
   const backdrop = document.getElementById('explore-backdrop');
   exploreCard.classList.remove('is-closing');
+  // Suppress section/row reveal animations during the entrance so content
+  // appears instantly with the card — no late text, no partial-reveal state.
+  // Removed after the card has fully settled; tab-switch reveals work normally.
+  exploreCard.classList.add('no-reveal');
 
-  // Make wrapper visible but keep card at opacity:0 so we can
-  // build content while nothing is rendered yet — no flash possible.
+  // Make wrapper visible; card stays opacity:0 until rAF below.
   exploreEl.style.display = 'flex';
 
-  // Build content synchronously before any animation frame,
-  // so there is zero DOM mutation while the card is transitioning.
+  // Build all content synchronously while card is still invisible.
+  // Zero DOM mutation during the transition — no flash, no repaint.
   buildFilters();
   setTab('shows');
   const ec = document.getElementById('explore-content');
   if (ec) { ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
 
-  // Two rAFs: first commits display:flex and sets up compositor layers
-  // (backdrop-filter on card is now composited before we start opacity).
-  // Second starts the actual transition so the browser can paint one frame first.
+  // Double rAF: commits display:flex + sets up backdrop-filter compositor
+  // layer before opacity starts, then triggers the entrance transition.
   requestAnimationFrame(() => requestAnimationFrame(() => {
     exploreCard.style.opacity = '1';
     exploreCard.style.transform = 'translateY(0)';
     if (backdrop) backdrop.classList.add('open');
+    // Re-enable reveal animations once card is fully open
+    setTimeout(() => exploreCard.classList.remove('no-reveal'), 300);
   }));
 
   // Focus after transform lands (--dur-panel = 260ms)
@@ -6584,7 +6594,7 @@ function openSchedulePanel() {
   if (!el) return;
   const card = document.getElementById('schedule-card');
   const bd = document.getElementById('schedule-backdrop');
-  if (card) card.classList.remove('is-closing');
+  if (card) { card.classList.remove('is-closing'); card.classList.add('no-reveal'); }
   el.style.display = 'flex';
   // Build content before animation so no DOM mutation mid-transition
   scheduleAllNotifs();
@@ -6592,6 +6602,7 @@ function openSchedulePanel() {
   requestAnimationFrame(() => requestAnimationFrame(() => {
     if (card) { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }
     if (bd) bd.classList.add('open');
+    setTimeout(() => { if (card) card.classList.remove('no-reveal'); }, 300);
   }));
 }
 
@@ -6672,11 +6683,13 @@ function openSettings() {
   // Show with entrance animation — opacity on card, not wrapper
   const bd = document.getElementById('settings-backdrop');
   _settingsCard.classList.remove('is-closing');
+  _settingsCard.classList.add('no-reveal');
   _settingsEl.style.display = 'flex';
   requestAnimationFrame(() => requestAnimationFrame(() => {
     _settingsCard.style.opacity = '1';
     _settingsCard.style.transform = 'translateY(0)';
     if (bd) bd.classList.add('open');
+    setTimeout(() => _settingsCard.classList.remove('no-reveal'), 300);
   }));
   // Re-init Lucide icons inside the card
   setTimeout(() => lucide.createIcons({ nodes: [_settingsCard] }), 40);
