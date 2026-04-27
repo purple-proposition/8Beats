@@ -1736,15 +1736,15 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: var(--space-4);
 }
 
-/* ── Modal cards — opacity sur la carte (pas le wrapper) pour que le
-   backdrop-filter soit déjà composité avant l'animation ──
-   Open  : opacity fast (--dur-fade) + transform long (--dur-panel), ease-standard
-   Close : opacity + transform synchro (--dur-panel), ease-collapse */
+/* ── Modal cards ──
+   Open  : opacity instant (no transition) — text appears exactly with the card.
+           Glass surface is perceptually present at low opacity; text needs high
+           opacity to be readable → any fade creates a perceptual gap. Instant.
+   Close : opacity + transform synchro (--dur-panel, ease-collapse) — clean exit. */
 #explore-card,
 #schedule-card,
 #settings-card {
-  transition: opacity var(--dur-fade) var(--ease-standard),
-              transform var(--dur-panel) var(--ease-standard);
+  transition: transform var(--dur-panel) var(--ease-standard);
   will-change: transform, opacity;
 }
 #explore-card.is-closing,
