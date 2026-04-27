@@ -1013,20 +1013,42 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
   position: relative; z-index: var(--z-player-inner);
   will-change: transform; transform: translateZ(0);
-  /* Seam: remove radius + border where playlist attaches */
-  transition: border-radius var(--dur-panel) var(--ease-standard),
-              border-top-color var(--dur-panel) var(--ease-standard);
 }
-/* Playlist above player-bar: remove bottom radius + border */
-.player-inner.playlist-open {
-  border-radius: 0 0 var(--radius-btn) var(--radius-btn);
+/* ── Seam: CSS sibling selector — no JS timing involved ──────────────────────
+ * Default (closed): delayed-snap — border-radius/color snap back AFTER
+ * var(--dur-panel), i.e. exactly when height finishes collapsing to 0.
+ * Open: instant-snap — radius/color snap to flat the moment .open is added.
+ * This eliminates every 1-frame flash and every transitionend timing hack.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+/* Playlist ABOVE player-bar (default) — seam is at player-inner TOP */
+.player-wrap:not(.playlist-below) .player-inner {
+  transition: border-top-left-radius 0s var(--dur-panel),
+              border-top-right-radius 0s var(--dur-panel),
+              border-top-color 0s var(--dur-panel);
+}
+.player-wrap:not(.playlist-below) .playlist.open + .player-inner {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   border-top-color: transparent;
+  transition: border-top-left-radius 0s,
+              border-top-right-radius 0s,
+              border-top-color var(--dur-short) var(--ease-hover);
 }
-/* Playlist below player-bar: remove top radius + border */
-.player-wrap.playlist-below .player-inner.playlist-open {
-  border-radius: var(--radius-btn) var(--radius-btn) 0 0;
-  border-top-color: var(--glass-border);
+
+/* Playlist BELOW player-bar — seam is at player-inner BOTTOM */
+.player-wrap.playlist-below .player-inner {
+  transition: border-bottom-left-radius 0s var(--dur-panel),
+              border-bottom-right-radius 0s var(--dur-panel),
+              border-bottom-color 0s var(--dur-panel);
+}
+.player-wrap.playlist-below .playlist.open + .player-inner {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   border-bottom-color: transparent;
+  transition: border-bottom-left-radius 0s,
+              border-bottom-right-radius 0s,
+              border-bottom-color var(--dur-short) var(--ease-hover);
 }
 
 /* ── Playlist panel — height collapse + fixed-size glass blur ── */
@@ -1045,7 +1067,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   overflow: hidden;
   pointer-events: none;
   will-change: height;
-  transition: height var(--dur-panel) var(--ease-standard);
+  transition: height var(--dur-panel) var(--ease-collapse);
 }
 .playlist.open {
   pointer-events: all;
@@ -1083,14 +1105,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: 24px;
   max-height: 320px; overflow-y: auto;
   opacity: 0;
-  transform: translateY(6px);
-  /* Same easing open and close — removing .open class reverses automatically */
-  transition: opacity var(--dur-fade) var(--ease-hover) var(--delay-content),
-              transform var(--dur-panel) var(--ease-standard) var(--delay-content);
+  transition: opacity var(--dur-fade) var(--ease-hover);
 }
 .playlist.open .playlist-inner {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
@@ -5222,66 +5240,30 @@ function _plContentH() {
   return inner ? inner.offsetHeight : 0;
 }
 
-/* Stored reference so _openPl can cancel a pending close handler on quick re-open */
-let _closePlEndHandler = null;
-
-function _snapPlayerRadius() {
-  /* Snap player-inner radius instantly (no CSS transition) — called when height=0 */
-  if (!plOpen) {
-    playerInner.style.transition = 'none';
-    playerInner.classList.remove('playlist-open');
-    playerInner.offsetHeight; // force layout commit
-    playerInner.style.transition = '';
-  }
-}
-
 function _closePl() {
   plOpen = false;
   plBtnD.classList.remove('active');
   plPanel.style.height = '0';
   plPanel.classList.remove('open');
-
-  /* Primary: snap radius at EXACTLY height=0 via transitionend (precise, no visible
-     radius animation after panel disappears). */
-  if (_closePlEndHandler) plPanel.removeEventListener('transitionend', _closePlEndHandler);
-  _closePlEndHandler = function _onCloseEnd(e) {
-    if (e.propertyName !== 'height') return;
-    plPanel.removeEventListener('transitionend', _closePlEndHandler);
-    _closePlEndHandler = null;
-    _snapPlayerRadius();
-  };
-  plPanel.addEventListener('transitionend', _closePlEndHandler);
-
-  /* Fallback: if transitionend doesn't fire (reduced motion, eval context, etc.)
-     snap after the transition duration + small buffer. */
-  setTimeout(() => {
-    if (_closePlEndHandler) { // handler still pending = transitionend didn't fire
-      plPanel.removeEventListener('transitionend', _closePlEndHandler);
-      _closePlEndHandler = null;
-      _snapPlayerRadius();
-    }
-  }, 280);
+  /* CSS sibling selector (.playlist.open + .player-inner) handles the seam
+     radius/color — delayed-snap fires at t=var(--dur-panel), zero JS needed. */
 }
 
 function _openPl() {
   plOpen = true;
-  /* Cancel any pending close-end handler (quick re-open before height=0) */
-  if (_closePlEndHandler) {
-    plPanel.removeEventListener('transitionend', _closePlEndHandler);
-    _closePlEndHandler = null;
-  }
   plBtnD.classList.add('active');
-  /* Seam: adjust player-inner border/radius before panel animates in */
-  playerInner.classList.add('playlist-open');
-  /* Measure real content height (never use plPanel.scrollHeight — glass inflates it to 400px).
-     Suspend transition so the browser commits height:0 before animating to target. */
+  /* Suspend transition, commit height:0, restore transition, then animate to content height.
+     Double offsetHeight ensures both the "transition:none → CSS" and the "height:0"
+     are committed before we set the target height — prevents the browser from batching
+     the transition restore + height change into a single frame (which skips the animation). */
   plPanel.style.transition = 'none';
   plPanel.style.height = '0';
-  plPanel.offsetHeight; // force layout commit at 0
+  plPanel.offsetHeight; // commit: transition=none, height=0
   plPanel.style.transition = '';
+  plPanel.offsetHeight; // commit: transition=CSS, height=0 — next write triggers animation
   plPanel.style.height = _plContentH() + 'px'; // animate to content height (px, never auto)
   plPanel.classList.add('open');
-  /* No auto timeout — keep as px so _closePl() can always animate back to 0 reliably */
+  /* CSS sibling selector (.playlist.open + .player-inner) handles the seam instantly. */
   // Scroll mask — only in tracklist mode with long content
   const inner = plPanel.querySelector('.playlist-inner');
   if (inner && plPanel.classList.contains('tracklist')) {
