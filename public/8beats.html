@@ -2266,10 +2266,21 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .about-section p { font-size: var(--text-md); color: var(--text-secondary); line-height: 1.7; margin: 0; }
 
 .about-contact {
-  display: flex; gap: var(--grid-col);
+  display: grid;
+  /* 3 sections × 2 grid-cols + 2 gaps × 1 grid-col = 8 editorial cols exactly */
+  grid-template-columns:
+    calc(2 * var(--grid-col) + var(--space-5))
+    calc(var(--grid-col) + 2 * var(--space-5))
+    calc(2 * var(--grid-col) + var(--space-5))
+    calc(var(--grid-col) + 2 * var(--space-5))
+    calc(2 * var(--grid-col) + var(--space-5));
+  column-gap: 0;
   border-top: 1px solid var(--border-default); padding-top: var(--space-7);
 }
-.about-contact-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.about-contact-col { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.about-contact-col:nth-child(1) { grid-column: 1; }
+.about-contact-col:nth-child(2) { grid-column: 3; }
+.about-contact-col:nth-child(3) { grid-column: 5; }
 .about-contact-col h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--text-primary); margin: 0; }
 .about-contact-col p { font-size: var(--text-base); color: var(--text-secondary); line-height: 1.6; margin: 0; flex: 1; }
 .about-contact-link {
