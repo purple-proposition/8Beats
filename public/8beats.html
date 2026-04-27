@@ -1093,9 +1093,17 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border: 1px solid var(--glass-border);
   z-index: 0;
 }
-/* Only suppress the border on the seam side — no radius needed (parent clips) */
-.player-wrap:not(.playlist-below) .playlist-glass { border-bottom: none; }
-.player-wrap.playlist-below .playlist-glass { border-top: none; }
+/* Match border-radius to parent clip so the glass border follows the same arc.
+   Without matching radius, the straight glass border gets clipped at the corners
+   by the parent's overflow:hidden arc → border appears to break/disappear. */
+.player-wrap:not(.playlist-below) .playlist-glass {
+  border-bottom: none;
+  border-radius: var(--radius-btn) var(--radius-btn) 0 0;
+}
+.player-wrap.playlist-below .playlist-glass {
+  border-top: none;
+  border-radius: 0 0 var(--radius-btn) var(--radius-btn);
+}
 
 /* Content + scroll container */
 .playlist-inner {
@@ -3275,20 +3283,18 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <input id="explore-input" placeholder="Search shows, residents, games, genres…" oninput="handleSearch(this.value)" class="explore-input" style="flex:1;background:none;border:none;outline:none;font-family:var(--font);font-size:var(--text-base);color:var(--text-secondary);"/>
     </div>
 
-    <!-- Tabs -->
-    <div class="explore-section-border" style="display:flex;gap:0;padding:0;">
+    <!-- Tabs + Filter on one row -->
+    <div class="explore-section-border" style="display:flex;align-items:stretch;gap:0;padding:0;">
       <button id="tab-shows" onclick="setTab('shows')" class="explore-tab explore-tab-active" style="padding-left:var(--space-5);"><i data-lucide="music-2" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Shows</button>
       <button id="tab-residents" onclick="setTab('residents')" class="explore-tab"><i data-lucide="users" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Residents</button>
       <button id="tab-schedule" onclick="setTab('schedule')" class="explore-tab"><i data-lucide="calendar" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Schedule</button>
-    </div>
-
-    <!-- Filters toggle -->
-    <div id="explore-filter-bar" class="explore-section-border" style="padding:0 var(--space-5);display:flex;align-items:center;gap:var(--space-5);">
-      <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:var(--space-2);background:none;border:none;cursor:pointer;padding:var(--space-5) 0;font-family:var(--font);font-size:var(--text-base);font-weight:400;color:var(--text-tertiary);transition:color var(--dur-micro) var(--ease-hover);">
-        <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="width:14px;height:14px;stroke:var(--text-tertiary);fill:none;display:block;transition:stroke var(--dur-micro) var(--ease-hover);"></i>
-        Filters
-        <span id="filter-count" style="display:none;"></span>
-      </button>
+      <div id="explore-filter-bar" style="margin-left:auto;display:flex;align-items:center;padding:0 var(--space-5);border-left:1px solid var(--border-default);">
+        <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:var(--space-2);background:none;border:none;cursor:pointer;padding:0;font-family:var(--font);font-size:var(--text-base);font-weight:400;color:var(--text-tertiary);transition:color var(--dur-micro) var(--ease-hover);">
+          <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="width:14px;height:14px;stroke:var(--text-tertiary);fill:none;display:block;transition:stroke var(--dur-micro) var(--ease-hover);"></i>
+          Filters
+          <span id="filter-count" style="display:none;"></span>
+        </button>
+      </div>
     </div>
 
     <!-- Filters panel (shows only) -->
