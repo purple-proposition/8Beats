@@ -4490,7 +4490,7 @@ function renderResidents(list) {
   `).join('') + `</div>`;
 }
 
-function setTab(t) {
+function setTab(t, instant) {
   exploreTab = t;
   const inp = document.getElementById('explore-input');
   inp.value = '';
@@ -4501,9 +4501,7 @@ function setTab(t) {
   const panel   = document.getElementById('explore-filters');
   const content = document.getElementById('explore-content');
 
-  content.style.opacity = '0';
-
-  setTimeout(() => {
+  function _renderTab() {
     if (filtersOpen) {
       panel.style.maxHeight = '0';
       filtersOpen = false;
@@ -4519,18 +4517,30 @@ function setTab(t) {
     } else if (t === 'residents') {
       content.style.paddingTop = '0';
       bar.style.display = 'none';
-      const q = (document.getElementById('explore-input').value || '').toLowerCase();
+      const q = (inp.value || '').toLowerCase();
       const f = q ? residents.filter(r => r.name.toLowerCase().includes(q)) : residents;
       content.innerHTML = f.length ? renderResidents(f) : '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No residents found.</p>';
       initScrollFade(content, 48);
       wireTagTooltips(content);
     } else {
-      /* schedule tab — day picker flush at top, no extra padding */
       bar.style.display = 'none';
       renderExploreSchedule(content);
     }
+  }
+
+  if (instant) {
+    /* Initial open path: render synchronously, no timeout, no opacity
+       manipulation — opacity is managed by the textReveal animation. */
+    _renderTab();
+    return;
+  }
+
+  /* Tab-switch path: cross-fade old → new content (160ms out + render). */
+  content.style.opacity = '0';
+  setTimeout(() => {
+    _renderTab();
     requestAnimationFrame(() => { content.style.opacity = '1'; });
-  }, 170);  /* 170ms — full 160ms fade-out completes before content swap */
+  }, 170);
 }
 
 /* ── Schedule sub-tab inside Explore ── */
@@ -4658,8 +4668,24 @@ const OM = (() => {
 })();
 
 let exploreClosing = false;
+let _explorePrewarmed = false;
 const exploreEl = document.getElementById('explore');
 const exploreCard = document.getElementById('explore-card');
+
+// Pre-warm: build Explorer DOM during idle time so first open is instant.
+function _prewarmExplore() {
+  if (_explorePrewarmed) return;
+  buildFilters();
+  setTab('shows', true);
+  const ec = document.getElementById('explore-content');
+  if (ec) ec.style.paddingTop = 'var(--space-3)';
+  _explorePrewarmed = true;
+}
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(_prewarmExplore, { timeout: 2000 });
+} else {
+  setTimeout(_prewarmExplore, 800);
+}
 
 function openExplore() {
   if (exploreClosing) return;
@@ -4683,11 +4709,12 @@ function openExplore() {
 
   exploreEl.style.display = 'flex';
 
-  // Contenu construit pendant que la carte est invisible (opacity:0).
+  // Contenu construit pendant que la carte est invisible (opacity:0.01 → rAF).
   // Zéro mutation DOM pendant la transition.
-  buildFilters();
-  setTab('shows');
-  if (ec) { ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
+  // Pre-warmed: filters & tab already built — just reset to "shows" tab state.
+  if (!_explorePrewarmed) buildFilters();
+  setTab('shows', true);
+  if (ec) { ec.style.opacity = ''; ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
 
   // rAF 1 : opacity → 0.01 force la rasterisation (valeur non-nulle = le
   //          navigateur peint le contenu, évite le décalage GPU/CPU).
