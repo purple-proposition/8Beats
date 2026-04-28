@@ -1736,11 +1736,26 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: var(--space-4);
 }
 
+/* ── Content reveal — fade + blur assumé ──
+   Le léger décalage GPU/CPU (backdrop-filter précède la rasterisation texte)
+   est transformé en intention : le panel s'établit, puis le corps du contenu
+   se révèle avec un fade + blur très doux. Contrôles (search, onglets, day bar)
+   restent instantanés — seule la zone de liste/body reçoit l'animation.
+   Déclenchée par JS (.text-reveal), jamais retirée pendant l'animation. */
+@keyframes textReveal {
+  from { opacity: 0; filter: blur(4px); }
+  to   { opacity: 1; filter: blur(0px); }
+}
+#explore-content.text-reveal,
+#schedule-panel-body.text-reveal,
+#settings-body.text-reveal {
+  animation: textReveal var(--dur-fade) var(--ease-hover) 40ms both;
+}
+
 /* ── Modal cards ──
-   Open  : opacity instant (no transition) — text appears exactly with the card.
-           Glass surface is perceptually present at low opacity; text needs high
-           opacity to be readable → any fade creates a perceptual gap. Instant.
-   Close : opacity + transform synchro (--dur-panel, ease-collapse) — clean exit. */
+   Open  : opacity instant (no transition) — barre de recherche + onglets
+           apparaissent avec le panel. Le corps se révèle via .text-reveal.
+   Close : opacity + transform synchro (--dur-panel, ease-collapse). */
 #explore-card,
 #schedule-card,
 #settings-card {
@@ -4661,28 +4676,30 @@ function openExplore() {
   const backdrop = document.getElementById('explore-backdrop');
   exploreCard.classList.remove('is-closing');
 
-  // Make wrapper visible; card stays opacity:0 until rAF below.
+  // Réinitialise l'animation de révélation pour qu'elle rejoue à chaque ouverture.
+  // Fait avant display:flex : l'élément est à opacity:1 naturel pendant le build.
+  const ec = document.getElementById('explore-content');
+  if (ec) ec.classList.remove('text-reveal');
+
   exploreEl.style.display = 'flex';
 
-  // Build all content synchronously while card is still invisible.
-  // Zero DOM mutation during the transition — no flash, no repaint.
+  // Contenu construit pendant que la carte est invisible (opacity:0).
+  // Zéro mutation DOM pendant la transition.
   buildFilters();
   setTab('shows');
-  const ec = document.getElementById('explore-content');
   if (ec) { ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
 
-  // rAF 1: nudge opacity to 0.01 — non-zero forces the browser to rasterize
-  // card content (text, icons) eagerly. opacity:0 elements may be skipped by
-  // the rasterizer, causing the GPU compositor to show the glass surface 1–2
-  // frames before text appears. 0.01 is imperceptible but prevents deferral.
-  // rAF 2: set opacity:1 — rasterization is now complete, glass and text
-  // appear in the same frame with no perceptible gap.
+  // rAF 1 : opacity → 0.01 force la rasterisation (valeur non-nulle = le
+  //          navigateur peint le contenu, évite le décalage GPU/CPU).
+  // rAF 2 : opacity → 1 (panel établi) + démarre la révélation du corps
+  //          via .text-reveal (fade+blur délibéré, 160ms, 40ms de délai).
   requestAnimationFrame(() => {
     exploreCard.style.opacity = '0.01';
     requestAnimationFrame(() => {
       exploreCard.style.opacity = '1';
       exploreCard.style.transform = 'translateY(0)';
       if (backdrop) backdrop.classList.add('open');
+      if (ec) { void ec.offsetWidth; ec.classList.add('text-reveal'); }
     });
   });
 
@@ -6556,8 +6573,9 @@ function openSchedulePanel() {
   const card = document.getElementById('schedule-card');
   const bd = document.getElementById('schedule-backdrop');
   if (card) card.classList.remove('is-closing');
+  const spBody = document.getElementById('schedule-panel-body');
+  if (spBody) spBody.classList.remove('text-reveal');
   el.style.display = 'flex';
-  // Build content before animation so no DOM mutation mid-transition
   scheduleAllNotifs();
   renderSchedulePanel();
   requestAnimationFrame(() => {
@@ -6565,6 +6583,7 @@ function openSchedulePanel() {
     requestAnimationFrame(() => {
       if (card) { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }
       if (bd) bd.classList.add('open');
+      if (spBody) { void spBody.offsetWidth; spBody.classList.add('text-reveal'); }
     });
   });
 }
@@ -6646,6 +6665,8 @@ function openSettings() {
   // Show with entrance animation — opacity on card, not wrapper
   const bd = document.getElementById('settings-backdrop');
   _settingsCard.classList.remove('is-closing');
+  const sBody = document.getElementById('settings-body');
+  if (sBody) sBody.classList.remove('text-reveal');
   _settingsEl.style.display = 'flex';
   requestAnimationFrame(() => {
     _settingsCard.style.opacity = '0.01';
@@ -6653,6 +6674,7 @@ function openSettings() {
       _settingsCard.style.opacity = '1';
       _settingsCard.style.transform = 'translateY(0)';
       if (bd) bd.classList.add('open');
+      if (sBody) { void sBody.offsetWidth; sBody.classList.add('text-reveal'); }
     });
   });
   // Re-init Lucide icons inside the card
