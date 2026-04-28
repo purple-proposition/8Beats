@@ -1746,10 +1746,19 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   from { opacity: 0; filter: blur(4px); }
   to   { opacity: 1; filter: blur(0px); }
 }
+@keyframes textHide {
+  from { opacity: 1; filter: blur(0px); }
+  to   { opacity: 0; filter: blur(3px); }
+}
 #explore-content.text-reveal,
 #schedule-panel-body.text-reveal,
 #settings-body.text-reveal {
   animation: textReveal var(--dur-fade) var(--ease-hover) 40ms both;
+}
+/* Tab-switch exit: quick blur+fade out before new content renders */
+#explore-content.text-hide {
+  animation: textHide 60ms var(--ease-collapse) both;
+  pointer-events: none;
 }
 
 /* ── Modal cards ──
@@ -4535,12 +4544,19 @@ function setTab(t, instant) {
     return;
   }
 
-  /* Tab-switch path: cross-fade old → new content (160ms out + render). */
-  content.style.opacity = '0';
+  /* Tab-switch path: blur+fade out (60ms) → render → blur+fade reveal.
+     Même motion que l'ouverture du panel : sortie rapide ease-in,
+     entrée douce ease-out. Aucune mutation DOM pendant la sortie. */
+  content.style.opacity = '';           // efface toute opacité inline résiduelle
+  content.classList.remove('text-reveal');
+  void content.offsetWidth;            // reset animation state
+  content.classList.add('text-hide');
   setTimeout(() => {
     _renderTab();
-    requestAnimationFrame(() => { content.style.opacity = '1'; });
-  }, 170);
+    content.classList.remove('text-hide');
+    void content.offsetWidth;          // force reflow pour que text-reveal reparte de from
+    content.classList.add('text-reveal');
+  }, 60);
 }
 
 /* ── Schedule sub-tab inside Explore ── */
