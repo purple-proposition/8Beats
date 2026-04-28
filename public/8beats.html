@@ -816,7 +816,9 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .hero-inner h1 { font-size: clamp(32px,5.5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; color: var(--text-primary); }
 .hero-inner p  { font-size: var(--text-base); color: var(--text-secondary); line-height: 1.6; }
 
-.hero-actions  { display: flex; align-items: center; gap: var(--space-5); margin-top: 0; }
+.hero-actions  { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-top: 0; }
+.hero-actions > :first-child { justify-self: end; }
+.hero-actions > :last-child  { justify-self: start; }
 
 /* ── Buttons ── */
 .btn {
@@ -1252,7 +1254,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
 .player-game { font-size: var(--text-base); line-height: 1; color: var(--text-secondary); }
-.player-controls { display: flex; align-items: center; gap: var(--space-4); flex-shrink: 0; }
+.player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
 .spotify-btn { width: 40px; height: 40px; border-radius: var(--radius-control); background: transparent; border: 1px solid var(--border-btn); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); }
 .spotify-btn svg { width: 16px; height: 16px; fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
@@ -1922,7 +1924,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* Slot rows — identical spec to .explore-show-row */
 .sp-slot-row {
-  display: flex; align-items: flex-start; justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   gap: var(--space-5);
   padding: var(--space-3) var(--space-5);
   cursor: pointer; position: relative;
@@ -5399,7 +5401,7 @@ function _updatePlayerLayout() {
 function openVol() {
   /* vol-popup is position:absolute inside vol-wrap — no pixel coords needed, just direction */
   const r   = volWrap.getBoundingClientRect();
-  const dir = resolvePopupDir(r, 148);
+  const dir = resolvePopupDir(r, 154);
   volPopup.dataset.dir = dir;
   if (dir === 'above') {
     volPopup.style.bottom = '0';
