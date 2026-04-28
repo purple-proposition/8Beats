@@ -934,7 +934,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-meta   { font-size: var(--text-base); color: var(--text-tertiary); }
 .card-tags   { display: none; }
 
-.tag { font-size: var(--text-sm); font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); border: 1px solid var(--border-default); border-radius: var(--space-2); height: 40px; display: inline-flex; align-items: center; padding: 0 var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
+.tag { font-size: var(--text-sm); font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); border: 1px solid var(--border-default); border-radius: var(--space-2); height: 32px; display: inline-flex; align-items: center; padding: 0 var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
 .tag:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
 
 /* ── Panels ── */
@@ -4396,7 +4396,7 @@ function makeFilterChip(label, isActive, onClick, showTooltip) {
   const btn = document.createElement('button');
   btn.textContent = label;
   const isMobile = window.innerWidth <= 768;
-  const base = `font-family:var(--font);font-size:var(--text-sm);font-weight:400;letter-spacing:.4px;text-transform:uppercase;height:40px;display:inline-flex;align-items:center;padding:0 var(--space-3);border-radius:var(--space-2);cursor:pointer;transition:color var(--dur-short) var(--ease-hover),border-color var(--dur-short) var(--ease-hover),background var(--dur-short) var(--ease-hover);`;
+  const base = `font-family:var(--font);font-size:var(--text-sm);font-weight:400;letter-spacing:.4px;text-transform:uppercase;height:32px;display:inline-flex;align-items:center;padding:0 var(--space-3);border-radius:var(--space-2);cursor:pointer;transition:color var(--dur-short) var(--ease-hover),border-color var(--dur-short) var(--ease-hover),background var(--dur-short) var(--ease-hover);`;
   const activeStyle   = base + `border:1px solid var(--text-secondary);background:var(--text-secondary);color:var(--surface-page);`;
   const inactiveStyle = base + `border:1px solid var(--border-default);background:transparent;color:var(--text-tertiary);`;
   btn.style.cssText = isActive ? activeStyle : inactiveStyle;
