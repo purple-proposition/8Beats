@@ -4302,76 +4302,78 @@ const TIME_RANGES = [
   {label:'2021', fn: d => { const dt=new Date(d); return dt.getFullYear()===2021 && dt.getMonth()<=8; }},
 ];
 
-/* ── Game knowledge base — enriched search card ── */
+/* ── Game knowledge base — enriched search card ──
+   Covers: Steam CDN headers (460×215, landscape) — public, no hotlink block.
+   URL pattern: https://cdn.akamai.steamstatic.com/steam/apps/{id}/header.jpg */
 const GAME_DATA = {
   'minecraft': {
     title: 'Minecraft', year: 2011, composer: 'C418, Lena Raine',
     platforms: ['PC', 'Xbox', 'PlayStation', 'Switch', 'Mobile'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png',
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/1672970/header.jpg', // Minecraft Dungeons (closest on Steam)
     summary: 'An open-world sandbox game by Mojang Studios where players explore, build, and survive in procedurally generated block worlds. The ambient electronic soundtrack by C418 became one of gaming\'s most beloved scores.',
     source: 'Wikipedia'
   },
   'hollow knight': {
     title: 'Hollow Knight', year: 2017, composer: 'Christopher Larkin',
     platforms: ['PC', 'Switch', 'PS4', 'Xbox One'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/4/4a/Hollow_Knight_first_cover_art.jpg',
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg',
     summary: 'A challenging action-adventure set in a vast underground kingdom of insects. Team Cherry\'s debut title features intricate hand-drawn visuals and a sweeping orchestral score.',
     source: 'Wikipedia'
   },
   'celeste': {
     title: 'Celeste', year: 2018, composer: 'Lena Raine',
     platforms: ['PC', 'Switch', 'PS4', 'Xbox One'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/0/0f/Celeste_box_art.png',
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/504230/header.jpg',
     summary: 'A precision platformer about climbing a mountain, acclaimed for its tight gameplay, heartfelt story about mental health, and an emotionally resonant chiptune-inspired soundtrack.',
     source: 'Wikipedia'
   },
   'stardew valley': {
     title: 'Stardew Valley', year: 2016, composer: 'ConcernedApe',
     platforms: ['PC', 'Switch', 'PS4', 'Xbox One', 'Mobile'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/1/17/Stardew_Valley_-_Cover_Art.png',
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg',
     summary: 'An indie farming RPG created entirely by one developer — Eric Barone. Players restore a run-down farm, befriend villagers, and explore procedurally generated caves.',
     source: 'Wikipedia'
   },
   'cyberpunk 2077': {
     title: 'Cyberpunk 2077', year: 2020, composer: 'Marcin Przybyłowicz, P. T. Adamczyk',
     platforms: ['PC', 'PS4', 'PS5', 'Xbox Series X|S'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg',
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg',
     summary: 'An open-world action RPG set in the dystopian Night City by CD Projekt Red. Its expansive soundtrack blends synthwave, industrial metal, and ambient electronic music.',
     source: 'Wikipedia'
   },
   'persona 5': {
-    title: 'Persona 5', year: 2016, composer: 'Shoji Meguro',
-    platforms: ['PS3', 'PS4', 'Switch', 'PC'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/b/b3/Persona_5_cover_art.jpg',
+    title: 'Persona 5 Royal', year: 2019, composer: 'Shoji Meguro',
+    platforms: ['PS4', 'Switch', 'PC', 'Xbox'],
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/1687950/header.jpg',
     summary: 'A stylish JRPG by Atlus where students lead double lives as the Phantom Thieves. Shoji Meguro\'s jazz-infused soundtrack is renowned for its infectious energy and distinct aesthetic.',
     source: 'Wikipedia'
   },
   'nier': {
     title: 'Nier: Automata', year: 2017, composer: 'Keiichi Okabe',
     platforms: ['PS4', 'PC', 'Xbox One', 'Switch'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/e/e9/Nier-_Automata_cover_art.jpg',
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/524220/header.jpg',
     summary: 'An action RPG by PlatinumGames set in a post-apocalyptic world overrun by machines. The emotionally devastating narrative is matched by Keiichi Okabe\'s extraordinary orchestral and choral score.',
     source: 'Wikipedia'
   },
   'silent hill': {
-    title: 'Silent Hill 2', year: 2001, composer: 'Akira Yamaoka',
-    platforms: ['PS2', 'Xbox', 'PC', 'PS5', 'Xbox Series X|S'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/5/57/Silent_Hill_2_cover.jpg',
+    title: 'Silent Hill 2', year: 2024, composer: 'Akira Yamaoka',
+    platforms: ['PS5', 'PC'],
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/2124490/header.jpg',
     summary: 'A landmark psychological survival horror by Konami. James Sunderland arrives in the fog-shrouded town looking for his deceased wife. Akira Yamaoka\'s haunting industrial score is one of gaming\'s greatest.',
     source: 'Wikipedia'
   },
   'final fantasy': {
-    title: 'Final Fantasy VI', year: 1994, composer: 'Nobuo Uematsu',
-    platforms: ['SNES', 'PlayStation', 'GBA', 'PC', 'Mobile'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/0/0e/FFVI_SNES_NA_box.jpg',
+    title: 'Final Fantasy VI Pixel Remaster', year: 2022, composer: 'Nobuo Uematsu',
+    platforms: ['PC', 'iOS', 'Android', 'Switch', 'PS4'],
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/1173770/header.jpg',
     summary: 'Widely regarded as one of the greatest RPGs ever made, Final Fantasy VI features 14 playable characters and a sweeping story about resistance against an evil empire. Nobuo Uematsu\'s score remains definitive.',
     source: 'Wikipedia'
   },
   'halo': {
-    title: 'Halo: Combat Evolved', year: 2001, composer: 'Martin O\'Donnell, Michael Salvatori',
-    platforms: ['Xbox', 'PC', 'Xbox 360', 'Xbox One', 'Xbox Series X|S'],
-    cover: 'https://upload.wikimedia.org/wikipedia/en/8/80/Halo_-_Combat_Evolved_%28XBox_version_-_box_art%29.jpg',
-    summary: 'The legendary sci-fi FPS that defined the Xbox and modern console shooters. Its iconic Gregorian chant-infused orchestral score by Martin O\'Donnell is instantly recognizable worldwide.',
+    title: 'Halo: The Master Chief Collection', year: 2019, composer: 'Martin O\'Donnell, Michael Salvatori',
+    platforms: ['PC', 'Xbox One', 'Xbox Series X|S'],
+    cover: 'https://cdn.akamai.steamstatic.com/steam/apps/976730/header.jpg',
+    summary: 'Six legendary Halo campaigns in one collection. The iconic Gregorian chant-infused orchestral score by Martin O\'Donnell is one of gaming\'s most recognizable soundtracks worldwide.',
     source: 'Wikipedia'
   },
 };
@@ -4384,18 +4386,18 @@ function findGameMatch(q) {
   return found ? { key: found[0], data: found[1] } : null;
 }
 
-/* Render enriched game info card */
+/* Render enriched game info card — Steam header banner (landscape) on top */
 function renderGameCard(data) {
   const plats = data.platforms.slice(0, 5).join(' · ');
   return `
-<div style="margin:var(--space-5) var(--space-5) 0;border:1px solid var(--border-default);border-radius:var(--radius-control);overflow:hidden;display:flex;gap:0;align-items:stretch;">
-  <img src="${data.cover}" alt="${data.title}" loading="lazy" style="width:72px;object-fit:cover;flex-shrink:0;display:block;align-self:stretch;" onerror="this.style.display='none'"/>
-  <div style="padding:var(--space-4);flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-2);">
+<div style="margin:var(--space-5) var(--space-5) 0;border:1px solid var(--border-default);border-radius:var(--radius-control);overflow:hidden;">
+  <img src="${data.cover}" alt="${data.title}" loading="lazy" style="width:100%;height:96px;object-fit:cover;display:block;" onerror="this.style.display='none'"/>
+  <div style="padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-2);">
     <div style="font-size:var(--text-md);font-weight:600;color:var(--text-primary);line-height:1.2;">${data.title}</div>
     <div style="font-size:var(--text-sm);color:var(--text-tertiary);">${data.year} · ${plats}</div>
     ${data.composer ? `<div style="font-size:var(--text-sm);color:var(--text-tertiary);">Composed by ${data.composer}</div>` : ''}
     <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.55;margin:var(--space-1) 0 0;">${data.summary}</p>
-    <div style="font-size:var(--text-xs);color:var(--text-disabled);margin-top:auto;padding-top:var(--space-2);">Source : ${data.source}</div>
+    <div style="font-size:var(--text-xs);color:var(--text-disabled);padding-top:var(--space-1);">Source : ${data.source}</div>
   </div>
 </div>`;
 }
