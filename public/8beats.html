@@ -4387,18 +4387,21 @@ function findGameMatch(q) {
   return found ? { key: found[0], data: found[1] } : null;
 }
 
-/* Render enriched game info card — portrait cover left, info right */
+/* Render enriched game info card — portrait cover left, info right.
+   Image and text share the same padded container so the cover aligns
+   exactly from the title top to the source bottom. */
 function renderGameCard(data) {
   const plats = data.platforms.slice(0, 5).join(' · ');
   return `
-<div style="margin:var(--space-5) var(--space-5) 0;border:1px solid var(--border-default);border-radius:var(--radius-control);overflow:hidden;display:flex;align-items:stretch;">
-  <img src="${data.cover}" alt="${data.title}" loading="lazy" referrerpolicy="no-referrer" style="width:88px;flex-shrink:0;object-fit:cover;display:block;align-self:stretch;" onerror="this.style.display='none'"/>
-  <div style="padding:var(--space-4);flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-2);">
-    <div style="font-size:var(--text-md);font-weight:600;color:var(--text-primary);line-height:1.2;">${data.title}</div>
-    <div style="font-size:var(--text-sm);color:var(--text-tertiary);">${data.year} · ${plats}</div>
-    ${data.composer ? `<div style="font-size:var(--text-sm);color:var(--text-tertiary);">Composed by ${data.composer}</div>` : ''}
-    <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.55;margin:var(--space-1) 0 0;">${data.summary}</p>
-    <div style="font-size:var(--text-xs);color:var(--text-disabled);margin-top:auto;padding-top:var(--space-2);">Source : ${data.source}</div>
+<div style="margin:var(--space-5) var(--space-5) 0;border:1px solid var(--border-default);border-radius:var(--radius-control);overflow:hidden;">
+  <div style="padding:var(--space-4);display:flex;align-items:stretch;gap:var(--space-4);">
+    <img src="${data.cover}" alt="${data.title}" loading="lazy" referrerpolicy="no-referrer" style="width:80px;flex-shrink:0;object-fit:cover;display:block;border-radius:4px;" onerror="this.style.display='none'"/>
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-2);">
+      <div style="font-size:var(--text-md);font-weight:600;color:var(--text-primary);line-height:1.2;">${data.title}</div>
+      <div style="font-size:var(--text-sm);color:var(--text-tertiary);">${data.year} · ${plats}</div>
+      <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.55;margin:0;">${data.summary}</p>
+      <div style="font-size:var(--text-xs);color:var(--text-disabled);margin-top:auto;padding-top:var(--space-1);">Source : ${data.source}</div>
+    </div>
   </div>
 </div>`;
 }
