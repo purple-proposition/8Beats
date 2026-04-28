@@ -1745,7 +1745,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #schedule-card,
 #settings-card {
   transition: transform var(--dur-panel) var(--ease-standard);
-  will-change: transform, opacity;
+  will-change: transform;
 }
 #explore-card.is-closing,
 #schedule-card.is-closing,
@@ -4671,13 +4671,20 @@ function openExplore() {
   const ec = document.getElementById('explore-content');
   if (ec) { ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
 
-  // Double rAF: commits display:flex + sets up backdrop-filter compositor
-  // layer before opacity starts, then triggers the entrance transition.
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    exploreCard.style.opacity = '1';
-    exploreCard.style.transform = 'translateY(0)';
-    if (backdrop) backdrop.classList.add('open');
-  }));
+  // rAF 1: nudge opacity to 0.01 — non-zero forces the browser to rasterize
+  // card content (text, icons) eagerly. opacity:0 elements may be skipped by
+  // the rasterizer, causing the GPU compositor to show the glass surface 1–2
+  // frames before text appears. 0.01 is imperceptible but prevents deferral.
+  // rAF 2: set opacity:1 — rasterization is now complete, glass and text
+  // appear in the same frame with no perceptible gap.
+  requestAnimationFrame(() => {
+    exploreCard.style.opacity = '0.01';
+    requestAnimationFrame(() => {
+      exploreCard.style.opacity = '1';
+      exploreCard.style.transform = 'translateY(0)';
+      if (backdrop) backdrop.classList.add('open');
+    });
+  });
 
   // Focus after transform lands (--dur-panel = 260ms)
   setTimeout(() => {
@@ -6553,10 +6560,13 @@ function openSchedulePanel() {
   // Build content before animation so no DOM mutation mid-transition
   scheduleAllNotifs();
   renderSchedulePanel();
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    if (card) { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }
-    if (bd) bd.classList.add('open');
-  }));
+  requestAnimationFrame(() => {
+    if (card) card.style.opacity = '0.01';
+    requestAnimationFrame(() => {
+      if (card) { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }
+      if (bd) bd.classList.add('open');
+    });
+  });
 }
 
 function closeSchedulePanel() {
@@ -6637,11 +6647,14 @@ function openSettings() {
   const bd = document.getElementById('settings-backdrop');
   _settingsCard.classList.remove('is-closing');
   _settingsEl.style.display = 'flex';
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    _settingsCard.style.opacity = '1';
-    _settingsCard.style.transform = 'translateY(0)';
-    if (bd) bd.classList.add('open');
-  }));
+  requestAnimationFrame(() => {
+    _settingsCard.style.opacity = '0.01';
+    requestAnimationFrame(() => {
+      _settingsCard.style.opacity = '1';
+      _settingsCard.style.transform = 'translateY(0)';
+      if (bd) bd.classList.add('open');
+    });
+  });
   // Re-init Lucide icons inside the card
   setTimeout(() => lucide.createIcons({ nodes: [_settingsCard] }), 40);
   // Observer + scroll fade
