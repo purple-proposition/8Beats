@@ -4388,10 +4388,9 @@ function findGameMatch(q) {
 function renderGameCard(data) {
   const plats = data.platforms.slice(0, 5).join(' · ');
   return `
-<div style="margin:var(--space-5) var(--space-5) 0;border:1px solid var(--border-default);border-radius:var(--radius-control);overflow:hidden;display:flex;gap:0;">
-  <img src="${data.cover}" alt="${data.title}" loading="lazy" style="width:72px;min-height:96px;object-fit:cover;flex-shrink:0;display:block;" onerror="this.style.display='none'"/>
+<div style="margin:var(--space-5) var(--space-5) 0;border:1px solid var(--border-default);border-radius:var(--radius-control);overflow:hidden;display:flex;gap:0;align-items:stretch;">
+  <img src="${data.cover}" alt="${data.title}" loading="lazy" style="width:72px;object-fit:cover;flex-shrink:0;display:block;align-self:stretch;" onerror="this.style.display='none'"/>
   <div style="padding:var(--space-4);flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-2);">
-    <div style="font-size:var(--text-xs);font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-tertiary);">Video Game</div>
     <div style="font-size:var(--text-md);font-weight:600;color:var(--text-primary);line-height:1.2;">${data.title}</div>
     <div style="font-size:var(--text-sm);color:var(--text-tertiary);">${data.year} · ${plats}</div>
     ${data.composer ? `<div style="font-size:var(--text-sm);color:var(--text-tertiary);">Composed by ${data.composer}</div>` : ''}
