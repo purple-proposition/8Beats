@@ -1979,20 +1979,20 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Live status — reusable component ── */
 /* Used in: schedule block headers, show rows, player bar */
 .live-status {
-  display: inline-flex; align-items: center; gap: var(--space-1);
-  font-size: var(--text-xs); font-weight: 400;
-  color: var(--text-tertiary);
-  text-transform: uppercase; letter-spacing: .08em;
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: var(--text-sm); font-weight: 400;
+  color: var(--text-secondary);
 }
 
 /* ── Schedule block header (Night / Morning / Afternoon / Evening) ── */
 .sp-block-hdr {
-  display: flex; align-items: center; gap: var(--space-3);
+  display: flex; align-items: center; justify-content: space-between;
   padding: var(--space-4) var(--space-5) var(--space-2);
-  font-size: var(--text-xs); font-weight: 400; color: var(--text-tertiary);
-  text-transform: uppercase; letter-spacing: .08em;
+  font-size: var(--text-sm); font-weight: 400; color: var(--text-secondary);
 }
-.sp-block-hdr:not(:first-child) { margin-top: var(--space-2); }
+.sp-block-hdr:not(:first-child) { border-top: 1px solid var(--border-subtle); padding-top: var(--space-5); margin-top: var(--space-3); }
+.sp-block-hdr-left { display: flex; align-items: center; gap: 12px; }
+.sp-block-time { font-size: var(--text-sm); color: var(--text-tertiary); font-variant-numeric: tabular-nums; flex-shrink: 0; }
 
 /* ── Show row under a block ── */
 .sp-show-row {
@@ -6228,23 +6228,41 @@ if (location.hash) {
 /* ── Schedule page ── */
 // Weekly program — 4 fixed 6h slots per day starting from midnight
 const SCHEDULE_SHOWS = [
-  // Monday
-  { day: 0, time: '12:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
-  { day: 0, time: '18:00', title: 'Submerse',           host: 'Resident',  genres: ['Electronic','Ambient'] },
-  // Tuesday
-  { day: 1, time: '06:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Electronic'] },
-  // Wednesday
-  { day: 2, time: '18:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Downtempo','Drum & Bass'] },
-  // Thursday
+  // ── Monday ──────────────────────────────────────────────────────────────
+  { day: 0, time: '01:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Downtempo','Folk'] },
+  { day: 0, time: '08:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Acoustic','Ambient'] },
+  { day: 0, time: '14:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
+  { day: 0, time: '19:00', title: 'Submerse',           host: 'Resident',  genres: ['Electronic','Ambient'] },
+  // ── Tuesday ─────────────────────────────────────────────────────────────
+  { day: 1, time: '02:00', title: 'JamesonEmpire',      host: 'Resident',  genres: ['Hip-Hop','Funk'] },
+  { day: 1, time: '08:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Electronic'] },
+  { day: 1, time: '15:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Downtempo','Electronic'] },
+  { day: 1, time: '20:00', title: '8Beats Sound Team',  host: 'Resident',  genres: ['Electronic','Experimental'] },
+  // ── Wednesday ───────────────────────────────────────────────────────────
+  { day: 2, time: '01:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Ambient','Orchestral'] },
+  { day: 2, time: '09:00', title: 'Submerse',           host: 'Resident',  genres: ['Drum & Bass','Electronic'] },
+  { day: 2, time: '14:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','OST'] },
+  { day: 2, time: '19:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Downtempo','Drum & Bass'] },
+  // ── Thursday ────────────────────────────────────────────────────────────
   { day: 3, time: '00:00', title: 'JamesonEmpire',      host: 'Resident',  genres: ['Hip-Hop','Funk'] },
-  // Friday
-  { day: 4, time: '06:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Orchestral','Ambient'] },
-  { day: 4, time: '12:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Downtempo','Electronic'] },
-  // Saturday
-  { day: 5, time: '12:00', title: '8Beats Sound Team',  host: 'Resident',  genres: ['Electronic','Experimental'] },
-  { day: 5, time: '18:00', title: 'Submerse',           host: 'Resident',  genres: ['Drum & Bass','Electronic'] },
-  // Sunday
-  { day: 6, time: '18:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
+  { day: 3, time: '07:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Darksynth'] },
+  { day: 3, time: '13:00', title: '8Beats Sound Team',  host: 'Resident',  genres: ['Electronic','Experimental'] },
+  { day: 3, time: '20:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Ambient','Downtempo'] },
+  // ── Friday ──────────────────────────────────────────────────────────────
+  { day: 4, time: '02:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Folk','Acoustic'] },
+  { day: 4, time: '08:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Orchestral','Ambient'] },
+  { day: 4, time: '13:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Downtempo','Electronic'] },
+  { day: 4, time: '19:00', title: 'Submerse',           host: 'Resident',  genres: ['Drum & Bass','Electronic'] },
+  // ── Saturday ────────────────────────────────────────────────────────────
+  { day: 5, time: '01:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Chillout'] },
+  { day: 5, time: '08:00', title: 'JamesonEmpire',      host: 'Resident',  genres: ['Hip-Hop','Soul'] },
+  { day: 5, time: '14:00', title: '8Beats Sound Team',  host: 'Resident',  genres: ['Electronic','Experimental'] },
+  { day: 5, time: '20:00', title: 'Submerse',           host: 'Resident',  genres: ['Drum & Bass','Electronic'] },
+  // ── Sunday ──────────────────────────────────────────────────────────────
+  { day: 6, time: '02:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Retro'] },
+  { day: 6, time: '09:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Ambient','Electronic'] },
+  { day: 6, time: '15:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Downtempo','Folk'] },
+  { day: 6, time: '19:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
 ];
 
 const DAY_NAMES = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
@@ -6438,10 +6456,10 @@ function _dayTabLabel(i, todayDow, today) {
 
 /* 4 fixed 6h blocks — always rendered even if no shows in window */
 const SP_BLOCKS = [
-  { label: 'Night program',     start:  0 },
-  { label: 'Morning program',   start:  6 },
-  { label: 'Afternoon program', start: 12 },
-  { label: 'Evening program',   start: 18 },
+  { label: 'Night program',     start:  0, time: '00:00' },
+  { label: 'Morning program',   start:  6, time: '06:00' },
+  { label: 'Afternoon program', start: 12, time: '12:00' },
+  { label: 'Evening program',   start: 18, time: '18:00' },
 ];
 
 function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
@@ -6451,16 +6469,16 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
 
   let html = '';
 
-  SP_BLOCKS.forEach(({ label, start }) => {
-    const end          = start + 6;
-    const isBlockLive  = isToday && nowMin >= start * 60 && nowMin < end * 60;
-    const liveHtml     = isBlockLive
-      ? `<span class="live-status"><span class="live-dot"></span>Live</span>`
-      : '';
+  SP_BLOCKS.forEach(({ label, start, time }) => {
+    const end         = start + 6;
+    const isBlockLive = isToday && nowMin >= start * 60 && nowMin < end * 60;
+    const liveHtml    = isBlockLive
+      ? `<span class="live-status"><span class="live-dot"></span>${label}</span>`
+      : label;
 
-    html += `<div class="sp-block-hdr">${liveHtml}${label}</div>`;
+    html += `<div class="sp-block-hdr"><div class="sp-block-hdr-left">${liveHtml}</div><span class="sp-block-time">${time}</span></div>`;
 
-    /* shows whose host is 'Resident' and whose time falls within [start, end) */
+    /* Resident shows whose time falls within [start, end) */
     const blockShows = allSlots.filter(s => {
       if (s.host !== 'Resident') return false;
       const h = parseInt(s.time.split(':')[0], 10);
@@ -6468,22 +6486,24 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
     });
 
     blockShows.forEach(slot => {
-      const showData  = SHOW_DATA && SHOW_DATA[slot.title];
-      const safeTitle = slot.title.replace(/'/g, "\\'");
-      const artistName = showData && showData.host !== 'Resident' ? showData.host : null;
-      const alertKey  = `${slot.day}|${slot.time}|${slot.title}`;
-      const isAlerted = getAlerts().has(alertKey);
-      const dayIdx    = _dowToIdx(dayIndex);
-      const onclk     = showData ? `${closeFn};openShow('${safeTitle}')` : '';
+      /* Look up show by resident name: find show where showData.host === slot.title */
+      const showEntry  = SHOW_DATA && Object.entries(SHOW_DATA).find(([, d]) => d.host === slot.title);
+      const showTitle  = showEntry ? showEntry[0] : slot.title;
+      const safeTitle  = showTitle.replace(/'/g, "\\'");
+      const artistName = slot.title; /* resident name is always the artist */
+      const alertKey   = `${slot.day}|${slot.time}|${slot.title}`;
+      const isAlerted  = getAlerts().has(alertKey);
+      const dayIdx     = _dowToIdx(dayIndex);
+      const onclk      = showEntry ? `${closeFn};openShow('${safeTitle}')` : '';
       html += `
         <div class="sp-show-row" role="button" tabindex="0" onclick="${onclk}">
           <div class="sp-show-info">
-            <div class="sp-show-name">${slot.title}</div>
-            ${artistName ? `<div class="sp-show-artist">${artistName}</div>` : ''}
+            <div class="sp-show-name">${showTitle}</div>
+            <div class="sp-show-artist">${artistName}</div>
           </div>
           <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
             title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
-            onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeTitle}')">
+            onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${slot.title.replace(/'/g,"\\'")}')">
             <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
           </button>
         </div>`;
