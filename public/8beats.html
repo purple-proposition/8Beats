@@ -936,6 +936,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .tag { font-size: var(--text-sm); font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); border: 1px solid var(--border-default); border-radius: var(--space-2); height: 32px; display: inline-flex; align-items: center; padding: 0 var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
 .tag:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
+.tag.tag-active { border-color: var(--text-secondary); background: var(--text-secondary); color: var(--surface-page); }
+.tag.tag-active:hover { border-color: var(--text-primary); background: var(--text-primary); color: var(--surface-page); }
 
 /* ── Panels ── */
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
@@ -4395,16 +4397,9 @@ function hideGenreTooltip() {
 function makeFilterChip(label, isActive, onClick, showTooltip) {
   const btn = document.createElement('button');
   btn.textContent = label;
-  const isMobile = window.innerWidth <= 768;
-  const base = `font-family:var(--font);font-size:var(--text-sm);font-weight:400;letter-spacing:.4px;text-transform:uppercase;height:32px;display:inline-flex;align-items:center;padding:0 var(--space-3);border-radius:var(--space-2);cursor:pointer;transition:color var(--dur-short) var(--ease-hover),border-color var(--dur-short) var(--ease-hover),background var(--dur-short) var(--ease-hover);`;
-  const activeStyle   = base + `border:1px solid var(--text-secondary);background:var(--text-secondary);color:var(--surface-page);`;
-  const inactiveStyle = base + `border:1px solid var(--border-default);background:transparent;color:var(--text-tertiary);`;
-  btn.style.cssText = isActive ? activeStyle : inactiveStyle;
+  btn.classList.add('tag');
+  if (isActive) btn.classList.add('tag-active');
   btn.addEventListener('click', onClick);
-  if (!isActive) {
-    btn.addEventListener('mouseenter', () => { btn.style.background='var(--text-secondary)'; btn.style.borderColor='var(--text-secondary)'; btn.style.color='var(--surface-page)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.background='transparent'; btn.style.borderColor='var(--border-default)'; btn.style.color='var(--text-tertiary)'; });
-  }
   if (showTooltip) {
     btn.addEventListener('mouseenter', () => {
       clearTimeout(tooltipTimer);
