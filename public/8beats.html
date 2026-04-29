@@ -1256,7 +1256,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-game { font-size: var(--text-base); line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
-.spotify-btn { width: 40px; height: 40px; border-radius: var(--radius-control); background: transparent; border: 1px solid var(--border-btn); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); }
+.spotify-btn { width: 32px; height: 32px; border-radius: var(--radius-control); background: transparent; border: 1px solid var(--border-btn); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); }
 .spotify-btn svg { width: 16px; height: 16px; fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
 .spotify-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); }
 .spotify-btn:hover svg { fill: var(--text-primary); }
@@ -1264,7 +1264,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .divider { width: 1px; height: 16px; background: var(--border-default); flex-shrink: 0; }
 
-.ctrl-btn { background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; color: var(--icon-secondary); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); }
+.ctrl-btn { background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; color: var(--icon-secondary); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); }
 .ctrl-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; transition: stroke var(--dur-micro) var(--ease-hover); }
 .ctrl-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 .ctrl-btn:active { transform: scale(0.92); }
@@ -1284,7 +1284,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   background: transparent;
   backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
   border: 1px solid var(--border-btn); border-radius: var(--radius-control);
-  width: 40px; height: 40px;
+  width: 32px; height: 32px;
   transition: height var(--dur-medium) var(--ease-standard),
               background var(--dur-short) var(--ease-hover),
               border-color var(--dur-short) var(--ease-hover),
@@ -1295,7 +1295,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .vol-popup:not(.vol-open):hover { background: var(--surface-btn-hover); border-color: var(--border-hover); }
 .vol-popup:not(.vol-open):active { transform: scale(0.92); }
 .vol-popup.vol-open {
-  height: 154px; border-radius: var(--radius-control);
+  height: 146px; border-radius: var(--radius-control);
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
@@ -1329,7 +1329,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .vol-track { width: 4px; height: 88px; background: var(--border-hover); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }
 .vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
 .vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
-.vol-btn-face { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: var(--icon-secondary); padding: 0; transition: color var(--dur-micro) var(--ease-hover); }
+.vol-btn-face { width: 32px; height: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: var(--icon-secondary); padding: 0; transition: color var(--dur-micro) var(--ease-hover); }
 .vol-btn-face:hover { color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face { color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face:hover { color: var(--text-primary); }
@@ -5405,7 +5405,7 @@ function _updatePlayerLayout() {
 function openVol() {
   /* vol-popup is position:absolute inside vol-wrap — no pixel coords needed, just direction */
   const r   = volWrap.getBoundingClientRect();
-  const dir = resolvePopupDir(r, 154);
+  const dir = resolvePopupDir(r, 146);
   volPopup.dataset.dir = dir;
   if (dir === 'above') {
     volPopup.style.bottom = '0';
