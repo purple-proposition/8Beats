@@ -1984,25 +1984,30 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   color: var(--text-secondary);
 }
 
-/* ── Schedule block header (Night / Morning / Afternoon / Evening) ── */
+/* ── Schedule flat list — shared time column ── */
+.sp-block-time {
+  font-size: var(--text-sm); color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums; flex-shrink: 0;
+  width: 52px;
+}
+
+/* ── Block header row (e.g. "06:00  Morning program") ── */
 .sp-block-hdr {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-4) var(--space-5) var(--space-2);
+  display: flex; align-items: center;
+  padding: var(--space-3) var(--space-5);
   font-size: var(--text-sm); font-weight: 400; color: var(--text-secondary);
 }
-.sp-block-hdr:not(:first-child) { border-top: 1px solid var(--border-subtle); padding-top: var(--space-5); margin-top: var(--space-3); }
-.sp-block-hdr-left { display: flex; align-items: center; gap: 12px; }
-.sp-block-time { font-size: var(--text-sm); color: var(--text-tertiary); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.sp-block-hdr:not(:first-child) { margin-top: var(--space-4); }
 
-/* ── Show row under a block ── */
+/* ── Show row ── */
 .sp-show-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-2) var(--space-5);
-  cursor: pointer; gap: var(--space-4);
+  display: flex; align-items: center;
+  padding: var(--space-3) var(--space-5);
+  cursor: pointer;
   transition: background var(--dur-micro) var(--ease-hover);
 }
 .sp-show-row:hover { background: var(--surface-btn-hover); }
-.sp-show-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.sp-show-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; margin-right: var(--space-3); }
 .sp-show-name   { font-size: var(--text-sm); color: var(--text-primary);   font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sp-show-artist { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sp-new {
@@ -6228,41 +6233,181 @@ if (location.hash) {
 /* ── Schedule page ── */
 // Weekly program — 4 fixed 6h slots per day starting from midnight
 const SCHEDULE_SHOWS = [
-  // ── Monday ──────────────────────────────────────────────────────────────
-  { day: 0, time: '01:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Downtempo','Folk'] },
-  { day: 0, time: '08:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Acoustic','Ambient'] },
-  { day: 0, time: '14:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
-  { day: 0, time: '19:00', title: 'Submerse',           host: 'Resident',  genres: ['Electronic','Ambient'] },
-  // ── Tuesday ─────────────────────────────────────────────────────────────
-  { day: 1, time: '02:00', title: 'JamesonEmpire',      host: 'Resident',  genres: ['Hip-Hop','Funk'] },
-  { day: 1, time: '08:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Electronic'] },
-  { day: 1, time: '15:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Downtempo','Electronic'] },
-  { day: 1, time: '20:00', title: '8Beats Sound Team',  host: 'Resident',  genres: ['Electronic','Experimental'] },
-  // ── Wednesday ───────────────────────────────────────────────────────────
-  { day: 2, time: '01:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Ambient','Orchestral'] },
-  { day: 2, time: '09:00', title: 'Submerse',           host: 'Resident',  genres: ['Drum & Bass','Electronic'] },
-  { day: 2, time: '14:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','OST'] },
-  { day: 2, time: '19:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Downtempo','Drum & Bass'] },
-  // ── Thursday ────────────────────────────────────────────────────────────
-  { day: 3, time: '00:00', title: 'JamesonEmpire',      host: 'Resident',  genres: ['Hip-Hop','Funk'] },
-  { day: 3, time: '07:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Darksynth'] },
-  { day: 3, time: '13:00', title: '8Beats Sound Team',  host: 'Resident',  genres: ['Electronic','Experimental'] },
-  { day: 3, time: '20:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Ambient','Downtempo'] },
-  // ── Friday ──────────────────────────────────────────────────────────────
-  { day: 4, time: '02:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Folk','Acoustic'] },
-  { day: 4, time: '08:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Orchestral','Ambient'] },
-  { day: 4, time: '13:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Downtempo','Electronic'] },
-  { day: 4, time: '19:00', title: 'Submerse',           host: 'Resident',  genres: ['Drum & Bass','Electronic'] },
-  // ── Saturday ────────────────────────────────────────────────────────────
-  { day: 5, time: '01:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Chillout'] },
-  { day: 5, time: '08:00', title: 'JamesonEmpire',      host: 'Resident',  genres: ['Hip-Hop','Soul'] },
-  { day: 5, time: '14:00', title: '8Beats Sound Team',  host: 'Resident',  genres: ['Electronic','Experimental'] },
-  { day: 5, time: '20:00', title: 'Submerse',           host: 'Resident',  genres: ['Drum & Bass','Electronic'] },
-  // ── Sunday ──────────────────────────────────────────────────────────────
-  { day: 6, time: '02:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Retro'] },
-  { day: 6, time: '09:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Ambient','Electronic'] },
-  { day: 6, time: '15:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Downtempo','Folk'] },
-  { day: 6, time: '19:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
+  // ── Monday (0) ───────────────────────────────────────────────────────────
+  // Night
+  { day:0, time:'00:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:0, time:'01:15', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:0, time:'02:00', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:0, time:'03:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:0, time:'04:45', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  // Morning
+  { day:0, time:'06:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:0, time:'07:45', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:0, time:'08:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:0, time:'09:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:0, time:'10:45', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  // Afternoon
+  { day:0, time:'12:30', title:'Submerse',           host:'Resident', genres:['Electronic','Ambient'] },
+  { day:0, time:'13:45', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:0, time:'14:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:0, time:'15:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:0, time:'16:45', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  // Evening
+  { day:0, time:'18:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:0, time:'19:45', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:0, time:'20:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:0, time:'21:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:0, time:'22:45', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  // ── Tuesday (1) ──────────────────────────────────────────────────────────
+  // Night
+  { day:1, time:'00:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:1, time:'01:15', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:1, time:'02:00', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:1, time:'03:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:1, time:'04:45', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  // Morning
+  { day:1, time:'06:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:1, time:'07:45', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:1, time:'08:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:1, time:'09:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:1, time:'10:45', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  // Afternoon
+  { day:1, time:'12:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:1, time:'13:45', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:1, time:'14:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:1, time:'15:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:1, time:'16:45', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  // Evening
+  { day:1, time:'18:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:1, time:'19:45', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:1, time:'20:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:1, time:'21:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:1, time:'22:45', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  // ── Wednesday (2) ────────────────────────────────────────────────────────
+  // Night
+  { day:2, time:'00:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:2, time:'01:15', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:2, time:'02:00', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:2, time:'03:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:2, time:'04:45', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  // Morning
+  { day:2, time:'06:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:2, time:'07:45', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:2, time:'08:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:2, time:'09:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:2, time:'10:45', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  // Afternoon
+  { day:2, time:'12:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:2, time:'13:45', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:2, time:'14:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:2, time:'15:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:2, time:'16:45', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  // Evening
+  { day:2, time:'18:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:2, time:'19:45', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:2, time:'20:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:2, time:'21:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:2, time:'22:45', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  // ── Thursday (3) ─────────────────────────────────────────────────────────
+  // Night
+  { day:3, time:'00:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:3, time:'01:15', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:3, time:'02:00', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:3, time:'03:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:3, time:'04:45', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  // Morning
+  { day:3, time:'06:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:3, time:'07:45', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:3, time:'08:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:3, time:'09:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:3, time:'10:45', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  // Afternoon
+  { day:3, time:'12:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:3, time:'13:45', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:3, time:'14:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:3, time:'15:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:3, time:'16:45', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  // Evening
+  { day:3, time:'18:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:3, time:'19:45', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:3, time:'20:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:3, time:'21:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:3, time:'22:45', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  // ── Friday (4) ───────────────────────────────────────────────────────────
+  // Night
+  { day:4, time:'00:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:4, time:'01:15', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:4, time:'02:00', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:4, time:'03:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:4, time:'04:45', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  // Morning
+  { day:4, time:'06:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:4, time:'07:45', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:4, time:'08:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:4, time:'09:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:4, time:'10:45', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  // Afternoon
+  { day:4, time:'12:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:4, time:'13:45', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:4, time:'14:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:4, time:'15:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:4, time:'16:45', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  // Evening
+  { day:4, time:'18:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:4, time:'19:45', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:4, time:'20:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:4, time:'21:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:4, time:'22:45', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  // ── Saturday (5) ─────────────────────────────────────────────────────────
+  // Night
+  { day:5, time:'00:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:5, time:'01:15', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:5, time:'02:00', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:5, time:'03:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:5, time:'04:45', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  // Morning
+  { day:5, time:'06:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:5, time:'07:45', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:5, time:'08:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:5, time:'09:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:5, time:'10:45', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  // Afternoon
+  { day:5, time:'12:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:5, time:'13:45', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:5, time:'14:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:5, time:'15:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:5, time:'16:45', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  // Evening
+  { day:5, time:'18:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:5, time:'19:45', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:5, time:'20:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:5, time:'21:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:5, time:'22:45', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  // ── Sunday (6) ───────────────────────────────────────────────────────────
+  // Night
+  { day:6, time:'00:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:6, time:'01:15', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:6, time:'02:00', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:6, time:'03:30', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:6, time:'04:45', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  // Morning
+  { day:6, time:'06:30', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
+  { day:6, time:'07:45', title:'Koji & Friends',     host:'Resident', genres:['Chiptune','Orchestral'] },
+  { day:6, time:'08:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:6, time:'09:30', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:6, time:'10:45', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  // Afternoon
+  { day:6, time:'12:30', title:'Sakura Records',     host:'Resident', genres:['Acoustic','Ambient'] },
+  { day:6, time:'13:45', title:'Purple Proposition', host:'Resident', genres:['Downtempo','Electronic'] },
+  { day:6, time:'14:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:6, time:'15:30', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:6, time:'16:45', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  // Evening
+  { day:6, time:'18:30', title:'Submerse',           host:'Resident', genres:['Drum & Bass','Electronic'] },
+  { day:6, time:'19:45', title:'ElFamosoDemon',      host:'Resident', genres:['Downtempo','Folk'] },
+  { day:6, time:'20:30', title:'JamesonEmpire',      host:'Resident', genres:['Hip-Hop','Funk'] },
+  { day:6, time:'21:30', title:'8Beats Sound Team',  host:'Resident', genres:['Electronic','Experimental'] },
+  { day:6, time:'22:45', title:'Neon Waves',         host:'Resident', genres:['Synthwave','Electronic'] },
 ];
 
 const DAY_NAMES = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
@@ -6472,11 +6617,11 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
   SP_BLOCKS.forEach(({ label, start, time }) => {
     const end         = start + 6;
     const isBlockLive = isToday && nowMin >= start * 60 && nowMin < end * 60;
-    const liveHtml    = isBlockLive
+    const labelHtml   = isBlockLive
       ? `<span class="live-status"><span class="live-dot"></span>${label}</span>`
       : label;
 
-    html += `<div class="sp-block-hdr"><div class="sp-block-hdr-left">${liveHtml}</div><span class="sp-block-time">${time}</span></div>`;
+    html += `<div class="sp-block-hdr"><span class="sp-block-time">${time}</span>${labelHtml}</div>`;
 
     /* Resident shows whose time falls within [start, end) */
     const blockShows = allSlots.filter(s => {
@@ -6490,13 +6635,14 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
       const showEntry  = SHOW_DATA && Object.entries(SHOW_DATA).find(([, d]) => d.host === slot.title);
       const showTitle  = showEntry ? showEntry[0] : slot.title;
       const safeTitle  = showTitle.replace(/'/g, "\\'");
-      const artistName = slot.title; /* resident name is always the artist */
+      const artistName = slot.title;
       const alertKey   = `${slot.day}|${slot.time}|${slot.title}`;
       const isAlerted  = getAlerts().has(alertKey);
       const dayIdx     = _dowToIdx(dayIndex);
       const onclk      = showEntry ? `${closeFn};openShow('${safeTitle}')` : '';
       html += `
         <div class="sp-show-row" role="button" tabindex="0" onclick="${onclk}">
+          <span class="sp-block-time">${slot.time}</span>
           <div class="sp-show-info">
             <div class="sp-show-name">${showTitle}</div>
             <div class="sp-show-artist">${artistName}</div>
