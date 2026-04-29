@@ -786,7 +786,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 
 
 /* Social buttons in drawer */
-.soc-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0; }
+.soc-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0; }
 .soc-btn svg { width: 14px; height: 14px; fill: var(--icon-secondary); transition: fill var(--dur-short) var(--ease-hover); }
 .soc-btn:hover svg { fill: var(--text-primary); }
 
@@ -823,7 +823,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 /* ── Buttons ── */
 .btn {
   display: inline-flex; align-items: center; gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
+  height: 32px; padding: 0 var(--space-4);
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   letter-spacing: -.1px;
   border-radius: var(--radius-sm); cursor: pointer;
@@ -955,7 +955,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel p { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.7; letter-spacing: -0.1px; position: relative; z-index: var(--z-base); }
 .panel p strong { color: var(--text-primary); font-weight: 500; }
 
-.panel-btn { display: flex; align-items: center; justify-content: center; gap: var(--space-2); width: 100%; padding: var(--space-3) var(--space-4); font-family: var(--font); font-size: var(--text-base); font-weight: 500; letter-spacing: -.1px; color: var(--action-primary-fg); background: var(--action-primary-bg); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity var(--dur-short) var(--ease-hover); position: relative; z-index: var(--z-base); }
+.panel-btn { display: flex; align-items: center; justify-content: center; gap: var(--space-2); width: 100%; height: 32px; padding: 0 var(--space-4); font-family: var(--font); font-size: var(--text-base); font-weight: 500; letter-spacing: -.1px; color: var(--action-primary-fg); background: var(--action-primary-bg); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity var(--dur-short) var(--ease-hover); position: relative; z-index: var(--z-base); }
 .panel-btn:hover { opacity: .84; }
 .panel-btn svg { width: 14px; height: 14px; stroke: var(--action-primary-fg); fill: none; display: block; flex-shrink: 0; }
 
@@ -1141,7 +1141,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* font-size stays at 14px (--text-base) for both track-name and track-game — same as base */
 .playlist.tracklist .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 .playlist.tracklist .track-stream-btn {
-  width: 28px; height: 28px; flex-shrink: 0;
+  width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
   cursor: pointer; color: var(--icon-secondary);
@@ -1150,7 +1150,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .playlist.tracklist .track-stream-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
 .playlist.tracklist .track-stream-btn svg { width: 12px; height: 12px; fill: currentColor; stroke: none; display: block; }
 .playlist.tracklist .track-ts-btn {
-  height: 28px; padding: 0 var(--space-2);
+  height: 32px; padding: 0 var(--space-2);
   display: flex; align-items: center; justify-content: center;
   background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
   cursor: pointer; font-size: var(--text-xs); letter-spacing: .04em;
@@ -1798,7 +1798,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .explore-tab {
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   color: var(--text-tertiary); background: none; border: none;
-  padding: var(--space-5) var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover);
+  height: 32px; padding: 0 var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover);
   display: flex; align-items: center; gap: var(--space-2);
 }
 .explore-tab:hover { color: var(--text-primary); }
@@ -1913,7 +1913,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .sp-day-tab {
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   color: var(--text-tertiary); background: none; border: none;
-  padding: var(--sp-tab-pad-y) var(--space-2);
+  height: 32px; padding: 0 var(--space-2);
   cursor: pointer; white-space: nowrap; flex-shrink: 0;
   transition: color var(--dur-micro) var(--ease-hover);
 }
@@ -2210,7 +2210,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .support-plan-features li.unavailable svg { stroke: var(--text-disabled); opacity: .4; }
 
 .support-plan-cta {
-  width: 100%; padding: var(--space-3) 0; border-radius: var(--radius-sm);
+  width: 100%; height: 32px; padding: 0; border-radius: var(--radius-sm);
   font-size: var(--text-base); font-weight: 600; font-family: var(--font);
   cursor: pointer; border: 1px solid var(--border-default);
   background: var(--surface-hover); color: var(--text-primary);
@@ -2612,7 +2612,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-btn-ghost { padding-left: var(--space-4); padding-right: var(--space-4); }
 /* Show page — secondary icon-only btn */
 .show-btn-icon {
-  width: 44px; height: 44px; border-radius: var(--radius-control);
+  width: 32px; height: 32px; border-radius: var(--radius-control);
   background: transparent; border: 1px solid var(--border-btn); color: var(--icon-secondary);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; flex-shrink: 0;
