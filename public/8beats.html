@@ -1916,13 +1916,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .sp-day-bar::-webkit-scrollbar { display: none; }
 
-/* Inset separator below day bar — identical to explore-section-border::after */
-.sp-day-bar::after {
-  content: '';
-  position: absolute; bottom: 0;
-  left: var(--space-5); right: var(--space-5);
-  height: 1px; background: var(--border-default);
-}
 
 /* ── Calendar header (schedule & explore-schedule) ── */
 .sp-cal-header {
@@ -1933,7 +1926,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Separator line */
 .sp-cal-header::after {
   content: ''; position: absolute; bottom: 0;
-  left: 0; right: 0; height: 1px; background: var(--border-default);
+  left: var(--space-5); right: var(--space-5); height: 1px; background: var(--border-default);
 }
 .sp-cal-label {
   display: flex; flex-direction: column; justify-content: center;
@@ -1971,41 +1964,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .sp-day-tab:hover       { color: var(--text-primary); }
 .sp-day-tab.active      { color: var(--text-primary); cursor: default; }
 
-/* Slot rows — identical spec to .explore-show-row */
-.sp-slot-row {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-5);
-  padding: var(--space-3) var(--space-5);
-  cursor: pointer; position: relative;
-  transition: background var(--dur-micro) var(--ease-hover);
-}
-.sp-slot-row:hover { background: var(--surface-btn-hover); }
-
-/* Time column — fixed-width left anchor, tabular */
-.sp-slot-time {
-  width: 40px; flex-shrink: 0; text-align: center;
-  font-size: var(--text-sm); font-weight: 400;
-  color: var(--text-secondary);
-  letter-spacing: -.01em;
-  font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
-}
-
-/* Slot content — same hierarchy as explore-show-row internals */
-.sp-slot-info {
-  display: flex; flex-direction: column; gap: var(--space-1);
-  min-width: 0; flex: 1;
-}
-.sp-slot-name {
-  font-size: var(--text-base); color: var(--text-primary);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.sp-slot-meta {
-  font-size: var(--text-sm); color: var(--text-secondary);
-  display: flex; align-items: center; gap: var(--space-5);
-}
-.sp-slot-right {
-  display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0;
-}
 /* Day section header for continuous-scroll schedule */
 .sp-day-section { border-bottom: 1px solid var(--border-subtle); }
 .sp-day-section:last-child { border-bottom: none; }
@@ -2017,11 +1975,36 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
   z-index: 1; border-bottom: 1px solid var(--border-subtle);
 }
-.sp-live {
-  display: flex; align-items: center; gap: var(--space-1);
-  font-size: var(--text-xs); color: var(--accent); font-weight: 500;
-  letter-spacing: .04em; text-transform: uppercase;
+
+/* ── Live status — reusable component ── */
+/* Used in: schedule block headers, show rows, player bar */
+.live-status {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  font-size: var(--text-xs); font-weight: 400;
+  color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: .08em;
 }
+
+/* ── Schedule block header (Night / Morning / Afternoon / Evening) ── */
+.sp-block-hdr {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-4) var(--space-5) var(--space-2);
+  font-size: var(--text-xs); font-weight: 400; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.sp-block-hdr:not(:first-child) { margin-top: var(--space-2); }
+
+/* ── Show row under a block ── */
+.sp-show-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer; gap: var(--space-4);
+  transition: background var(--dur-micro) var(--ease-hover);
+}
+.sp-show-row:hover { background: var(--surface-btn-hover); }
+.sp-show-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.sp-show-name   { font-size: var(--text-sm); color: var(--text-primary);   font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-show-artist { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sp-new {
   font-size: var(--text-xs); font-weight: 600; letter-spacing: .06em;
   text-transform: uppercase; color: var(--text-tertiary);
@@ -3982,8 +3965,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         <button class="play-btn" id="play-btn" aria-label="Play / Pause"></button>
         <div class="player-info">
           <div class="player-info-top">
-            <span class="live-dot"></span>
-            <span class="label" id="player-program-label">Evening Program</span>
+            <span class="live-status"><span class="live-dot"></span><span class="label" id="player-program-label">Evening Program</span></span>
           </div>
           <div class="player-title-wrap">
             <span class="player-title" id="player-title">Mark Mothersbaugh & Josh Mancell – Tiny Tiger</span>
@@ -4553,55 +4535,11 @@ function _renderExploreScheduleDaySlots(ri) {
   const todayDow = (today.getDay() + 6) % 7;
   const nowMin   = today.getHours() * 60 + today.getMinutes();
   const dayIndex = (todayDow + ri) % 7;
-  const d        = new Date(today); d.setDate(today.getDate() + ri);
   const isToday  = ri === 0;
-  const dateStr  = d.getDate() + ' ' + SHORT_MONTHS[d.getMonth()];
-  const dayLabel = isToday ? 'Today' : SP_DAY_SHORT[dayIndex];
-  const daySlots = (SCHEDULE_SHOWS || []).filter(s => s.day === dayIndex).sort((a, b) => a.time.localeCompare(b.time));
-
-  let html = '';
-  if (daySlots.length === 0) {
-    html += `<div class="sp-empty" style="padding:var(--space-3) var(--space-5);">No shows scheduled</div>`;
-  } else {
-    html += daySlots.map(slot => {
-      const showData  = SHOW_DATA && SHOW_DATA[slot.title];
-      const [sh, sm]  = slot.time.split(':').map(Number);
-      const isLive    = isToday && nowMin >= sh * 60 + sm && nowMin < sh * 60 + sm + 360;
-      const alertKey  = `${slot.day}|${slot.time}|${slot.title}`;
-      const isAlerted = getAlerts().has(alertKey);
-      const safeTitle = slot.title.replace(/'/g, "\\'");
-      const dayIdx    = _dowToIdx(dayIndex);
-      let showTitle = slot.title, artistName = null;
-      if (showData) { artistName = showData.host !== 'Resident' ? showData.host : null; }
-      else if (slot.host === 'Resident') {
-        const entry = Object.entries(SHOW_DATA || {}).find(([, d]) => d.host === slot.title);
-        if (entry) { showTitle = entry[0]; artistName = slot.title; }
-      }
-      const genreTags = (slot.genres || []).slice(0, 2).map(g => `<span class="chip">${g}</span>`).join('');
-      return `
-        <div class="sp-slot-row" role="button" tabindex="0"
-          onclick="${showData ? `closeExplore();openShow('${safeTitle}')` : ''}">
-          <div class="sp-slot-time">${slot.time}</div>
-          <div class="sp-slot-info">
-            <div style="display:flex;align-items:center;gap:var(--space-5);">
-              <div class="sp-slot-name explore-show-title">${showTitle}</div>
-              ${isLive ? `<span class="sp-live"><span class="live-dot"></span>Live</span>` : ''}
-            </div>
-            ${artistName ? `<div class="sp-slot-meta"><span>${artistName}</span></div>` : ''}
-          </div>
-          <div class="sp-slot-right">
-            ${genreTags}
-            <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
-              title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
-              onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeTitle}')">
-              <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
-            </button>
-          </div>
-        </div>`;
-    }).join('');
-  }
-  slotsEl.innerHTML = html;
+  slotsEl.innerHTML = _buildScheduleHTML(dayIndex, isToday, nowMin, 'closeExplore()');
   lucide.createIcons({ nodes: [slotsEl] });
+  const content = document.getElementById('explore-content');
+  if (content) content.scrollTop = 0;
 }
 
 function selectExploreScheduleDay(ri) {
@@ -6291,47 +6229,22 @@ if (location.hash) {
 // Weekly program — 4 fixed 6h slots per day starting from midnight
 const SCHEDULE_SHOWS = [
   // Monday
-  { day: 0, time: '00:00', title: 'Night program',              genres: ['Ambient','Downtempo'] },
-  { day: 0, time: '06:00', title: 'Morning program',    genres: ['Ambient','Lounge'] },
   { day: 0, time: '12:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
   { day: 0, time: '18:00', title: 'Submerse',           host: 'Resident',  genres: ['Electronic','Ambient'] },
-  { day: 0, time: '21:00', title: 'Late program',               genres: ['Jazz','Electronic'] },
   // Tuesday
-  { day: 1, time: '00:00', title: 'Night program',              genres: ['Techno','Acid'] },
   { day: 1, time: '06:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Electronic'] },
-  { day: 1, time: '12:00', title: 'Afternoon program',          genres: ['Chiptune','Orchestral'] },
-  { day: 1, time: '18:00', title: 'Evening program',            genres: ['Hip-Hop','Funk'] },
-  { day: 1, time: '21:00', title: 'JamesonEmpire',      host: 'Resident',  genres: ['Hip-Hop','Funk'] },
   // Wednesday
-  { day: 2, time: '00:00', title: 'Night program',              genres: ['Electronic','Ambient'] },
-  { day: 2, time: '06:00', title: 'Morning program',    genres: ['Lounge','Ambient'] },
-  { day: 2, time: '12:00', title: 'Afternoon program',          genres: ['Funk','Soul'] },
   { day: 2, time: '18:00', title: 'ElFamosoDemon',      host: 'Resident',  genres: ['Downtempo','Drum & Bass'] },
-  { day: 2, time: '21:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Acoustic','Ambient'] },
   // Thursday
   { day: 3, time: '00:00', title: 'JamesonEmpire',      host: 'Resident',  genres: ['Hip-Hop','Funk'] },
-  { day: 3, time: '06:00', title: 'Morning program',    genres: ['Folk','Lounge'] },
-  { day: 3, time: '12:00', title: 'Afternoon program',          genres: ['Acid','Techno'] },
-  { day: 3, time: '18:00', title: 'Evening program',            genres: ['Jazz','Soul'] },
-  { day: 3, time: '21:00', title: 'Neon Waves',         host: 'Resident',  genres: ['Synthwave','Electronic'] },
   // Friday
-  { day: 4, time: '00:00', title: 'Night program',              genres: ['Ambient','New Age'] },
   { day: 4, time: '06:00', title: 'Sakura Records',     host: 'Resident',  genres: ['Orchestral','Ambient'] },
   { day: 4, time: '12:00', title: 'Purple Proposition', host: 'Resident',  genres: ['Downtempo','Electronic'] },
-  { day: 4, time: '18:00', title: 'Evening program',            genres: ['Deep House','Electronic'] },
-  { day: 4, time: '21:00', title: 'Late program',               genres: ['Deep House','Techno'] },
   // Saturday
-  { day: 5, time: '00:00', title: 'Night program',              genres: ['Chiptune','Ambient'] },
-  { day: 5, time: '06:00', title: 'Morning program',    genres: ['Synthwave','Lounge'] },
   { day: 5, time: '12:00', title: '8Beats Sound Team',  host: 'Resident',  genres: ['Electronic','Experimental'] },
   { day: 5, time: '18:00', title: 'Submerse',           host: 'Resident',  genres: ['Drum & Bass','Electronic'] },
-  { day: 5, time: '21:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
   // Sunday
-  { day: 6, time: '00:00', title: 'Night program',              genres: ['Hip-Hop','Chill'] },
-  { day: 6, time: '06:00', title: 'Morning program',    genres: ['Downtempo','Lounge'] },
-  { day: 6, time: '12:00', title: 'Afternoon program',          genres: ['Ambient','Electronic'] },
   { day: 6, time: '18:00', title: 'Koji & Friends',     host: 'Resident',  genres: ['Chiptune','Orchestral'] },
-  { day: 6, time: '21:00', title: 'Late program',               genres: ['Ambient','Drone'] },
 ];
 
 const DAY_NAMES = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
@@ -6523,6 +6436,63 @@ function _dayTabLabel(i, todayDow, today) {
   return `${prefix}, ${d.getDate()} ${SHORT_MONTHS[d.getMonth()]}.`;
 }
 
+/* 4 fixed 6h blocks — always rendered even if no shows in window */
+const SP_BLOCKS = [
+  { label: 'Night program',     start:  0 },
+  { label: 'Morning program',   start:  6 },
+  { label: 'Afternoon program', start: 12 },
+  { label: 'Evening program',   start: 18 },
+];
+
+function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
+  const allSlots = (SCHEDULE_SHOWS || [])
+    .filter(s => s.day === dayIndex)
+    .sort((a, b) => a.time.localeCompare(b.time));
+
+  let html = '';
+
+  SP_BLOCKS.forEach(({ label, start }) => {
+    const end          = start + 6;
+    const isBlockLive  = isToday && nowMin >= start * 60 && nowMin < end * 60;
+    const liveHtml     = isBlockLive
+      ? `<span class="live-status"><span class="live-dot"></span>Live</span>`
+      : '';
+
+    html += `<div class="sp-block-hdr">${liveHtml}${label}</div>`;
+
+    /* shows whose host is 'Resident' and whose time falls within [start, end) */
+    const blockShows = allSlots.filter(s => {
+      if (s.host !== 'Resident') return false;
+      const h = parseInt(s.time.split(':')[0], 10);
+      return h >= start && h < end;
+    });
+
+    blockShows.forEach(slot => {
+      const showData  = SHOW_DATA && SHOW_DATA[slot.title];
+      const safeTitle = slot.title.replace(/'/g, "\\'");
+      const artistName = showData && showData.host !== 'Resident' ? showData.host : null;
+      const alertKey  = `${slot.day}|${slot.time}|${slot.title}`;
+      const isAlerted = getAlerts().has(alertKey);
+      const dayIdx    = _dowToIdx(dayIndex);
+      const onclk     = showData ? `${closeFn};openShow('${safeTitle}')` : '';
+      html += `
+        <div class="sp-show-row" role="button" tabindex="0" onclick="${onclk}">
+          <div class="sp-show-info">
+            <div class="sp-show-name">${slot.title}</div>
+            ${artistName ? `<div class="sp-show-artist">${artistName}</div>` : ''}
+          </div>
+          <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
+            title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
+            onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeTitle}')">
+            <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
+          </button>
+        </div>`;
+    });
+  });
+
+  return html;
+}
+
 function _renderSchedulePanelDaySlots(ri) {
   const body = document.getElementById('schedule-panel-body');
   if (!body) return;
@@ -6530,54 +6500,8 @@ function _renderSchedulePanelDaySlots(ri) {
   const todayDow = (today.getDay() + 6) % 7;
   const nowMin   = today.getHours() * 60 + today.getMinutes();
   const dayIndex = (todayDow + ri) % 7;
-  const d        = new Date(today); d.setDate(today.getDate() + ri);
   const isToday  = ri === 0;
-  const dateStr  = d.getDate() + ' ' + SHORT_MONTHS[d.getMonth()];
-  const dayLabel = isToday ? 'Today' : SP_DAY_SHORT[dayIndex];
-  const daySlots = (SCHEDULE_SHOWS || []).filter(s => s.day === dayIndex).sort((a, b) => a.time.localeCompare(b.time));
-
-  let html = '';
-  if (daySlots.length === 0) {
-    html += `<div class="sp-empty" style="padding:var(--space-3) var(--space-5);">No shows scheduled</div>`;
-  } else {
-    html += daySlots.map(slot => {
-      const showData    = SHOW_DATA && SHOW_DATA[slot.title];
-      const [sh, sm]    = slot.time.split(':').map(Number);
-      const isLive      = isToday && nowMin >= sh * 60 + sm && nowMin < sh * 60 + sm + 360;
-      const alertKey    = `${slot.day}|${slot.time}|${slot.title}`;
-      const isAlerted   = getAlerts().has(alertKey);
-      const safeTitle   = slot.title.replace(/'/g, "\\'");
-      const dayIdx      = _dowToIdx(dayIndex);
-      let showTitle = slot.title, artistName = null;
-      if (showData) { artistName = showData.host !== 'Resident' ? showData.host : null; }
-      else if (slot.host === 'Resident') {
-        const entry = Object.entries(SHOW_DATA || {}).find(([, d]) => d.host === slot.title);
-        if (entry) { showTitle = entry[0]; artistName = slot.title; }
-      }
-      const genreTags   = (slot.genres || []).slice(0, 2).map(g => `<span class="chip">${g}</span>`).join('');
-      return `
-        <div class="sp-slot-row" role="button" tabindex="0"
-          onclick="${showData ? `closeSchedulePanel();openShow('${safeTitle}')` : ''}">
-          <div class="sp-slot-time">${slot.time}</div>
-          <div class="sp-slot-info">
-            <div style="display:flex;align-items:center;gap:var(--space-5);">
-              <div class="sp-slot-name explore-show-title">${showTitle}</div>
-              ${isLive ? `<span class="sp-live"><span class="live-dot"></span>Live</span>` : ''}
-            </div>
-            ${artistName ? `<div class="sp-slot-meta"><span>${artistName}</span></div>` : ''}
-          </div>
-          <div class="sp-slot-right">
-            ${genreTags}
-            <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
-              title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
-              onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeTitle}')">
-              <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
-            </button>
-          </div>
-        </div>`;
-    }).join('');
-  }
-  body.innerHTML = html;
+  body.innerHTML = _buildScheduleHTML(dayIndex, isToday, nowMin, 'closeSchedulePanel()');
   body.scrollTop = 0;
   lucide.createIcons({ nodes: [body] });
 }
