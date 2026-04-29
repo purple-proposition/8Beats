@@ -763,13 +763,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   gap: 0; padding: var(--space-3) var(--space-4) var(--space-4);
   position: relative;
 }
-.mno-soc {
-  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-  background: none; border: none; cursor: pointer; padding: 0;
-  flex-shrink: 0;
-}
-.mno-soc svg { width: 18px; height: 18px; fill: var(--text-secondary); display: block; transition: fill var(--dur-micro) var(--ease-hover); }
-.mno-soc:hover svg { fill: var(--text-primary); }
 @media (min-width: 769px) { #mobile-nav-overlay, #mno-backdrop { display: none !important; } }
 
 /* Mobile nav backdrop */
@@ -785,10 +778,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 @media (min-width: 769px) { #nav-backdrop { display: none !important; } }
 
 
-/* Social buttons in drawer */
-.soc-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0; }
-.soc-btn svg { width: 14px; height: 14px; fill: var(--icon-secondary); transition: fill var(--dur-short) var(--ease-hover); }
-.soc-btn:hover svg { fill: var(--text-primary); }
+
 
 .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0; color: var(--text-secondary); }
 .nav-sep-mobile { display: none; }
@@ -820,7 +810,16 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .hero-actions > :first-child { justify-self: end; }
 .hero-actions > :last-child  { justify-self: start; }
 
-/* ── Buttons ── */
+/* ══════════════════════════════════════════
+   DESIGN SYSTEM — BUTTON COMPONENTS
+   ══════════════════════════════════════════
+   Family 1: ActionButton   (.btn)
+   Family 2: IconButton     (.icon-btn)
+   Family 3: Chip           (.chip)
+   Family 4: TimestampButton (.ts-btn)
+   ══════════════════════════════════════════ */
+
+/* ── Family 1: ActionButton (.btn) ── */
 .btn {
   display: inline-flex; align-items: center; gap: var(--space-2);
   height: 32px; padding: 0 var(--space-4);
@@ -934,10 +933,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-meta   { font-size: var(--text-base); color: var(--text-tertiary); }
 .card-tags   { display: none; }
 
-.tag { font-size: var(--text-sm); font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); border-radius: var(--space-2); height: 32px; display: inline-flex; align-items: center; padding: 0 var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
-.tag:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
-.tag.tag-active { border-color: var(--text-secondary); background: var(--text-secondary); color: var(--surface-page); }
-.tag.tag-active:hover { border-color: var(--text-primary); background: var(--text-primary); color: var(--surface-page); }
+/* ── Family 3: Chip (.chip) ── */
+.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); border-radius: var(--space-2); height: 32px; display: inline-flex; align-items: center; padding: 0 var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
+.chip:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
+.chip--active { border-color: var(--text-secondary); background: var(--text-secondary); color: var(--surface-page); }
+.chip--active:hover { border-color: var(--text-primary); background: var(--text-primary); color: var(--surface-page); }
 
 /* ── Panels ── */
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
@@ -1140,24 +1140,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Tracklist mode — show-page visual language inside player panel ── */
 /* font-size stays at 14px (--text-base) for both track-name and track-game — same as base */
 .playlist.tracklist .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
-.playlist.tracklist .track-stream-btn {
-  width: 32px; height: 32px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
-  cursor: pointer; color: var(--icon-secondary);
-  transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.playlist.tracklist .track-stream-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
-.playlist.tracklist .track-stream-btn svg { width: 12px; height: 12px; fill: currentColor; stroke: none; display: block; }
-.playlist.tracklist .track-ts-btn {
-  height: 32px; padding: 0 var(--space-2);
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
-  cursor: pointer; font-size: var(--text-xs); letter-spacing: .04em;
-  color: var(--icon-secondary); font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
-  transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.playlist.tracklist .track-ts-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
 
 /* Legacy — kept for compat */
 .track-ts {
@@ -1258,18 +1240,51 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-game { font-size: var(--text-base); line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
-.spotify-btn { width: 32px; height: 32px; border-radius: var(--radius-control); background: transparent; border: 1px solid var(--border-btn); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); }
-.spotify-btn svg { width: 16px; height: 16px; fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
-.spotify-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); }
-.spotify-btn:hover svg { fill: var(--text-primary); }
-.spotify-btn:active { transform: scale(0.92); }
+/* ── Family 2: IconButton (.icon-btn) ── */
+.icon-btn {
+  width: 32px; height: 32px; border-radius: var(--radius-control);
+  background: transparent; border: 1px solid var(--border-btn);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; color: var(--icon-secondary);
+  transition: border-color var(--dur-micro) var(--ease-hover),
+              background var(--dur-short) var(--ease-hover),
+              color var(--dur-micro) var(--ease-hover),
+              transform var(--dur-micro) var(--ease-hover);
+}
+.icon-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
+.icon-btn:active { transform: scale(0.92); }
+.icon-btn svg { width: 16px; height: 16px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; transition: stroke var(--dur-micro) var(--ease-hover); }
+/* Ghost variant — no border, fill SVG (mno-social, nav drawer social) */
+.icon-btn--ghost { border-color: transparent; background: transparent; }
+.icon-btn--ghost:hover { border-color: transparent; background: transparent; }
+.icon-btn--ghost svg { fill: currentColor; stroke: none; }
+/* Social variant — has border, fill SVG (about page social links) */
+.icon-btn--social svg { fill: currentColor; stroke: none; }
+/* Spotify variant — has border, fill SVG using icon-secondary token */
+.icon-btn--spotify svg { fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
+.icon-btn--spotify:hover svg { fill: var(--text-primary); }
+/* Action variant — has .active selected state (show follow/bookmark) */
+.icon-btn--action.active { border-color: var(--border-hover); background: var(--surface-hover); color: var(--text-primary); }
+/* Stream variant — fill SVG, context-specific sizes */
+.icon-btn--stream svg { fill: currentColor; stroke: none; }
+.playlist.tracklist .icon-btn--stream svg { width: 12px; height: 12px; }
+.show-tracklist-inline .icon-btn--stream svg { width: 14px; height: 14px; }
+
+/* ── Family 4: TimestampButton (.ts-btn) ── */
+.ts-btn {
+  width: 64px; height: 32px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
+  cursor: pointer; font-size: var(--text-xs); letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--icon-secondary); font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
+  transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+.ts-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.show-tracklist-inline .ts-btn { font-size: var(--text-sm); }
 
 .divider { width: 1px; height: 16px; background: var(--border-default); flex-shrink: 0; }
 
-.ctrl-btn { background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; color: var(--icon-secondary); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); }
-.ctrl-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; transition: stroke var(--dur-micro) var(--ease-hover); }
-.ctrl-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
-.ctrl-btn:active { transform: scale(0.92); }
 #playlist-btn.active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 #playlist-btn.active:hover { color: var(--text-primary); }
 
@@ -1363,7 +1378,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 @media (max-width: 768px) {
   /* No hover on touch — tap feedback only */
   .card:hover .card-thumb > svg, .card:hover .card-thumb > img { filter: none; }
-  .tag:hover { color: var(--text-tertiary) !important; background: transparent !important; border-color: var(--border-default) !important; }
+  .chip:hover { color: var(--text-tertiary) !important; background: transparent !important; border-color: var(--border-default) !important; }
   .play-btn:hover { background: transparent !important; border-color: var(--border-btn) !important; }
   .play-btn:hover svg { fill: var(--text-secondary) !important; }
   /* Tap feedback */
@@ -1443,7 +1458,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .card-host .host-name { font-size: var(--text-sm); }
   .card-meta { font-size: var(--text-sm); }
   .card-tags { padding-top: var(--space-3); gap: var(--space-2); }
-  .tag { font-size: var(--text-sm); padding: var(--space-1) var(--space-2); letter-spacing: 0.3px; }
+  .chip { font-size: var(--text-sm); padding: var(--space-1) var(--space-2); letter-spacing: 0.3px; }
   .card-overlay { display: none; }
 
   /* ── Panels ── */
@@ -1500,7 +1515,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .show-actions { flex-wrap: wrap; gap: var(--space-2); }
   .show-btn-play { flex: 1 1 100%; justify-content: center; }
   .show-btn-ghost { flex: 1; justify-content: center; padding: 11px var(--space-3); }
-  .show-btn-icon { width: 44px; height: 44px; flex-shrink: 0; }
+  .icon-btn--action { width: 44px; height: 44px; flex-shrink: 0; }
 
   /* Show sections on mobile — stack vertically, full width */
   #view-show .content { margin-top: var(--space-6) !important; }
@@ -1539,7 +1554,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .player-title { font-size: var(--text-md); font-weight: 400; }
   .player-game  { font-size: var(--text-sm); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .player-controls { gap: var(--space-2); flex-shrink: 0; }
-  .spotify-btn,
+  .icon-btn--spotify,
   .vol-wrap, .vol-popup,
   .back-to-live,
   .player-controls .divider { display: none; }
@@ -1909,18 +1924,41 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   height: 1px; background: var(--border-default);
 }
 
-/* Day tab — identical spec to .explore-tab */
+/* ── Calendar header (schedule & explore-schedule) ── */
+.sp-cal-header {
+  display: flex; align-items: stretch;
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+.sp-cal-label {
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding-right: var(--space-4); flex-shrink: 0;
+}
+.sp-cal-month,
+.sp-cal-year { font-size: var(--text-xs); color: var(--text-tertiary); font-weight: 400; line-height: 1.5; }
+.sp-cal-days { display: flex; flex: 1; }
+.sp-cal-tab {
+  display: flex; flex-direction: column; align-items: center;
+  flex: 1; background: none; border: none; cursor: pointer;
+  padding: 0 var(--space-1); gap: 2px;
+  transition: color var(--dur-micro) var(--ease-hover);
+}
+.sp-cal-dow { font-size: var(--text-xs); color: var(--text-tertiary); font-weight: 400; line-height: 1.5; text-transform: uppercase; }
+.sp-cal-num { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 400; line-height: 1.5; }
+.sp-cal-tab:hover .sp-cal-num { color: var(--text-primary); }
+.sp-cal-tab.active .sp-cal-num {
+  color: var(--text-primary); font-weight: 500;
+  border-bottom: 2px solid var(--text-primary); padding-bottom: 1px;
+}
+
+/* Day tab — kept for settings panel tabs */
 .sp-day-tab {
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   color: var(--text-tertiary); background: none; border: none;
   padding: var(--sp-tab-pad-y) var(--space-2);
   cursor: pointer; white-space: nowrap; flex-shrink: 0;
   transition: color var(--dur-micro) var(--ease-hover);
-}
-.sp-cal-icon {
-  display: flex; align-items: center; flex-shrink: 0;
-  padding: var(--sp-tab-pad-y) var(--space-2) var(--sp-tab-pad-y) var(--space-5);
-  color: var(--text-tertiary);
 }
 .sp-day-tab:first-child { padding-left: var(--space-5); }
 .sp-day-tab:last-child  { padding-right: var(--space-5); }
@@ -2308,16 +2346,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   background: var(--action-primary-bg); border: 1px solid var(--action-primary-border); color: var(--action-primary-fg);
 }
 .about-contact-btn-proposal:hover { opacity: .88; }
-.about-soc-btn {
-  width: 32px; height: 32px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; border: 1px solid var(--border-btn);
-  border-radius: var(--radius-control); cursor: pointer; text-decoration: none;
-  color: var(--icon-secondary);
-  transition: background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.about-soc-btn svg { width: 16px; height: 16px; fill: currentColor; display: block; }
-.about-soc-btn:hover { background: var(--surface-btn-hover); border-color: var(--border-hover); color: var(--text-primary); }
 
 .about-stats {
   display: flex; gap: var(--space-5);
@@ -2527,28 +2555,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-tracklist-inline .track-right {
   display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; margin-left: var(--space-4);
 }
-/* Spotify button */
-.show-tracklist-inline .track-stream-btn {
-  width: 32px; height: 32px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; border: 1px solid var(--border-btn);
-  border-radius: var(--radius-control); cursor: pointer; color: var(--icon-secondary);
-  transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.show-tracklist-inline .track-stream-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
-.show-tracklist-inline .track-stream-btn svg { width: 14px; height: 14px; fill: currentColor; display: block; }
-/* Timestamp button — Inter font explicit */
-.show-tracklist-inline .track-ts-btn {
-  height: 32px; padding: 0 var(--space-3);
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; border: 1px solid var(--border-btn);
-  border-radius: var(--radius-control); cursor: pointer;
-  font-size: var(--text-sm); font-weight: 400; letter-spacing: .04em;
-  color: var(--icon-secondary);
-  font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
-  transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.show-tracklist-inline .track-ts-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
 
 /* ── Hero gradient overlays (Keakie method — artist page only) ── */
 .hero-grad {
@@ -2610,17 +2616,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-btn-play svg { fill: var(--surface-page) !important; stroke: none !important; animation: icon-swap var(--dur-short) var(--ease-standard) both; }
 /* Show page — secondary ghost btn */
 .show-btn-ghost { padding-left: var(--space-4); padding-right: var(--space-4); }
-/* Show page — secondary icon-only btn */
-.show-btn-icon {
-  width: 32px; height: 32px; border-radius: var(--radius-control);
-  background: transparent; border: 1px solid var(--border-btn); color: var(--icon-secondary);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0;
-  transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.show-btn-icon svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-.show-btn-icon:hover, .show-btn-icon:active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
-.show-btn-icon.active { border-color: var(--border-hover); background: var(--surface-hover); color: var(--text-primary); }
+/* Show page — secondary icon-only btn → uses .icon-btn.icon-btn--action */
 
 /* ── Show sections — uses .content / .section from homepage ── */
 
@@ -2851,17 +2847,7 @@ body { padding-top: var(--space-9); }
               color var(--dur-short) var(--ease-hover);
 }
 
-/* ── Header buttons ── */
-.sidebar-hdr-btn {
-  width: 32px; height: 32px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; border: 1px solid var(--border-btn);
-  border-radius: var(--radius-control); cursor: pointer;
-  color: var(--text-secondary);
-  transition: background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.sidebar-hdr-btn:hover { background: var(--surface-btn-hover); border-color: var(--border-hover); color: var(--text-primary); }
-.sidebar-hdr-btn svg { display: block; flex-shrink: 0; }
+/* ── Header buttons → use .icon-btn ── */
 .sidebar-icon-btn svg { transition: none; }
 
 /* ── Sidebar body ── */
@@ -3163,10 +3149,10 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   </nav>
   <div class="drawer-footer">
     <div class="drawer-social">
-      <button class="soc-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></button>
-      <button class="soc-btn" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
-      <button class="soc-btn" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></button>
-      <button class="soc-btn" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></button>
+      <button class="icon-btn icon-btn--ghost" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></button>
+      <button class="icon-btn icon-btn--ghost" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
+      <button class="icon-btn icon-btn--ghost" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></button>
+      <button class="icon-btn icon-btn--ghost" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></button>
     </div>
   </div>
 </div>
@@ -3202,10 +3188,10 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           </button>
         </div>
         <div class="mno-social">
-          <button class="mno-soc" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></button>
-          <button class="mno-soc" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
-          <button class="mno-soc" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></button>
-          <button class="mno-soc" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></button>
+          <button class="icon-btn icon-btn--ghost" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></button>
+          <button class="icon-btn icon-btn--ghost" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
+          <button class="icon-btn icon-btn--ghost" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></button>
+          <button class="icon-btn icon-btn--ghost" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></button>
         </div>
     </div>
 </div>
@@ -3346,7 +3332,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>International Radio Day</h3>
           <div class="card-host"><div class="avatar">PP</div><span class="host-name">Purple Proposition</span></div>
           <p class="card-meta">2 days ago · 1:01:26</p>
-          <div class="card-tags"><span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum & Bass</span></div>
+          <div class="card-tags"><span class="chip">Ambient</span><span class="chip">Downtempo</span><span class="chip">Drum & Bass</span></div>
         </div>
       </article>
       <article class="card">
@@ -3358,7 +3344,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Dusk</h3>
           <div class="card-host"><div class="avatar">NW</div><span class="host-name">Neon Waves</span></div>
           <p class="card-meta">5 days ago · 54:12</p>
-          <div class="card-tags"><span class="tag">Synthwave</span><span class="tag">Chillout</span></div>
+          <div class="card-tags"><span class="chip">Synthwave</span><span class="chip">Chillout</span></div>
         </div>
       </article>
       <article class="card">
@@ -3370,7 +3356,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Retro RPG Evening</h3>
           <div class="card-host"><div class="avatar">KJ</div><span class="host-name">Koji & Friends</span></div>
           <p class="card-meta">1 week ago · 1:22:04</p>
-          <div class="card-tags"><span class="tag">Chiptune</span><span class="tag">OST</span><span class="tag">Retro</span></div>
+          <div class="card-tags"><span class="chip">Chiptune</span><span class="chip">OST</span><span class="chip">Retro</span></div>
         </div>
       </article>
       <article class="card">
@@ -3382,7 +3368,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Midnight Walks Through the Forest & Field</h3>
           <div class="card-host"><div class="avatar">SR</div><span class="host-name">Sakura Records</span></div>
           <p class="card-meta">3 months ago · 48:30</p>
-          <div class="card-tags"><span class="tag">Acoustic</span><span class="tag">Ambient</span></div>
+          <div class="card-tags"><span class="chip">Acoustic</span><span class="chip">Ambient</span></div>
         </div>
       </article>
     </div>
@@ -3406,7 +3392,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Moody Jazz 2</h3>
           <div class="card-host"><div class="avatar">BS</div><span class="host-name">8Beats Sound Team</span></div>
           <p class="card-meta">May 6, 2022 · 1:12:34</p>
-          <div class="card-tags"><span class="tag">Jazz</span><span class="tag">Lounge</span></div>
+          <div class="card-tags"><span class="chip">Jazz</span><span class="chip">Lounge</span></div>
         </div>
       </article>
       <article class="card">
@@ -3418,7 +3404,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>X2</h3>
           <div class="card-host"><div class="avatar">SB</div><span class="host-name">Submerse</span></div>
           <p class="card-meta">Aug 17, 2024 · 58:20</p>
-          <div class="card-tags"><span class="tag">Downtempo</span><span class="tag">New Age</span></div>
+          <div class="card-tags"><span class="chip">Downtempo</span><span class="chip">New Age</span></div>
         </div>
       </article>
       <article class="card">
@@ -3430,7 +3416,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Settings</h3>
           <div class="card-host"><div class="avatar">EF</div><span class="host-name">ElFamosoDemon</span></div>
           <p class="card-meta">Jul 15, 2024 · 1:04:15</p>
-          <div class="card-tags"><span class="tag">Downtempo</span><span class="tag">Folk</span><span class="tag">Fusion</span></div>
+          <div class="card-tags"><span class="chip">Downtempo</span><span class="chip">Folk</span><span class="chip">Fusion</span></div>
         </div>
       </article>
       <article class="card">
@@ -3442,7 +3428,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Beach Day Mixtape</h3>
           <div class="card-host"><div class="avatar">JE</div><span class="host-name">JamesonEmpire</span></div>
           <p class="card-meta">Jul 2, 2024 · 1:21:07</p>
-          <div class="card-tags"><span class="tag">Chiptune</span><span class="tag">Folk</span><span class="tag">Lounge</span><span class="tag">Talk</span></div>
+          <div class="card-tags"><span class="chip">Chiptune</span><span class="chip">Folk</span><span class="chip">Lounge</span><span class="chip">Talk</span></div>
         </div>
       </article>
     </div>
@@ -3516,17 +3502,17 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         </div>
         <p class="show-desc" id="show-desc"></p>
         <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:var(--space-2);">
-          <span class="tag">Ambient</span><span class="tag">Downtempo</span><span class="tag">Drum &amp; Bass</span>
+          <span class="chip">Ambient</span><span class="chip">Downtempo</span><span class="chip">Drum &amp; Bass</span>
         </div>
         <div class="show-actions">
           <button class="btn btn-primary show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
             <i data-lucide="play" style="width:11px;height:11px;display:block;"></i>
             Play
           </button>
-          <button class="show-btn-icon" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
+          <button class="icon-btn icon-btn--action" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
             <i data-lucide="user-plus" style="width:16px;height:16px;fill:none;display:block;"></i>
           </button>
-          <button class="show-btn-icon" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
+          <button class="icon-btn icon-btn--action" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
             <i data-lucide="bookmark" style="width:16px;height:16px;fill:none;display:block;"></i>
           </button>
         </div>
@@ -3710,10 +3696,10 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         <h3>Follow us</h3>
         <p>Stay up to date with new shows, resident news, and everything happening at 8Beats.</p>
         <div style="display:flex;gap:var(--space-5);flex-wrap:wrap;margin-top:var(--space-1);">
-          <a href="https://instagram.com/8beats" target="_blank" rel="noopener" class="about-soc-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-          <a href="#" target="_blank" rel="noopener" class="about-soc-btn" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-          <a href="#" target="_blank" rel="noopener" class="about-soc-btn" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></a>
-          <a href="#" target="_blank" rel="noopener" class="about-soc-btn" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></a>
+          <a href="https://instagram.com/8beats" target="_blank" rel="noopener" class="icon-btn icon-btn--social" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="#" target="_blank" rel="noopener" class="icon-btn icon-btn--social" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="#" target="_blank" rel="noopener" class="icon-btn icon-btn--social" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></a>
+          <a href="#" target="_blank" rel="noopener" class="icon-btn icon-btn--social" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></a>
         </div>
       </div>
     </div>
@@ -4003,7 +3989,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
             <span class="back-live-dot"></span>
             Back to live
           </button>
-          <button class="spotify-btn" id="spotify-btn" aria-label="Spotify">
+          <button class="icon-btn icon-btn--spotify" id="spotify-btn" aria-label="Spotify">
             <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
           </button>
           <div class="vol-wrap" id="vol-wrap">
@@ -4017,7 +4003,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
               <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
             </div>
           </div>
-          <button class="ctrl-btn" id="playlist-btn" aria-label="Playlist">
+          <button class="icon-btn" id="playlist-btn" aria-label="Playlist">
             <i data-lucide="list-music" style="width:16px;height:16px;fill:none;display:block;"></i>
           </button>
         </div>
@@ -4397,8 +4383,8 @@ function hideGenreTooltip() {
 function makeFilterChip(label, isActive, onClick, showTooltip) {
   const btn = document.createElement('button');
   btn.textContent = label;
-  btn.classList.add('tag');
-  if (isActive) btn.classList.add('tag-active');
+  btn.classList.add('chip');
+  if (isActive) btn.classList.add('chip--active');
   btn.addEventListener('click', onClick);
   if (showTooltip) {
     btn.addEventListener('mouseenter', () => {
@@ -4478,7 +4464,7 @@ function renderShows(list, q) {
         ${gameHint}
       </div>
       <div style="display:flex;gap:var(--space-2);flex-shrink:0;margin-left:var(--space-4);">
-        ${s.genres.slice(0,2).map(t=>`<span class="tag">${t}</span>`).join('')}
+        ${s.genres.slice(0,2).map(t=>`<span class="chip">${t}</span>`).join('')}
       </div>
     </div>
   `}).join('');
@@ -4585,7 +4571,7 @@ function _renderExploreScheduleDaySlots(ri) {
         const entry = Object.entries(SHOW_DATA || {}).find(([, d]) => d.host === slot.title);
         if (entry) { showTitle = entry[0]; artistName = slot.title; }
       }
-      const genreTags = (slot.genres || []).slice(0, 2).map(g => `<span class="tag">${g}</span>`).join('');
+      const genreTags = (slot.genres || []).slice(0, 2).map(g => `<span class="chip">${g}</span>`).join('');
       return `
         <div class="sp-slot-row" role="button" tabindex="0"
           onclick="${showData ? `closeExplore();openShow('${safeTitle}')` : ''}">
@@ -4614,7 +4600,7 @@ function _renderExploreScheduleDaySlots(ri) {
 
 function selectExploreScheduleDay(ri) {
   const bar = document.getElementById('es-day-bar');
-  if (bar) bar.querySelectorAll('.sp-day-tab').forEach((t, idx) => t.classList.toggle('active', idx === ri));
+  if (bar) bar.querySelectorAll('.sp-cal-tab').forEach((t, idx) => t.classList.toggle('active', idx === ri));
   _renderExploreScheduleDaySlots(ri);
   const content = document.getElementById('explore-content');
   if (content) content.scrollTop = 0;
@@ -4625,12 +4611,7 @@ function renderExploreSchedule(container) {
   const todayDow = (today.getDay() + 6) % 7;
 
   container.style.paddingTop = '0';
-  container.innerHTML = `<div class="sp-day-bar" id="es-day-bar">` +
-    Array.from({length: 7}, (_, ri) => {
-      const dow = (todayDow + ri) % 7;
-      return `<button class="sp-day-tab${ri === 0 ? ' active' : ''}" id="es-tab-${ri}" onclick="selectExploreScheduleDay(${ri})">${_dayTabLabel(dow, todayDow, today)}</button>`;
-    }).join('') +
-    `</div><div id="es-slots"></div>`;
+  container.innerHTML = `<div id="es-day-bar">${_buildCalHeader('es', 'selectExploreScheduleDay', today)}</div><div id="es-slots"></div>`;
   _renderExploreScheduleDaySlots(0);
   requestAnimationFrame(() => {
     container.scrollTop = 0;
@@ -5079,8 +5060,8 @@ function switchToTracklist(showTitle) {
           <span class="track-game">${t.game}</span>
         </div>
         <div class="track-right">
-          ${t.avail ? `<button class="track-stream-btn" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-          <button class="track-ts-btn" onclick="seekTo('${t.ts}')">${t.ts}</button>
+          ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
+          <button class="ts-btn" onclick="seekTo('${t.ts}')">${t.ts}</button>
         </div>
       </div>
     `).join('')}
@@ -5212,7 +5193,7 @@ document.addEventListener('click', e => {
 
 /* ── Genre tooltips : fonction centrale réutilisable ── */
 function wireTagTooltips(container) {
-  (container || document).querySelectorAll('.tag').forEach(el => {
+  (container || document).querySelectorAll('.chip').forEach(el => {
     if (el._tooltipWired) return; // éviter les doublons
     el._tooltipWired = true;
     const lbl = el.textContent.trim();
@@ -5226,7 +5207,7 @@ function wireTagTooltips(container) {
     });
   });
 }
-// Câbler tous les tags présents au chargement (cards homepage)
+// Câbler tous les chips présents au chargement (cards homepage)
 wireTagTooltips();
 
 /* ── Play / Pause ── */
@@ -5694,7 +5675,7 @@ function makeRelatedCard(r, i) {
       <h3>${r.title}</h3>
       <div class="card-host"><div class="avatar">${r.initials}</div><span class="host-name">${r.host}</span></div>
       <p class="card-meta">${r.meta}</p>
-      <div class="card-tags">${r.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="card-tags">${r.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
     </div>
   </article>`;
 }
@@ -5747,7 +5728,7 @@ function openShow(key) {
   // Tags — filtrer 'Classics', gap 6px
   const tagsEl = document.getElementById('show-tags');
   const filteredTags = data.tags.filter(t => t !== 'Classics');
-  tagsEl.innerHTML = filteredTags.map(t => `<span class="tag">${t}</span>`).join('');
+  tagsEl.innerHTML = filteredTags.map(t => `<span class="chip">${t}</span>`).join('');
   wireTagTooltips(tagsEl);
 
   // Tracklist inline
@@ -5760,8 +5741,8 @@ function openShow(key) {
         <span class="track-name">${t.name}</span>
       </div>
       <div class="track-right">
-        ${t.avail ? `<button class="track-stream-btn" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-        <button class="track-ts-btn" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</button>
+        ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
+        <button class="ts-btn" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</button>
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
@@ -6507,7 +6488,19 @@ let _schedPanelClosing = false;
 let _schedActiveDow    = -1;  // -1 = auto-select today's day-of-week
 
 /* Abbreviated day names for the picker (Mon=0 … Sun=6 in our 0-indexed week) */
-const SP_DAY_SHORT = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const SP_DAY_SHORT  = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const SP_DAY_LETTER = ['M',   'T',   'W',   'T',   'F',   'S',   'S'];
+
+/* Build the 2-row calendar header used in schedule panel + explore schedule */
+function _buildCalHeader(prefix, fnName, today) {
+  const todayDow = (today.getDay() + 6) % 7;
+  const days = Array.from({length: 7}, (_, ri) => {
+    const dow = (todayDow + ri) % 7;
+    const d   = new Date(today); d.setDate(d.getDate() + ri);
+    return `<button class="sp-cal-tab${ri === 0 ? ' active' : ''}" id="${prefix}-tab-${ri}" onclick="${fnName}(${ri})"><span class="sp-cal-dow">${SP_DAY_LETTER[dow]}</span><span class="sp-cal-num">${d.getDate()}</span></button>`;
+  }).join('');
+  return `<div class="sp-cal-header"><div class="sp-cal-label"><span class="sp-cal-month">${SHORT_MONTHS[today.getMonth()]}</span><span class="sp-cal-year">${today.getFullYear()}</span></div><div class="sp-cal-days">${days}</div></div>`;
+}
 
 /* Convert day-of-week → days-from-today (for notification scheduling) */
 function _dowToIdx(dow) {
@@ -6555,7 +6548,7 @@ function _renderSchedulePanelDaySlots(ri) {
         const entry = Object.entries(SHOW_DATA || {}).find(([, d]) => d.host === slot.title);
         if (entry) { showTitle = entry[0]; artistName = slot.title; }
       }
-      const genreTags   = (slot.genres || []).slice(0, 2).map(g => `<span class="tag">${g}</span>`).join('');
+      const genreTags   = (slot.genres || []).slice(0, 2).map(g => `<span class="chip">${g}</span>`).join('');
       return `
         <div class="sp-slot-row" role="button" tabindex="0"
           onclick="${showData ? `closeSchedulePanel();openShow('${safeTitle}')` : ''}">
@@ -6586,18 +6579,13 @@ function _renderSchedulePanelDaySlots(ri) {
 function renderSchedulePanel() {
   const dayBar = document.getElementById('sp-day-bar');
   if (!dayBar) return;
-  const today    = new Date();
-  const todayDow = (today.getDay() + 6) % 7;
-  dayBar.innerHTML = Array.from({length: 7}, (_, ri) => {
-    const dow = (todayDow + ri) % 7;
-    return `<button class="sp-day-tab${ri === 0 ? ' active' : ''}" id="sp-tab-${ri}" onclick="selectScheduleDay(${ri})">${_dayTabLabel(dow, todayDow, today)}</button>`;
-  }).join('');
+  dayBar.innerHTML = _buildCalHeader('sp', 'selectScheduleDay', new Date());
   _renderSchedulePanelDaySlots(0);
 }
 
 function selectScheduleDay(ri) {
   _schedActiveDow = ri;
-  document.querySelectorAll('#sp-day-bar .sp-day-tab').forEach((t, idx) => t.classList.toggle('active', idx === ri));
+  document.querySelectorAll('#sp-day-bar .sp-cal-tab').forEach((t, idx) => t.classList.toggle('active', idx === ri));
   _renderSchedulePanelDaySlots(ri);
 }
 
