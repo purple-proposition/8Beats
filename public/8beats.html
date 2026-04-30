@@ -73,10 +73,10 @@
   --surface-elevated-rgb:   29,29,29;  /* base RGB pour glass effects */
   --surface-overlay:        rgba(11,11,11,0.92);
   /* ── Glass system — surface unique pour tous les contenants ──
-     Une seule base : noir 70%, blur 16px, border blanc 10%.
+     Une seule base : noir 72%, blur 24px, border blanc 10%.
      Même valeur sur sidebar, player, modals, cards, tooltips, popups. */
-  --glass-bg:               rgba(0, 0, 0, 0.70);
-  --glass-blur:             16px;
+  --glass-bg:               rgba(0, 0, 0, 0.72);
+  --glass-blur:             24px;
   --glass-border:           rgba(255, 255, 255, 0.10);
   --surface-glass:          var(--glass-bg);
 
@@ -95,8 +95,8 @@
   --surface-btn-hover:  transparent;
 
   /* ── Semantic — Interactive surfaces ── */
-  --surface-hover:      rgba(255,255,255,0.04);   /* lift doux sur surface-elevated */
-  --surface-hover-soft: rgba(255,255,255,0.02);
+  --surface-hover:      transparent;
+  --surface-hover-soft: transparent;
 
   /* ── Semantic — Icons (miroir du texte) ── */
   --icon-primary:       #f2f2f2;
@@ -106,9 +106,9 @@
   /* ── Semantic — Overlays & Shadows ── */
   --overlay:            rgba(0,0,0,0.65);
   --scrim:              rgba(0,0,0,0.50);
-  --shadow-sm:          0 2px 8px rgba(0,0,0,0.40);
-  --shadow-md:          0 8px 24px rgba(0,0,0,0.55);
-  --shadow-lg:          0 24px 48px rgba(0,0,0,0.65);
+  --shadow-sm:          none;
+  --shadow-md:          none;
+  --shadow-lg:          none;
 
   /* ── Semantic — Actions (monochrome) ── */
   --action-primary-bg:       #f2f2f2;
@@ -284,8 +284,8 @@ html.light {
   --border-btn:             #d0d0d0;
   --surface-btn-hover:      transparent;
 
-  --surface-hover:          rgba(0,0,0,0.04);
-  --surface-hover-soft:     rgba(0,0,0,0.02);
+  --surface-hover:          transparent;
+  --surface-hover-soft:     transparent;
 
   --icon-primary:           #0b0b0b;
   --icon-secondary:         #3a3a3a;
@@ -293,9 +293,9 @@ html.light {
 
   --overlay:                rgba(0,0,0,0.35);
   --scrim:                  rgba(0,0,0,0.20);
-  --shadow-sm:              0 2px 8px rgba(0,0,0,0.06);
-  --shadow-md:              0 8px 24px rgba(0,0,0,0.10);
-  --shadow-lg:              0 24px 48px rgba(0,0,0,0.14);
+  --shadow-sm:              none;
+  --shadow-md:              none;
+  --shadow-lg:              none;
 
   --action-primary-bg:      #0b0b0b;
   --action-primary-fg:      #f2f2f2;
