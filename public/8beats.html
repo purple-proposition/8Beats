@@ -1010,92 +1010,115 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 /* ── Player ── */
-/* player-wrap: positioning shell only — single child: player-shell */
+/* ── player-wrap: positioning context — contains stable bar + overlay panel ──
+ * position:fixed anchors everything. pointer-events:none lets clicks through
+ * the empty space; individual children restore pointer-events where needed.
+ * ──────────────────────────────────────────────────────────────────────────── */
 .player-wrap {
   position: fixed; bottom: var(--space); right: var(--space);
   width: var(--modal-6col); z-index: var(--z-player);
   pointer-events: none;
 }
 
-/* ── player-shell: the SINGLE visual object ─────────────────────────────────
- * Carries ALL visual identity: border, radius, background, backdrop-filter.
- * This is the only glass surface. One material, everywhere, always uniform.
- * Grows naturally in height as playlist expands — border/radius never change.
- * State class .extended toggles here (mirrors nav-panel.sb-icons).
+/* ── player-shell: STABLE, IMMUTABLE glass bar ───────────────────────────────
+ * Never grows. Never shrinks. No class toggling. No layout animation.
+ * backdrop-filter is applied once, to a fixed-size element — zero GPU resize.
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-shell {
-  display: flex; flex-direction: column; align-items: stretch;
+  pointer-events: all;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-btn);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  position: relative; z-index: 1;
+}
+
+/* player-inner: layout only — shell provides all glass identity */
+.player-inner {
+  flex-shrink: 0;
+  position: relative; z-index: var(--z-player-inner);
+}
+
+/* ── playlist-panel: absolute overlay ────────────────────────────────────────
+ * Sits OUTSIDE the shell as a sibling — the shell never changes size.
+ * Animation: transform + opacity only — fully GPU-composited, zero layout.
+ *
+ * Easing asymmetry via CSS cascade:
+ *   • Default state holds the CLOSE transition (ease-in, faster)
+ *   • .pl-open state holds the OPEN transition (ease-out, slightly slower)
+ *   When the class is added → browser uses the .pl-open transition (open ease)
+ *   When the class is removed → browser uses the default transition (close ease)
+ *
+ * translateY(6px) closed → translateY(0) open: the panel rises 6px into place.
+ * Small enough to be subtle, visible enough to feel alive.
+ * ──────────────────────────────────────────────────────────────────────────── */
+.playlist-panel {
+  position: absolute;
+  bottom: calc(100% + 4px); /* floats 4px above the bar */
+  left: 0; right: 0;
+
+  /* Same glass material as the bar — visually coherent */
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-btn);
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
-  contain: layout paint; /* scope layout recalc + repaint to this element */
-}
-/* When player is near top: flip column so playlist opens below player-bar */
-.player-wrap.playlist-below .player-shell { flex-direction: column-reverse; }
 
-/* player-inner: layout only — shell provides all glass identity */
-.player-inner {
-  pointer-events: all; flex-shrink: 0;
-  position: relative; z-index: var(--z-player-inner);
-}
-
-/* ── Playlist slide wrapper — CSS grid expand (zero JS layout thrashing) ─────
- * grid-template-rows: 0fr → 1fr is a pure CSS height animation.
- * No JS reads (scrollHeight/offsetHeight) needed — the browser handles it.
- * Asymmetric easing: the CURRENT state's transition property is used.
- *   → Adding .extended applies the open (ease-out) transition  ✓
- *   → Removing .extended applies the close (ease-in) transition ✓
- * ──────────────────────────────────────────────────────────────────────────── */
-.playlist-slide {
-  display: grid;
-  grid-template-rows: 0fr;
-  /* Close easing — active when transitioning back to default (extended removed) */
-  transition: grid-template-rows var(--dur-playlist) var(--ease-playlist-close);
-}
-.player-shell.extended .playlist-slide {
-  grid-template-rows: 1fr;
-  /* Open easing — active when transitioning to extended state */
-  transition: grid-template-rows var(--dur-playlist) var(--ease-playlist-open);
-}
-
-/* playlist: direct grid child — min-height:0 is required for 0fr collapse */
-.playlist {
-  min-height: 0;
-  overflow: hidden;
+  /* Closed state: invisible, nudged down */
+  transform: translateY(6px);
+  opacity: 0;
   pointer-events: none;
+  /* Close easing — active when .pl-open is removed */
+  transition:
+    transform 200ms var(--ease-playlist-close),
+    opacity   160ms var(--ease-playlist-close);
 }
-.player-shell.extended .playlist { pointer-events: all; }
 
-/* playlist-glass not needed */
-.playlist-glass { display: none; }
+/* Open state */
+.player-wrap.pl-open .playlist-panel {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: all;
+  /* Open easing — active when .pl-open is added */
+  transition:
+    transform 240ms var(--ease-playlist-open),
+    opacity   200ms var(--ease-playlist-open);
+}
 
-/* ── Playlist content reveal — opacity only ──────────────────────────────────
- * No translateY: the grid row already provides the spatial animation.
- * Adding translateY on top of a grid-clip creates conflicting reveal directions.
- * Opacity alone is GPU-composited, zero layout cost, clean on every browser.
- *
- * Open:  ease-out, 0ms delay — content appears immediately with the shell.
- *        The 40ms delay was creating an "empty glass" window (2.5 frames).
- * Close: ease-in, 0ms delay — content exits fast, shell collapses after.
+/* playlist-below: panel opens below the bar instead of above */
+.player-wrap.playlist-below .playlist-panel {
+  bottom: auto;
+  top: calc(100% + 4px);
+  transform: translateY(-6px); /* nudged up instead of down */
+}
+.player-wrap.playlist-below.pl-open .playlist-panel {
+  transform: translateY(0);
+}
+
+/* Reduced motion: skip spatial animation, keep opacity only */
+@media (prefers-reduced-motion: reduce) {
+  .playlist-panel,
+  .player-wrap.pl-open .playlist-panel {
+    transform: none;
+    transition: opacity 120ms linear;
+  }
+}
+
+/* ── Playlist content ─────────────────────────────────────────────────────────
+ * No opacity animation here — the panel itself carries the full reveal.
+ * Clean static layout inside the panel. Scrollable if content overflows.
  * ──────────────────────────────────────────────────────────────────────────── */
-.playlist-inner {
-  position: relative; z-index: 1;
+.playlist-panel .playlist-inner {
   padding: var(--space-4) var(--space-5) var(--space-3);
   display: flex; flex-direction: column;
   gap: var(--space-5);
   max-height: 320px; overflow-y: auto;
-  opacity: 0;
-  /* Close: ease-in, fast — content gone before shell finishes collapsing */
-  transition: opacity 120ms var(--ease-playlist-close) 0ms;
 }
-.player-shell.extended .playlist-inner {
-  opacity: 1;
-  /* Open: ease-out, 0ms delay — no empty glass flash */
-  transition: opacity 200ms var(--ease-playlist-open) 0ms;
-}
+
+/* Legacy aliases — kept so existing .playlist selectors still resolve */
+.playlist-glass { display: none; }
 
 .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .playlist-header-meta { font-size: var(--text-xs); color: var(--text-tertiary); letter-spacing: .04em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: right; }
@@ -3935,34 +3958,9 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 </div>
 
 <!-- PLAYER -->
-<div class="player-wrap">
+<div class="player-wrap" id="player-wrap">
+  <!-- Stable glass bar — never changes size, never touched by playlist toggle -->
   <div class="player-shell">
-  <div class="playlist-slide">
-  <div class="playlist" id="playlist">
-    <div class="playlist-glass"></div>
-    <div class="playlist-inner">
-      <div class="playlist-header">
-        <span class="label">Last played tracks</span>
-        <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-          <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-        </button>
-      </div>
-      <div class="track">
-        <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
-        <span class="track-ago">6m ago</span>
-      </div>
-      <div class="track">
-        <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
-        <span class="track-ago">11m ago</span>
-      </div>
-      <div class="track">
-        <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
-        <span class="track-ago">16m ago</span>
-      </div>
-    </div>
-  </div>
-  </div><!-- /.playlist-slide -->
-
   <div class="player-inner">
     <div class="player-bar">
       <div class="player-bar-main">
@@ -3996,7 +3994,8 @@ html.fwm-is-dragging { cursor: grabbing !important; }
               <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
             </div>
           </div>
-          <button class="icon-btn" id="playlist-btn" aria-label="Playlist">
+          <button class="icon-btn" id="playlist-btn"
+                  aria-label="Playlist" aria-expanded="false" aria-controls="playlist">
             <i data-lucide="list-music" style="width:16px;height:16px;fill:none;display:block;"></i>
           </button>
         </div>
@@ -4013,6 +4012,32 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     </div>
   </div>
   </div><!-- /.player-shell -->
+
+  <!-- Playlist panel — sibling of shell, overlay via position:absolute -->
+  <!-- Animates with transform+opacity only. Shell is never touched.     -->
+  <div class="playlist-panel" id="playlist"
+       role="region" aria-label="Playlist history" aria-hidden="true" inert>
+    <div class="playlist-inner">
+      <div class="playlist-header">
+        <span class="label">Last played tracks</span>
+        <button class="panel-close" id="playlist-close" aria-label="Close playlist">
+          <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+        </button>
+      </div>
+      <div class="track">
+        <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
+        <span class="track-ago">6m ago</span>
+      </div>
+      <div class="track">
+        <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
+        <span class="track-ago">11m ago</span>
+      </div>
+      <div class="track">
+        <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
+        <span class="track-ago">16m ago</span>
+      </div>
+    </div>
+  </div>
 </div><!-- /.player-wrap -->
 
 <script>
@@ -5216,27 +5241,60 @@ function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.d
 /* ── Playlist ── */
 let plOpen = false;
 const plPanel    = document.getElementById('playlist');
-const playerWrap = document.querySelector('.player-wrap');
+const playerWrap = document.getElementById('player-wrap');
 const playerInner = document.querySelector('.player-inner');
-const playerShell = document.querySelector('.player-shell'); /* state owner — mirrors nav-panel */
+const playerShell = document.querySelector('.player-shell');
 const cookieEl   = document.getElementById('panel-cookie');
 const plBtnD     = document.getElementById('playlist-btn');
 
+/* Animation durations — must match CSS transitions on .playlist-panel */
+const PL_DUR_OPEN  = 240; /* ms */
+const PL_DUR_CLOSE = 200; /* ms */
 
 function _closePl() {
+  if (!plOpen) return;
   plOpen = false;
+
+  /* Pre-promote compositor layer before opacity change to avoid first-frame flash */
+  plPanel.style.willChange = 'transform, opacity';
+
   plBtnD.classList.remove('active');
-  /* CSS grid-template-rows: 1fr → 0fr handles the collapse (ease-in via cascade).
-     No JS height manipulation — zero forced reflows. */
-  playerShell.classList.remove('extended');
+  plBtnD.setAttribute('aria-expanded', 'false');
+
+  /* CSS transition on .playlist-panel handles transform+opacity (ease-in, 200ms) */
+  playerWrap.classList.remove('pl-open');
+  plPanel.setAttribute('aria-hidden', 'true');
+
+  /* Restore inert + release will-change after transition completes */
+  clearTimeout(plPanel._plTimer);
+  plPanel._plTimer = setTimeout(() => {
+    plPanel.inert = true;
+    plPanel.style.willChange = '';
+  }, PL_DUR_CLOSE + 16);
 }
 
 function _openPl() {
+  if (plOpen) return;
   plOpen = true;
+
+  /* Make interactive before animation so focus works immediately */
+  plPanel.inert = false;
+  plPanel.setAttribute('aria-hidden', 'false');
+
+  /* Pre-promote compositor layer before opacity change */
+  plPanel.style.willChange = 'transform, opacity';
+
   plBtnD.classList.add('active');
-  /* CSS grid-template-rows: 0fr → 1fr handles the expansion (ease-out via cascade).
-     No JS height reads/writes — zero forced reflows, no empty-glass flash. */
-  playerShell.classList.add('extended');
+  plBtnD.setAttribute('aria-expanded', 'true');
+
+  /* CSS transition on .playlist-panel handles transform+opacity (ease-out, 240ms) */
+  clearTimeout(plPanel._plTimer);
+  playerWrap.classList.add('pl-open');
+
+  /* Release will-change after transition completes — permanent will-change is wasteful */
+  plPanel._plTimer = setTimeout(() => {
+    plPanel.style.willChange = '';
+  }, PL_DUR_OPEN + 16);
 
   /* Scroll fade-mask — tracklist mode only */
   const inner = plPanel.querySelector('.playlist-inner');
@@ -5950,8 +6008,7 @@ function openShowTracklist() {
   if (tracklistPopupOpen) { closeShowTracklist(); return; }
   // Close player tracklist panel if open (but leave last-played intact)
   if (plOpen && plPanel && plPanel.classList.contains('tracklist')) {
-    plOpen = false; if (playerShell) playerShell.classList.remove('extended');
-    if (plBtnD) plBtnD.classList.remove('active');
+    _closePl();
   }
   const popup = document.getElementById('show-tracklist-popup');
   const scrim = document.getElementById('show-tracklist-scrim');
