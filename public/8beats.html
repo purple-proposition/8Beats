@@ -1031,11 +1031,13 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
  * This eliminates every 1-frame flash and every transitionend timing hack.
  * ──────────────────────────────────────────────────────────────────────────── */
 
-/* Playlist ABOVE player-bar (default) — seam is at player-inner TOP */
+/* Playlist ABOVE player-bar (default) — seam is at player-inner TOP.
+   Le snap du border-radius est retardé de 260ms (durée close) pour coïncider
+   exactement avec la fin du collapse — zéro flash de coin arrondi. */
 .player-wrap:not(.playlist-below) .player-inner {
-  transition: border-top-left-radius 0s var(--dur-panel),
-              border-top-right-radius 0s var(--dur-panel),
-              border-top-color 0s var(--dur-panel);
+  transition: border-top-left-radius 0s 260ms,
+              border-top-right-radius 0s 260ms,
+              border-top-color 0s 260ms;
 }
 .player-wrap:not(.playlist-below) .playlist.open + .player-inner {
   border-top-left-radius: 0;
@@ -1043,14 +1045,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border-top-color: transparent;
   transition: border-top-left-radius 0s,
               border-top-right-radius 0s,
-              border-top-color var(--dur-short) var(--ease-hover);
+              border-top-color 0s;
 }
 
 /* Playlist BELOW player-bar — seam is at player-inner BOTTOM */
 .player-wrap.playlist-below .player-inner {
-  transition: border-bottom-left-radius 0s var(--dur-panel),
-              border-bottom-right-radius 0s var(--dur-panel),
-              border-bottom-color 0s var(--dur-panel);
+  transition: border-bottom-left-radius 0s 260ms,
+              border-bottom-right-radius 0s 260ms,
+              border-bottom-color 0s 260ms;
 }
 .player-wrap.playlist-below .playlist.open + .player-inner {
   border-bottom-left-radius: 0;
@@ -1058,7 +1060,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border-bottom-color: transparent;
   transition: border-bottom-left-radius 0s,
               border-bottom-right-radius 0s,
-              border-bottom-color var(--dur-short) var(--ease-hover);
+              border-bottom-color 0s;
 }
 
 /* ── Playlist panel — max-height collapse + GPU composited ── */
@@ -1078,46 +1080,33 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   overflow: hidden;
   pointer-events: none;
   will-change: max-height;
-  /* Close: même courbe que nav-panel collapse */
-  transition: max-height 240ms cubic-bezier(0.42, 0, 1, 1);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  /* Close: ease-in-out skewed — fluide, pas brutale */
+  transition: max-height 260ms cubic-bezier(0.55, 0, 0.55, 0.9);
 }
 .playlist.open {
   max-height: 400px;
   pointer-events: all;
-  /* Open: même courbe que nav-panel expand */
-  transition: max-height 240ms cubic-bezier(0, 0, 0.58, 1);
+  /* Open: expo-out — réactif au départ, settle très doux */
+  transition: max-height 380ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-/* Seam radius matches where the panel attaches */
+/* Seam radius */
 .player-wrap:not(.playlist-below) .playlist {
   border-radius: var(--radius-btn) var(--radius-btn) 0 0;
+  border-bottom: none;
 }
 .player-wrap.playlist-below .playlist {
   border-radius: 0 0 var(--radius-btn) var(--radius-btn);
+  border-top: none;
 }
 
-/* Glass shell — FIXED oversized height so blur surface never resizes.
-   NO border-radius here — .playlist (the overflow:hidden parent) handles the clip.
-   This eliminates the "glass corner bump" artifact at the final frames of close:
-   as height → 0, the container's rounded clip fades content cleanly into the arcs. */
+/* Glass shell — backdrop-filter retiré.
+   Cause racine du flicker : backdrop-filter dans un overflow:hidden animé
+   force un repaint GPU à chaque frame sur WebKit. Le fond opaque du
+   parent .playlist (glass-bg = rgba(0,0,0,0.72)) suffit. */
 .playlist-glass {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 400px; /* larger than max content — blur surface is static, no repaint */
-  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  z-index: 0;
-}
-/* Match border-radius to parent clip so the glass border follows the same arc.
-   Without matching radius, the straight glass border gets clipped at the corners
-   by the parent's overflow:hidden arc → border appears to break/disappear. */
-.player-wrap:not(.playlist-below) .playlist-glass {
-  border-bottom: none;
-  border-radius: var(--radius-btn) var(--radius-btn) 0 0;
-}
-.player-wrap.playlist-below .playlist-glass {
-  border-top: none;
-  border-radius: 0 0 var(--radius-btn) var(--radius-btn);
+  display: none; /* plus nécessaire — fond géré par .playlist */
 }
 
 /* Content + scroll container */
@@ -1128,11 +1117,13 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: 24px;
   max-height: 320px; overflow-y: auto;
   opacity: 0;
-  /* Open: ease-out with slight delay so content fades in after panel opens */
-  transition: opacity var(--dur-short) var(--ease-out) var(--delay-content);
+  /* Close: fade-out immédiat, plus rapide que le panel, ease-in — pas de delay */
+  transition: opacity 140ms cubic-bezier(0.55, 0, 1, 0.45) 0ms;
 }
 .playlist.open .playlist-inner {
   opacity: 1;
+  /* Open: fade-in après que le panel a commencé, ease-out — contenu arrive après le conteneur */
+  transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1) 60ms;
 }
 
 .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
