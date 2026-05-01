@@ -1004,96 +1004,54 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 /* ── Player ── */
-/* player-wrap is the flex column container — playlist + player-inner are siblings */
+/* player-wrap: positioning shell only — single child: player-shell */
 .player-wrap {
   position: fixed; bottom: var(--space); right: var(--space);
   width: var(--modal-6col); z-index: var(--z-player);
   pointer-events: none;
-  display: flex; flex-direction: column; align-items: stretch;
 }
-/* When player is near top: flip so playlist opens below player-bar */
-.player-wrap.playlist-below { flex-direction: column-reverse; }
 
-/* player-inner is fixed-size — backdrop-filter NEVER repaints */
+/* ── player-shell: THE permanent visual container ────────────────────────────
+ * Carries border, radius, background, backdrop-filter. NEVER animated.
+ * All animation (playlist expand, content fade) happens inside this shell.
+ * overflow:hidden clips the expanding playlist; shell height grows naturally.
+ * ──────────────────────────────────────────────────────────────────────────── */
+.player-shell {
+  display: flex; flex-direction: column; align-items: stretch;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-btn);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  overflow: hidden;
+}
+/* When player is near top: flip column so playlist opens below player-bar */
+.player-wrap.playlist-below .player-shell { flex-direction: column-reverse; }
+
+/* player-inner: layout wrapper only — no glass props, no border, no backdrop-filter */
 .player-inner {
   pointer-events: all; flex-shrink: 0;
-  border-radius: var(--radius-btn); border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
   position: relative; z-index: var(--z-player-inner);
-  will-change: transform; transform: translateZ(0);
-  backface-visibility: hidden; -webkit-backface-visibility: hidden;
 }
-/* ── Seam: static rules — zero dynamic property changes on backdrop-filter elements ──
- * Root cause of flicker: any CSS change on an element with backdrop-filter triggers
- * a GPU layer repaint, even border-color/radius changes with 0s transitions.
- * Fix: make the seam shape PERMANENT — player-inner always has flat edge toward playlist.
- * When playlist is closed (opacity:0), the flat edge is invisible → no visual trade-off.
- * ──────────────────────────────────────────────────────────────────────────────────── */
-
-/* Playlist ABOVE player-bar (default) — player-inner always has flat top edge */
-.player-wrap:not(.playlist-below) .player-inner {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-top-color: transparent;
-}
-
-/* Playlist BELOW player-bar — player-inner always has flat bottom edge */
-.player-wrap.playlist-below .player-inner {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-bottom-color: transparent;
-}
-
-/* ── Playlist panel — max-height collapse + GPU composited ── */
-/*
- * Root fix for trembling:
- *  1. player-inner has will-change:transform + translateZ(0) → its own compositing layer.
- *     Playlist height changes do NOT repaint player-inner's blur.
- *  2. max-height animation avoids the JS double-offsetHeight timing hack that
- *     caused frame-skip trembling. CSS handles the entire open/close lifecycle.
- *  3. playlist-glass has a fixed oversized height → blur surface is static, zero repaint.
- *  4. Open uses ease-out (decelerate), close uses ease-in (accelerate) — symmetric perceived speed.
- */
+/* ── Playlist panel — animates inside player-shell ────────────────────────── */
 .playlist {
-  position: relative;
+  /* Layout only — no glass props (shell handles border, radius, backdrop-filter) */
   max-height: 0;
-  min-height: 0; /* override flex min-height:auto so item can fully collapse to 0 */
+  min-height: 0; /* override flex min-height:auto */
   overflow: hidden;
   pointer-events: none;
-  opacity: 0; /* hides border residual at max-height:0 + any background bleed-through */
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));       /* glass look when open */
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  /* Close: opacity leads (disappears first), then height collapses */
-  transition: max-height 260ms cubic-bezier(0.55, 0, 0.55, 0.9),
-              opacity     160ms cubic-bezier(0.55, 0, 1, 0.45);
+  /* Close: accelerate */
+  transition: max-height 260ms cubic-bezier(0.55, 0, 0.55, 0.9);
 }
 .playlist.open {
   max-height: 400px;
-  opacity: 1;
   pointer-events: all;
-  /* Open: both animate expo-out — opacity slightly shorter, height continues settling */
-  transition: max-height 380ms cubic-bezier(0.16, 1, 0.3, 1),
-              opacity     200ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-/* Seam radius */
-.player-wrap:not(.playlist-below) .playlist {
-  border-radius: var(--radius-btn) var(--radius-btn) 0 0;
-  border-bottom: none;
-}
-.player-wrap.playlist-below .playlist {
-  border-radius: 0 0 var(--radius-btn) var(--radius-btn);
-  border-top: none;
+  /* Open: expo-out */
+  transition: max-height 380ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Glass shell — plus nécessaire. backdrop-filter est maintenant sur .playlist directement.
-   L'animation opacity 0→1 sur .playlist masque tout artefact de rendu blur pendant
-   les premières frames, rendant le repaint GPU imperceptible. */
-.playlist-glass {
-  display: none;
-}
+/* playlist-glass not needed — shell is the glass layer */
+.playlist-glass { display: none; }
 
 /* Content + scroll container */
 .playlist-inner {
@@ -1554,8 +1512,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     left: var(--space); right: var(--space); width: auto;
     bottom: calc(var(--space) + env(safe-area-inset-bottom,0px));
   }
-  .player-inner {
-    grid-column: unset;
+  .player-inner { grid-column: unset; }
+  .player-shell {
     border-radius: var(--radius);
     border: 1px solid var(--border-default);
   }
@@ -3951,9 +3909,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 
 <!-- PLAYER -->
 <div class="player-wrap">
-  <!-- Playlist panel: sibling of player-inner, NOT a child.
-       Separating it means player-inner's backdrop-filter never repaints.
-       clip-path animation on .playlist is GPU-composited (no layout change). -->
+  <div class="player-shell">
   <div class="playlist" id="playlist">
     <div class="playlist-glass"></div>
     <div class="playlist-inner">
@@ -4027,7 +3983,8 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       </div>
     </div>
   </div>
-</div>
+  </div><!-- /.player-shell -->
+</div><!-- /.player-wrap -->
 
 <script>
 /* ── SVG helper ── */
@@ -5247,11 +5204,10 @@ function _closePl() {
 function _openPl() {
   plOpen = true;
   plBtnD.classList.add('active');
-  /* Adding .open sets max-height:400px via CSS with ease-out enter transition.
-     No JS timing hack needed — CSS max-height animation is stable and reflow-free
-     from the player-inner's perspective (will-change:transform isolates its layer). */
+  /* Adding .open sets max-height:400px via CSS expo-out transition.
+     player-shell (border, radius, backdrop-filter) is the stable outer container —
+     it never changes properties, only its height grows as the playlist expands inside. */
   plPanel.classList.add('open');
-  /* CSS sibling selector (.playlist.open + .player-inner) handles the seam instantly. */
   // Scroll mask — only in tracklist mode with long content
   const inner = plPanel.querySelector('.playlist-inner');
   if (inner && plPanel.classList.contains('tracklist')) {
