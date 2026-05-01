@@ -1011,62 +1011,46 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   pointer-events: none;
 }
 
-/* ── player-shell: permanent visual shell — ref: nav-panel ─────────────────
- * Carries border, radius, overflow:hidden. NEVER animated, NEVER changes.
- * backdrop-filter is intentionally absent here: it lives on .player-glass
- * (a fixed-size child inside player-inner), so it never repaints during the
- * playlist expand/collapse. Same principle as nav-panel: the glass card shape
- * is stable, only interior content moves.
- * State class .extended goes on THIS element (mirrors nav-panel.sb-icons).
+/* ── player-shell: the SINGLE visual object ─────────────────────────────────
+ * Carries ALL visual identity: border, radius, background, backdrop-filter.
+ * This is the only glass surface. One material, everywhere, always uniform.
+ * Grows naturally in height as playlist expands — border/radius never change.
+ * State class .extended toggles here (mirrors nav-panel.sb-icons).
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-shell {
   display: flex; flex-direction: column; align-items: stretch;
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-btn);
-  overflow: hidden; /* clips playlist — no glass bg on shell, children fill it */
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  overflow: hidden;
 }
 /* When player is near top: flip column so playlist opens below player-bar */
 .player-wrap.playlist-below .player-shell { flex-direction: column-reverse; }
 
-/* player-inner: layout wrapper + glass host
- * .player-glass inside it carries the backdrop-filter at FIXED size → zero repaint. */
+/* player-inner: layout only — shell provides all glass identity */
 .player-inner {
   pointer-events: all; flex-shrink: 0;
   position: relative; z-index: var(--z-player-inner);
 }
 
-/* ── player-glass: isolated glass layer — STATIC, fixed to player-bar area ──
- * Clipped by player-shell overflow:hidden → respects shell radius.
- * Animating max-height on .playlist DOES NOT affect this element → no repaint. */
-.player-glass {
-  position: absolute; inset: 0;
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  z-index: 0;
-}
-.player-bar { position: relative; z-index: 1; }
-/* ── Playlist panel — ref: nav-panel width animation ────────────────────────
- * State class .extended is on player-shell (not on .playlist) — mirrors nav-panel.sb-icons.
- * Easing: 240ms symmetric, mirrored curves — exact same philosophy as nav-panel.
- *   Open  (ease-out  cubic-bezier(0,0,0.58,1))  — panel decelerates into place
- *   Close (ease-in   cubic-bezier(0.42,0,1,1))  — panel accelerates away
- * backdrop-filter is NOT here — it's on .player-glass (zero repaint).
+/* ── Playlist panel ──────────────────────────────────────────────────────────
+ * height animated via JS with exact measured values — zero wasted curve range.
+ * No CSS transition here: JS sets inline transition on open/close so the easing
+ * covers exactly 0→contentH (open) and contentH→0 (close) with no invisible phase.
+ * Pointer-events driven by .extended class on shell (same cascade as nav-panel).
  * ──────────────────────────────────────────────────────────────────────────── */
 .playlist {
-  max-height: 0;
+  height: 0;
   min-height: 0; /* override flex min-height:auto */
   overflow: hidden;
   pointer-events: none;
-  background: rgba(12, 12, 16, 0.96); /* near-opaque dark — no blur needed, no bleed-through */
-  /* Close (fires when .extended removed from shell): ease-in — mirror of open */
-  transition: max-height 240ms cubic-bezier(0.42, 0, 1, 1);
+  /* no background — shell is the unified visual surface */
 }
 .player-shell.extended .playlist {
-  max-height: 400px;
   pointer-events: all;
-  /* Open (fires when .extended added to shell): ease-out */
-  transition: max-height 240ms cubic-bezier(0, 0, 0.58, 1);
+  /* height transition driven by JS inline style — not declared here */
 }
 
 /* playlist-glass not needed */
@@ -3964,7 +3948,6 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   </div>
 
   <div class="player-inner">
-    <div class="player-glass"></div><!-- fixed-size glass layer: backdrop-filter here, never repaints -->
     <div class="player-bar">
       <div class="player-bar-main">
         <button class="play-btn" id="play-btn" aria-label="Play / Pause"></button>
@@ -5223,21 +5206,59 @@ const playerShell = document.querySelector('.player-shell'); /* state owner — 
 const cookieEl   = document.getElementById('panel-cookie');
 const plBtnD     = document.getElementById('playlist-btn');
 
+/* ── Playlist easing constants — mirrors nav-panel expand/collapse curves ── */
+const PL_EASE_OUT = 'cubic-bezier(0, 0, 0.58, 1)';   /* open:  decelerate in */
+const PL_EASE_IN  = 'cubic-bezier(0.42, 0, 1, 1)';   /* close: accelerate out */
+const PL_DUR      = 240;                               /* ms — same as nav-panel */
+
 function _closePl() {
   plOpen = false;
   plBtnD.classList.remove('active');
-  /* State class on shell — same pattern as nav-panel.sb-icons.
-     CSS ease-in transition fires automatically on .extended removal. */
+  clearTimeout(plPanel._plTimer);
+
+  /* Capture rendered height at this exact moment (handles mid-open interrupts).
+     offsetHeight = current box height including any in-progress animation. */
+  const currentH = plPanel.offsetHeight;
+  plPanel.style.transition = 'none';
+  plPanel.style.height = currentH + 'px';
+  plPanel.offsetHeight; /* force reflow — commit the lock */
+
+  /* Animate from current to 0: easing covers exactly the visible range */
+  plPanel.style.transition = `height ${PL_DUR}ms ${PL_EASE_IN}`;
+  plPanel.style.height = '0';
+
+  /* State class drives playlist-inner opacity+transform (CSS cascade) */
   playerShell.classList.remove('extended');
 }
 
 function _openPl() {
   plOpen = true;
   plBtnD.classList.add('active');
-  /* State class on shell — same pattern as nav-panel.sb-icons.
-     CSS ease-out transition fires automatically on .extended addition. */
+  clearTimeout(plPanel._plTimer);
+
+  /* Measure exact content height:
+     1. temporarily set height:auto with no transition to read scrollHeight
+     2. restore to current rendered height before reflow
+     3. then animate to measured target — easing covers exactly 0→contentH */
+  plPanel.style.transition = 'none';
+  plPanel.style.height = 'auto';
+  const targetH = plPanel.scrollHeight;
+  plPanel.style.height = plPanel.offsetHeight + 'px'; /* current (likely 0) */
+  plPanel.offsetHeight; /* force reflow */
+
+  plPanel.style.transition = `height ${PL_DUR}ms ${PL_EASE_OUT}`;
+  plPanel.style.height = targetH + 'px';
+
+  /* After animation completes, release to auto so content changes resize freely */
+  plPanel._plTimer = setTimeout(() => {
+    plPanel.style.transition = 'none';
+    plPanel.style.height     = 'auto';
+  }, PL_DUR + 16);
+
+  /* State class drives playlist-inner opacity+transform (CSS cascade) */
   playerShell.classList.add('extended');
-  // Scroll mask — only in tracklist mode with long content
+
+  /* Scroll fade-mask — tracklist mode only */
   const inner = plPanel.querySelector('.playlist-inner');
   if (inner && plPanel.classList.contains('tracklist')) {
     const updateMask = () => {
