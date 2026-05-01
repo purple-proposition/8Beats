@@ -229,11 +229,18 @@
   --ease-hover:    cubic-bezier(0, 0, 0.2, 1);       /* décelération pure — réponse instantanée (pente ≈5 à t=0) */
   --ease-collapse: cubic-bezier(0.4, 0, 0.15, 1);   /* sidebar collapse/expand */
 
+  /* Motion system — canonical tokens (per spec) */
+  --ease-out:    cubic-bezier(0.0, 0.0, 0.2, 1);    /* decelerate - enter */
+  --ease-in:     cubic-bezier(0.4, 0.0, 1.0, 1.0);  /* accelerate - exit */
+  --ease-inout:  cubic-bezier(0.4, 0.0, 0.2, 1);    /* standard */
+  --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);  /* subtle spring — ONLY for scale */
+
   /* Durées — échelle à 5 paliers */
-  --dur-micro:   100ms;   /* fill · stroke · color swap */
-  --dur-short:   180ms;   /* hover bg · border · indicateur */
-  --dur-medium:  260ms;   /* dropdown · popup · small panel */
-  --dur-large:   340ms;   /* overlay · modal · drawer */
+  --dur-micro:   80ms;    /* fill · stroke · color swap · hover icons */
+  --dur-short:   160ms;   /* hover bg · border · indicateur · vol popup */
+  --dur-medium:  240ms;   /* dropdown · popup · small panel · playlist */
+  --dur-long:    320ms;   /* overlay · modal · drawer */
+  --dur-large:   320ms;   /* alias de long */
   --dur-tooltip: 152ms;   /* tooltip enter/exit — entre micro et short */
 
   /* Stagger — discret, jamais cinématique */
@@ -251,8 +258,6 @@
   --dur-panel:      var(--dur-medium);
   --dur-fade:       160ms;              /* garder 160ms — fade contenu interne */
   --dur-stagger:    var(--stagger-tight);
-  --ease-out:       var(--ease-hover);
-  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1); /* garder pour cas spécifiques */
   --ease-panel:     var(--ease-standard);
   --ease-panel-out: var(--ease-exit);
 
@@ -1017,6 +1022,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
   position: relative; z-index: var(--z-player-inner);
   will-change: transform; transform: translateZ(0);
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
 }
 /* ── Seam: CSS sibling selector — no JS timing involved ──────────────────────
  * Default (closed): delayed-snap — border-radius/color snap back AFTER
@@ -1055,26 +1061,31 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
               border-bottom-color var(--dur-short) var(--ease-hover);
 }
 
-/* ── Playlist panel — height collapse + fixed-size glass blur ── */
+/* ── Playlist panel — max-height collapse + GPU composited ── */
 /*
- * Root fix for flicker:
- *  1. player-inner is a fixed-size sibling → its blur NEVER repaints.
- *  2. playlist-glass has a fixed oversized height (not inset:0) →
- *     its blur surface NEVER resizes → zero blur repaint during animation.
- *  3. Only .playlist height changes — that's a pure layout change on a
- *     separate compositing layer, with no blur involved.
+ * Root fix for trembling:
+ *  1. player-inner has will-change:transform + translateZ(0) → its own compositing layer.
+ *     Playlist height changes do NOT repaint player-inner's blur.
+ *  2. max-height animation avoids the JS double-offsetHeight timing hack that
+ *     caused frame-skip trembling. CSS handles the entire open/close lifecycle.
+ *  3. playlist-glass has a fixed oversized height → blur surface is static, zero repaint.
+ *  4. Open uses ease-out (decelerate), close uses ease-in (accelerate) — symmetric perceived speed.
  */
 .playlist {
   position: relative;
-  height: 0;
+  max-height: 0;
   min-height: 0; /* override flex min-height:auto so item can fully collapse to 0 */
   overflow: hidden;
   pointer-events: none;
-  will-change: height;
-  transition: height var(--dur-panel) var(--ease-collapse);
+  will-change: max-height;
+  /* Close: ease-in (accelerate — exit feels snappy) */
+  transition: max-height var(--dur-medium) var(--ease-in);
 }
 .playlist.open {
+  max-height: 400px; /* larger than any content — CSS handles the animate-to-open */
   pointer-events: all;
+  /* Open: ease-out (decelerate — enter feels organic) */
+  transition: max-height var(--dur-medium) var(--ease-out);
 }
 /* Seam radius matches where the panel attaches */
 .player-wrap:not(.playlist-below) .playlist {
@@ -1117,7 +1128,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: 24px;
   max-height: 320px; overflow-y: auto;
   opacity: 0;
-  transition: opacity var(--dur-fade) var(--ease-hover);
+  /* Open: ease-out with slight delay so content fades in after panel opens */
+  transition: opacity var(--dur-short) var(--ease-out) var(--delay-content);
 }
 .playlist.open .playlist-inner {
   opacity: 1;
@@ -1220,10 +1232,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .player-bar-main { min-height: 0; display: flex; align-items: center; padding: var(--space-5); gap: var(--space-5); }
 
-.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover), transform var(--dur-micro) var(--ease-hover); color: var(--icon-secondary); }
+.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color var(--dur-micro) var(--ease-out), background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out); color: var(--icon-secondary); }
 .play-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 .play-btn:active { transform: scale(0.92); }
-.play-btn svg { fill: currentColor; stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
+.play-btn svg { fill: currentColor; stroke: none; transition: fill var(--dur-micro) var(--ease-out); }
 
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; height: 68px; gap: 0; }
 .player-info-top { display: flex; align-items: center; gap: var(--space-3); }
@@ -1246,14 +1258,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   background: transparent; border: 1px solid var(--border-btn);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; flex-shrink: 0; color: var(--icon-secondary);
-  transition: border-color var(--dur-micro) var(--ease-hover),
-              background var(--dur-short) var(--ease-hover),
-              color var(--dur-micro) var(--ease-hover),
-              transform var(--dur-micro) var(--ease-hover);
+  transition: border-color var(--dur-micro) var(--ease-out),
+              background var(--dur-short) var(--ease-out),
+              color var(--dur-micro) var(--ease-out),
+              transform var(--dur-micro) var(--ease-out);
 }
 .icon-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 .icon-btn:active { transform: scale(0.92); }
-.icon-btn svg { width: 16px; height: 16px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; transition: stroke var(--dur-micro) var(--ease-hover); }
+.icon-btn svg { width: 16px; height: 16px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; transition: stroke var(--dur-micro) var(--ease-out); }
 /* Ghost variant — no border, fill SVG (mno-social, nav drawer social) */
 .icon-btn--ghost { border-color: transparent; background: transparent; }
 .icon-btn--ghost:hover { border-color: transparent; background: transparent; }
@@ -1261,7 +1273,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Social variant — has border, fill SVG (about page social links) */
 .icon-btn--social svg { fill: currentColor; stroke: none; }
 /* Spotify variant — has border, fill SVG using icon-secondary token */
-.icon-btn--spotify svg { fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-hover); }
+.icon-btn--spotify svg { fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-out); }
 .icon-btn--spotify:hover svg { fill: var(--text-primary); }
 /* Action variant — has .active selected state (show follow/bookmark) */
 .icon-btn--action.active { border-color: var(--border-hover); background: var(--surface-hover); color: var(--text-primary); }
@@ -1292,38 +1304,55 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* vol-wrap: flow anchor in player bar — vol-popup is absolutely positioned inside it */
 .vol-wrap { flex-shrink: 0; width: 32px; height: 32px; position: relative; }
 
-/* vol-popup: growing button (track + face in one pill), anchored to vol-wrap */
+/* vol-popup: growing button (track + face in one pill), anchored to vol-wrap.
+   backdrop-filter is on .vol-popup-glass (fixed-size child) NOT on vol-popup itself,
+   so the blur surface never resizes during the height animation — zero blur repaint. */
 .vol-popup {
   position: absolute;
   bottom: 0; left: 0;
   z-index: 10;
   display: flex; flex-direction: column; align-items: center;
   background: transparent;
-  backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
   border: 1px solid var(--border-btn); border-radius: var(--radius-control);
   width: 32px; height: 32px;
-  transition: height var(--dur-medium) var(--ease-standard),
-              background var(--dur-short) var(--ease-hover),
-              border-color var(--dur-short) var(--ease-hover),
-              backdrop-filter var(--dur-short) var(--ease-hover),
-              -webkit-backdrop-filter var(--dur-short) var(--ease-hover),
-              transform var(--dur-micro) var(--ease-hover);
+  overflow: hidden;
+  will-change: height;
+  /* Close: ease-in (accelerate — snappy exit). Open: see .vol-open below */
+  transition: height var(--dur-short) var(--ease-in),
+              border-color var(--dur-short) var(--ease-out),
+              transform var(--dur-micro) var(--ease-out);
 }
-.vol-popup:not(.vol-open):hover { background: var(--surface-btn-hover); border-color: var(--border-hover); }
+/* Glass shell — fixed oversized height so blur surface never resizes during height anim */
+.vol-popup-glass {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 200px; /* larger than open height (146px) — blur is static, no repaint */
+  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: var(--glass-bg);
+  border-radius: var(--radius-control);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity var(--dur-short) var(--ease-out);
+}
+.vol-popup.vol-open .vol-popup-glass { opacity: 1; }
+.vol-popup:not(.vol-open):hover { border-color: var(--border-hover); }
 .vol-popup:not(.vol-open):active { transform: scale(0.92); }
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
   border-color: var(--glass-border);
+  /* Open: ease-out (decelerate — organic enter) */
+  transition: height var(--dur-short) var(--ease-out),
+              border-color var(--dur-short) var(--ease-out),
+              transform var(--dur-micro) var(--ease-out);
 }
 .vol-track-area {
   flex: 1; min-height: 0; overflow: hidden; display: flex; align-items: center; justify-content: center;
   width: 100%; padding: 0; opacity: 0; pointer-events: none;
   touch-action: none;
-  transition: opacity var(--dur-fade) var(--ease-hover) var(--delay-content),
-              transform var(--dur-panel) var(--ease-panel) var(--delay-content);
+  position: relative; z-index: 1;
+  transition: opacity var(--dur-short) var(--ease-out) var(--delay-content),
+              transform var(--dur-short) var(--ease-out) var(--delay-content);
 }
 /* Direction-aware entrance: slide from the side the track-area enters from */
 .vol-popup:not([data-dir="below"]) .vol-track-area { transform: translateY(4px); }
@@ -1346,10 +1375,18 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .vol-track { width: 4px; height: 88px; background: var(--border-hover); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }
 .vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
 .vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
-.vol-btn-face { width: 32px; height: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: var(--icon-secondary); padding: 0; transition: color var(--dur-micro) var(--ease-hover); }
+.vol-btn-face {
+  width: 32px; height: 32px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--icon-secondary); padding: 0;
+  position: relative; z-index: 1; /* above .vol-popup-glass */
+  transition: color var(--dur-micro) var(--ease-out);
+}
 .vol-btn-face:hover { color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face { color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face:hover { color: var(--text-primary); }
+/* SVGs are stacked via JS initVolIcons — position:absolute, opacity crossfade */
 .vol-btn-face svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; }
 
 /* ============================================================
@@ -3987,6 +4024,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           </button>
           <div class="vol-wrap" id="vol-wrap">
             <div class="vol-popup" id="vol-popup">
+              <div class="vol-popup-glass"></div>
               <div class="vol-track-area" id="vol-slider">
                 <div class="vol-track" id="vol-track">
                   <div class="vol-fill" id="vol-fill" style="height:75%"></div>
@@ -5220,35 +5258,21 @@ const playerInner = document.querySelector('.player-inner');
 const cookieEl   = document.getElementById('panel-cookie');
 const plBtnD     = document.getElementById('playlist-btn');
 
-/* Measure real panel height via .playlist-inner — avoids the fixed-size .playlist-glass
-   (position:absolute, 400px) inflating plPanel.scrollHeight to 400 instead of content height. */
-function _plContentH() {
-  const inner = plPanel.querySelector('.playlist-inner');
-  return inner ? inner.offsetHeight : 0;
-}
-
 function _closePl() {
   plOpen = false;
   plBtnD.classList.remove('active');
-  plPanel.style.height = '0';
+  /* max-height:0 is set via CSS on :not(.open) — just remove the class.
+     CSS handles ease-in exit transition automatically. No JS height manipulation
+     means zero frame-skip trembling. The seam delayed-snap fires at --dur-medium. */
   plPanel.classList.remove('open');
-  /* CSS sibling selector (.playlist.open + .player-inner) handles the seam
-     radius/color — delayed-snap fires at t=var(--dur-panel), zero JS needed. */
 }
 
 function _openPl() {
   plOpen = true;
   plBtnD.classList.add('active');
-  /* Suspend transition, commit height:0, restore transition, then animate to content height.
-     Double offsetHeight ensures both the "transition:none → CSS" and the "height:0"
-     are committed before we set the target height — prevents the browser from batching
-     the transition restore + height change into a single frame (which skips the animation). */
-  plPanel.style.transition = 'none';
-  plPanel.style.height = '0';
-  plPanel.offsetHeight; // commit: transition=none, height=0
-  plPanel.style.transition = '';
-  plPanel.offsetHeight; // commit: transition=CSS, height=0 — next write triggers animation
-  plPanel.style.height = _plContentH() + 'px'; // animate to content height (px, never auto)
+  /* Adding .open sets max-height:400px via CSS with ease-out enter transition.
+     No JS timing hack needed — CSS max-height animation is stable and reflow-free
+     from the player-inner's perspective (will-change:transform isolates its layer). */
   plPanel.classList.add('open');
   /* CSS sibling selector (.playlist.open + .player-inner) handles the seam instantly. */
   // Scroll mask — only in tracklist mode with long content
@@ -5304,7 +5328,29 @@ const VOL = {
   high: '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
 };
 
-function renderVol() { const icon=volPct===0?VOL.mute:volPct<50?VOL.low:VOL.high; volBtn.innerHTML=''; volBtn.appendChild(mkSvg(icon,16,'currentColor')); }
+/* Pre-render all three vol icon states as stacked SVGs with opacity crossfade.
+   No innerHTML replacement during state changes — avoids layout thrash and icon jump.
+   Each SVG is position:absolute so they stack without affecting layout dimensions. */
+(function initVolIcons() {
+  const keys = ['mute', 'low', 'high'];
+  keys.forEach(k => {
+    const svg = mkSvg(VOL[k], 16, 'currentColor');
+    svg.dataset.volState = k;
+    svg.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 80ms cubic-bezier(0,0,0.2,1);pointer-events:none;';
+    volBtn.appendChild(svg);
+  });
+  volBtn.style.position = 'relative';
+})();
+
+let _volState = '';
+function renderVol() {
+  const state = volPct === 0 ? 'mute' : volPct < 50 ? 'low' : 'high';
+  if (state === _volState) return;
+  _volState = state;
+  volBtn.querySelectorAll('[data-vol-state]').forEach(svg => {
+    svg.style.opacity = svg.dataset.volState === state ? '1' : '0';
+  });
+}
 renderVol();
 
 /**
