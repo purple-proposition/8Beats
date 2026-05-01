@@ -1011,49 +1011,71 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   pointer-events: none;
 }
 
-/* ── player-shell: THE permanent visual container ────────────────────────────
- * Carries border, radius, background, backdrop-filter. NEVER animated.
- * All animation (playlist expand, content fade) happens inside this shell.
- * overflow:hidden clips the expanding playlist; shell height grows naturally.
+/* ── player-shell: permanent visual shell — ref: nav-panel ─────────────────
+ * Carries border, radius, overflow:hidden. NEVER animated, NEVER changes.
+ * backdrop-filter is intentionally absent here: it lives on .player-glass
+ * (a fixed-size child inside player-inner), so it never repaints during the
+ * playlist expand/collapse. Same principle as nav-panel: the glass card shape
+ * is stable, only interior content moves.
+ * State class .extended goes on THIS element (mirrors nav-panel.sb-icons).
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-shell {
   display: flex; flex-direction: column; align-items: stretch;
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-btn);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  overflow: hidden;
+  overflow: hidden; /* clips playlist — no glass bg on shell, children fill it */
 }
 /* When player is near top: flip column so playlist opens below player-bar */
 .player-wrap.playlist-below .player-shell { flex-direction: column-reverse; }
 
-/* player-inner: layout wrapper only — no glass props, no border, no backdrop-filter */
+/* player-inner: layout wrapper + glass host
+ * .player-glass inside it carries the backdrop-filter at FIXED size → zero repaint. */
 .player-inner {
   pointer-events: all; flex-shrink: 0;
   position: relative; z-index: var(--z-player-inner);
 }
-/* ── Playlist panel — animates inside player-shell ────────────────────────── */
+
+/* ── player-glass: isolated glass layer — STATIC, fixed to player-bar area ──
+ * Clipped by player-shell overflow:hidden → respects shell radius.
+ * Animating max-height on .playlist DOES NOT affect this element → no repaint. */
+.player-glass {
+  position: absolute; inset: 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  z-index: 0;
+}
+.player-bar { position: relative; z-index: 1; }
+/* ── Playlist panel — ref: nav-panel width animation ────────────────────────
+ * State class .extended is on player-shell (not on .playlist) — mirrors nav-panel.sb-icons.
+ * Easing: 240ms symmetric, mirrored curves — exact same philosophy as nav-panel.
+ *   Open  (ease-out  cubic-bezier(0,0,0.58,1))  — panel decelerates into place
+ *   Close (ease-in   cubic-bezier(0.42,0,1,1))  — panel accelerates away
+ * backdrop-filter is NOT here — it's on .player-glass (zero repaint).
+ * ──────────────────────────────────────────────────────────────────────────── */
 .playlist {
-  /* Layout only — no glass props (shell handles border, radius, backdrop-filter) */
   max-height: 0;
   min-height: 0; /* override flex min-height:auto */
   overflow: hidden;
   pointer-events: none;
-  /* Close: accelerate */
-  transition: max-height 260ms cubic-bezier(0.55, 0, 0.55, 0.9);
+  background: rgba(12, 12, 16, 0.96); /* near-opaque dark — no blur needed, no bleed-through */
+  /* Close (fires when .extended removed from shell): ease-in — mirror of open */
+  transition: max-height 240ms cubic-bezier(0.42, 0, 1, 1);
 }
-.playlist.open {
+.player-shell.extended .playlist {
   max-height: 400px;
   pointer-events: all;
-  /* Open: expo-out */
-  transition: max-height 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Open (fires when .extended added to shell): ease-out */
+  transition: max-height 240ms cubic-bezier(0, 0, 0.58, 1);
 }
 
-/* playlist-glass not needed — shell is the glass layer */
+/* playlist-glass not needed */
 .playlist-glass { display: none; }
 
-/* Content + scroll container */
+/* ── Playlist content — ref: nav-label reveal ───────────────────────────────
+ * opacity + translateY mirrors nav-label's opacity + translateX.
+ * Content retreats upward on close (direction = toward playlist open direction).
+ * ──────────────────────────────────────────────────────────────────────────── */
 .playlist-inner {
   position: relative; z-index: 1;
   padding: var(--space-4) var(--space-5) var(--space-3);
@@ -1061,14 +1083,21 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   gap: 24px;
   max-height: 320px; overflow-y: auto;
   opacity: 0;
-  /* Close: fade-out immédiat, plus rapide que le panel, ease-in — pas de delay */
-  transition: opacity 140ms cubic-bezier(0.55, 0, 1, 0.45) 0ms;
+  transform: translateY(-10px);
+  /* Close: ease-in, immediate — content disappears before height collapses */
+  transition: opacity   120ms cubic-bezier(0.42, 0, 1, 1) 0ms,
+              transform 120ms cubic-bezier(0.42, 0, 1, 1) 0ms;
 }
-.playlist.open .playlist-inner {
+.player-shell.extended .playlist-inner {
   opacity: 1;
-  /* Open: fade-in après que le panel a commencé, ease-out — contenu arrive après le conteneur */
-  transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1) 60ms;
+  transform: translateY(0);
+  /* Open: ease-out, 40ms delay — content arrives after shell starts expanding */
+  transition: opacity   200ms cubic-bezier(0, 0, 0.58, 1) 40ms,
+              transform 200ms cubic-bezier(0, 0, 0.58, 1) 40ms;
 }
+/* Playlist-below: content retreats downward (opposite direction) */
+.player-wrap.playlist-below .playlist-inner { transform: translateY(10px); }
+.player-wrap.playlist-below .player-shell.extended .playlist-inner { transform: translateY(0); }
 
 .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .playlist-header-meta { font-size: var(--text-xs); color: var(--text-tertiary); letter-spacing: .04em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: right; }
@@ -3935,6 +3964,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   </div>
 
   <div class="player-inner">
+    <div class="player-glass"></div><!-- fixed-size glass layer: backdrop-filter here, never repaints -->
     <div class="player-bar">
       <div class="player-bar-main">
         <button class="play-btn" id="play-btn" aria-label="Play / Pause"></button>
@@ -5189,25 +5219,24 @@ let plOpen = false;
 const plPanel    = document.getElementById('playlist');
 const playerWrap = document.querySelector('.player-wrap');
 const playerInner = document.querySelector('.player-inner');
+const playerShell = document.querySelector('.player-shell'); /* state owner — mirrors nav-panel */
 const cookieEl   = document.getElementById('panel-cookie');
 const plBtnD     = document.getElementById('playlist-btn');
 
 function _closePl() {
   plOpen = false;
   plBtnD.classList.remove('active');
-  /* max-height:0 is set via CSS on :not(.open) — just remove the class.
-     CSS handles ease-in exit transition automatically. No JS height manipulation
-     means zero frame-skip trembling. The seam delayed-snap fires at --dur-medium. */
-  plPanel.classList.remove('open');
+  /* State class on shell — same pattern as nav-panel.sb-icons.
+     CSS ease-in transition fires automatically on .extended removal. */
+  playerShell.classList.remove('extended');
 }
 
 function _openPl() {
   plOpen = true;
   plBtnD.classList.add('active');
-  /* Adding .open sets max-height:400px via CSS expo-out transition.
-     player-shell (border, radius, backdrop-filter) is the stable outer container —
-     it never changes properties, only its height grows as the playlist expands inside. */
-  plPanel.classList.add('open');
+  /* State class on shell — same pattern as nav-panel.sb-icons.
+     CSS ease-out transition fires automatically on .extended addition. */
+  playerShell.classList.add('extended');
   // Scroll mask — only in tracklist mode with long content
   const inner = plPanel.querySelector('.playlist-inner');
   if (inner && plPanel.classList.contains('tracklist')) {
@@ -5920,7 +5949,7 @@ function openShowTracklist() {
   if (tracklistPopupOpen) { closeShowTracklist(); return; }
   // Close player tracklist panel if open (but leave last-played intact)
   if (plOpen && plPanel && plPanel.classList.contains('tracklist')) {
-    plOpen = false; plPanel.classList.remove('open');
+    plOpen = false; if (playerShell) playerShell.classList.remove('extended');
     if (plBtnD) plBtnD.classList.remove('active');
   }
   const popup = document.getElementById('show-tracklist-popup');
