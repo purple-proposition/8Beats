@@ -1031,6 +1031,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
+  contain: layout paint; /* scope layout recalc + repaint to this element */
 }
 /* When player is near top: flip column so playlist opens below player-bar */
 .player-wrap.playlist-below .player-shell { flex-direction: column-reverse; }
@@ -1041,54 +1042,60 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   position: relative; z-index: var(--z-player-inner);
 }
 
-/* ── Playlist panel ──────────────────────────────────────────────────────────
- * height animated via JS with exact measured values — zero wasted curve range.
- * No CSS transition here: JS sets inline transition on open/close so the easing
- * covers exactly 0→contentH (open) and contentH→0 (close) with no invisible phase.
- * Pointer-events driven by .extended class on shell (same cascade as nav-panel).
+/* ── Playlist slide wrapper — CSS grid expand (zero JS layout thrashing) ─────
+ * grid-template-rows: 0fr → 1fr is a pure CSS height animation.
+ * No JS reads (scrollHeight/offsetHeight) needed — the browser handles it.
+ * Asymmetric easing: the CURRENT state's transition property is used.
+ *   → Adding .extended applies the open (ease-out) transition  ✓
+ *   → Removing .extended applies the close (ease-in) transition ✓
  * ──────────────────────────────────────────────────────────────────────────── */
+.playlist-slide {
+  display: grid;
+  grid-template-rows: 0fr;
+  /* Close easing — active when transitioning back to default (extended removed) */
+  transition: grid-template-rows var(--dur-playlist) var(--ease-playlist-close);
+}
+.player-shell.extended .playlist-slide {
+  grid-template-rows: 1fr;
+  /* Open easing — active when transitioning to extended state */
+  transition: grid-template-rows var(--dur-playlist) var(--ease-playlist-open);
+}
+
+/* playlist: direct grid child — min-height:0 is required for 0fr collapse */
 .playlist {
-  height: 0;
-  min-height: 0; /* override flex min-height:auto */
+  min-height: 0;
   overflow: hidden;
   pointer-events: none;
-  will-change: height; /* promote to GPU layer — avoids parent reflow during animation */
-  /* no background — shell is the unified visual surface */
 }
-.player-shell.extended .playlist {
-  pointer-events: all;
-  /* height transition driven by JS inline style — not declared here */
-}
+.player-shell.extended .playlist { pointer-events: all; }
 
 /* playlist-glass not needed */
 .playlist-glass { display: none; }
 
-/* ── Playlist content — ref: nav-label reveal ───────────────────────────────
- * opacity + translateY mirrors nav-label's opacity + translateX.
- * Content retreats upward on close (direction = toward playlist open direction).
+/* ── Playlist content reveal — opacity only ──────────────────────────────────
+ * No translateY: the grid row already provides the spatial animation.
+ * Adding translateY on top of a grid-clip creates conflicting reveal directions.
+ * Opacity alone is GPU-composited, zero layout cost, clean on every browser.
+ *
+ * Open:  ease-out, 0ms delay — content appears immediately with the shell.
+ *        The 40ms delay was creating an "empty glass" window (2.5 frames).
+ * Close: ease-in, 0ms delay — content exits fast, shell collapses after.
  * ──────────────────────────────────────────────────────────────────────────── */
 .playlist-inner {
   position: relative; z-index: 1;
   padding: var(--space-4) var(--space-5) var(--space-3);
   display: flex; flex-direction: column;
-  gap: var(--space-5);               /* was hardcoded 24px — now tokenized (--space-5 = 24px) */
+  gap: var(--space-5);
   max-height: 320px; overflow-y: auto;
   opacity: 0;
-  transform: translateY(calc(var(--playlist-content-offset) * -1));
-  /* Close: ease-in, immediate — content disappears before height collapses */
-  transition: opacity   120ms var(--ease-playlist-close) 0ms,
-              transform 120ms var(--ease-playlist-close) 0ms;
+  /* Close: ease-in, fast — content gone before shell finishes collapsing */
+  transition: opacity 120ms var(--ease-playlist-close) 0ms;
 }
 .player-shell.extended .playlist-inner {
   opacity: 1;
-  transform: translateY(0);
-  /* Open: ease-out, delay-content — content arrives after shell starts expanding */
-  transition: opacity   200ms var(--ease-playlist-open) var(--delay-content),
-              transform 200ms var(--ease-playlist-open) var(--delay-content);
+  /* Open: ease-out, 0ms delay — no empty glass flash */
+  transition: opacity 200ms var(--ease-playlist-open) 0ms;
 }
-/* Playlist-below: content retreats downward (opposite direction) */
-.player-wrap.playlist-below .playlist-inner { transform: translateY(var(--playlist-content-offset)); }
-.player-wrap.playlist-below .player-shell.extended .playlist-inner { transform: translateY(0); }
 
 .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .playlist-header-meta { font-size: var(--text-xs); color: var(--text-tertiary); letter-spacing: .04em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: right; }
@@ -3930,6 +3937,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 <!-- PLAYER -->
 <div class="player-wrap">
   <div class="player-shell">
+  <div class="playlist-slide">
   <div class="playlist" id="playlist">
     <div class="playlist-glass"></div>
     <div class="playlist-inner">
@@ -3953,6 +3961,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       </div>
     </div>
   </div>
+  </div><!-- /.playlist-slide -->
 
   <div class="player-inner">
     <div class="player-bar">
@@ -5213,69 +5222,21 @@ const playerShell = document.querySelector('.player-shell'); /* state owner — 
 const cookieEl   = document.getElementById('panel-cookie');
 const plBtnD     = document.getElementById('playlist-btn');
 
-/* ── Playlist motion — read from CSS tokens (single source of truth) ── */
-const _plTokens  = getComputedStyle(document.documentElement);
-const PL_EASE_OUT = _plTokens.getPropertyValue('--ease-playlist-open').trim();
-const PL_EASE_IN  = _plTokens.getPropertyValue('--ease-playlist-close').trim();
-const PL_DUR      = parseInt(_plTokens.getPropertyValue('--dur-medium'), 10); /* strips "ms" → 240 */
 
 function _closePl() {
   plOpen = false;
   plBtnD.classList.remove('active');
-  clearTimeout(plPanel._plTimer);
-
-  /* Capture rendered height at this exact moment (handles mid-open interrupts).
-     offsetHeight = current box height including any in-progress animation. */
-  const currentH = plPanel.offsetHeight;
-  plPanel.style.transition = 'none';
-  plPanel.style.height = currentH + 'px';
-  plPanel.offsetHeight; /* force reflow — commit the lock */
-
-  /* Animate from current to 0: easing covers exactly the visible range */
-  plPanel.style.transition = `height ${PL_DUR}ms ${PL_EASE_IN}`;
-  plPanel.style.height = '0';
-
-  /* State class drives playlist-inner opacity+transform (CSS cascade) */
+  /* CSS grid-template-rows: 1fr → 0fr handles the collapse (ease-in via cascade).
+     No JS height manipulation — zero forced reflows. */
   playerShell.classList.remove('extended');
 }
 
 function _openPl() {
   plOpen = true;
   plBtnD.classList.add('active');
-  clearTimeout(plPanel._plTimer);
-
-  /* ── Step 1: capture start height BEFORE any style mutation ──────────────
-     This must happen first. Any style write + flush (scrollHeight read) will
-     resolve height:auto to the full content height, making offsetHeight return
-     the target height — not the current 0. If we read it after that flush,
-     start === end and the transition animates nothing (the bug). */
-  const startH = plPanel.offsetHeight;
-
-  /* ── Step 2: measure content height by temporarily releasing to auto ─────
-     transition:none prevents WebKit from animating this measurement step. */
-  plPanel.style.transition = 'none';
-  plPanel.style.height = 'auto';
-  const targetH = plPanel.scrollHeight;
-
-  /* ── Step 3: restore to the captured start height and commit ─────────────
-     We use startH (read before the flush) — not offsetHeight (which is now
-     the fully-resolved auto height after the scrollHeight read forced a flush).
-     The offsetHeight read here forces a second flush that commits startH. */
-  plPanel.style.height = startH + 'px';
-  plPanel.offsetHeight; /* force reflow — commits startH as the CSS start state */
-
-  /* ── Step 4: fire transition and state class in the same frame ───────────
-     Both the height animation and content reveal begin here. The content has
-     a --delay-content (40ms) so it appears slightly after height starts moving. */
-  playerShell.classList.add('extended');          /* triggers opacity+translateY on playlist-inner */
-  plPanel.style.transition = `height ${PL_DUR}ms ${PL_EASE_OUT}`;
-  plPanel.style.height = targetH + 'px';          /* animate startH → targetH over 240ms */
-
-  /* After animation completes, release to auto so dynamic content resizes freely */
-  plPanel._plTimer = setTimeout(() => {
-    plPanel.style.transition = 'none';
-    plPanel.style.height     = 'auto';
-  }, PL_DUR + 16);
+  /* CSS grid-template-rows: 0fr → 1fr handles the expansion (ease-out via cascade).
+     No JS height reads/writes — zero forced reflows, no empty-glass flash. */
+  playerShell.classList.add('extended');
 
   /* Scroll fade-mask — tracklist mode only */
   const inner = plPanel.querySelector('.playlist-inner');
