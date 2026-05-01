@@ -465,7 +465,7 @@ h1,
   pointer-events: none;
 }
 
-.nav-pill {
+.nav-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
@@ -595,12 +595,12 @@ html.light .theme-knob { transform: translateX(20px); }
 .nav-ic.nav-dots:hover span { background: var(--text-primary) !important; }
 
 /* ── COLLAPSED STATE ── */
-.nav-pill.collapsed .nav-collapsible-item { max-width: 0; opacity: 0; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-sep.sep-collapsible { max-width: 0; opacity: 0; margin-left: 0 !important; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-soc { max-width: 0; opacity: 0; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-label { max-width: 0; opacity: 0; }
-.nav-pill.collapsed .theme-toggle.nav-collapsible-item { max-width: 0; opacity: 0; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-dots-collapsed { max-width: 24px; opacity: 1; margin-right: 0 !important; }
+.nav-panel.collapsed .nav-collapsible-item { max-width: 0; opacity: 0; margin-right: 0 !important; }
+.nav-panel.collapsed .nav-sep.sep-collapsible { max-width: 0; opacity: 0; margin-left: 0 !important; margin-right: 0 !important; }
+.nav-panel.collapsed .nav-soc { max-width: 0; opacity: 0; margin-right: 0 !important; }
+.nav-panel.collapsed .nav-label { max-width: 0; opacity: 0; }
+.nav-panel.collapsed .theme-toggle.nav-collapsible-item { max-width: 0; opacity: 0; margin-right: 0 !important; }
+.nav-panel.collapsed .nav-dots-collapsed { max-width: 24px; opacity: 1; margin-right: 0 !important; }
 
 /* Dropdown */
 .nav-dropdown-wrap { position: relative; }
@@ -1431,16 +1431,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   /* ── Nav ── */
   .nav-wrap { margin: var(--space) 0 0; padding: 0 var(--space); }
   .nav-sep-mobile, .hamburger, .drawer-overlay, .drawer { display: none !important; }
-  .nav-pill { padding: 0 16px; width: fit-content; height: 48px; border-radius: var(--radius); transition: none !important; animation: none !important; }
-  .nav-pill, .nav-pill * { transition: none !important; animation: none !important; }
+  .nav-panel { padding: 0 16px; width: fit-content; height: 48px; border-radius: var(--radius); transition: none !important; animation: none !important; }
+  .nav-panel, .nav-panel * { transition: none !important; animation: none !important; }
   .nav-wordmark { font-size: var(--text-base); margin-right: 0 !important; }
   .nav-sep#sep-main-1 { margin-left: var(--space-7) !important; margin-right: 0 !important; }
   #search-btn { margin-right: 0 !important; }
-  .nav-pill .nav-collapsible-item,
-  .nav-pill .nav-sep.sep-collapsible,
-  .nav-pill .nav-soc { max-width: 0 !important; opacity: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
-  .nav-pill .nav-label { max-width: 0 !important; opacity: 0 !important; }
-  .nav-pill .nav-dots-collapsed { max-width: 32px !important; opacity: 1 !important; margin-right: 0 !important; }
+  .nav-panel .nav-collapsible-item,
+  .nav-panel .nav-sep.sep-collapsible,
+  .nav-panel .nav-soc { max-width: 0 !important; opacity: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }
+  .nav-panel .nav-label { max-width: 0 !important; opacity: 0 !important; }
+  .nav-panel .nav-dots-collapsed { max-width: 32px !important; opacity: 1 !important; margin-right: 0 !important; }
   #nav-dots-btn .dot-span { display: none; }
   #nav-dots-btn .burger-icon { display: flex; flex-direction: column; gap: var(--space-1); }
   #nav-dots-btn .burger-icon span {
@@ -2811,7 +2811,7 @@ body { padding-top: var(--space-9); }
 }
 
 /* ── Nav-pill: the card ── */
-.nav-pill {
+.nav-panel {
   width: var(--sidebar-width);
   height: fit-content;
   align-self: flex-start;
@@ -2829,8 +2829,8 @@ body { padding-top: var(--space-9); }
   transition: width 240ms cubic-bezier(0, 0, 0.58, 1), opacity var(--dur-fade) var(--ease-hover);
 }
 /* Collapse: ease-in — miroir exact de l'ouverture */
-.nav-pill.sb-icons { width: var(--sidebar-width-compact); transition: width 240ms cubic-bezier(0.42, 0, 1, 1), opacity var(--dur-fade) var(--ease-hover); }
-.nav-pill.sb-closed { width: 0; opacity: 0; pointer-events: none; }
+.nav-panel.sb-icons { width: var(--sidebar-width-compact); transition: width 240ms cubic-bezier(0.42, 0, 1, 1), opacity var(--dur-fade) var(--ease-hover); }
+.nav-panel.sb-closed { width: 0; opacity: 0; pointer-events: none; }
 
 /* ── Sidebar header ── */
 .sidebar-header {
@@ -2868,7 +2868,7 @@ body { padding-top: var(--space-9); }
 }
 .nav-wordmark:hover { color: var(--text-secondary); }
 /* Collapse: opacity ease-in (texte reste visible) + filter ease-out (blur monte vite) = miroir expand */
-.nav-pill.sb-icons .nav-wordmark {
+.nav-panel.sb-icons .nav-wordmark {
   opacity: 0; pointer-events: none; max-width: 0;
   transform: translateX(-12px); filter: blur(8px);
   transition: opacity   240ms cubic-bezier(0.42, 0, 1, 1),
@@ -2907,7 +2907,7 @@ body { padding-top: var(--space-9); }
   overflow: hidden; max-width: 44px;
 }
 /* Collapse: miroir expand */
-.nav-pill.sb-icons .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; transition: opacity 240ms cubic-bezier(0.42, 0, 1, 1), max-width 240ms cubic-bezier(0.42, 0, 1, 1); }
+.nav-panel.sb-icons .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; transition: opacity 240ms cubic-bezier(0.42, 0, 1, 1), max-width 240ms cubic-bezier(0.42, 0, 1, 1); }
 
 /* ── Nav items: row-style (explorer grammar) ── */
 .nav-item {
@@ -2956,7 +2956,7 @@ body { padding-top: var(--space-9); }
               transform 240ms cubic-bezier(0, 0, 0.58, 1);
 }
 /* Collapse: opacity ease-in (texte reste visible) + filter ease-out (blur monte vite) = miroir expand */
-.nav-pill.sb-icons .nav-label {
+.nav-panel.sb-icons .nav-label {
   max-width: 0; opacity: 0; min-width: 0; overflow: hidden;
   transform: translateX(-12px); filter: blur(8px);
   transition: opacity   240ms cubic-bezier(0.42, 0, 1, 1),
@@ -2976,10 +2976,10 @@ body { padding-top: var(--space-9); }
    ──────────────────────────────────────────────────────────────────────── */
 
 /* Header: center the collapse-btn group, zero gap so hidden wordmark doesn't shift it */
-.nav-pill.sb-icons .sidebar-header        { justify-content: center; gap: 0; }
-.nav-pill.sb-icons .sidebar-header-btns  { margin-left: 0; }
+.nav-panel.sb-icons .sidebar-header        { justify-content: center; gap: 0; }
+.nav-panel.sb-icons .sidebar-header-btns  { margin-left: 0; }
 /* Items: icon centered via padding (animatable), no justify-content snap */
-.nav-pill.sb-icons .nav-item {
+.nav-panel.sb-icons .nav-item {
   padding-inline-start: calc((var(--sidebar-icon) - var(--sidebar-icon-size)) / 2);
   padding-inline-end: 0;
   gap: 0;
@@ -2989,14 +2989,14 @@ body { padding-top: var(--space-9); }
               padding-inline-end   240ms cubic-bezier(0.42, 0, 1, 1);
 }
 /* Kbd hints hidden in compact mode — absolute pos removes layout interference */
-.nav-pill.sb-icons .nav-kbd { max-width: 0 !important; min-width: 0 !important; opacity: 0 !important; overflow: hidden; pointer-events: none; }
+.nav-panel.sb-icons .nav-kbd { max-width: 0 !important; min-width: 0 !important; opacity: 0 !important; overflow: hidden; pointer-events: none; }
 
 /* Icons: slightly smaller (14px), override inline style with !important */
-.nav-pill.sb-icons .nav-icon-box {
+.nav-panel.sb-icons .nav-icon-box {
   width: var(--sidebar-icon-size-compact) !important;
   height: var(--sidebar-icon-size-compact) !important;
 }
-.nav-pill.sb-icons .nav-icon-box > svg {
+.nav-panel.sb-icons .nav-icon-box > svg {
   width: var(--sidebar-icon-size-compact) !important;
   height: var(--sidebar-icon-size-compact) !important;
 }
@@ -3074,10 +3074,10 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 
 /* ── Disable old collapse-JS interference ── */
 .nav-collapsible-item { max-width: none !important; opacity: 1 !important; overflow: visible !important; }
-.nav-pill.collapsed .nav-collapsible-item { max-width: none !important; opacity: 1 !important; margin-right: 0 !important; }
-.nav-pill.collapsed .nav-label { max-width: 160px !important; opacity: 1 !important; }
-.nav-pill.sb-icons .nav-label,
-.nav-pill.sb-icons.collapsed .nav-label { max-width: 0 !important; opacity: 0 !important; }
+.nav-panel.collapsed .nav-collapsible-item { max-width: none !important; opacity: 1 !important; margin-right: 0 !important; }
+.nav-panel.collapsed .nav-label { max-width: 160px !important; opacity: 1 !important; }
+.nav-panel.sb-icons .nav-label,
+.nav-panel.sb-icons.collapsed .nav-label { max-width: 0 !important; opacity: 0 !important; }
 
 /* ── Floating reopen button (when sidebar closed) ── */
 .sidebar-reopen {
@@ -3106,7 +3106,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 @media (max-width: 768px) {
   body, body.sb-icons, body.sb-closed { padding-left: 0 !important; padding-top: 0 !important; }
   .nav-wrap { position: sticky; top: var(--space); left: auto; bottom: auto; display: flex; align-items: center; justify-content: center; padding: 0 var(--space); margin: var(--space) 0 0; }
-  .nav-pill { width: fit-content !important; height: var(--nav-h); flex-direction: row; align-items: center; padding: 0 var(--space-4); border-radius: var(--radius); overflow: hidden; transition: none !important; }
+  .nav-panel { width: fit-content !important; height: var(--nav-h); flex-direction: row; align-items: center; padding: 0 var(--space-4); border-radius: var(--radius); overflow: hidden; transition: none !important; }
   .sidebar-header { height: 100%; border: none; padding: 0; gap: var(--space-3); }
   .sidebar-header-btns { display: none; }
   .sidebar-body { display: none; flex: none; padding: 0; }
@@ -3230,7 +3230,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 <!-- NAV -->
 <div id="nav-backdrop"></div>
 <div class="nav-wrap">
-  <div class="nav-pill" id="nav-pill">
+  <div class="nav-panel" id="nav-panel">
 
     <!-- ── Header (always visible) ── -->
     <div class="sidebar-header">
@@ -4069,7 +4069,7 @@ const mq = window.matchMedia('(max-width: 768px)');
 
 
 /* ── Sidebar card ── */
-const navPill      = document.getElementById('nav-pill');
+const navPill      = document.getElementById('nav-panel');
 const sidebarReopen = document.getElementById('sidebar-reopen');
 
 let _sidebarTransitioning = false;
@@ -6861,7 +6861,7 @@ const _settingsEl = document.getElementById('settings');
 const _settingsCard = document.getElementById('settings-card');
 
 function syncSettingsCompact() {
-  const isCompact = document.querySelector('.nav-pill')?.classList.contains('sb-icons');
+  const isCompact = document.querySelector('.nav-panel')?.classList.contains('sb-icons');
   const knob = document.getElementById('settings-compact-knob');
   if (knob) knob.classList.toggle('on', !!isCompact);
 }
