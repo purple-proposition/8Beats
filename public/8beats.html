@@ -73,10 +73,10 @@
   --surface-elevated-rgb:   29,29,29;  /* base RGB pour glass effects */
   --surface-overlay:        rgba(11,11,11,0.92);
   /* ── Glass system — surface unique pour tous les contenants ──
-     Une seule base : noir 72%, blur 24px, border blanc 10%.
+     Une seule base : noir 72%, blur 48px, border blanc 10%.
      Même valeur sur sidebar, player, modals, cards, tooltips, popups. */
   --glass-bg:               rgba(0, 0, 0, 0.72);
-  --glass-blur:             24px;
+  --glass-blur:             48px;
   --glass-border:           rgba(255, 255, 255, 0.10);
   --surface-glass:          var(--glass-bg);
 
@@ -249,6 +249,12 @@
 
   /* Délai contenu — le contenu commence légèrement après le conteneur */
   --delay-content: 40ms;
+
+  /* ── Playlist panel motion — source unique, lue par JS et CSS ── */
+  --dur-playlist:        var(--dur-medium);          /* 240ms — durée de la hauteur */
+  --ease-playlist-open:  cubic-bezier(0, 0, 0.58, 1);  /* ease-out : décélère à l'arrivée */
+  --ease-playlist-close: cubic-bezier(0.42, 0, 1, 1);  /* ease-in  : accélère au départ */
+  --playlist-content-offset: 10px;                   /* translateY initial du contenu */
 
   /* ── Aliases legacy — ne pas supprimer (référencés partout) ── */
   --dur-fast:       var(--dur-micro);
@@ -1046,6 +1052,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   min-height: 0; /* override flex min-height:auto */
   overflow: hidden;
   pointer-events: none;
+  will-change: height; /* promote to GPU layer — avoids parent reflow during animation */
   /* no background — shell is the unified visual surface */
 }
 .player-shell.extended .playlist {
@@ -1064,23 +1071,23 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   position: relative; z-index: 1;
   padding: var(--space-4) var(--space-5) var(--space-3);
   display: flex; flex-direction: column;
-  gap: 24px;
+  gap: var(--space-5);               /* was hardcoded 24px — now tokenized (--space-5 = 24px) */
   max-height: 320px; overflow-y: auto;
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(calc(var(--playlist-content-offset) * -1));
   /* Close: ease-in, immediate — content disappears before height collapses */
-  transition: opacity   120ms cubic-bezier(0.42, 0, 1, 1) 0ms,
-              transform 120ms cubic-bezier(0.42, 0, 1, 1) 0ms;
+  transition: opacity   120ms var(--ease-playlist-close) 0ms,
+              transform 120ms var(--ease-playlist-close) 0ms;
 }
 .player-shell.extended .playlist-inner {
   opacity: 1;
   transform: translateY(0);
-  /* Open: ease-out, 40ms delay — content arrives after shell starts expanding */
-  transition: opacity   200ms cubic-bezier(0, 0, 0.58, 1) 40ms,
-              transform 200ms cubic-bezier(0, 0, 0.58, 1) 40ms;
+  /* Open: ease-out, delay-content — content arrives after shell starts expanding */
+  transition: opacity   200ms var(--ease-playlist-open) var(--delay-content),
+              transform 200ms var(--ease-playlist-open) var(--delay-content);
 }
 /* Playlist-below: content retreats downward (opposite direction) */
-.player-wrap.playlist-below .playlist-inner { transform: translateY(10px); }
+.player-wrap.playlist-below .playlist-inner { transform: translateY(var(--playlist-content-offset)); }
 .player-wrap.playlist-below .player-shell.extended .playlist-inner { transform: translateY(0); }
 
 .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
@@ -5206,10 +5213,11 @@ const playerShell = document.querySelector('.player-shell'); /* state owner — 
 const cookieEl   = document.getElementById('panel-cookie');
 const plBtnD     = document.getElementById('playlist-btn');
 
-/* ── Playlist easing constants — mirrors nav-panel expand/collapse curves ── */
-const PL_EASE_OUT = 'cubic-bezier(0, 0, 0.58, 1)';   /* open:  decelerate in */
-const PL_EASE_IN  = 'cubic-bezier(0.42, 0, 1, 1)';   /* close: accelerate out */
-const PL_DUR      = 240;                               /* ms — same as nav-panel */
+/* ── Playlist motion — read from CSS tokens (single source of truth) ── */
+const _plTokens  = getComputedStyle(document.documentElement);
+const PL_EASE_OUT = _plTokens.getPropertyValue('--ease-playlist-open').trim();
+const PL_EASE_IN  = _plTokens.getPropertyValue('--ease-playlist-close').trim();
+const PL_DUR      = parseInt(_plTokens.getPropertyValue('--dur-medium'), 10); /* strips "ms" → 240 */
 
 function _closePl() {
   plOpen = false;
