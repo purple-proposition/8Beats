@@ -5322,23 +5322,19 @@ const volFill  = document.getElementById('vol-fill');
 const volKnob  = document.getElementById('vol-knob');
 const volTrack = document.getElementById('vol-track');
 
-const VOL = {
-  mute: '<line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/><path d="M11 5L6 9H2v6h4l5 4V5z"/>',
-  low:  '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
-  high: '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
-};
+/* Volume icon states — noms Lucide officiels */
+const VOL_ICONS = { mute: 'volume-x', low: 'volume-1', high: 'volume-2' };
 
-/* Pre-render all three vol icon states as stacked SVGs with opacity crossfade.
-   No innerHTML replacement during state changes — avoids layout thrash and icon jump.
-   Each SVG is position:absolute so they stack without affecting layout dimensions. */
+/* Pré-rendu des 3 états via Lucide. Crossfade opacity — zéro mutation DOM pendant les changements d'état. */
 (function initVolIcons() {
-  const keys = ['mute', 'low', 'high'];
-  keys.forEach(k => {
-    const svg = mkSvg(VOL[k], 16, 'currentColor');
-    svg.dataset.volState = k;
-    svg.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 80ms cubic-bezier(0,0,0.2,1);pointer-events:none;';
-    volBtn.appendChild(svg);
+  Object.entries(VOL_ICONS).forEach(([state, iconName]) => {
+    const el = document.createElement('i');
+    el.setAttribute('data-lucide', iconName);
+    el.dataset.volState = state;
+    el.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 80ms cubic-bezier(0,0,0.2,1);pointer-events:none;width:16px;height:16px;display:block;';
+    volBtn.appendChild(el);
   });
+  lucide.createIcons({ nodes: [volBtn] });
   volBtn.style.position = 'relative';
 })();
 
