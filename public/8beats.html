@@ -5244,27 +5244,38 @@ function _openPl() {
   plBtnD.classList.add('active');
   clearTimeout(plPanel._plTimer);
 
-  /* Measure exact content height:
-     1. temporarily set height:auto with no transition to read scrollHeight
-     2. restore to current rendered height before reflow
-     3. then animate to measured target — easing covers exactly 0→contentH */
+  /* ── Step 1: capture start height BEFORE any style mutation ──────────────
+     This must happen first. Any style write + flush (scrollHeight read) will
+     resolve height:auto to the full content height, making offsetHeight return
+     the target height — not the current 0. If we read it after that flush,
+     start === end and the transition animates nothing (the bug). */
+  const startH = plPanel.offsetHeight;
+
+  /* ── Step 2: measure content height by temporarily releasing to auto ─────
+     transition:none prevents WebKit from animating this measurement step. */
   plPanel.style.transition = 'none';
   plPanel.style.height = 'auto';
   const targetH = plPanel.scrollHeight;
-  plPanel.style.height = plPanel.offsetHeight + 'px'; /* current (likely 0) */
-  plPanel.offsetHeight; /* force reflow */
 
+  /* ── Step 3: restore to the captured start height and commit ─────────────
+     We use startH (read before the flush) — not offsetHeight (which is now
+     the fully-resolved auto height after the scrollHeight read forced a flush).
+     The offsetHeight read here forces a second flush that commits startH. */
+  plPanel.style.height = startH + 'px';
+  plPanel.offsetHeight; /* force reflow — commits startH as the CSS start state */
+
+  /* ── Step 4: fire transition and state class in the same frame ───────────
+     Both the height animation and content reveal begin here. The content has
+     a --delay-content (40ms) so it appears slightly after height starts moving. */
+  playerShell.classList.add('extended');          /* triggers opacity+translateY on playlist-inner */
   plPanel.style.transition = `height ${PL_DUR}ms ${PL_EASE_OUT}`;
-  plPanel.style.height = targetH + 'px';
+  plPanel.style.height = targetH + 'px';          /* animate startH → targetH over 240ms */
 
-  /* After animation completes, release to auto so content changes resize freely */
+  /* After animation completes, release to auto so dynamic content resizes freely */
   plPanel._plTimer = setTimeout(() => {
     plPanel.style.transition = 'none';
     plPanel.style.height     = 'auto';
   }, PL_DUR + 16);
-
-  /* State class drives playlist-inner opacity+transform (CSS cascade) */
-  playerShell.classList.add('extended');
 
   /* Scroll fade-mask — tracklist mode only */
   const inner = plPanel.querySelector('.playlist-inner');
