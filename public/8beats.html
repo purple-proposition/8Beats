@@ -1024,43 +1024,25 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   will-change: transform; transform: translateZ(0);
   backface-visibility: hidden; -webkit-backface-visibility: hidden;
 }
-/* ── Seam: CSS sibling selector — no JS timing involved ──────────────────────
- * Default (closed): delayed-snap — border-radius/color snap back AFTER
- * var(--dur-panel), i.e. exactly when height finishes collapsing to 0.
- * Open: instant-snap — radius/color snap to flat the moment .open is added.
- * This eliminates every 1-frame flash and every transitionend timing hack.
- * ──────────────────────────────────────────────────────────────────────────── */
+/* ── Seam: static rules — zero dynamic property changes on backdrop-filter elements ──
+ * Root cause of flicker: any CSS change on an element with backdrop-filter triggers
+ * a GPU layer repaint, even border-color/radius changes with 0s transitions.
+ * Fix: make the seam shape PERMANENT — player-inner always has flat edge toward playlist.
+ * When playlist is closed (opacity:0), the flat edge is invisible → no visual trade-off.
+ * ──────────────────────────────────────────────────────────────────────────────────── */
 
-/* Playlist ABOVE player-bar (default) — seam is at player-inner TOP.
-   Le snap du border-radius est retardé de 260ms (durée close) pour coïncider
-   exactement avec la fin du collapse — zéro flash de coin arrondi. */
+/* Playlist ABOVE player-bar (default) — player-inner always has flat top edge */
 .player-wrap:not(.playlist-below) .player-inner {
-  transition: border-top-left-radius 0s 260ms,
-              border-top-right-radius 0s 260ms,
-              border-top-color 0s 260ms;
-}
-.player-wrap:not(.playlist-below) .playlist.open + .player-inner {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-top-color: transparent;
-  transition: border-top-left-radius 0s,
-              border-top-right-radius 0s,
-              border-top-color 0s;
 }
 
-/* Playlist BELOW player-bar — seam is at player-inner BOTTOM */
+/* Playlist BELOW player-bar — player-inner always has flat bottom edge */
 .player-wrap.playlist-below .player-inner {
-  transition: border-bottom-left-radius 0s 260ms,
-              border-bottom-right-radius 0s 260ms,
-              border-bottom-color 0s 260ms;
-}
-.player-wrap.playlist-below .playlist.open + .player-inner {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom-color: transparent;
-  transition: border-bottom-left-radius 0s,
-              border-bottom-right-radius 0s,
-              border-bottom-color 0s;
 }
 
 /* ── Playlist panel — max-height collapse + GPU composited ── */
@@ -1079,17 +1061,22 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   min-height: 0; /* override flex min-height:auto so item can fully collapse to 0 */
   overflow: hidden;
   pointer-events: none;
-  will-change: max-height;
+  opacity: 0; /* hides border residual at max-height:0 + any background bleed-through */
   background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));       /* glass look when open */
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
-  /* Close: ease-in-out skewed — fluide, pas brutale */
-  transition: max-height 260ms cubic-bezier(0.55, 0, 0.55, 0.9);
+  /* Close: opacity leads (disappears first), then height collapses */
+  transition: max-height 260ms cubic-bezier(0.55, 0, 0.55, 0.9),
+              opacity     160ms cubic-bezier(0.55, 0, 1, 0.45);
 }
 .playlist.open {
   max-height: 400px;
+  opacity: 1;
   pointer-events: all;
-  /* Open: expo-out — réactif au départ, settle très doux */
-  transition: max-height 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Open: both animate expo-out — opacity slightly shorter, height continues settling */
+  transition: max-height 380ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity     200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 /* Seam radius */
 .player-wrap:not(.playlist-below) .playlist {
@@ -1101,12 +1088,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border-top: none;
 }
 
-/* Glass shell — backdrop-filter retiré.
-   Cause racine du flicker : backdrop-filter dans un overflow:hidden animé
-   force un repaint GPU à chaque frame sur WebKit. Le fond opaque du
-   parent .playlist (glass-bg = rgba(0,0,0,0.72)) suffit. */
+/* Glass shell — plus nécessaire. backdrop-filter est maintenant sur .playlist directement.
+   L'animation opacity 0→1 sur .playlist masque tout artefact de rendu blur pendant
+   les premières frames, rendant le repaint GPU imperceptible. */
 .playlist-glass {
-  display: none; /* plus nécessaire — fond géré par .playlist */
+  display: none;
 }
 
 /* Content + scroll container */
