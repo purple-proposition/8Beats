@@ -1046,58 +1046,63 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 /* ── playlist-section: la région qui s'étend ──────────────────────────────────
- * grid-template-rows: 0fr → 1fr = technique correcte pour l'animation de
- * hauteur sans lecture de scrollHeight ni transition sur height:auto.
- * Le shell grandit naturellement, ancré en bas via position:fixed.
+ * max-height: 0 → 260px sur .playlist-clip = seule technique sans desync.
+ *
+ * Raison : grid-template-rows:1fr dans un flex item à hauteur auto pousse la
+ * contribution flex du section vers max-content (260px) IMMÉDIATEMENT, alors
+ * que le track CSS anime encore. Résultat mesuré : sectionH > clipH de 65px
+ * au pic (t≈97ms). Le shell grossit plus vite que le contenu → tremblements.
+ *
+ * Avec max-height sur le clip : sectionH = clipH à chaque frame (diff=0).
+ * Le shell grandit exactement à la vitesse du clip, zéro desync.
  *
  * Asymétrie d'easing via la cascade CSS :
  *   état par défaut = close easing (actif quand .pl-open est retiré)
  *   état .pl-open   = open easing  (actif quand .pl-open est ajouté)
  * ──────────────────────────────────────────────────────────────────────────── */
 .playlist-section {
-  display: grid;
-  grid-template-rows: 0fr;
+  display: block;
+}
+
+/* ── playlist-clip: le clip qui anime la hauteur ─────────────────────────────
+ * max-height:0 → 260px : le clip contrôle exactement la hauteur visible.
+ * .playlist-section n'a plus de hauteur propre → sectionH = clipH toujours.
+ * ──────────────────────────────────────────────────────────────────────────── */
+.playlist-clip {
+  overflow: hidden;
+  max-height: 0;
   /* Close easing — actif quand .pl-open est retiré */
-  transition: grid-template-rows var(--dur-playlist) var(--ease-playlist-close);
+  transition: max-height var(--dur-playlist) var(--ease-playlist-close);
 }
 
-.player-wrap.pl-open .playlist-section {
-  grid-template-rows: 1fr;
+.player-wrap.pl-open .playlist-clip {
+  max-height: 320px; /* matches .playlist-inner max-height on desktop */
   /* Open easing — actif quand .pl-open est ajouté */
-  transition: grid-template-rows var(--dur-playlist) var(--ease-playlist-open);
+  transition: max-height var(--dur-playlist) var(--ease-playlist-open);
 }
 
-/* ── playlist-inner: contenu de la playlist ───────────────────────────────────
- * min-height:0 obligatoire pour que grid-template-rows:0fr collapse.
- * overflow:hidden clippe le contenu pendant la révélation de la hauteur.
- * L'opacité crée le "matérialisation" du contenu — le composant respire
- * plutôt que d'être découpé mécaniquement. Délai 60ms : l'espace s'ouvre
- * en premier, le contenu apparaît ensuite.
+/* ── playlist-inner: contenu stylisé — vit DANS .playlist-clip ───────────────
+ * Padding, border, flex gap : tout ici, hors du grid child.
+ * L'opacité avec délai 60ms : l'espace s'ouvre d'abord, le contenu suit.
  * ──────────────────────────────────────────────────────────────────────────── */
 .playlist-inner {
-  min-height: 0;   /* obligatoire pour que grid-template-rows:0fr fonctionne */
-  /* Pas de overflow:hidden ici — player-shell fournit le clipping quand 0fr.
-   * overflow-y:auto activé pour le scroll en tracklist mode. */
   overflow-y: auto;
   max-height: 320px;
   padding: var(--space-4) var(--space-5) var(--space-3);
   display: flex; flex-direction: column;
   gap: var(--space-5);
-  /* Séparateur visuel entre la playlist et la barre */
   border-bottom: 1px solid var(--glass-border);
-  /* Closed: invisible */
   opacity: 0;
   transition: opacity 120ms var(--ease-playlist-close);
 }
 
 .player-wrap.pl-open .playlist-inner {
   opacity: 1;
-  /* L'espace s'ouvre d'abord, le contenu se matérialise ensuite */
   transition: opacity 220ms var(--ease-playlist-open) 60ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .playlist-section { transition: none; }
+  .playlist-clip { transition: none; }
   .playlist-inner,
   .player-wrap.pl-open .playlist-inner {
     transition: opacity 120ms linear;
@@ -1576,6 +1581,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .explore-show-row { padding: var(--space) !important; }
 
   /* ── Playlist ── */
+  .player-wrap.pl-open .playlist-clip { max-height: 260px; } /* matches .playlist-inner on mobile */
   .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; }
   .playlist-header { margin-bottom: var(--space); }
   .track { padding: var(--space-3) 0; border-radius: 0; }
@@ -3949,9 +3955,11 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <!-- Un seul composant vivant — le shell grandit vers le haut pour révéler la playlist -->
   <div class="player-shell">
 
-    <!-- Playlist section : s'étend via grid-template-rows. Toujours au-dessus de la barre. -->
+    <!-- Playlist section : s'étend via max-height sur .playlist-clip. Toujours au-dessus de la barre. -->
     <div class="playlist-section" id="playlist"
          role="region" aria-label="Playlist history" aria-hidden="true" inert>
+      <!-- playlist-clip : max-height 0→320px anime la révélation — diff=0 garanti à chaque frame -->
+      <div class="playlist-clip">
       <div class="playlist-inner">
         <div class="playlist-header">
           <span class="label">Last played tracks</span>
@@ -3971,8 +3979,9 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
           <span class="track-ago">16m ago</span>
         </div>
-      </div>
-    </div>
+      </div><!-- /.playlist-inner -->
+      </div><!-- /.playlist-clip -->
+    </div><!-- /.playlist-section -->
 
     <!-- Barre du player : toujours visible, ancrée en bas du shell -->
     <div class="player-inner">
