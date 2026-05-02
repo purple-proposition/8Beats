@@ -1010,9 +1010,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 /* ── Player ── */
-/* ── player-wrap: positioning context — contains stable bar + overlay panel ──
- * position:fixed anchors everything. pointer-events:none lets clicks through
- * the empty space; individual children restore pointer-events where needed.
+/* ── player-wrap: positioning context ─────────────────────────────────────────
+ * position:fixed ancre le composant en bas à droite. pointer-events:none laisse
+ * les clics traverser l'espace vide ; les enfants restituent pointer-events.
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-wrap {
   position: fixed; bottom: var(--space); right: var(--space);
@@ -1020,9 +1020,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   pointer-events: none;
 }
 
-/* ── player-shell: STABLE, IMMUTABLE glass bar ───────────────────────────────
- * Never grows. Never shrinks. No class toggling. No layout animation.
- * backdrop-filter is applied once, to a fixed-size element — zero GPU resize.
+/* ── player-shell: un seul composant vivant ──────────────────────────────────
+ * État compact  → playlist-section à height:0, seule la barre est visible.
+ * État étendu   → le shell grandit vers le haut, révèle la playlist au-dessus.
+ *
+ * Une surface de verre. Une bordure. Une identité.
+ * Même philosophie que le menu compact/extended — même axe, vertical.
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-shell {
   pointer-events: all;
@@ -1031,93 +1034,77 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  position: relative; z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* clippe le contenu de la playlist pendant l'animation */
 }
 
-/* player-inner: layout only — shell provides all glass identity */
+/* player-inner: wraps the bar — toujours visible en bas du shell */
 .player-inner {
   flex-shrink: 0;
   position: relative; z-index: var(--z-player-inner);
 }
 
-/* ── playlist-panel: absolute overlay ────────────────────────────────────────
- * Sits OUTSIDE the shell as a sibling — the shell never changes size.
- * Animation: transform + opacity only — fully GPU-composited, zero layout.
+/* ── playlist-section: la région qui s'étend ──────────────────────────────────
+ * grid-template-rows: 0fr → 1fr = technique correcte pour l'animation de
+ * hauteur sans lecture de scrollHeight ni transition sur height:auto.
+ * Le shell grandit naturellement, ancré en bas via position:fixed.
  *
- * Easing asymmetry via CSS cascade:
- *   • Default state holds the CLOSE transition (ease-in, faster)
- *   • .pl-open state holds the OPEN transition (ease-out, slightly slower)
- *   When the class is added → browser uses the .pl-open transition (open ease)
- *   When the class is removed → browser uses the default transition (close ease)
- *
- * translateY(6px) closed → translateY(0) open: the panel rises 6px into place.
- * Small enough to be subtle, visible enough to feel alive.
+ * Asymétrie d'easing via la cascade CSS :
+ *   état par défaut = close easing (actif quand .pl-open est retiré)
+ *   état .pl-open   = open easing  (actif quand .pl-open est ajouté)
  * ──────────────────────────────────────────────────────────────────────────── */
-.playlist-panel {
-  position: absolute;
-  bottom: calc(100% + 4px); /* floats 4px above the bar */
-  left: 0; right: 0;
+.playlist-section {
+  display: grid;
+  grid-template-rows: 0fr;
+  /* Close easing — actif quand .pl-open est retiré */
+  transition: grid-template-rows var(--dur-playlist) var(--ease-playlist-close);
+}
 
-  /* Same glass material as the bar — visually coherent */
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-btn);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  overflow: hidden;
+.player-wrap.pl-open .playlist-section {
+  grid-template-rows: 1fr;
+  /* Open easing — actif quand .pl-open est ajouté */
+  transition: grid-template-rows var(--dur-playlist) var(--ease-playlist-open);
+}
 
-  /* Closed state: invisible, nudged down */
-  transform: translateY(6px);
+/* ── playlist-inner: contenu de la playlist ───────────────────────────────────
+ * min-height:0 obligatoire pour que grid-template-rows:0fr collapse.
+ * overflow:hidden clippe le contenu pendant la révélation de la hauteur.
+ * L'opacité crée le "matérialisation" du contenu — le composant respire
+ * plutôt que d'être découpé mécaniquement. Délai 60ms : l'espace s'ouvre
+ * en premier, le contenu apparaît ensuite.
+ * ──────────────────────────────────────────────────────────────────────────── */
+.playlist-inner {
+  min-height: 0;   /* obligatoire pour que grid-template-rows:0fr fonctionne */
+  /* Pas de overflow:hidden ici — player-shell fournit le clipping quand 0fr.
+   * overflow-y:auto activé pour le scroll en tracklist mode. */
+  overflow-y: auto;
+  max-height: 320px;
+  padding: var(--space-4) var(--space-5) var(--space-3);
+  display: flex; flex-direction: column;
+  gap: var(--space-5);
+  /* Séparateur visuel entre la playlist et la barre */
+  border-bottom: 1px solid var(--glass-border);
+  /* Closed: invisible */
   opacity: 0;
-  pointer-events: none;
-  /* Close easing — active when .pl-open is removed */
-  transition:
-    transform 200ms var(--ease-playlist-close),
-    opacity   160ms var(--ease-playlist-close);
+  transition: opacity 120ms var(--ease-playlist-close);
 }
 
-/* Open state */
-.player-wrap.pl-open .playlist-panel {
-  transform: translateY(0);
+.player-wrap.pl-open .playlist-inner {
   opacity: 1;
-  pointer-events: all;
-  /* Open easing — active when .pl-open is added */
-  transition:
-    transform 240ms var(--ease-playlist-open),
-    opacity   200ms var(--ease-playlist-open);
+  /* L'espace s'ouvre d'abord, le contenu se matérialise ensuite */
+  transition: opacity 220ms var(--ease-playlist-open) 60ms;
 }
 
-/* playlist-below: panel opens below the bar instead of above */
-.player-wrap.playlist-below .playlist-panel {
-  bottom: auto;
-  top: calc(100% + 4px);
-  transform: translateY(-6px); /* nudged up instead of down */
-}
-.player-wrap.playlist-below.pl-open .playlist-panel {
-  transform: translateY(0);
-}
-
-/* Reduced motion: skip spatial animation, keep opacity only */
 @media (prefers-reduced-motion: reduce) {
-  .playlist-panel,
-  .player-wrap.pl-open .playlist-panel {
-    transform: none;
+  .playlist-section { transition: none; }
+  .playlist-inner,
+  .player-wrap.pl-open .playlist-inner {
     transition: opacity 120ms linear;
   }
 }
 
-/* ── Playlist content ─────────────────────────────────────────────────────────
- * No opacity animation here — the panel itself carries the full reveal.
- * Clean static layout inside the panel. Scrollable if content overflows.
- * ──────────────────────────────────────────────────────────────────────────── */
-.playlist-panel .playlist-inner {
-  padding: var(--space-4) var(--space-5) var(--space-3);
-  display: flex; flex-direction: column;
-  gap: var(--space-5);
-  max-height: 320px; overflow-y: auto;
-}
-
-/* Legacy aliases — kept so existing .playlist selectors still resolve */
+/* Legacy aliases — kept for .playlist selectors compatibility */
 .playlist-glass { display: none; }
 
 .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
@@ -3959,85 +3946,87 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 
 <!-- PLAYER -->
 <div class="player-wrap" id="player-wrap">
-  <!-- Stable glass bar — never changes size, never touched by playlist toggle -->
+  <!-- Un seul composant vivant — le shell grandit vers le haut pour révéler la playlist -->
   <div class="player-shell">
-  <div class="player-inner">
-    <div class="player-bar">
-      <div class="player-bar-main">
-        <button class="play-btn" id="play-btn" aria-label="Play / Pause"></button>
-        <div class="player-info">
-          <div class="player-info-top">
-            <span class="live-status"><span class="live-dot"></span><span class="label" id="player-program-label">Evening Program</span></span>
-          </div>
-          <div class="player-title-wrap">
-            <span class="player-title" id="player-title">Mark Mothersbaugh & Josh Mancell – Tiny Tiger</span>
-          </div>
-          <span class="player-game" id="player-game">Crash Bandicoot 2: Cortex Strikes Back</span>
-        </div>
-        <div class="player-controls">
-          <button class="back-to-live" id="back-to-live-btn" onclick="backToLive()">
-            <span class="back-live-dot"></span>
-            Back to live
-          </button>
-          <button class="icon-btn icon-btn--spotify" id="spotify-btn" aria-label="Spotify">
-            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
-          </button>
-          <div class="vol-wrap" id="vol-wrap">
-            <div class="vol-popup" id="vol-popup">
-              <div class="vol-popup-glass"></div>
-              <div class="vol-track-area" id="vol-slider">
-                <div class="vol-track" id="vol-track">
-                  <div class="vol-fill" id="vol-fill" style="height:75%"></div>
-                  <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 4px)"></div>
-                </div>
-              </div>
-              <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
-            </div>
-          </div>
-          <button class="icon-btn" id="playlist-btn"
-                  aria-label="Playlist" aria-expanded="false" aria-controls="playlist">
-            <i data-lucide="list-music" style="width:16px;height:16px;fill:none;display:block;"></i>
-          </button>
-        </div>
-      </div>
-      <!-- Progress bar lives inside player-bar, below the main row -->
-      <div class="progress-bar-wrap" id="progress-bar-wrap">
-        <span class="progress-time" id="progress-current">00:00</span>
-        <div class="progress-track" id="progress-track">
-          <div class="progress-fill" id="progress-fill"></div>
-          <div class="progress-knob" id="progress-knob"></div>
-        </div>
-        <span class="progress-time end" id="progress-total">00:00</span>
-      </div>
-    </div>
-  </div>
-  </div><!-- /.player-shell -->
 
-  <!-- Playlist panel — sibling of shell, overlay via position:absolute -->
-  <!-- Animates with transform+opacity only. Shell is never touched.     -->
-  <div class="playlist-panel" id="playlist"
-       role="region" aria-label="Playlist history" aria-hidden="true" inert>
-    <div class="playlist-inner">
-      <div class="playlist-header">
-        <span class="label">Last played tracks</span>
-        <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-          <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-        </button>
-      </div>
-      <div class="track">
-        <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
-        <span class="track-ago">6m ago</span>
-      </div>
-      <div class="track">
-        <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
-        <span class="track-ago">11m ago</span>
-      </div>
-      <div class="track">
-        <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
-        <span class="track-ago">16m ago</span>
+    <!-- Playlist section : s'étend via grid-template-rows. Toujours au-dessus de la barre. -->
+    <div class="playlist-section" id="playlist"
+         role="region" aria-label="Playlist history" aria-hidden="true" inert>
+      <div class="playlist-inner">
+        <div class="playlist-header">
+          <span class="label">Last played tracks</span>
+          <button class="panel-close" id="playlist-close" aria-label="Close playlist">
+            <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+          </button>
+        </div>
+        <div class="track">
+          <div class="track-info"><span class="track-name">Kahaku Ito – The Other Side Of The Mask</span><span class="track-game">Maboroshi Tsukiyo</span></div>
+          <span class="track-ago">6m ago</span>
+        </div>
+        <div class="track">
+          <div class="track-info"><span class="track-name">Yasumasa Kitagawa – Yankees: Spring Normal</span><span class="track-game">Jikkyou Powerful Pro Yakyuu 10</span></div>
+          <span class="track-ago">11m ago</span>
+        </div>
+        <div class="track">
+          <div class="track-info"><span class="track-name">Vicente Aguiló & Ronny Antares – Carried Away</span><span class="track-game">What Lies In The Multiverse</span></div>
+          <span class="track-ago">16m ago</span>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- Barre du player : toujours visible, ancrée en bas du shell -->
+    <div class="player-inner">
+      <div class="player-bar">
+        <div class="player-bar-main">
+          <button class="play-btn" id="play-btn" aria-label="Play / Pause"></button>
+          <div class="player-info">
+            <div class="player-info-top">
+              <span class="live-status"><span class="live-dot"></span><span class="label" id="player-program-label">Evening Program</span></span>
+            </div>
+            <div class="player-title-wrap">
+              <span class="player-title" id="player-title">Mark Mothersbaugh & Josh Mancell – Tiny Tiger</span>
+            </div>
+            <span class="player-game" id="player-game">Crash Bandicoot 2: Cortex Strikes Back</span>
+          </div>
+          <div class="player-controls">
+            <button class="back-to-live" id="back-to-live-btn" onclick="backToLive()">
+              <span class="back-live-dot"></span>
+              Back to live
+            </button>
+            <button class="icon-btn icon-btn--spotify" id="spotify-btn" aria-label="Spotify">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
+            </button>
+            <div class="vol-wrap" id="vol-wrap">
+              <div class="vol-popup" id="vol-popup">
+                <div class="vol-popup-glass"></div>
+                <div class="vol-track-area" id="vol-slider">
+                  <div class="vol-track" id="vol-track">
+                    <div class="vol-fill" id="vol-fill" style="height:75%"></div>
+                    <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 4px)"></div>
+                  </div>
+                </div>
+                <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
+              </div>
+            </div>
+            <button class="icon-btn" id="playlist-btn"
+                    aria-label="Playlist" aria-expanded="false" aria-controls="playlist">
+              <i data-lucide="list-music" style="width:16px;height:16px;fill:none;display:block;"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Progress bar lives inside player-bar, below the main row -->
+        <div class="progress-bar-wrap" id="progress-bar-wrap">
+          <span class="progress-time" id="progress-current">00:00</span>
+          <div class="progress-track" id="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+            <div class="progress-knob" id="progress-knob"></div>
+          </div>
+          <span class="progress-time end" id="progress-total">00:00</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.player-shell -->
 </div><!-- /.player-wrap -->
 
 <script>
@@ -5242,61 +5231,49 @@ function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.d
 let plOpen = false;
 const plPanel    = document.getElementById('playlist');
 const playerWrap = document.getElementById('player-wrap');
-const playerInner = document.querySelector('.player-inner');
 const playerShell = document.querySelector('.player-shell');
+const playerInner = document.querySelector('.player-inner');
 const cookieEl   = document.getElementById('panel-cookie');
 const plBtnD     = document.getElementById('playlist-btn');
 
-/* Animation durations — must match CSS transitions on .playlist-panel */
-const PL_DUR_OPEN  = 240; /* ms */
-const PL_DUR_CLOSE = 200; /* ms */
+/* Durées — doivent correspondre aux transitions CSS sur .playlist-section */
+const PL_DUR_OPEN  = 240 + 60 + 16; /* grid (240ms) + délai contenu (60ms) + marge */
+const PL_DUR_CLOSE = 200 + 16;
 
 function _closePl() {
   if (!plOpen) return;
   plOpen = false;
 
-  /* Pre-promote compositor layer before opacity change to avoid first-frame flash */
-  plPanel.style.willChange = 'transform, opacity';
-
   plBtnD.classList.remove('active');
   plBtnD.setAttribute('aria-expanded', 'false');
 
-  /* CSS transition on .playlist-panel handles transform+opacity (ease-in, 200ms) */
+  /* CSS grid-template-rows gère l'animation (ease-in, 200ms) */
   playerWrap.classList.remove('pl-open');
   plPanel.setAttribute('aria-hidden', 'true');
 
-  /* Restore inert + release will-change after transition completes */
+  /* Remettre inert après la fin de la transition */
   clearTimeout(plPanel._plTimer);
   plPanel._plTimer = setTimeout(() => {
     plPanel.inert = true;
-    plPanel.style.willChange = '';
-  }, PL_DUR_CLOSE + 16);
+  }, PL_DUR_CLOSE);
 }
 
 function _openPl() {
   if (plOpen) return;
   plOpen = true;
 
-  /* Make interactive before animation so focus works immediately */
+  /* Rendre interactif avant l'animation pour que le focus fonctionne immédiatement */
   plPanel.inert = false;
   plPanel.setAttribute('aria-hidden', 'false');
-
-  /* Pre-promote compositor layer before opacity change */
-  plPanel.style.willChange = 'transform, opacity';
 
   plBtnD.classList.add('active');
   plBtnD.setAttribute('aria-expanded', 'true');
 
-  /* CSS transition on .playlist-panel handles transform+opacity (ease-out, 240ms) */
+  /* CSS grid-template-rows gère l'animation (ease-out, 240ms) */
   clearTimeout(plPanel._plTimer);
   playerWrap.classList.add('pl-open');
 
-  /* Release will-change after transition completes — permanent will-change is wasteful */
-  plPanel._plTimer = setTimeout(() => {
-    plPanel.style.willChange = '';
-  }, PL_DUR_OPEN + 16);
-
-  /* Scroll fade-mask — tracklist mode only */
+  /* Scroll fade-mask — tracklist mode uniquement */
   const inner = plPanel.querySelector('.playlist-inner');
   if (inner && plPanel.classList.contains('tracklist')) {
     const updateMask = () => {
@@ -5325,13 +5302,14 @@ function togglePlaylist(e) {
 
 plBtnD.addEventListener('click', togglePlaylist);
 
-// Close on X button
+/* Fermer sur le bouton X */
 plPanel.addEventListener('click', e => {
   if (e.target.closest('#playlist-close')) { e.stopPropagation(); _closePl(); }
 });
 
+/* Fermer au clic en dehors du player */
 document.addEventListener('click', e => {
-  if (plOpen && !plPanel.contains(e.target) && !plBtnD.contains(e.target)) _closePl();
+  if (plOpen && !playerWrap.contains(e.target)) _closePl();
 });
 
 /* ── Volume ── */
@@ -5382,13 +5360,8 @@ function resolvePopupDir(triggerRect, panelH) {
   return (spaceAbove < panelH && spaceBelow > spaceAbove) ? 'below' : 'above';
 }
 
-/** Flip player-wrap flex-direction so playlist opens away from the nearest edge. */
-function _updatePlayerLayout() {
-  if (!playerWrap || !playerInner) return;
-  const r = playerInner.getBoundingClientRect();
-  if (!r.width) return;
-  playerWrap.classList.toggle('playlist-below', resolvePopupDir(r, 284) === 'below');
-}
+/* _updatePlayerLayout supprimée — la playlist s'étend désormais à l'intérieur
+ * du shell (grid-template-rows), la direction est toujours vers le haut. */
 
 function openVol() {
   /* vol-popup is position:absolute inside vol-wrap — no pixel coords needed, just direction */
@@ -5408,9 +5381,8 @@ function openVol() {
 }
 function closeVol() { volPopup.classList.remove('vol-open'); }
 
-// Init player layout direction and keep it in sync on resize
-requestAnimationFrame(_updatePlayerLayout);
-window.addEventListener('resize', _updatePlayerLayout);
+/* La direction de la playlist n'a plus besoin d'être initialisée —
+ * elle s'étend à l'intérieur du shell, toujours vers le haut. */
 
 /* ── Nav auto-compact — smooth 240ms transition (same as manual toggle) ── */
 const NAV_COMPACT_BREAKPOINT = 1024; // px
