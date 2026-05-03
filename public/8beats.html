@@ -945,7 +945,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-tags   { display: none; }
 
 /* ── Family 3: Chip (.chip) ── */
-.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: -.1px; color: var(--text-primary); background: transparent; border: 1px solid var(--border-default); border-radius: 100px; height: 40px; display: inline-flex; align-items: center; padding: 0 var(--space-4); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
+.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: -.1px; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); border-radius: 100px; height: 40px; display: inline-flex; align-items: center; padding: 0 var(--space-4); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
 .chip:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
 .chip--active { border-color: var(--text-primary); background: rgba(242,242,242,0.08); color: var(--text-primary); }
 .chip--active:hover { border-color: var(--text-primary); background: rgba(242,242,242,0.12); }
@@ -3118,17 +3118,17 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <i data-lucide="calendar" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
       Schedule
     </a>
-    <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openSupport()">
-      <i data-lucide="heart" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-      Support us
+    <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openAbout()">
+      <i data-lucide="info" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+      About
     </a>
     <a href="#" class="nav-dd-item">
       <i data-lucide="shopping-bag" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
       Shop
     </a>
-    <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openAbout()">
-      <i data-lucide="info" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
-      About
+    <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openSupport()">
+      <i data-lucide="heart" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+      Support us
     </a>
   </div>
   <div class="nav-dd-theme-row">
@@ -3174,16 +3174,16 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <span class="mno-link-left"><i data-lucide="calendar" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Schedule</span>
           <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
         </a>
-        <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openSupport()">
-          <span class="mno-link-left"><i data-lucide="heart" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Support us</span>
+        <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openAbout()">
+          <span class="mno-link-left"><i data-lucide="info" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>About</span>
           <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
         </a>
         <a href="#" class="mno-link">
           <span class="mno-link-left"><i data-lucide="shopping-bag" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Shop</span>
           <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
         </a>
-        <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openAbout()">
-          <span class="mno-link-left"><i data-lucide="info" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>About</span>
+        <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openSupport()">
+          <span class="mno-link-left"><i data-lucide="heart" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Support us</span>
           <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
         </a>
         <div class="mno-theme-row">
@@ -3222,13 +3222,13 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         <span class="nav-icon-box"><i data-lucide="search" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>
         <span class="nav-label">Explore</span>
       </button>
-      <a href="#" class="nav-item nav-collapsible-item" aria-label="Support us" onclick="event.preventDefault();openSupport()">
-        <span class="nav-icon-box"><i data-lucide="heart" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>
-        <span class="nav-label">Support us</span>
-      </a>
       <a href="#" class="nav-item nav-collapsible-item" id="nav-about" aria-label="About" onclick="event.preventDefault();openAbout()">
         <span class="nav-icon-box"><i data-lucide="info" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>
         <span class="nav-label">About</span>
+      </a>
+      <a href="#" class="nav-item nav-collapsible-item" aria-label="Support us" onclick="event.preventDefault();openSupport()">
+        <span class="nav-icon-box"><i data-lucide="heart" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>
+        <span class="nav-label">Support us</span>
       </a>
       <button class="nav-item" id="settings-btn" onclick="toggleSettings()" aria-label="Settings">
         <span class="nav-icon-box"><i data-lucide="settings" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>

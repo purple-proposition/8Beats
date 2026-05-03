@@ -321,14 +321,14 @@ h2, h3 { color: var(--text-primary); }
   height: 40px; padding: 0 var(--space-4);
   border: 1px solid var(--border-default);
   border-radius: 100px;
-  font-size: var(--text-sm); color: var(--text-primary);
+  font-size: var(--text-sm); color: var(--text-secondary);
   cursor: pointer; user-select: none; letter-spacing: -.1px;
   transition: border-color var(--dur-short) var(--ease-hover),
               color var(--dur-short) var(--ease-hover),
               background var(--dur-short) var(--ease-hover);
   background: transparent;
 }
-.tag-pill:hover { border-color: var(--border-hover); }
+.tag-pill:hover { border-color: var(--border-hover); color: var(--text-primary); }
 .tag-pill.selected {
   border-color: var(--text-primary);
   background: rgba(242,242,242,0.08);
@@ -368,13 +368,14 @@ h2, h3 { color: var(--text-primary); }
   height: 40px; padding: 0 var(--space-4);
   border: 1px solid var(--border-default);
   border-radius: 100px;
-  font-size: var(--text-sm); color: var(--text-primary); letter-spacing: -.1px;
+  font-size: var(--text-sm); color: var(--text-secondary); letter-spacing: -.1px;
   cursor: pointer; user-select: none;
   transition: border-color var(--dur-short) var(--ease-hover),
+              color var(--dur-short) var(--ease-hover),
               background var(--dur-short) var(--ease-hover);
   background: transparent;
 }
-.timeslot-pill:hover { border-color: var(--border-hover); }
+.timeslot-pill:hover { border-color: var(--border-hover); color: var(--text-primary); }
 .timeslot-pill.selected {
   border-color: var(--text-primary);
   background: rgba(242,242,242,0.08);
@@ -562,39 +563,39 @@ h2, h3 { color: var(--text-primary); }
           </div>
         </div>
 
-        <!-- ── 03: Links ── -->
+        <!-- ── 03: Links & Sample ── -->
         <div class="form-section">
           <div class="form-section-header">
             <span class="label">03 — Links</span>
             <h2>Show us your work</h2>
-            <p>Share links to your mixes, social profiles, or anything that gives us a sense of your sound. The first link is required — SoundCloud, Mixcloud, YouTube, anything works.</p>
+            <p>Share links to your mixes, social profiles, or anything that gives us a sense of your sound. The first link is required.</p>
           </div>
           <div class="form-grid full">
             <div class="field">
-              <label class="field-label" for="link-1">Link 1</label>
+              <label class="field-label" for="link-1">SoundCloud / Mixcloud / YouTube</label>
               <div class="link-row">
                 <span class="link-row-prefix">
-                  <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
                 </span>
                 <input type="url" id="link-1" name="link_1" placeholder="soundcloud.com/… · mixcloud.com/… · youtube.com/…" required>
               </div>
             </div>
             <div class="field">
-              <label class="field-label" for="link-2">Link 2 <span class="field-optional">optional</span></label>
+              <label class="field-label" for="link-2">Instagram <span class="field-optional">optional</span></label>
               <div class="link-row">
                 <span class="link-row-prefix">
-                  <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                 </span>
-                <input type="url" id="link-2" name="link_2" placeholder="instagram.com/… · twitter.com/… · yoursite.com/…">
+                <input type="text" id="link-2" name="link_2" placeholder="instagram.com/… · @yourhandle">
               </div>
             </div>
             <div class="field">
-              <label class="field-label" for="link-3">Link 3 <span class="field-optional">optional</span></label>
+              <label class="field-label" for="link-3">Website / Other <span class="field-optional">optional</span></label>
               <div class="link-row">
                 <span class="link-row-prefix">
-                  <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 </span>
-                <input type="url" id="link-3" name="link_3" placeholder="Any other relevant link">
+                <input type="url" id="link-3" name="link_3" placeholder="yoursite.com · bandcamp.com/…">
               </div>
             </div>
             <div class="field">
