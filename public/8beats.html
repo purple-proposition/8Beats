@@ -858,6 +858,38 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .icon-xl  { width: 24px; height: 24px; display: block; flex-shrink: 0; }
 [data-lucide] { display: block; flex-shrink: 0; }
 svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !important; stroke: none !important; }
+
+/* ── Icon sizes by context — single source of truth ───────────────────────
+ * All <i data-lucide> carry NO inline width/height.
+ * To change a size: edit ONE rule here.
+ * ─────────────────────────────────────────────────────────────────────── */
+/* Nav */
+.nav-icon-box svg                { width: 16px; height: 16px; }
+.hamburger svg                   { width: 18px; height: 18px; }
+#drawer-close svg                { width: 16px; height: 16px; }
+/* Mobile overlay */
+.mno-link-left svg               { width: 16px; height: 16px; }
+.mno-links a > svg               { width: 14px; height: 14px; }
+/* Explorer */
+.explore-search-icon svg         { width: 16px; height: 16px; }
+.explore-tab svg                 { width: 14px; height: 14px; }
+#filter-toggle-btn svg           { width: 14px; height: 14px; }
+/* Section headers */
+.section-link svg                { width: 18px; height: 18px; }
+/* Cards */
+.card-play svg                   { width: 20px; height: 20px; }
+/* Show page */
+#show-play-btn svg               { width: 11px; height: 11px; }
+/* About */
+.about-stat-icon svg             { width: 24px; height: 24px; }
+/* Settings */
+.settings-section-heading svg    { width: 12px; height: 12px; }
+.settings-row-icon-sq svg        { width: 14px; height: 14px; }
+.settings-account-avatar svg     { width: 18px; height: 18px; }
+/* Schedule alerts */
+.schedule-slot-alert svg         { width: 13px; height: 13px; }
+/* Theme knob */
+.theme-knob svg                  { width: 8px;  height: 8px;  }
 /* ── Primary: inverse bg, inverse text ── */
 .btn-primary { background: var(--action-primary-bg); color: var(--action-primary-fg); border: 1px solid var(--action-primary-border); }
 .btn-primary svg { stroke: var(--action-primary-fg); fill: none; }
@@ -3123,24 +3155,24 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 <div id="nav-dropdown">
   <div class="nav-dropdown-links">
     <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openSchedule()">
-      <i data-lucide="calendar" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+      <i data-lucide="calendar" style="stroke:currentColor;fill:none;display:block"></i>
       Schedule
     </a>
     <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openAbout()">
-      <i data-lucide="info" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+      <i data-lucide="info" style="stroke:currentColor;fill:none;display:block"></i>
       About
     </a>
     <a href="#" class="nav-dd-item">
-      <i data-lucide="shopping-bag" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+      <i data-lucide="shopping-bag" style="stroke:currentColor;fill:none;display:block"></i>
       Shop
     </a>
     <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openSupport()">
-      <i data-lucide="heart" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+      <i data-lucide="heart" style="stroke:currentColor;fill:none;display:block"></i>
       Support us
     </a>
   </div>
   <div class="nav-dd-theme-row">
-    <i data-lucide="monitor" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+    <i data-lucide="monitor" style="stroke:currentColor;fill:none;display:block"></i>
     <span class="nav-dd-theme-label">Theme</span>
     <button class="theme-toggle" id="dd-theme-toggle" aria-label="Toggle theme">
       <div class="theme-knob" id="dd-theme-knob"></div>
@@ -3154,7 +3186,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <div class="drawer-header">
     <span class="nav-logo">8Beats</span>
     <button id="drawer-close" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:0;" aria-label="Close">
-      <i data-lucide="x" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>
+      <i data-lucide="x" style="stroke:currentColor;fill:none;display:block"></i>
     </button>
   </div>
   <nav class="drawer-links">
@@ -3179,23 +3211,23 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 <div id="mobile-nav-overlay">
   <div class="mno-links">
         <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openSchedule()">
-          <span class="mno-link-left"><i data-lucide="calendar" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Schedule</span>
-          <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+          <span class="mno-link-left"><i data-lucide="calendar" style="stroke:currentColor;fill:none;display:block"></i>Schedule</span>
+          <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i>
         </a>
         <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openAbout()">
-          <span class="mno-link-left"><i data-lucide="info" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>About</span>
-          <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+          <span class="mno-link-left"><i data-lucide="info" style="stroke:currentColor;fill:none;display:block"></i>About</span>
+          <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i>
         </a>
         <a href="#" class="mno-link">
-          <span class="mno-link-left"><i data-lucide="shopping-bag" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Shop</span>
-          <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+          <span class="mno-link-left"><i data-lucide="shopping-bag" style="stroke:currentColor;fill:none;display:block"></i>Shop</span>
+          <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i>
         </a>
         <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openSupport()">
-          <span class="mno-link-left"><i data-lucide="heart" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Support us</span>
-          <i data-lucide="chevron-right" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+          <span class="mno-link-left"><i data-lucide="heart" style="stroke:currentColor;fill:none;display:block"></i>Support us</span>
+          <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i>
         </a>
         <div class="mno-theme-row">
-          <i data-lucide="monitor" class="mno-theme-icon" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+          <i data-lucide="monitor" class="mno-theme-icon" style="stroke:currentColor;fill:none;display:block"></i>
           <span class="mno-theme-label">Theme</span>
           <button class="mno-toggle" id="mno-theme-toggle" aria-label="Toggle theme">
             <div class="mno-toggle-track"></div>
@@ -3227,19 +3259,19 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     <!-- ── Nav items body ── -->
     <div class="sidebar-body">
       <button class="nav-item" id="search-btn" onclick="openExplore()" aria-label="Explore">
-        <span class="nav-icon-box"><i data-lucide="search" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>
+        <span class="nav-icon-box"><i data-lucide="search" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Explore</span>
       </button>
       <a href="#" class="nav-item nav-collapsible-item" id="nav-about" aria-label="About" onclick="event.preventDefault();openAbout()">
-        <span class="nav-icon-box"><i data-lucide="info" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>
+        <span class="nav-icon-box"><i data-lucide="info" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">About</span>
       </a>
       <a href="#" class="nav-item nav-collapsible-item" aria-label="Support us" onclick="event.preventDefault();openSupport()">
-        <span class="nav-icon-box"><i data-lucide="heart" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>
+        <span class="nav-icon-box"><i data-lucide="heart" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Support us</span>
       </a>
       <button class="nav-item" id="settings-btn" onclick="toggleSettings()" aria-label="Settings">
-        <span class="nav-icon-box"><i data-lucide="settings" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i></span>
+        <span class="nav-icon-box"><i data-lucide="settings" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Settings</span>
       </button>
     </div>
@@ -3257,7 +3289,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     </div>
     <div class="nav-sep-mobile" style="display:none!important"></div>
     <button class="hamburger" id="hamburger" aria-label="Open menu" style="display:none!important">
-      <i data-lucide="menu" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i>
+      <i data-lucide="menu" style="stroke:currentColor;fill:none;display:block"></i>
     </button>
 
   </div>
@@ -3277,19 +3309,19 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 
     <!-- Search bar -->
     <div class="explore-section-border" style="padding:var(--space-5);display:flex;align-items:center;gap:var(--space-4);">
-      <i data-lucide="search" style="width:16px;height:16px;stroke:var(--text-tertiary);fill:none;display:block;flex-shrink:0;"></i>
+      <i data-lucide="search" class="explore-search-icon" style="stroke:var(--text-tertiary);fill:none"></i>
       <input id="explore-input" placeholder="Search shows, residents, games, genres…" oninput="handleSearch(this.value)" class="explore-input" style="flex:1;background:none;border:none;outline:none;font-family:var(--font);font-size:var(--text-base);color:var(--text-secondary);"/>
       <kbd style="flex-shrink:0;font-family:var(--font);font-size:11px;color:var(--text-tertiary);background:var(--surface-subtle);border:1px solid var(--border-default);border-radius:5px;padding:2px 6px;line-height:1.5;letter-spacing:.02em;pointer-events:none;">Esc</kbd>
     </div>
 
     <!-- Tabs + Filter on one row -->
     <div class="explore-section-border" style="display:flex;align-items:stretch;gap:0;padding:0;">
-      <button id="tab-shows" onclick="setTab('shows')" class="explore-tab explore-tab-active" style="padding-left:var(--space-5);"><i data-lucide="music-2" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Shows</button>
-      <button id="tab-residents" onclick="setTab('residents')" class="explore-tab"><i data-lucide="users" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Residents</button>
-      <button id="tab-schedule" onclick="setTab('schedule')" class="explore-tab"><i data-lucide="calendar" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Schedule</button>
+      <button id="tab-shows" onclick="setTab('shows')" class="explore-tab explore-tab-active" style="padding-left:var(--space-5);"><i data-lucide="music-2" style="stroke:currentColor;fill:none;display:block"></i>Shows</button>
+      <button id="tab-residents" onclick="setTab('residents')" class="explore-tab"><i data-lucide="users" style="stroke:currentColor;fill:none;display:block"></i>Residents</button>
+      <button id="tab-schedule" onclick="setTab('schedule')" class="explore-tab"><i data-lucide="calendar" style="stroke:currentColor;fill:none;display:block"></i>Schedule</button>
       <div id="explore-filter-bar" style="margin-left:auto;display:flex;align-items:stretch;padding-right:var(--space-5);">
         <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:var(--space-2);background:none;border:none;cursor:pointer;padding:0;font-family:var(--font);font-size:var(--text-base);font-weight:400;color:var(--text-tertiary);transition:color var(--dur-micro) var(--ease-hover);align-self:center;">
-          <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="width:14px;height:14px;stroke:var(--text-tertiary);fill:none;display:block;transition:stroke var(--dur-micro) var(--ease-hover);"></i>
+          <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="stroke:var(--text-tertiary);fill:none;display:block;transition:stroke var(--dur-micro) var(--ease-hover)"></i>
           Filters
           <span id="filter-count" style="display:none;"></span>
         </button>
@@ -3323,8 +3355,8 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     <h1>The webradio for video game music</h1>
     <p>Weekly shows, live mixes, and curated sets celebrating the finest video game soundtracks — 4,000 listeners and counting.</p>
     <div class="hero-actions">
-      <a href="#" class="btn btn-primary" onclick="event.preventDefault();setPlaying(!playing)"><i data-lucide="play" style="width:16px;height:16px;display:block;"></i>Listen now</a>
-      <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openExplore()"><i data-lucide="search" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;"></i>Browse shows</a>
+      <a href="#" class="btn btn-primary" onclick="event.preventDefault();setPlaying(!playing)"><i data-lucide="play" style="display:block"></i>Listen now</a>
+      <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openExplore()"><i data-lucide="search" style="stroke:currentColor;fill:none;display:block"></i>Browse shows</a>
     </div>
   </div>
 </section>
@@ -3334,7 +3366,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <div class="section col-editorial">
     <header class="section-header">
       <div class="section-header-text">
-        <h2><a href="#" class="section-link">Latest shows<i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
+        <h2><a href="#" class="section-link">Latest shows<i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i></a></h2>
         <h3>Fresh video game music mixes from our residents — new shows every week.</h3>
       </div>
     </header>
@@ -3343,7 +3375,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <article class="card">
         <div class="card-thumb">
           <img src="https://images.ctfassets.net/jd1mlth317j4/Zf0xfLtkY6D28VvaJr2pq/e42b0f9a3c87b01fdb1669f15c7d968d/website.jpg?fm=webp&w=828&q=80" style="width:100%;height:100%;object-fit:cover;display:block;transition:filter var(--dur-large) var(--ease-hover);" alt="International Radio Day">
-          <div class="card-overlay"><button class="card-play" id="cp1" data-show="International Radio Day" data-host="Purple Proposition" data-series="International Radio Day" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
+          <div class="card-overlay"><button class="card-play" id="cp1" data-show="International Radio Day" data-host="Purple Proposition" data-series="International Radio Day" aria-label="Play"><i data-lucide="play" style="display:block"></i></button></div>
         </div>
         <div class="card-body">
           <h3>International Radio Day</h3>
@@ -3355,7 +3387,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <article class="card">
         <div class="card-thumb">
           <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0a1628"/><stop offset="50%" stop-color="#0d3060"/><stop offset="100%" stop-color="#1a5fa0"/></linearGradient><radialGradient id="r2" cx="30%" cy="60%" r="60%"><stop offset="0%" stop-color="#00d4ff" stop-opacity=".3"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#g2)"/><rect width="400" height="300" fill="url(#r2)"/><circle cx="340" cy="270" r="90" fill="rgba(0,80,180,.3)"/><circle cx="50" cy="50" r="60" fill="rgba(0,200,255,.1)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cp2" data-show="Dusk" data-host="Neon Waves" data-series="Synthwave Sunsets" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
+          <div class="card-overlay"><button class="card-play" id="cp2" data-show="Dusk" data-host="Neon Waves" data-series="Synthwave Sunsets" aria-label="Play"><i data-lucide="play" style="display:block"></i></button></div>
         </div>
         <div class="card-body">
           <h3>Dusk</h3>
@@ -3367,7 +3399,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <article class="card">
         <div class="card-thumb">
           <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a0800"/><stop offset="50%" stop-color="#5c1a00"/><stop offset="100%" stop-color="#c44a00"/></linearGradient><radialGradient id="r3" cx="60%" cy="40%" r="55%"><stop offset="0%" stop-color="#ff8c42" stop-opacity=".45"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#g3)"/><rect width="400" height="300" fill="url(#r3)"/><circle cx="30" cy="280" r="100" fill="rgba(180,50,0,.28)"/><circle cx="360" cy="30" r="70" fill="rgba(255,140,40,.1)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cp3" data-show="Retro RPG Evening" data-host="Koji & Friends" data-series="8-Bit Chronicles" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
+          <div class="card-overlay"><button class="card-play" id="cp3" data-show="Retro RPG Evening" data-host="Koji & Friends" data-series="8-Bit Chronicles" aria-label="Play"><i data-lucide="play" style="display:block"></i></button></div>
         </div>
         <div class="card-body">
           <h3>Retro RPG Evening</h3>
@@ -3379,7 +3411,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <article class="card">
         <div class="card-thumb">
           <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g4" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#001a0f"/><stop offset="50%" stop-color="#004d2a"/><stop offset="100%" stop-color="#007a40"/></linearGradient><radialGradient id="r4" cx="40%" cy="50%" r="60%"><stop offset="0%" stop-color="#00ff88" stop-opacity=".18"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#g4)"/><rect width="400" height="300" fill="url(#r4)"/><circle cx="320" cy="260" r="90" fill="rgba(0,120,60,.28)"/><circle cx="60" cy="40" r="60" fill="rgba(0,255,100,.07)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cp4" data-show="Midnight Walks Through the Forest & Field" data-host="Sakura Records" data-series="Ambient Trails" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
+          <div class="card-overlay"><button class="card-play" id="cp4" data-show="Midnight Walks Through the Forest & Field" data-host="Sakura Records" data-series="Ambient Trails" aria-label="Play"><i data-lucide="play" style="display:block"></i></button></div>
         </div>
         <div class="card-body">
           <h3>Midnight Walks Through the Forest & Field</h3>
@@ -3394,7 +3426,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <div class="section col-editorial" style="margin-top: var(--space-8);">
     <header class="section-header">
       <div class="section-header-text">
-        <h2><a href="#" class="section-link">Cozy Grooves<i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
+        <h2><a href="#" class="section-link">Cozy Grooves<i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i></a></h2>
         <h3>Calming music for focus, relaxation, and sleep.</h3>
       </div>
     </header>
@@ -3403,7 +3435,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <article class="card">
         <div class="card-thumb">
           <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="cg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1005"/><stop offset="50%" stop-color="#4a2e08"/><stop offset="100%" stop-color="#8a5a1a"/></linearGradient><radialGradient id="cg1r" cx="65%" cy="35%" r="55%"><stop offset="0%" stop-color="#d4a040" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#cg1)"/><rect width="400" height="300" fill="url(#cg1r)"/><circle cx="40" cy="270" r="90" fill="rgba(140,80,10,.25)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cgp1" data-show="Moody Jazz 2" data-host="8Beats Sound Team" data-series="Moody Jazz 2" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
+          <div class="card-overlay"><button class="card-play" id="cgp1" data-show="Moody Jazz 2" data-host="8Beats Sound Team" data-series="Moody Jazz 2" aria-label="Play"><i data-lucide="play" style="display:block"></i></button></div>
         </div>
         <div class="card-body">
           <h3>Moody Jazz 2</h3>
@@ -3415,7 +3447,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <article class="card">
         <div class="card-thumb">
           <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="cg2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#100a00"/><stop offset="50%" stop-color="#2e2010"/><stop offset="100%" stop-color="#5a4020"/></linearGradient><radialGradient id="cg2r" cx="40%" cy="60%" r="60%"><stop offset="0%" stop-color="#c09060" stop-opacity=".35"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#cg2)"/><rect width="400" height="300" fill="url(#cg2r)"/><circle cx="340" cy="50" r="80" fill="rgba(120,80,30,.2)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cgp2" data-show="X2" data-host="Submerse" data-series="X2" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
+          <div class="card-overlay"><button class="card-play" id="cgp2" data-show="X2" data-host="Submerse" data-series="X2" aria-label="Play"><i data-lucide="play" style="display:block"></i></button></div>
         </div>
         <div class="card-body">
           <h3>X2</h3>
@@ -3427,7 +3459,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <article class="card">
         <div class="card-thumb">
           <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="cg3" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#0a1a10"/><stop offset="50%" stop-color="#1a3a20"/><stop offset="100%" stop-color="#2a5a30"/></linearGradient><radialGradient id="cg3r" cx="55%" cy="45%" r="58%"><stop offset="0%" stop-color="#60c070" stop-opacity=".22"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#cg3)"/><rect width="400" height="300" fill="url(#cg3r)"/><circle cx="60" cy="60" r="70" fill="rgba(40,120,50,.18)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cgp3" data-show="Settings" data-host="ElFamosoDemon" data-series="Settings" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
+          <div class="card-overlay"><button class="card-play" id="cgp3" data-show="Settings" data-host="ElFamosoDemon" data-series="Settings" aria-label="Play"><i data-lucide="play" style="display:block"></i></button></div>
         </div>
         <div class="card-body">
           <h3>Settings</h3>
@@ -3439,7 +3471,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <article class="card">
         <div class="card-thumb">
           <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="cg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#001828"/><stop offset="50%" stop-color="#003850"/><stop offset="100%" stop-color="#006888"/></linearGradient><radialGradient id="cg4r" cx="45%" cy="55%" r="60%"><stop offset="0%" stop-color="#40b0d0" stop-opacity=".28"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#cg4)"/><rect width="400" height="300" fill="url(#cg4r)"/><circle cx="330" cy="280" r="100" fill="rgba(0,100,160,.22)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cgp4" data-show="Beach Day Mixtape" data-host="JamesonEmpire" data-series="Beach Day Mixtape" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
+          <div class="card-overlay"><button class="card-play" id="cgp4" data-show="Beach Day Mixtape" data-host="JamesonEmpire" data-series="Beach Day Mixtape" aria-label="Play"><i data-lucide="play" style="display:block"></i></button></div>
         </div>
         <div class="card-body">
           <h3>Beach Day Mixtape</h3>
@@ -3479,7 +3511,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h2 class="pitch-title">Join the party</h2>
           <p class="pitch-body">Have an idea for a new show or podcast that you'd like to share with a global audience? We're all ears!</p>
           <a href="mailto:hello@8beats.fm" class="btn btn-secondary" style="letter-spacing:0.06em;text-transform:uppercase;font-size:var(--text-sm);">
-            <i data-lucide="clipboard-list" style="width:14px;height:14px;fill:none;display:block;"></i>
+            <i data-lucide="clipboard-list" style="fill:none;display:block"></i>
             Show proposal
           </a>
         </div>
@@ -3523,14 +3555,14 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         </div>
         <div class="show-actions">
           <button class="btn btn-primary show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
-            <i data-lucide="play" style="width:11px;height:11px;display:block;"></i>
+            <i data-lucide="play" style="display:block"></i>
             Play
           </button>
           <button class="icon-btn icon-btn--action" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
-            <i data-lucide="user-plus" style="width:16px;height:16px;fill:none;display:block;"></i>
+            <i data-lucide="user-plus" style="fill:none;display:block"></i>
           </button>
           <button class="icon-btn icon-btn--action" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
-            <i data-lucide="bookmark" style="width:16px;height:16px;fill:none;display:block;"></i>
+            <i data-lucide="bookmark" style="fill:none;display:block"></i>
           </button>
         </div>
         <div class="show-tracklist-wrap">
@@ -3549,7 +3581,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 
       <div class="section-header">
         <div class="section-header-text">
-          <h2><a href="#" class="section-link"><span id="show-more-title">More from Purple Proposition</span><i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
+          <h2><a href="#" class="section-link"><span id="show-more-title">More from Purple Proposition</span><i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i></a></h2>
         </div>
       </div>
       <div class="cards" id="show-related-cards"></div>
@@ -3582,7 +3614,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         <div class="artist-stats" id="artist-stats"></div>
         <div class="artist-actions">
           <button class="btn btn-secondary show-btn-ghost" id="artist-follow-btn" onclick="toggleArtistFollow(this)">
-            <i data-lucide="user-plus" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+            <i data-lucide="user-plus" style="stroke:currentColor;fill:none;display:block"></i>
             Follow
           </button>
           <div class="artist-social" id="artist-social"></div>
@@ -3661,21 +3693,21 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     </div>
     <div class="about-stats col-editorial" id="about-stats">
       <div class="about-stat">
-        <div class="about-stat-icon"><i data-lucide="headphones" style="width:24px;height:24px;"></i></div>
+        <div class="about-stat-icon"><i data-lucide="headphones"></i></div>
         <div class="about-stat-bottom">
           <span class="about-stat-number" data-target="4000">0</span>
           <span class="about-stat-label">Monthly listeners</span>
         </div>
       </div>
       <div class="about-stat">
-        <div class="about-stat-icon"><i data-lucide="radio" style="width:24px;height:24px;"></i></div>
+        <div class="about-stat-icon"><i data-lucide="radio"></i></div>
         <div class="about-stat-bottom">
           <span class="about-stat-number" data-target="502">0</span>
           <span class="about-stat-label">Shows broadcast</span>
         </div>
       </div>
       <div class="about-stat">
-        <div class="about-stat-icon"><i data-lucide="mic-2" style="width:24px;height:24px;"></i></div>
+        <div class="about-stat-icon"><i data-lucide="mic-2"></i></div>
         <div class="about-stat-bottom">
           <span class="about-stat-number" data-target="51">0</span>
           <span class="about-stat-label">Artists</span>
@@ -3697,7 +3729,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         <h3>Submit a show</h3>
         <p>8Beats is always open to new show proposals. Residents, one-offs, or series — we listen to everything.</p>
         <a href="/submit" class="about-contact-btn about-contact-btn-proposal">
-          <i data-lucide="file-text" style="width:14px;height:14px;flex-shrink:0;"></i>
+          <i data-lucide="file-text" style="flex-shrink:0"></i>
           Proposal
         </a>
       </div>
@@ -3705,7 +3737,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         <h3>Get in touch</h3>
         <p>Feedback, partnership enquiries, or just want to say hello — we'd love to hear from you.</p>
         <a href="mailto:contact@8beats.fm" class="about-contact-btn about-contact-btn-mail">
-          <i data-lucide="mail" style="width:14px;height:14px;flex-shrink:0;"></i>
+          <i data-lucide="mail" style="flex-shrink:0"></i>
           Contact
         </a>
       </div>
@@ -3776,19 +3808,19 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     <!-- Section tab bar -->
     <div class="sp-day-bar" id="settings-tab-bar">
       <button class="sp-day-tab active" id="settings-tab-0" onclick="selectSettingsSection(0)">
-        <i data-lucide="monitor" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+        <i data-lucide="monitor" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
         Appearance
       </button>
       <button class="sp-day-tab" id="settings-tab-1" onclick="selectSettingsSection(1)">
-        <i data-lucide="layout-grid" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+        <i data-lucide="layout-grid" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
         Layout
       </button>
       <button class="sp-day-tab" id="settings-tab-2" onclick="selectSettingsSection(2)">
-        <i data-lucide="keyboard" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+        <i data-lucide="keyboard" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
         Shortcuts
       </button>
       <button class="sp-day-tab" id="settings-tab-3" onclick="selectSettingsSection(3)">
-        <i data-lucide="user" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+        <i data-lucide="user" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
         Profile
       </button>
     </div>
@@ -3799,13 +3831,13 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <!-- Section 0: Appearance -->
       <div class="settings-section" id="settings-section-0">
         <div class="settings-section-heading">
-          <i data-lucide="monitor" style="width:12px;height:12px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+          <i data-lucide="monitor" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
           Appearance
         </div>
         <div class="settings-row">
           <div class="settings-row-icon">
             <div class="settings-row-icon-sq">
-              <i data-lucide="sun-moon" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+              <i data-lucide="sun-moon" style="stroke:currentColor;fill:none;display:block"></i>
             </div>
             <div>
               <div style="font-size:var(--text-base);color:var(--text-secondary);">Theme</div>
@@ -3821,7 +3853,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <!-- Section 1: Layout -->
       <div class="settings-section" id="settings-section-1">
         <div class="settings-section-heading">
-          <i data-lucide="layout-grid" style="width:12px;height:12px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+          <i data-lucide="layout-grid" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
           Layout
         </div>
         <div class="settings-group">
@@ -3876,7 +3908,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <div class="settings-row">
             <div class="settings-row-icon">
               <div class="settings-row-icon-sq">
-                <i data-lucide="sidebar" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+                <i data-lucide="sidebar" style="stroke:currentColor;fill:none;display:block"></i>
               </div>
               <div>
                 <div style="font-size:var(--text-base);color:var(--text-secondary);">Compact sidebar</div>
@@ -3894,14 +3926,14 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <!-- Section 2: Keyboard shortcuts -->
       <div class="settings-section" id="settings-section-2">
         <div class="settings-section-heading">
-          <i data-lucide="keyboard" style="width:12px;height:12px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+          <i data-lucide="keyboard" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
           Keyboard shortcuts
         </div>
         <div style="display:flex;flex-direction:column;">
           <div class="settings-kbd-row">
             <div class="settings-row-icon">
               <div class="settings-row-icon-sq">
-                <i data-lucide="play" style="width:12px;height:12px;stroke:currentColor;fill:none;display:block;"></i>
+                <i data-lucide="play" style="stroke:currentColor;fill:none;display:block"></i>
               </div>
               <span style="font-size:var(--text-base);color:var(--text-secondary);">Play / Pause</span>
             </div>
@@ -3910,7 +3942,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <div class="settings-kbd-row">
             <div class="settings-row-icon">
               <div class="settings-row-icon-sq">
-                <i data-lucide="search" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+                <i data-lucide="search" style="stroke:currentColor;fill:none;display:block"></i>
               </div>
               <span style="font-size:var(--text-base);color:var(--text-secondary);">Explore</span>
             </div>
@@ -3919,7 +3951,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <div class="settings-kbd-row">
             <div class="settings-row-icon">
               <div class="settings-row-icon-sq">
-                <i data-lucide="list-music" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+                <i data-lucide="list-music" style="stroke:currentColor;fill:none;display:block"></i>
               </div>
               <span style="font-size:var(--text-base);color:var(--text-secondary);">Playlist</span>
             </div>
@@ -3928,7 +3960,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <div class="settings-kbd-row">
             <div class="settings-row-icon">
               <div class="settings-row-icon-sq">
-                <i data-lucide="settings" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+                <i data-lucide="settings" style="stroke:currentColor;fill:none;display:block"></i>
               </div>
               <span style="font-size:var(--text-base);color:var(--text-secondary);">Settings</span>
             </div>
@@ -3940,12 +3972,12 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <!-- Section 3: Profile -->
       <div class="settings-section" id="settings-section-3">
         <div class="settings-section-heading">
-          <i data-lucide="user" style="width:12px;height:12px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+          <i data-lucide="user" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
           Profile
         </div>
         <div style="display:flex;align-items:center;gap:var(--space-4);">
-          <div style="width:40px;height:40px;border-radius:50%;background:var(--surface-btn);border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i data-lucide="user" style="width:18px;height:18px;stroke:var(--text-tertiary);fill:none;display:block;"></i>
+          <div class="settings-account-avatar" style="width:40px;height:40px;border-radius:50%;background:var(--surface-btn);border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i data-lucide="user" style="stroke:var(--text-tertiary);fill:none"></i>
           </div>
           <div>
             <div style="font-size:var(--text-base);color:var(--text-secondary);">jessesotomayor@icloud.com</div>
@@ -3972,7 +4004,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         <div class="playlist-header">
           <span class="label">Last played tracks</span>
           <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-            <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+            <i data-lucide="x" style="stroke:currentColor;fill:none;display:block"></i>
           </button>
         </div>
         <div class="track">
@@ -4011,7 +4043,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
               Back to live
             </button>
             <button class="icon-btn icon-btn--spotify" id="spotify-btn" aria-label="Spotify">
-              <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
+              <svg viewBox="0 0 24 24" style="stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
             </button>
             <div class="vol-wrap" id="vol-wrap">
               <div class="vol-popup icon-btn" id="vol-popup">
@@ -4027,7 +4059,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
             </div>
             <button class="icon-btn" id="playlist-btn"
                     aria-label="Playlist" aria-expanded="false" aria-controls="playlist">
-              <i data-lucide="list-music" style="width:14px;height:14px;fill:none;display:block;"></i>
+              <i data-lucide="list-music" style="fill:none;display:block"></i>
             </button>
           </div>
         </div>
@@ -4138,7 +4170,7 @@ function setThemeIcon(knobEl, name) {
   lucide.createIcons({ nodes: [knobEl] });
   const s = knobEl.querySelector('svg');
   if (s) {
-    s.style.cssText = 'width:8px;height:8px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block;';
+    s.style.cssText = 'fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block;';
     s.style.stroke = light ? '#ffffff' : '#000000';
   }
 }
@@ -5030,7 +5062,7 @@ function switchToTracklist(showTitle) {
     <div class="playlist-header">
       <span class="label">Tracklist</span>
       <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-        <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+        <i data-lucide="x" style="stroke:currentColor;fill:none;display:block"></i>
       </button>
     </div>
     ${tracks.map((t, i) => `
@@ -5093,7 +5125,7 @@ function backToLive() {
     <div class="playlist-header">
       <span class="label">Last played tracks</span>
       <button class="panel-close" id="playlist-close" aria-label="Close playlist">
-        <i data-lucide="x" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>
+        <i data-lucide="x" style="stroke:currentColor;fill:none;display:block"></i>
       </button>
     </div>
     <div class="track">
@@ -5747,7 +5779,7 @@ function makeRelatedCard(r, i) {
         <rect width="400" height="300" fill="url(#${r.gradId})"/>
         <rect width="400" height="300" fill="url(#${r.gradId}r)"/>
       </svg>
-      <div class="card-overlay"><button class="card-play" data-show="${r.title}" aria-label="Play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;display:block;"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></button></div>
+      <div class="card-overlay"><button class="card-play" data-show="${r.title}" aria-label="Play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></button></div>
     </div>
     <div class="card-body">
       <h3>${r.title}</h3>
@@ -5922,7 +5954,7 @@ function updateShowPlayBtn() {
   const data = currentShowKey ? SHOW_DATA[currentShowKey] : null;
   const iconName = playing ? 'pause' : 'play';
   const label = playing ? 'Pause' : 'Play';
-  btn.innerHTML = `<i data-lucide="${iconName}" style="width:11px;height:11px;display:block;"></i>${label}`;
+  btn.innerHTML = `<i data-lucide="${iconName}" style="display:block"></i>${label}`;
   lucide.createIcons({ nodes: [btn] });
 }
 
@@ -6220,7 +6252,7 @@ function openArtist(hostName) {
   // Reset follow button
   const followBtn = document.getElementById('artist-follow-btn');
   followBtn.classList.remove('active');
-  followBtn.innerHTML = `<i data-lucide="user-plus" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i> Follow`;
+  followBtn.innerHTML = `<i data-lucide="user-plus" style="stroke:currentColor;fill:none;display:block"></i> Follow`;
 
   // Shows — grouped by series
   const GRAD_PAIRS = [
@@ -6256,7 +6288,7 @@ function openArtist(hostName) {
       <div class="section col-editorial" style="margin-top:0;">
         <div class="section-header">
           <div class="section-header-text">
-            <h2><a href="#" class="section-link">${seriesName}<i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
+            <h2><a href="#" class="section-link">${seriesName}<i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i></a></h2>
           </div>
         </div>
         <div class="cards">${cardsHtml}</div>
@@ -6329,8 +6361,8 @@ function closeArtist() {
 function toggleArtistFollow(btn) {
   const following = btn.classList.toggle('active');
   btn.innerHTML = following
-    ? `<i data-lucide="user-check" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i> Following`
-    : `<i data-lucide="user-plus" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i> Follow`;
+    ? `<i data-lucide="user-check" style="stroke:currentColor;fill:none;display:block"></i> Following`
+    : `<i data-lucide="user-plus" style="stroke:currentColor;fill:none;display:block"></i> Follow`;
   lucide.createIcons({ nodes: [btn] });
 }
 
@@ -6559,7 +6591,7 @@ function toggleAlert(btn, key, dayOffset, time, title) {
     saveAlerts(alerts);
     btn.classList.add('alerted');
     btn.title = 'Rappel activé';
-    btn.innerHTML = '<i data-lucide="bell-ring" style="width:13px;height:13px;pointer-events:none;"></i>';
+    btn.innerHTML = '<i data-lucide="bell-ring" style="pointer-events:none"></i>';
     lucide.createIcons({ nodes: [btn] });
     scheduleOneNotif(dayOffset, time, title);
   };
@@ -6568,7 +6600,7 @@ function toggleAlert(btn, key, dayOffset, time, title) {
     saveAlerts(alerts);
     btn.classList.remove('alerted');
     btn.title = 'Me rappeler';
-    btn.innerHTML = '<i data-lucide="bell" style="width:13px;height:13px;pointer-events:none;"></i>';
+    btn.innerHTML = '<i data-lucide="bell" style="pointer-events:none"></i>';
     lucide.createIcons({ nodes: [btn] });
   };
 
@@ -6673,7 +6705,7 @@ function renderSchedule() {
               <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
                 title="${isAlerted ? 'Rappel activé' : 'Me rappeler'}"
                 onclick="event.stopPropagation(); toggleAlert(this, '${alertKey}', ${i}, '${slot.time}', '${safeTitle}')">
-                <i data-lucide="${alertIcon}" style="width:16px;height:16px;pointer-events:none;"></i>
+                <i data-lucide="${alertIcon}" style="pointer-events:none"></i>
               </button>
             </div>
           </div>`;
@@ -6778,7 +6810,7 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
           <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
             title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
             onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${slot.title.replace(/'/g,"\\'")}')">
-            <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="width:14px;height:14px;pointer-events:none;"></i>
+            <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="pointer-events:none"></i>
           </button>
         </div>`;
     });
