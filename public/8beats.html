@@ -950,6 +950,97 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .chip--active { border-color: var(--text-primary); background: rgba(242,242,242,0.08); color: var(--text-primary); }
 .chip--active:hover { border-color: var(--text-primary); background: rgba(242,242,242,0.12); }
 
+/* ── Featured Carousel ─────────────────────────────────────────────────────
+ * Spotlight layout: info left · large thumb center · queue right
+ * Same concept as Apple TV+ hero — adapted to dark / 8beats design system
+ * ─────────────────────────────────────────────────────────────────────────── */
+.feat-carousel {
+  display: grid;
+  grid-template-columns: 196px 1fr 216px;
+  gap: var(--space-5);
+  align-items: start;
+}
+/* Info panel */
+.feat-info { display: flex; flex-direction: column; gap: var(--space-4); padding-top: var(--space-1); }
+.feat-title {
+  font-family: 'Alpha Lyrae', var(--font);
+  font-size: clamp(20px, 2.3vw, 30px); line-height: 1.1; color: var(--text-primary); margin: 0;
+  transition: opacity 200ms var(--ease-hover);
+}
+.feat-host-row { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-base); color: var(--text-secondary); transition: opacity 200ms var(--ease-hover); }
+.feat-meta-text { font-size: var(--text-sm); color: var(--text-tertiary); transition: opacity 200ms var(--ease-hover); }
+.feat-title.fading, .feat-host-row.fading, .feat-meta-text.fading { opacity: 0; }
+.feat-tags-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.feat-play-btn { align-self: flex-start; margin-top: var(--space-2); height: 40px; padding: 0 var(--space-5); font-size: var(--text-sm); font-weight: 600; letter-spacing: .02em; }
+/* Center thumbnail */
+.feat-center {
+  position: relative; border-radius: var(--radius-sm); overflow: hidden;
+  aspect-ratio: 16/10; cursor: pointer; background: var(--surface-subtle);
+}
+.feat-thumb-layer {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0; transition: opacity 360ms var(--ease-standard);
+}
+.feat-thumb-layer.active { opacity: 1; }
+.feat-center-grad {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to right, rgba(5,5,5,0.52) 0%, transparent 30%, transparent 70%, rgba(5,5,5,0.18) 100%);
+}
+/* Dots */
+.feat-dots {
+  position: absolute; bottom: var(--space-3); left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 6px; z-index: 2;
+}
+.feat-dot {
+  width: 6px; height: 6px; border-radius: 50%; border: none; padding: 0; cursor: pointer;
+  background: rgba(255,255,255,0.35);
+  transition: background var(--dur-short) var(--ease-hover), transform var(--dur-short) var(--ease-hover);
+}
+.feat-dot:hover { background: rgba(255,255,255,0.65); }
+.feat-dot.active { background: #fff; transform: scale(1.3); }
+/* Queue */
+.feat-queue { display: flex; flex-direction: column; border-left: 1px solid var(--border-subtle); padding-left: var(--space-4); }
+.feat-queue-item {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--border-subtle); cursor: pointer;
+  transition: background var(--dur-short) var(--ease-hover);
+}
+.feat-queue-item:last-child { border-bottom: none; }
+.feat-queue-item:hover { background: rgba(255,255,255,0.03); }
+.feat-queue-item.active { background: rgba(255,255,255,0.05); }
+.feat-queue-thumb {
+  width: 72px; height: 48px; flex-shrink: 0; border-radius: 6px; overflow: hidden;
+  background-size: cover; background-position: center; background-color: var(--surface-subtle);
+}
+.feat-queue-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.feat-queue-title { font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+.feat-queue-sub { font-size: var(--text-xs); color: var(--text-tertiary); }
+/* Progress line on active queue item */
+.feat-queue-item { position: relative; }
+.feat-queue-progress {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: rgba(255,255,255,0.0); overflow: hidden; border-radius: 0;
+}
+.feat-queue-progress-bar {
+  height: 100%; width: 0%; background: rgba(255,255,255,0.5);
+  transition: none;
+}
+.feat-queue-item.active .feat-queue-progress-bar {
+  width: 100%; transition: width 6000ms linear;
+}
+/* Mobile: stack vertically, hide queue */
+@media (max-width: 1024px) {
+  .feat-carousel { grid-template-columns: 160px 1fr 180px; }
+}
+@media (max-width: 768px) {
+  .feat-carousel { grid-template-columns: 1fr; }
+  .feat-queue { display: none; border: none; padding: 0; }
+  .feat-info { order: 2; }
+  .feat-center { order: 1; aspect-ratio: 16/9; }
+}
+
 /* ── Panels ── */
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
 .panel.glass { background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); }
@@ -3326,63 +3417,18 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 
 <!-- CONTENT -->
 <main class="content">
-  <div class="section col-editorial">
-    <header class="section-header">
-      <div class="section-header-text">
-        <h2><a href="#" class="section-link">Latest shows<i data-lucide="chevron-right" style="width:18px;height:18px;stroke:currentColor;fill:none;display:block;"></i></a></h2>
-        <h3>Fresh video game music mixes from our residents — new shows every week.</h3>
+  <!-- ── Latest Shows — Featured Carousel ── -->
+  <div class="section col-editorial" id="feat-section">
+    <div class="feat-carousel" id="feat-carousel">
+      <!-- info panel -->
+      <div class="feat-info" id="feat-info"></div>
+      <!-- center thumbnail -->
+      <div class="feat-center" id="feat-center">
+        <div class="feat-center-grad"></div>
+        <div class="feat-dots" id="feat-dots"></div>
       </div>
-    </header>
-
-    <div class="cards">
-      <article class="card">
-        <div class="card-thumb">
-          <img src="https://images.ctfassets.net/jd1mlth317j4/Zf0xfLtkY6D28VvaJr2pq/e42b0f9a3c87b01fdb1669f15c7d968d/website.jpg?fm=webp&w=828&q=80" style="width:100%;height:100%;object-fit:cover;display:block;transition:filter var(--dur-large) var(--ease-hover);" alt="International Radio Day">
-          <div class="card-overlay"><button class="card-play" id="cp1" data-show="International Radio Day" data-host="Purple Proposition" data-series="International Radio Day" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
-        </div>
-        <div class="card-body">
-          <h3>International Radio Day</h3>
-          <div class="card-host"><div class="avatar">PP</div><span class="host-name">Purple Proposition</span></div>
-          <p class="card-meta">2 days ago · 1:01:26</p>
-          <div class="card-tags"><span class="chip">Ambient</span><span class="chip">Downtempo</span><span class="chip">Drum & Bass</span></div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="card-thumb">
-          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0a1628"/><stop offset="50%" stop-color="#0d3060"/><stop offset="100%" stop-color="#1a5fa0"/></linearGradient><radialGradient id="r2" cx="30%" cy="60%" r="60%"><stop offset="0%" stop-color="#00d4ff" stop-opacity=".3"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#g2)"/><rect width="400" height="300" fill="url(#r2)"/><circle cx="340" cy="270" r="90" fill="rgba(0,80,180,.3)"/><circle cx="50" cy="50" r="60" fill="rgba(0,200,255,.1)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cp2" data-show="Dusk" data-host="Neon Waves" data-series="Synthwave Sunsets" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
-        </div>
-        <div class="card-body">
-          <h3>Dusk</h3>
-          <div class="card-host"><div class="avatar">NW</div><span class="host-name">Neon Waves</span></div>
-          <p class="card-meta">5 days ago · 54:12</p>
-          <div class="card-tags"><span class="chip">Synthwave</span><span class="chip">Chillout</span></div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="card-thumb">
-          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a0800"/><stop offset="50%" stop-color="#5c1a00"/><stop offset="100%" stop-color="#c44a00"/></linearGradient><radialGradient id="r3" cx="60%" cy="40%" r="55%"><stop offset="0%" stop-color="#ff8c42" stop-opacity=".45"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#g3)"/><rect width="400" height="300" fill="url(#r3)"/><circle cx="30" cy="280" r="100" fill="rgba(180,50,0,.28)"/><circle cx="360" cy="30" r="70" fill="rgba(255,140,40,.1)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cp3" data-show="Retro RPG Evening" data-host="Koji & Friends" data-series="8-Bit Chronicles" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
-        </div>
-        <div class="card-body">
-          <h3>Retro RPG Evening</h3>
-          <div class="card-host"><div class="avatar">KJ</div><span class="host-name">Koji & Friends</span></div>
-          <p class="card-meta">1 week ago · 1:22:04</p>
-          <div class="card-tags"><span class="chip">Chiptune</span><span class="chip">OST</span><span class="chip">Retro</span></div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="card-thumb">
-          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g4" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#001a0f"/><stop offset="50%" stop-color="#004d2a"/><stop offset="100%" stop-color="#007a40"/></linearGradient><radialGradient id="r4" cx="40%" cy="50%" r="60%"><stop offset="0%" stop-color="#00ff88" stop-opacity=".18"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="400" height="300" fill="url(#g4)"/><rect width="400" height="300" fill="url(#r4)"/><circle cx="320" cy="260" r="90" fill="rgba(0,120,60,.28)"/><circle cx="60" cy="40" r="60" fill="rgba(0,255,100,.07)"/></svg>
-          <div class="card-overlay"><button class="card-play" id="cp4" data-show="Midnight Walks Through the Forest & Field" data-host="Sakura Records" data-series="Ambient Trails" aria-label="Play"><i data-lucide="play" style="width:20px;height:20px;display:block;"></i></button></div>
-        </div>
-        <div class="card-body">
-          <h3>Midnight Walks Through the Forest & Field</h3>
-          <div class="card-host"><div class="avatar">SR</div><span class="host-name">Sakura Records</span></div>
-          <p class="card-meta">3 months ago · 48:30</p>
-          <div class="card-tags"><span class="chip">Acoustic</span><span class="chip">Ambient</span></div>
-        </div>
-      </article>
+      <!-- queue -->
+      <div class="feat-queue" id="feat-queue"></div>
     </div>
   </div>
 
@@ -7635,6 +7681,164 @@ function stopNowPlayingPoll() {
   clearInterval(_npInterval);
   _npInterval = null;
 }
+
+/* ── Featured Carousel ─────────────────────────────────────────────────────
+ * Spotlight: info panel · large crossfade thumbnail · queue with progress
+ * Auto-advances every 6s; click thumbnail or queue item to jump.
+ * ─────────────────────────────────────────────────────────────────────────── */
+(function initFeatCarousel() {
+  const SHOWS = [
+    {
+      title: 'International Radio Day',
+      host: 'Purple Proposition', avatar: 'PP',
+      meta: '2 days ago · 1:01:26',
+      tags: ['Ambient', 'Downtempo', 'Drum & Bass'],
+      showId: 'International Radio Day', series: 'International Radio Day',
+      bg: 'url(https://images.ctfassets.net/jd1mlth317j4/Zf0xfLtkY6D28VvaJr2pq/e42b0f9a3c87b01fdb1669f15c7d968d/website.jpg?fm=webp&w=828&q=80) center/cover',
+    },
+    {
+      title: 'Dusk',
+      host: 'Neon Waves', avatar: 'NW',
+      meta: '5 days ago · 54:12',
+      tags: ['Synthwave', 'Chillout'],
+      showId: 'Dusk', series: 'Synthwave Sunsets',
+      bg: 'linear-gradient(135deg, #0a1628 0%, #0d3060 50%, #1a5fa0 100%)',
+    },
+    {
+      title: 'Retro RPG Evening',
+      host: 'Koji & Friends', avatar: 'KJ',
+      meta: '1 week ago · 1:22:04',
+      tags: ['Chiptune', 'OST', 'Retro'],
+      showId: 'Retro RPG Evening', series: '8-Bit Chronicles',
+      bg: 'linear-gradient(135deg, #1a0800 0%, #5c1a00 50%, #c44a00 100%)',
+    },
+    {
+      title: 'Midnight Walks',
+      host: 'Sakura Records', avatar: 'SR',
+      meta: '3 months ago · 48:30',
+      tags: ['Acoustic', 'Ambient'],
+      showId: 'Midnight Walks Through the Forest & Field', series: 'Ambient Trails',
+      bg: 'linear-gradient(135deg, #001a0f 0%, #004d2a 50%, #007a40 100%)',
+    },
+  ];
+  const INTERVAL = 6000;
+
+  const infoEl   = document.getElementById('feat-info');
+  const centerEl = document.getElementById('feat-center');
+  const dotsEl   = document.getElementById('feat-dots');
+  const queueEl  = document.getElementById('feat-queue');
+  if (!infoEl || !centerEl) return;
+
+  let current = 0;
+  let autoTimer = null;
+
+  /* ── Info panel (static structure) ── */
+  infoEl.innerHTML = `
+    <span class="label" id="feat-eyebrow">Latest shows · 1 of ${SHOWS.length}</span>
+    <h2 class="feat-title" id="feat-title"></h2>
+    <div class="feat-host-row" id="feat-host-row">
+      <div class="avatar" id="feat-avatar"></div>
+      <span id="feat-host-name"></span>
+    </div>
+    <p class="feat-meta-text" id="feat-meta-text"></p>
+    <div class="feat-tags-row" id="feat-tags-row"></div>
+    <button class="btn btn-primary feat-play-btn" id="feat-play-btn">
+      <i data-lucide="play" style="width:14px;height:14px;display:block;"></i>
+      Play
+    </button>
+  `;
+  lucide.createIcons({ nodes: [infoEl] });
+
+  document.getElementById('feat-play-btn').addEventListener('click', () => {
+    setPlaying(true);
+  });
+
+  /* ── Thumbnail layers (stacked, crossfade) ── */
+  SHOWS.forEach((s, i) => {
+    const layer = document.createElement('div');
+    layer.className = 'feat-thumb-layer' + (i === 0 ? ' active' : '');
+    layer.style.background = s.bg;
+    centerEl.insertBefore(layer, centerEl.querySelector('.feat-center-grad'));
+  });
+  centerEl.addEventListener('click', () => goTo((current + 1) % SHOWS.length));
+
+  /* ── Dots ── */
+  SHOWS.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'feat-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Show ' + (i + 1));
+    dot.addEventListener('click', e => { e.stopPropagation(); goTo(i); });
+    dotsEl.appendChild(dot);
+  });
+
+  /* ── Queue ── */
+  SHOWS.forEach((s, i) => {
+    const item = document.createElement('div');
+    item.className = 'feat-queue-item' + (i === 0 ? ' active' : '');
+    item.innerHTML = `
+      <div class="feat-queue-thumb" style="background:${s.bg}"></div>
+      <div class="feat-queue-info">
+        <span class="feat-queue-title">${s.title}</span>
+        <span class="feat-queue-sub">${s.host} · ${(s.meta.split('·')[1] || s.meta).trim()}</span>
+      </div>
+      <div class="feat-queue-progress"><div class="feat-queue-progress-bar"></div></div>
+    `;
+    item.addEventListener('click', () => goTo(i));
+    queueEl.appendChild(item);
+  });
+
+  /* ── Update info panel with fade ── */
+  function updateInfo(s, idx) {
+    const els = ['feat-title', 'feat-host-row', 'feat-meta-text'].map(id => document.getElementById(id));
+    els.forEach(el => el && el.classList.add('fading'));
+    setTimeout(() => {
+      const titleEl  = document.getElementById('feat-title');
+      const avatarEl = document.getElementById('feat-avatar');
+      const hostEl   = document.getElementById('feat-host-name');
+      const metaEl   = document.getElementById('feat-meta-text');
+      const tagsEl   = document.getElementById('feat-tags-row');
+      const eyebrow  = document.getElementById('feat-eyebrow');
+      if (titleEl)  titleEl.textContent  = s.title;
+      if (avatarEl) avatarEl.textContent = s.avatar;
+      if (hostEl)   hostEl.textContent   = s.host;
+      if (metaEl)   metaEl.textContent   = s.meta;
+      if (eyebrow)  eyebrow.textContent  = `Latest shows · ${idx + 1} of ${SHOWS.length}`;
+      if (tagsEl)   tagsEl.innerHTML     = s.tags.map(t => `<span class="chip">${t}</span>`).join('');
+      els.forEach(el => el && el.classList.remove('fading'));
+    }, 200);
+  }
+
+  /* ── Navigate to show idx ── */
+  function goTo(idx) {
+    if (idx === current) return;
+    current = idx;
+    // thumbs
+    centerEl.querySelectorAll('.feat-thumb-layer').forEach((l, i) => l.classList.toggle('active', i === idx));
+    // dots
+    dotsEl.querySelectorAll('.feat-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    // queue: remove active (stops progress bar CSS animation), then re-add on new
+    queueEl.querySelectorAll('.feat-queue-item').forEach((item, i) => {
+      item.classList.remove('active');
+      if (i === idx) {
+        // Force reflow so the transition re-triggers from 0%
+        void item.offsetWidth;
+        item.classList.add('active');
+      }
+    });
+    updateInfo(SHOWS[idx], idx);
+    resetAuto();
+  }
+
+  /* ── Auto-advance ── */
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo((current + 1) % SHOWS.length), INTERVAL);
+  }
+
+  /* ── Initial render ── */
+  updateInfo(SHOWS[0], 0);
+  resetAuto();
+})();
 </script>
 
 <!-- Global grid debug overlay + toggle -->
