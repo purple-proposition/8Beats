@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Show Proposal — 8Beats</title>
+<meta name="description" content="Submit a show proposal to 8Beats — the first webradio dedicated to video game music. Residents, one-offs, series — we listen to everything.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://8beats.fm/submit">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+@font-face {
+  font-family: 'Alpha Lyrae';
+  src: url('/fonts/AlphaLyrae-Medium.woff2') format('woff2'),
+       url('/fonts/AlphaLyrae-Medium.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   TOKENS — alignés sur 8beats.html v2.2
+   ============================================================ */
+:root {
+  --surface-page:           #050505;
+  --surface-subtle:         #2A2A2A;
+  --surface-elevated:       #424242;
+  --glass-bg:               rgba(0, 0, 0, 0.72);
+  --glass-blur:             48px;
+  --glass-border:           rgba(255, 255, 255, 0.10);
+
+  --text-primary:           #f2f2f2;
+  --text-secondary:         #bfbfbf;
+  --text-tertiary:          #898989;
+  --text-disabled:          #505050;
+
+  --border-subtle:          #1e1e1e;
+  --border-default:         #282828;
+  --border-hover:           #484848;
+  --border-btn:             #282828;
+
+  --action-primary-bg:      #f2f2f2;
+  --action-primary-fg:      #0b0b0b;
+  --action-primary-border:  #f2f2f2;
+  --action-secondary-fg:    #898989;
+  --action-secondary-border:#363636;
+
+  --accent:                 #f2f2f2;
+  --focus-ring:             #f2f2f2;
+
+  --surface-btn-hover:      transparent;
+  --surface-hover:          transparent;
+
+  --font:        'Inter', system-ui, sans-serif;
+  --radius:      16px;
+  --radius-sm:   10px;
+  --radius-btn:  12px;
+
+  --space-1:     4px;
+  --space-2:     8px;
+  --space-3:     12px;
+  --space-4:     16px;
+  --space-5:     24px;
+  --space-6:     32px;
+  --space-7:     48px;
+  --space-8:     64px;
+  --space-9:     96px;
+  --space:       var(--space-5);
+
+  --text-xs:     11px;
+  --text-sm:     12px;
+  --text-base:   14px;
+  --text-md:     16px;
+  --text-lg:     20px;
+  --text-xl:     24px;
+  --text-2xl:    32px;
+
+  --topbar-h:    56px;
+
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-hover:    cubic-bezier(0, 0, 0.2, 1);
+  --dur-micro:     80ms;
+  --dur-short:     160ms;
+  --dur-medium:    240ms;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+button, input, select, textarea { -webkit-appearance: none; appearance: none; box-shadow: none; outline: none; }
+:focus:not(:focus-visible) { outline: none; }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+
+html { background: var(--surface-page); scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  background: var(--surface-page);
+  min-height: 100vh;
+  padding-bottom: var(--space-9);
+}
+
+a { text-decoration: none; color: inherit; }
+
+h1 { font-family: 'Alpha Lyrae', var(--font); color: var(--text-primary); }
+h2, h3 { color: var(--text-primary); }
+
+/* ── Label (uppercase micro) ── */
+.label {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* ── Glass ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  height: 36px; padding: 0 var(--space-4);
+  font-family: var(--font); font-size: var(--text-base); font-weight: 400;
+  letter-spacing: -.1px;
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: opacity var(--dur-micro) var(--ease-hover),
+              border-color var(--dur-micro) var(--ease-hover),
+              transform 50ms var(--ease-hover);
+}
+.btn:active { transform: scale(0.97); }
+.btn svg { width: 14px; height: 14px; fill: none; flex-shrink: 0; display: block; }
+.btn-primary {
+  background: var(--action-primary-bg);
+  color: var(--action-primary-fg);
+  border: 1px solid var(--action-primary-border);
+}
+.btn-primary:hover { opacity: .88; }
+.btn-primary svg { stroke: var(--action-primary-fg); fill: none; }
+.btn-secondary {
+  background: transparent;
+  color: var(--action-secondary-fg);
+  border: 1px solid var(--border-btn);
+  transition: border-color var(--dur-micro) var(--ease-hover),
+              color var(--dur-micro) var(--ease-hover);
+}
+.btn-secondary:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.btn-secondary svg { stroke: currentColor; fill: none; }
+
+/* ── Layout grid ── */
+.content {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-5);
+  padding: 0 var(--space);
+}
+.col-editorial { grid-column: 3 / span 8; }
+
+@media (max-width: 1024px) { .col-editorial { grid-column: 2 / span 10; } }
+@media (max-width: 768px)  { .col-editorial { grid-column: 1 / -1; } }
+
+/* ──────────────────────────────────────
+   TOP BAR
+────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  height: var(--topbar-h);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-page);
+}
+.topbar-inner {
+  height: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--space);
+}
+.topbar-wordmark {
+  font-family: 'Alpha Lyrae', var(--font);
+  font-size: var(--text-md);
+  color: var(--text-primary);
+  letter-spacing: .01em;
+  transition: opacity var(--dur-short) var(--ease-hover);
+}
+.topbar-wordmark:hover { opacity: .7; }
+.topbar-back {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-size: var(--text-sm); color: var(--text-tertiary);
+  transition: color var(--dur-short) var(--ease-hover);
+}
+.topbar-back:hover { color: var(--text-primary); }
+.topbar-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; flex-shrink: 0; display: block; }
+
+/* ──────────────────────────────────────
+   HERO
+────────────────────────────────────── */
+.submit-hero {
+  padding-top: var(--space-9);
+  padding-bottom: var(--space-8);
+  display: flex; flex-direction: column; gap: var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+  position: relative;
+  overflow: hidden;
+}
+.submit-hero h1 {
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1;
+}
+.submit-hero .tagline {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 540px;
+}
+
+/* pixel deco right */
+.hero-deco {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  opacity: .06; pointer-events: none;
+}
+
+/* ──────────────────────────────────────
+   FORM SECTIONS
+────────────────────────────────────── */
+.submit-form {
+  padding-top: var(--space-8);
+  display: flex; flex-direction: column; gap: 0;
+}
+
+.form-section {
+  display: flex; flex-direction: column; gap: var(--space-6);
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid var(--border-default);
+  margin-bottom: var(--space-8);
+}
+.form-section:last-of-type {
+  border-bottom: none; margin-bottom: 0; padding-bottom: 0;
+}
+
+.form-section-header {
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.form-section-header h2 {
+  font-size: var(--text-xl); font-weight: 600; letter-spacing: -.3px;
+}
+.form-section-header p {
+  font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.6;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+.form-grid.full { grid-template-columns: 1fr; }
+
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Field ── */
+.field {
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.field.span-2 { grid-column: 1 / -1; }
+
+.field-label {
+  font-size: var(--text-sm); font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: -.1px;
+}
+.field-hint {
+  font-size: var(--text-sm); color: var(--text-tertiary);
+  line-height: 1.5; margin-top: calc(var(--space-2) * -1 + 2px);
+}
+
+/* ── Input controls ── */
+.field input,
+.field select,
+.field textarea {
+  font-family: var(--font);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  width: 100%;
+  transition: border-color var(--dur-short) var(--ease-hover),
+              background var(--dur-short) var(--ease-hover);
+  caret-color: var(--text-primary);
+}
+.field input::placeholder,
+.field textarea::placeholder { color: var(--text-disabled); }
+.field input:hover, .field select:hover, .field textarea:hover {
+  border-color: var(--border-hover);
+}
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: none;
+  border-color: var(--text-tertiary);
+  background: rgba(255,255,255,0.03);
+}
+
+/* Select arrow */
+.field select {
+  appearance: none; -webkit-appearance: none;
+  padding-right: var(--space-7);
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23898989' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-4) center;
+  cursor: pointer;
+}
+.field select option {
+  background: #1a1a1a; color: var(--text-primary);
+}
+
+/* Textarea */
+.field textarea {
+  resize: vertical;
+  min-height: 108px;
+  line-height: 1.6;
+}
+.field textarea.tall { min-height: 140px; }
+
+/* Character count */
+.field-count {
+  font-size: var(--text-xs); color: var(--text-disabled);
+  text-align: right; letter-spacing: .02em;
+}
+
+/* ── Tag pills (genre) ── */
+.tag-grid {
+  display: flex; flex-wrap: wrap; gap: var(--space-2);
+}
+.tag-pill {
+  display: inline-flex; align-items: center;
+  height: 28px; padding: 0 var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: 100px;
+  font-size: var(--text-sm); color: var(--text-tertiary);
+  cursor: pointer; user-select: none;
+  transition: border-color var(--dur-short) var(--ease-hover),
+              color var(--dur-short) var(--ease-hover),
+              background var(--dur-short) var(--ease-hover);
+  background: transparent;
+}
+.tag-pill:hover { border-color: var(--border-hover); color: var(--text-secondary); }
+.tag-pill.selected {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  background: rgba(242,242,242,0.05);
+}
+.tag-pill input { display: none; } /* hidden checkbox */
+
+/* ── Link row ── */
+.link-row {
+  display: flex; align-items: center;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: border-color var(--dur-short) var(--ease-hover);
+}
+.link-row:focus-within { border-color: var(--text-tertiary); }
+.link-row-prefix {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-right: 1px solid var(--border-default);
+  color: var(--text-tertiary);
+}
+.link-row-prefix svg { width: 14px; height: 14px; stroke: currentColor; fill: none; flex-shrink: 0; }
+.link-row input {
+  border: none !important; border-radius: 0 !important;
+  padding-left: var(--space-3) !important;
+  flex: 1; min-width: 0;
+}
+.link-row input:focus-visible { background: transparent !important; }
+
+/* ── Sample block ── */
+.sample-block {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+}
+.sample-block-header {
+  display: flex; align-items: center; gap: var(--space-3);
+  color: var(--text-tertiary); font-size: var(--text-sm);
+}
+.sample-block-header svg { width: 16px; height: 16px; stroke: currentColor; fill: none; flex-shrink: 0; }
+
+/* ── Submit area ── */
+.submit-footer {
+  padding-top: var(--space-8);
+  display: flex; flex-direction: column; gap: var(--space-4);
+  align-items: flex-start;
+}
+.submit-note {
+  font-size: var(--text-sm); color: var(--text-tertiary); line-height: 1.6;
+}
+.submit-note a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 3px; }
+.btn-submit {
+  height: 44px;
+  padding: 0 var(--space-6);
+  font-size: var(--text-base); font-weight: 600;
+  letter-spacing: .02em;
+}
+
+/* ── Success state ── */
+.submit-success {
+  display: none;
+  flex-direction: column; align-items: center; gap: var(--space-5);
+  padding: var(--space-9) 0; text-align: center;
+}
+.submit-success.visible { display: flex; }
+.submit-success-icon {
+  width: 48px; height: 48px;
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+}
+.submit-success-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; }
+.submit-success h2 { font-size: var(--text-xl); font-weight: 600; letter-spacing: -.3px; }
+.submit-success p { font-size: var(--text-base); color: var(--text-secondary); max-width: 400px; line-height: 1.6; }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  :root { --space: 16px; }
+  .submit-hero { padding-top: var(--space-7); padding-bottom: var(--space-7); }
+  .submit-hero h1 { font-size: 40px; }
+  .submit-hero .tagline { font-size: var(--text-base); }
+  .form-section { padding-bottom: var(--space-6); margin-bottom: var(--space-6); }
+  .submit-footer { padding-top: var(--space-6); }
+  .hero-deco { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="topbar-wordmark">8Beats</a>
+    <a href="/" class="topbar-back">
+      <svg viewBox="0 0 24 24" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <div class="content" style="margin-top:0;">
+    <div class="submit-hero col-editorial">
+      <span class="label">Open to creators</span>
+      <h1>Show proposal</h1>
+      <p class="tagline">8Beats is always open to new voices. Tell us about your project — residents, one-offs, series, podcasts. We listen to everything.</p>
+
+      <!-- Pixel-art music note deco -->
+      <svg class="hero-deco" width="160" height="200" viewBox="0 0 9 11" fill="var(--text-primary)" shape-rendering="crispEdges">
+        <rect x="3" y="0" width="2" height="7"/>
+        <rect x="5" y="0" width="4" height="2"/>
+        <rect x="5" y="2" width="2" height="3"/>
+        <rect x="1" y="6" width="4" height="3"/>
+        <rect x="5" y="5" width="4" height="3"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Form ── -->
+  <div class="content">
+    <div class="col-editorial">
+      <form class="submit-form" id="submit-form" novalidate>
+
+        <!-- ── Section 1: Concept ── -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <span class="label">01 — Concept</span>
+            <h2>Your show</h2>
+            <p>Tell us what you have in mind. Be as specific or as exploratory as you want.</p>
+          </div>
+          <div class="form-grid">
+            <div class="field span-2">
+              <label class="field-label" for="show-name">Show name</label>
+              <input type="text" id="show-name" name="show_name" placeholder="e.g. Pixel Frequencies" autocomplete="off" required>
+            </div>
+            <div class="field">
+              <label class="field-label" for="show-type">Format</label>
+              <select id="show-type" name="show_type" required>
+                <option value="" disabled selected>Select a format</option>
+                <option value="resident">Resident show</option>
+                <option value="guest">Guest mix</option>
+                <option value="series">Limited series</option>
+                <option value="oneoff">One-off special</option>
+                <option value="podcast">Podcast / Talk</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-label" for="show-frequency">Frequency</label>
+              <select id="show-frequency" name="frequency">
+                <option value="" disabled selected>How often?</option>
+                <option value="weekly">Weekly</option>
+                <option value="bimonthly">Every two weeks</option>
+                <option value="monthly">Monthly</option>
+                <option value="irregular">Irregular</option>
+                <option value="oneoff">Single episode</option>
+              </select>
+            </div>
+            <div class="field span-2">
+              <label class="field-label" for="show-pitch">Concept description</label>
+              <textarea id="show-pitch" name="pitch" class="tall"
+                placeholder="Describe the concept, atmosphere, and what makes it unique. What story does your show tell?" maxlength="1000" oninput="updateCount(this,'pitch-count',1000)"></textarea>
+              <span class="field-count" id="pitch-count">0 / 1000</span>
+            </div>
+          </div>
+
+          <!-- Genre tags -->
+          <div class="field">
+            <span class="field-label">Genres <span style="font-weight:400;color:var(--text-tertiary);">— select all that apply</span></span>
+            <div class="tag-grid">
+              <label class="tag-pill"><input type="checkbox" name="genres" value="chiptune"><span>Chiptune</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="orchestral"><span>Orchestral</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="electronic"><span>Electronic</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="ambient"><span>Ambient</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="jazz"><span>Jazz</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="folk"><span>Folk</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="lounge"><span>Lounge</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="metal"><span>Metal</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="indie"><span>Indie</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="retro"><span>Retro</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="hiphop"><span>Hip-hop</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="dnb"><span>Drum &amp; Bass</span></label>
+              <label class="tag-pill"><input type="checkbox" name="genres" value="other"><span>Other</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Section 2: About you ── -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <span class="label">02 — About you</span>
+            <h2>The artist</h2>
+            <p>Who are you? Tell us a bit about yourself and where to find your work.</p>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label" for="artist-name">Artist / DJ name</label>
+              <input type="text" id="artist-name" name="artist_name" placeholder="Your artist name" required>
+            </div>
+            <div class="field">
+              <label class="field-label" for="artist-location">City, Country</label>
+              <input type="text" id="artist-location" name="location" placeholder="e.g. Lyon, France">
+            </div>
+            <div class="field span-2">
+              <label class="field-label" for="artist-bio">Bio</label>
+              <textarea id="artist-bio" name="bio"
+                placeholder="A few sentences about you, your background, and your relationship with video game music." maxlength="600" oninput="updateCount(this,'bio-count',600)"></textarea>
+              <span class="field-count" id="bio-count">0 / 600</span>
+            </div>
+          </div>
+
+          <!-- Links -->
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label">SoundCloud / Mixcloud</label>
+              <div class="link-row">
+                <span class="link-row-prefix">
+                  <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+                </span>
+                <input type="url" name="soundcloud" placeholder="soundcloud.com/yourname">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Instagram</label>
+              <div class="link-row">
+                <span class="link-row-prefix">
+                  <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </span>
+                <input type="text" name="instagram" placeholder="@yourhandle">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Website <span style="font-weight:400;color:var(--text-tertiary);">optional</span></label>
+              <div class="link-row">
+                <span class="link-row-prefix">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </span>
+                <input type="url" name="website" placeholder="yoursite.com">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Email</label>
+              <div class="link-row">
+                <span class="link-row-prefix">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </span>
+                <input type="email" name="email" placeholder="you@domain.com" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Section 3: Sample ── -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <span class="label">03 — Sample</span>
+            <h2>Show us what you do</h2>
+            <p>Share a link to a recent mix, set, or episode that best represents your project. SoundCloud, Mixcloud, YouTube — anything works.</p>
+          </div>
+          <div class="form-grid full">
+            <div class="sample-block">
+              <div class="sample-block-header">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Link to your best representative mix</span>
+              </div>
+              <div class="field" style="gap:0;">
+                <input type="url" name="sample_url" placeholder="soundcloud.com/… · mixcloud.com/… · youtube.com/…">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Anything else? <span style="font-weight:400;color:var(--text-tertiary);">optional</span></label>
+              <textarea name="extra_notes"
+                placeholder="Artwork direction, technical requirements, availability, preferred time slots — anything useful." maxlength="500" oninput="updateCount(this,'notes-count',500)"></textarea>
+              <span class="field-count" id="notes-count">0 / 500</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Submit ── -->
+        <div class="submit-footer">
+          <p class="submit-note">By submitting you agree to our <a href="#">privacy policy</a>. We read every proposal and get back to everyone — usually within two weeks.</p>
+          <button type="submit" class="btn btn-primary btn-submit">
+            <i data-lucide="send" style="width:14px;height:14px;stroke:var(--action-primary-fg);fill:none;display:block;flex-shrink:0;"></i>
+            Send proposal
+          </button>
+        </div>
+
+      </form>
+
+      <!-- ── Success state ── -->
+      <div class="submit-success" id="submit-success">
+        <div class="submit-success-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Proposal received</h2>
+        <p>Thanks — we'll read it carefully and get back to you within two weeks. In the meantime, keep playing.</p>
+        <a href="/" class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to 8Beats
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// Init Lucide icons
+lucide.createIcons();
+
+// ── Tag pill toggle ──
+document.querySelectorAll('.tag-pill').forEach(pill => {
+  const cb = pill.querySelector('input[type="checkbox"]');
+  pill.addEventListener('click', () => {
+    // checkbox state toggled by browser via label click
+    setTimeout(() => {
+      pill.classList.toggle('selected', cb.checked);
+    }, 0);
+  });
+});
+
+// ── Char count ──
+function updateCount(el, countId, max) {
+  const n = el.value.length;
+  const el2 = document.getElementById(countId);
+  if (el2) el2.textContent = n + ' / ' + max;
+}
+
+// ── Form submit ──
+document.getElementById('submit-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const btn = e.target.querySelector('.btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  // Collect data
+  const data = new FormData(e.target);
+  const payload = {};
+  data.forEach((v, k) => {
+    if (payload[k]) {
+      payload[k] = [].concat(payload[k], v);
+    } else {
+      payload[k] = v;
+    }
+  });
+
+  // Simulate send (replace with actual endpoint)
+  await new Promise(r => setTimeout(r, 900));
+
+  // Show success
+  document.getElementById('submit-form').style.display = 'none';
+  const success = document.getElementById('submit-success');
+  success.classList.add('visible');
+  success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+</script>
+
+</body>
+</html>
