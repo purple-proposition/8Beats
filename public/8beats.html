@@ -363,6 +363,13 @@ button, input, select, textarea {
 
 html { background: var(--surface-page); scroll-behavior: smooth; scrollbar-gutter: stable; }
 
+/* ── Dynamic line-height system ───────────────────────────────────────────
+ * .lh-d: line-height: 1 on a single line → 1.5 as soon as text wraps.
+ * JS applyDynLH() sets --lh-d per-element on load + resize.
+ * To apply: add class="lh-d" to any text element.
+ * ─────────────────────────────────────────────────────────────────────── */
+.lh-d { line-height: var(--lh-d, 1); }
+
 body {
   font-family: var(--font);
   font-optical-sizing: auto;
@@ -933,7 +940,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-thumb.is-playing .card-play { pointer-events: none; color: var(--text-tertiary); }
 
 .card-body { padding: var(--space-3) 0 0; display: flex; flex-direction: column; gap: var(--space-2); }
-.card-body h3 { font-size: var(--text-md); font-weight: 400; line-height: 1.25; max-height: 40px; letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: color var(--dur-short) var(--ease-hover); cursor: pointer; }
+.card-body h3 { font-size: var(--text-md); font-weight: 400; line-height: var(--lh-d, 1); max-height: calc(var(--text-md) * 1.5 * 2); letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: color var(--dur-short) var(--ease-hover); cursor: pointer; }
 .card-body h3:hover { color: var(--text-primary); }
 
 .card-host { display: flex; align-items: center; gap: var(--space-2); }
@@ -1088,7 +1095,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .playlist-inner {
   overflow-y: auto;
   max-height: 320px;
-  padding: var(--space-4) var(--space-5) var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-3);
   display: flex; flex-direction: column;
   gap: var(--space-5);
   opacity: 0;
@@ -5388,8 +5395,13 @@ function openVol() {
     volPopup.style.flexDirection = 'column-reverse';
   }
   volPopup.classList.add('vol-open');
+  // Elevate player above all overlays (cookie panel etc.) while vol is open
+  playerWrap.style.zIndex = '10000';
 }
-function closeVol() { volPopup.classList.remove('vol-open'); }
+function closeVol() {
+  volPopup.classList.remove('vol-open');
+  playerWrap.style.zIndex = '';
+}
 
 /* La direction de la playlist n'a plus besoin d'être initialisée —
  * elle s'étend à l'intérieur du shell, toujours vers le haut. */
@@ -7633,6 +7645,31 @@ function stopNowPlayingPoll() {
   clearInterval(_npInterval);
   _npInterval = null;
 }
+
+/* ── Dynamic line-height system ─────────────────────────────────────────────
+ * For each .lh-d element: force lh:1, compare height vs font-size to detect
+ * wrapping, then set --lh-d = 1 (single line) or 1.5 (multi-line).
+ * Also targets .card-body h3 automatically (no class needed on each element).
+ * Re-runs on resize with 100ms debounce.
+ * ─────────────────────────────────────────────────────────────────────────── */
+function applyDynLH(el) {
+  const prevLH = el.style.lineHeight;
+  el.style.lineHeight = '1';
+  const h  = el.getBoundingClientRect().height;
+  const fs = parseFloat(getComputedStyle(el).fontSize);
+  el.style.lineHeight = prevLH;
+  const isMulti = h > fs * 1.4;
+  el.style.setProperty('--lh-d', isMulti ? '1.5' : '1');
+}
+function initDynLH() {
+  document.querySelectorAll('.lh-d, .card-body h3').forEach(applyDynLH);
+}
+initDynLH();
+let _dynLHTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(_dynLHTimer);
+  _dynLHTimer = setTimeout(initDynLH, 100);
+}, { passive: true });
 
 </script>
 
