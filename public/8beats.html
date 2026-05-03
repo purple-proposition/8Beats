@@ -820,7 +820,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .hero-actions  { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-top: 0; }
 .hero-actions > :first-child { justify-self: end; }
 .hero-actions > :last-child  { justify-self: start; }
-.hero-actions .btn { height: 40px; }
 
 /* ══════════════════════════════════════════
    DESIGN SYSTEM — BUTTON COMPONENTS
@@ -834,7 +833,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 /* ── Family 1: ActionButton (.btn) ── */
 .btn {
   display: inline-flex; align-items: center; gap: var(--space-2);
-  height: 32px; padding: 0 var(--space-4);
+  height: 40px; padding: 0 var(--space-4);
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   letter-spacing: -.1px;
   border-radius: var(--radius-sm); cursor: pointer;
@@ -1228,15 +1227,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .player-game { font-size: var(--text-base); line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
-.player-controls .icon-btn { width: 42px; height: 42px; }
-.player-controls .icon-btn svg,
-.player-controls .icon-btn i[data-lucide] { width: 14px; height: 14px; }
-.player-controls .vol-btn-face { width: 42px; height: 42px; }
-.player-controls .vol-btn-face svg { width: 14px; height: 14px; }
 
 /* ── Family 2: IconButton (.icon-btn) ── */
 .icon-btn {
-  width: 32px; height: 32px; border-radius: var(--radius-control);
+  width: 40px; height: 40px; border-radius: var(--radius-control);
   background: transparent; border: 1px solid var(--border-btn);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; flex-shrink: 0; color: var(--icon-secondary);
@@ -1247,7 +1241,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .icon-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 .icon-btn:active { transform: scale(0.92); }
-.icon-btn svg { width: 16px; height: 16px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; transition: stroke var(--dur-micro) var(--ease-out); }
+.icon-btn svg { width: 14px; height: 14px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; transition: stroke var(--dur-micro) var(--ease-out); }
 /* Ghost variant — no border, fill SVG (mno-social, nav drawer social) */
 .icon-btn--ghost { border-color: transparent; background: transparent; }
 .icon-btn--ghost:hover { border-color: transparent; background: transparent; }
@@ -1358,7 +1352,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
 .vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
 .vol-btn-face {
-  width: 32px; height: 32px; flex-shrink: 0;
+  width: 40px; height: 40px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: transparent; border: none; cursor: pointer;
   color: var(--icon-secondary); padding: 0;
@@ -1368,8 +1362,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .vol-btn-face:hover { color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face { color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face:hover { color: var(--text-primary); }
-/* SVGs are stacked via JS initVolIcons — position:absolute, opacity crossfade */
-.vol-btn-face svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; }
+/* SVGs/icons stacked via JS initVolIcons — position:absolute, opacity crossfade.
+ * Size is controlled here (not inline) so a single edit propagates everywhere. */
+.vol-btn-face svg,
+.vol-btn-face i { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 
 /* ============================================================
    7. RESPONSIVE
@@ -2621,8 +2617,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .show-desc { font-size: var(--text-base); color: var(--text-secondary); line-height: 1.5; margin: 0; }
 
 .show-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); }
-.show-actions .btn { height: 40px; }
-.show-actions .icon-btn { width: 40px; height: 40px; }
 .show-actions-row { display: contents; }
 @keyframes icon-swap {
   from { opacity: 0; transform: scale(0.6); }
@@ -5349,7 +5343,7 @@ const VOL_ICONS = { mute: 'volume-x', low: 'volume-1', high: 'volume-2' };
     const el = document.createElement('i');
     el.setAttribute('data-lucide', iconName);
     el.dataset.volState = state;
-    el.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 80ms cubic-bezier(0,0,0.2,1);pointer-events:none;width:16px;height:16px;display:block;';
+    el.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 80ms cubic-bezier(0,0,0.2,1);pointer-events:none;';
     volBtn.appendChild(el);
   });
   lucide.createIcons({ nodes: [volBtn] });
