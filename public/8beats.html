@@ -945,10 +945,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-tags   { display: none; }
 
 /* ── Family 3: Chip (.chip) ── */
-.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); border-radius: var(--space-2); height: 32px; display: inline-flex; align-items: center; padding: 0 var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
+.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: -.1px; color: var(--text-primary); background: transparent; border: 1px solid var(--border-default); border-radius: 100px; height: 40px; display: inline-flex; align-items: center; padding: 0 var(--space-4); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
 .chip:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
-.chip--active { border-color: var(--text-secondary); background: var(--text-secondary); color: var(--surface-page); }
-.chip--active:hover { border-color: var(--text-primary); background: var(--text-primary); color: var(--surface-page); }
+.chip--active { border-color: var(--text-primary); background: rgba(242,242,242,0.08); color: var(--text-primary); }
+.chip--active:hover { border-color: var(--text-primary); background: rgba(242,242,242,0.12); }
 
 /* ── Panels ── */
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
@@ -1472,7 +1472,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .card-host .host-name { font-size: var(--text-sm); }
   .card-meta { font-size: var(--text-sm); }
   .card-tags { padding-top: var(--space-3); gap: var(--space-2); }
-  .chip { font-size: var(--text-sm); padding: var(--space-1) var(--space-2); letter-spacing: 0.3px; }
+  .chip { font-size: var(--text-sm); padding: 0 var(--space-3); }
   .card-overlay { display: none; }
 
   /* ── Panels ── */

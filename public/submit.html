@@ -27,7 +27,6 @@
 :root {
   --surface-page:           #050505;
   --surface-subtle:         #2A2A2A;
-  --surface-elevated:       #424242;
   --glass-bg:               rgba(0, 0, 0, 0.72);
   --glass-blur:             48px;
   --glass-border:           rgba(255, 255, 255, 0.10);
@@ -46,18 +45,13 @@
   --action-primary-fg:      #0b0b0b;
   --action-primary-border:  #f2f2f2;
   --action-secondary-fg:    #898989;
-  --action-secondary-border:#363636;
 
-  --accent:                 #f2f2f2;
   --focus-ring:             #f2f2f2;
-
   --surface-btn-hover:      transparent;
-  --surface-hover:          transparent;
 
   --font:        'Inter', system-ui, sans-serif;
   --radius:      16px;
   --radius-sm:   10px;
-  --radius-btn:  12px;
 
   --space-1:     4px;
   --space-2:     8px;
@@ -76,7 +70,6 @@
   --text-md:     16px;
   --text-lg:     20px;
   --text-xl:     24px;
-  --text-2xl:    32px;
 
   --topbar-h:    56px;
 
@@ -84,7 +77,6 @@
   --ease-hover:    cubic-bezier(0, 0, 0.2, 1);
   --dur-micro:     80ms;
   --dur-short:     160ms;
-  --dur-medium:    240ms;
 }
 
 /* ── Reset ── */
@@ -109,7 +101,6 @@ body {
 }
 
 a { text-decoration: none; color: inherit; }
-
 h1 { font-family: 'Alpha Lyrae', var(--font); color: var(--text-primary); }
 h2, h3 { color: var(--text-primary); }
 
@@ -120,15 +111,6 @@ h2, h3 { color: var(--text-primary); }
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--text-tertiary);
-}
-
-/* ── Glass ── */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
 }
 
 /* ── Buttons ── */
@@ -161,19 +143,6 @@ h2, h3 { color: var(--text-primary); }
 .btn-secondary:hover { border-color: var(--border-hover); color: var(--text-primary); }
 .btn-secondary svg { stroke: currentColor; fill: none; }
 
-/* ── Layout grid ── */
-.content {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--space-5);
-  padding: 0 var(--space);
-}
-.col-editorial { grid-column: 3 / span 8; }
-
-@media (max-width: 1024px) { .col-editorial { grid-column: 2 / span 10; } }
-@media (max-width: 768px)  { .col-editorial { grid-column: 1 / -1; } }
-
 /* ──────────────────────────────────────
    TOP BAR
 ────────────────────────────────────── */
@@ -192,7 +161,6 @@ h2, h3 { color: var(--text-primary); }
   font-family: 'Alpha Lyrae', var(--font);
   font-size: var(--text-md);
   color: var(--text-primary);
-  letter-spacing: .01em;
   transition: opacity var(--dur-short) var(--ease-hover);
 }
 .topbar-wordmark:hover { opacity: .7; }
@@ -205,32 +173,62 @@ h2, h3 { color: var(--text-primary); }
 .topbar-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; flex-shrink: 0; display: block; }
 
 /* ──────────────────────────────────────
-   HERO
+   HERO — same grid logic as homepage
+   grid-col 5/span 4, centered text
 ────────────────────────────────────── */
-.submit-hero {
-  padding-top: var(--space-9);
-  padding-bottom: var(--space-8);
-  display: flex; flex-direction: column; gap: var(--space-4);
+.submit-hero-wrap {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-5);
+  padding: var(--space-8) var(--space) var(--space-9);
   border-bottom: 1px solid var(--border-default);
-  position: relative;
-  overflow: hidden;
-}
-.submit-hero h1 {
-  font-size: clamp(40px, 6vw, 72px);
-  line-height: 1;
-}
-.submit-hero .tagline {
-  font-size: var(--text-lg);
-  color: var(--text-secondary);
-  line-height: 1.5;
-  max-width: 540px;
 }
 
-/* pixel deco right */
-.hero-deco {
-  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-  opacity: .06; pointer-events: none;
+.submit-hero {
+  grid-column: 4 / span 6; /* slightly wider than home 5/4 to fit subtitle */
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  gap: var(--space-4);
 }
+
+/* pixel deco above title */
+.hero-deco-center {
+  opacity: .12;
+  display: block;
+}
+
+.submit-hero h1 {
+  font-size: clamp(40px, 5.5vw, 72px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.submit-hero .tagline {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+@media (max-width: 1024px) { .submit-hero { grid-column: 3 / span 8; } }
+@media (max-width: 768px)  {
+  .submit-hero { grid-column: 1 / -1; }
+  .submit-hero h1 { font-size: 40px; }
+  .submit-hero-wrap { padding: var(--space-7) var(--space); }
+}
+
+/* ──────────────────────────────────────
+   LAYOUT — form column
+────────────────────────────────────── */
+.content {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-5);
+  padding: 0 var(--space);
+}
+.col-editorial { grid-column: 3 / span 8; }
+
+@media (max-width: 1024px) { .col-editorial { grid-column: 2 / span 10; } }
+@media (max-width: 768px)  { .col-editorial { grid-column: 1 / -1; } }
 
 /* ──────────────────────────────────────
    FORM SECTIONS
@@ -246,19 +244,11 @@ h2, h3 { color: var(--text-primary); }
   border-bottom: 1px solid var(--border-default);
   margin-bottom: var(--space-8);
 }
-.form-section:last-of-type {
-  border-bottom: none; margin-bottom: 0; padding-bottom: 0;
-}
+.form-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
-.form-section-header {
-  display: flex; flex-direction: column; gap: var(--space-2);
-}
-.form-section-header h2 {
-  font-size: var(--text-xl); font-weight: 600; letter-spacing: -.3px;
-}
-.form-section-header p {
-  font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.6;
-}
+.form-section-header { display: flex; flex-direction: column; gap: var(--space-2); }
+.form-section-header h2 { font-size: var(--text-xl); font-weight: 600; letter-spacing: -.3px; }
+.form-section-header p { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.6; }
 
 .form-grid {
   display: grid;
@@ -266,26 +256,18 @@ h2, h3 { color: var(--text-primary); }
   gap: var(--space-5);
 }
 .form-grid.full { grid-template-columns: 1fr; }
-
-@media (max-width: 640px) {
-  .form-grid { grid-template-columns: 1fr; }
-}
+@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
 
 /* ── Field ── */
-.field {
-  display: flex; flex-direction: column; gap: var(--space-2);
-}
+.field { display: flex; flex-direction: column; gap: var(--space-2); }
 .field.span-2 { grid-column: 1 / -1; }
 
 .field-label {
   font-size: var(--text-sm); font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: -.1px;
+  color: var(--text-secondary); letter-spacing: -.1px;
 }
-.field-hint {
-  font-size: var(--text-sm); color: var(--text-tertiary);
-  line-height: 1.5; margin-top: calc(var(--space-2) * -1 + 2px);
-}
+.field-hint { font-size: var(--text-sm); color: var(--text-tertiary); line-height: 1.5; }
+.field-optional { font-weight: 400; color: var(--text-tertiary); }
 
 /* ── Input controls ── */
 .field input,
@@ -305,18 +287,16 @@ h2, h3 { color: var(--text-primary); }
 }
 .field input::placeholder,
 .field textarea::placeholder { color: var(--text-disabled); }
-.field input:hover, .field select:hover, .field textarea:hover {
-  border-color: var(--border-hover);
-}
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--border-hover); }
 .field input:focus-visible,
 .field select:focus-visible,
 .field textarea:focus-visible {
   outline: none;
   border-color: var(--text-tertiary);
-  background: rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.025);
 }
 
-/* Select arrow */
+/* Select */
 .field select {
   appearance: none; -webkit-appearance: none;
   padding-right: var(--space-7);
@@ -325,47 +305,35 @@ h2, h3 { color: var(--text-primary); }
   background-position: right var(--space-4) center;
   cursor: pointer;
 }
-.field select option {
-  background: #1a1a1a; color: var(--text-primary);
-}
+.field select option { background: #1a1a1a; color: var(--text-primary); }
 
 /* Textarea */
-.field textarea {
-  resize: vertical;
-  min-height: 108px;
-  line-height: 1.6;
-}
+.field textarea { resize: vertical; min-height: 108px; line-height: 1.6; }
 .field textarea.tall { min-height: 140px; }
 
-/* Character count */
-.field-count {
-  font-size: var(--text-xs); color: var(--text-disabled);
-  text-align: right; letter-spacing: .02em;
-}
+/* Char count */
+.field-count { font-size: var(--text-xs); color: var(--text-disabled); text-align: right; }
 
-/* ── Tag pills (genre) ── */
-.tag-grid {
-  display: flex; flex-wrap: wrap; gap: var(--space-2);
-}
+/* ── Tag pills — same spec as .chip on main site ── */
+.tag-grid { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .tag-pill {
   display: inline-flex; align-items: center;
-  height: 28px; padding: 0 var(--space-3);
+  height: 40px; padding: 0 var(--space-4);
   border: 1px solid var(--border-default);
   border-radius: 100px;
-  font-size: var(--text-sm); color: var(--text-tertiary);
-  cursor: pointer; user-select: none;
+  font-size: var(--text-sm); color: var(--text-primary);
+  cursor: pointer; user-select: none; letter-spacing: -.1px;
   transition: border-color var(--dur-short) var(--ease-hover),
               color var(--dur-short) var(--ease-hover),
               background var(--dur-short) var(--ease-hover);
   background: transparent;
 }
-.tag-pill:hover { border-color: var(--border-hover); color: var(--text-secondary); }
+.tag-pill:hover { border-color: var(--border-hover); }
 .tag-pill.selected {
   border-color: var(--text-primary);
-  color: var(--text-primary);
-  background: rgba(242,242,242,0.05);
+  background: rgba(242,242,242,0.08);
 }
-.tag-pill input { display: none; } /* hidden checkbox */
+.tag-pill input { display: none; }
 
 /* ── Link row ── */
 .link-row {
@@ -375,6 +343,7 @@ h2, h3 { color: var(--text-primary); }
   overflow: hidden;
   transition: border-color var(--dur-short) var(--ease-hover);
 }
+.link-row:hover { border-color: var(--border-hover); }
 .link-row:focus-within { border-color: var(--text-tertiary); }
 .link-row-prefix {
   display: flex; align-items: center; justify-content: center;
@@ -384,24 +353,33 @@ h2, h3 { color: var(--text-primary); }
 }
 .link-row-prefix svg { width: 14px; height: 14px; stroke: currentColor; fill: none; flex-shrink: 0; }
 .link-row input {
-  border: none !important; border-radius: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
   padding-left: var(--space-3) !important;
   flex: 1; min-width: 0;
+  background: transparent !important;
 }
-.link-row input:focus-visible { background: transparent !important; }
+.link-row input:focus-visible { outline: none !important; }
 
-/* ── Sample block ── */
-.sample-block {
-  display: flex; flex-direction: column; gap: var(--space-3);
-  padding: var(--space-5);
+/* ── Timeslot pills — same spec as .chip ── */
+.timeslot-grid { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.timeslot-pill {
+  display: inline-flex; align-items: center;
+  height: 40px; padding: 0 var(--space-4);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
+  border-radius: 100px;
+  font-size: var(--text-sm); color: var(--text-primary); letter-spacing: -.1px;
+  cursor: pointer; user-select: none;
+  transition: border-color var(--dur-short) var(--ease-hover),
+              background var(--dur-short) var(--ease-hover);
+  background: transparent;
 }
-.sample-block-header {
-  display: flex; align-items: center; gap: var(--space-3);
-  color: var(--text-tertiary); font-size: var(--text-sm);
+.timeslot-pill:hover { border-color: var(--border-hover); }
+.timeslot-pill.selected {
+  border-color: var(--text-primary);
+  background: rgba(242,242,242,0.08);
 }
-.sample-block-header svg { width: 16px; height: 16px; stroke: currentColor; fill: none; flex-shrink: 0; }
+.timeslot-pill input { display: none; }
 
 /* ── Submit area ── */
 .submit-footer {
@@ -409,16 +387,9 @@ h2, h3 { color: var(--text-primary); }
   display: flex; flex-direction: column; gap: var(--space-4);
   align-items: flex-start;
 }
-.submit-note {
-  font-size: var(--text-sm); color: var(--text-tertiary); line-height: 1.6;
-}
+.submit-note { font-size: var(--text-sm); color: var(--text-tertiary); line-height: 1.6; }
 .submit-note a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 3px; }
-.btn-submit {
-  height: 44px;
-  padding: 0 var(--space-6);
-  font-size: var(--text-base); font-weight: 600;
-  letter-spacing: .02em;
-}
+.btn-submit { height: 44px; padding: 0 var(--space-6); font-size: var(--text-base); font-weight: 600; }
 
 /* ── Success state ── */
 .submit-success {
@@ -441,12 +412,8 @@ h2, h3 { color: var(--text-primary); }
 /* ── Mobile ── */
 @media (max-width: 768px) {
   :root { --space: 16px; }
-  .submit-hero { padding-top: var(--space-7); padding-bottom: var(--space-7); }
-  .submit-hero h1 { font-size: 40px; }
-  .submit-hero .tagline { font-size: var(--text-base); }
   .form-section { padding-bottom: var(--space-6); margin-bottom: var(--space-6); }
   .submit-footer { padding-top: var(--space-6); }
-  .hero-deco { display: none; }
 }
 </style>
 </head>
@@ -465,21 +432,20 @@ h2, h3 { color: var(--text-primary); }
 
 <main>
 
-  <!-- ── Hero ── -->
-  <div class="content" style="margin-top:0;">
-    <div class="submit-hero col-editorial">
-      <span class="label">Open to creators</span>
-      <h1>Show proposal</h1>
-      <p class="tagline">8Beats is always open to new voices. Tell us about your project — residents, one-offs, series, podcasts. We listen to everything.</p>
-
-      <!-- Pixel-art music note deco -->
-      <svg class="hero-deco" width="160" height="200" viewBox="0 0 9 11" fill="var(--text-primary)" shape-rendering="crispEdges">
+  <!-- ── Hero — centered, same grid as homepage ── -->
+  <div class="submit-hero-wrap">
+    <div class="submit-hero">
+      <!-- Pixel-art music note -->
+      <svg class="hero-deco-center" width="32" height="40" viewBox="0 0 9 11" fill="var(--text-primary)" shape-rendering="crispEdges">
         <rect x="3" y="0" width="2" height="7"/>
         <rect x="5" y="0" width="4" height="2"/>
         <rect x="5" y="2" width="2" height="3"/>
         <rect x="1" y="6" width="4" height="3"/>
         <rect x="5" y="5" width="4" height="3"/>
       </svg>
+      <span class="label">Open to creators</span>
+      <h1>Show proposal</h1>
+      <p class="tagline">Have an idea for a new show or podcast? We're all ears. Fill out the form and we'll get back to you as soon as possible.</p>
     </div>
   </div>
 
@@ -488,51 +454,62 @@ h2, h3 { color: var(--text-primary); }
     <div class="col-editorial">
       <form class="submit-form" id="submit-form" novalidate>
 
-        <!-- ── Section 1: Concept ── -->
+        <!-- ── 01: Project details ── -->
         <div class="form-section">
           <div class="form-section-header">
-            <span class="label">01 — Concept</span>
+            <span class="label">01 — Project details</span>
             <h2>Your show</h2>
             <p>Tell us what you have in mind. Be as specific or as exploratory as you want.</p>
           </div>
           <div class="form-grid">
             <div class="field span-2">
-              <label class="field-label" for="show-name">Show name</label>
+              <label class="field-label" for="show-name">Show title</label>
               <input type="text" id="show-name" name="show_name" placeholder="e.g. Pixel Frequencies" autocomplete="off" required>
             </div>
+            <div class="field span-2">
+              <label class="field-label" for="show-description">Description</label>
+              <textarea id="show-description" name="description" class="tall"
+                placeholder="Describe the concept, atmosphere, and what makes it unique. What story does your show tell?"
+                maxlength="1000" oninput="updateCount(this,'desc-count',1000)" required></textarea>
+              <span class="field-count" id="desc-count">0 / 1000</span>
+            </div>
             <div class="field">
-              <label class="field-label" for="show-type">Format</label>
-              <select id="show-type" name="show_type" required>
-                <option value="" disabled selected>Select a format</option>
-                <option value="resident">Resident show</option>
-                <option value="guest">Guest mix</option>
-                <option value="series">Limited series</option>
-                <option value="oneoff">One-off special</option>
-                <option value="podcast">Podcast / Talk</option>
+              <label class="field-label" for="show-duration">Estimated duration</label>
+              <select id="show-duration" name="duration" required>
+                <option value="" disabled selected>Select a duration</option>
+                <option value="30min">30 minutes</option>
+                <option value="1h">1 hour</option>
+                <option value="more">More than 1 hour</option>
               </select>
             </div>
             <div class="field">
               <label class="field-label" for="show-frequency">Frequency</label>
-              <select id="show-frequency" name="frequency">
+              <select id="show-frequency" name="frequency" required>
                 <option value="" disabled selected>How often?</option>
                 <option value="weekly">Weekly</option>
-                <option value="bimonthly">Every two weeks</option>
+                <option value="fortnightly">Fortnightly</option>
                 <option value="monthly">Monthly</option>
-                <option value="irregular">Irregular</option>
-                <option value="oneoff">Single episode</option>
+                <option value="oneoff">One-time</option>
               </select>
             </div>
-            <div class="field span-2">
-              <label class="field-label" for="show-pitch">Concept description</label>
-              <textarea id="show-pitch" name="pitch" class="tall"
-                placeholder="Describe the concept, atmosphere, and what makes it unique. What story does your show tell?" maxlength="1000" oninput="updateCount(this,'pitch-count',1000)"></textarea>
-              <span class="field-count" id="pitch-count">0 / 1000</span>
+          </div>
+
+          <!-- Desired timeslot -->
+          <div class="field">
+            <span class="field-label">Desired timeslot <span class="field-optional">— optional, select all that apply</span></span>
+            <p class="field-hint">All times are CET. We'll do our best to accommodate your preference.</p>
+            <div class="timeslot-grid">
+              <label class="timeslot-pill"><input type="checkbox" name="timeslot" value="morning"><span>Morning · 06:00–12:00</span></label>
+              <label class="timeslot-pill"><input type="checkbox" name="timeslot" value="afternoon"><span>Afternoon · 12:00–18:00</span></label>
+              <label class="timeslot-pill"><input type="checkbox" name="timeslot" value="evening"><span>Evening · 18:00–23:00</span></label>
+              <label class="timeslot-pill"><input type="checkbox" name="timeslot" value="night"><span>Night · 23:00–06:00</span></label>
+              <label class="timeslot-pill"><input type="checkbox" name="timeslot" value="flexible"><span>Flexible</span></label>
             </div>
           </div>
 
           <!-- Genre tags -->
           <div class="field">
-            <span class="field-label">Genres <span style="font-weight:400;color:var(--text-tertiary);">— select all that apply</span></span>
+            <span class="field-label">Genres <span class="field-optional">— select all that apply</span></span>
             <div class="tag-grid">
               <label class="tag-pill"><input type="checkbox" name="genres" value="chiptune"><span>Chiptune</span></label>
               <label class="tag-pill"><input type="checkbox" name="genres" value="orchestral"><span>Orchestral</span></label>
@@ -551,100 +528,88 @@ h2, h3 { color: var(--text-primary); }
           </div>
         </div>
 
-        <!-- ── Section 2: About you ── -->
+        <!-- ── 02: About you ── -->
         <div class="form-section">
           <div class="form-section-header">
             <span class="label">02 — About you</span>
             <h2>The artist</h2>
-            <p>Who are you? Tell us a bit about yourself and where to find your work.</p>
+            <p>Who are you? A few words about yourself and where to find your work.</p>
           </div>
           <div class="form-grid">
             <div class="field">
-              <label class="field-label" for="artist-name">Artist / DJ name</label>
-              <input type="text" id="artist-name" name="artist_name" placeholder="Your artist name" required>
+              <label class="field-label" for="artist-name">Artist name</label>
+              <input type="text" id="artist-name" name="artist_name" placeholder="Your artist or DJ name" required>
             </div>
             <div class="field">
-              <label class="field-label" for="artist-location">City, Country</label>
-              <input type="text" id="artist-location" name="location" placeholder="e.g. Lyon, France">
+              <label class="field-label" for="artist-email">Email address</label>
+              <input type="email" id="artist-email" name="email" placeholder="you@domain.com" required>
+            </div>
+            <div class="field">
+              <label class="field-label" for="artist-country">Country</label>
+              <input type="text" id="artist-country" name="country" placeholder="e.g. France">
+            </div>
+            <div class="field">
+              <label class="field-label" for="artist-city">City <span class="field-optional">optional</span></label>
+              <input type="text" id="artist-city" name="city" placeholder="e.g. Lyon">
             </div>
             <div class="field span-2">
-              <label class="field-label" for="artist-bio">Bio</label>
+              <label class="field-label" for="artist-bio">Bio <span class="field-optional">optional</span></label>
               <textarea id="artist-bio" name="bio"
-                placeholder="A few sentences about you, your background, and your relationship with video game music." maxlength="600" oninput="updateCount(this,'bio-count',600)"></textarea>
+                placeholder="A few sentences about you, your background, and your relationship with video game music."
+                maxlength="600" oninput="updateCount(this,'bio-count',600)"></textarea>
               <span class="field-count" id="bio-count">0 / 600</span>
-            </div>
-          </div>
-
-          <!-- Links -->
-          <div class="form-grid">
-            <div class="field">
-              <label class="field-label">SoundCloud / Mixcloud</label>
-              <div class="link-row">
-                <span class="link-row-prefix">
-                  <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
-                </span>
-                <input type="url" name="soundcloud" placeholder="soundcloud.com/yourname">
-              </div>
-            </div>
-            <div class="field">
-              <label class="field-label">Instagram</label>
-              <div class="link-row">
-                <span class="link-row-prefix">
-                  <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                </span>
-                <input type="text" name="instagram" placeholder="@yourhandle">
-              </div>
-            </div>
-            <div class="field">
-              <label class="field-label">Website <span style="font-weight:400;color:var(--text-tertiary);">optional</span></label>
-              <div class="link-row">
-                <span class="link-row-prefix">
-                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                </span>
-                <input type="url" name="website" placeholder="yoursite.com">
-              </div>
-            </div>
-            <div class="field">
-              <label class="field-label">Email</label>
-              <div class="link-row">
-                <span class="link-row-prefix">
-                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                </span>
-                <input type="email" name="email" placeholder="you@domain.com" required>
-              </div>
             </div>
           </div>
         </div>
 
-        <!-- ── Section 3: Sample ── -->
+        <!-- ── 03: Links ── -->
         <div class="form-section">
           <div class="form-section-header">
-            <span class="label">03 — Sample</span>
-            <h2>Show us what you do</h2>
-            <p>Share a link to a recent mix, set, or episode that best represents your project. SoundCloud, Mixcloud, YouTube — anything works.</p>
+            <span class="label">03 — Links</span>
+            <h2>Show us your work</h2>
+            <p>Share links to your mixes, social profiles, or anything that gives us a sense of your sound. The first link is required — SoundCloud, Mixcloud, YouTube, anything works.</p>
           </div>
           <div class="form-grid full">
-            <div class="sample-block">
-              <div class="sample-block-header">
-                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span>Link to your best representative mix</span>
-              </div>
-              <div class="field" style="gap:0;">
-                <input type="url" name="sample_url" placeholder="soundcloud.com/… · mixcloud.com/… · youtube.com/…">
+            <div class="field">
+              <label class="field-label" for="link-1">Link 1</label>
+              <div class="link-row">
+                <span class="link-row-prefix">
+                  <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </span>
+                <input type="url" id="link-1" name="link_1" placeholder="soundcloud.com/… · mixcloud.com/… · youtube.com/…" required>
               </div>
             </div>
             <div class="field">
-              <label class="field-label">Anything else? <span style="font-weight:400;color:var(--text-tertiary);">optional</span></label>
-              <textarea name="extra_notes"
-                placeholder="Artwork direction, technical requirements, availability, preferred time slots — anything useful." maxlength="500" oninput="updateCount(this,'notes-count',500)"></textarea>
-              <span class="field-count" id="notes-count">0 / 500</span>
+              <label class="field-label" for="link-2">Link 2 <span class="field-optional">optional</span></label>
+              <div class="link-row">
+                <span class="link-row-prefix">
+                  <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </span>
+                <input type="url" id="link-2" name="link_2" placeholder="instagram.com/… · twitter.com/… · yoursite.com/…">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="link-3">Link 3 <span class="field-optional">optional</span></label>
+              <div class="link-row">
+                <span class="link-row-prefix">
+                  <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </span>
+                <input type="url" id="link-3" name="link_3" placeholder="Any other relevant link">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="message">Message <span class="field-optional">optional</span></label>
+              <textarea id="message" name="message"
+                placeholder="Anything else you'd like to add — artwork direction, technical requirements, availability, or just a hello."
+                maxlength="600" oninput="updateCount(this,'msg-count',600)"></textarea>
+              <span class="field-count" id="msg-count">0 / 600</span>
             </div>
           </div>
         </div>
 
         <!-- ── Submit ── -->
         <div class="submit-footer">
-          <p class="submit-note">By submitting you agree to our <a href="#">privacy policy</a>. We read every proposal and get back to everyone — usually within two weeks.</p>
+          <p class="submit-note">By submitting you agree to our <a href="#">privacy policy</a>. We read every proposal and reply to everyone — usually within two weeks.</p>
           <button type="submit" class="btn btn-primary btn-submit">
             <i data-lucide="send" style="width:14px;height:14px;stroke:var(--action-primary-fg);fill:none;display:block;flex-shrink:0;"></i>
             Send proposal
@@ -653,7 +618,7 @@ h2, h3 { color: var(--text-primary); }
 
       </form>
 
-      <!-- ── Success state ── -->
+      <!-- ── Success ── -->
       <div class="submit-success" id="submit-success">
         <div class="submit-success-icon">
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -671,50 +636,32 @@ h2, h3 { color: var(--text-primary); }
 </main>
 
 <script>
-// Init Lucide icons
 lucide.createIcons();
 
-// ── Tag pill toggle ──
-document.querySelectorAll('.tag-pill').forEach(pill => {
+// ── Toggle pills (genre + timeslot) ──
+document.querySelectorAll('.tag-pill, .timeslot-pill').forEach(pill => {
   const cb = pill.querySelector('input[type="checkbox"]');
   pill.addEventListener('click', () => {
-    // checkbox state toggled by browser via label click
-    setTimeout(() => {
-      pill.classList.toggle('selected', cb.checked);
-    }, 0);
+    setTimeout(() => pill.classList.toggle('selected', cb.checked), 0);
   });
 });
 
 // ── Char count ──
 function updateCount(el, countId, max) {
-  const n = el.value.length;
   const el2 = document.getElementById(countId);
-  if (el2) el2.textContent = n + ' / ' + max;
+  if (el2) el2.textContent = el.value.length + ' / ' + max;
 }
 
-// ── Form submit ──
+// ── Submit ──
 document.getElementById('submit-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-
   const btn = e.target.querySelector('.btn-submit');
   btn.disabled = true;
-  btn.textContent = 'Sending…';
+  btn.innerHTML = 'Sending…';
 
-  // Collect data
-  const data = new FormData(e.target);
-  const payload = {};
-  data.forEach((v, k) => {
-    if (payload[k]) {
-      payload[k] = [].concat(payload[k], v);
-    } else {
-      payload[k] = v;
-    }
-  });
-
-  // Simulate send (replace with actual endpoint)
+  // Simulate (replace with real endpoint)
   await new Promise(r => setTimeout(r, 900));
 
-  // Show success
   document.getElementById('submit-form').style.display = 'none';
   const success = document.getElementById('submit-success');
   success.classList.add('visible');
