@@ -2991,8 +2991,11 @@ body { padding-top: var(--space-9); }
 
 /* ── FWM: managed elements — CSS-transition-based reflow ── */
 .fwm-managed {
-  transition: left 220ms var(--ease-panel), top 220ms var(--ease-panel);
-  will-change: left, top;
+  /* All four inset properties — FWM uses bottom/right for bottom/right corners
+     so each triggers the correct transition when snapping between corners.    */
+  transition: left   220ms var(--ease-panel), top    220ms var(--ease-panel),
+              right  220ms var(--ease-panel), bottom 220ms var(--ease-panel);
+  will-change: left, top, right, bottom;
 }
 
 /* ── FWM: drag interaction ── */
@@ -7178,20 +7181,27 @@ const FWM = (() => {
   const EDGE = 24, GAP = 24;
   const reg  = new Map();  // id → FloatingNode
 
-  /* ── Position element immediately or via CSS transition ── */
-  function _moveTo(el, tLeft, tTop, immediate) {
-    el.style.right  = 'auto';
-    el.style.bottom = 'auto';
+  /* ── Position element using CSS-native anchoring ─────────────────────────
+   * Uses left/right and top/bottom based on the target corner.
+   * Bottom corners → bottom property (constant EDGE value, never recalculated
+   *   during element height changes, so playlist animation causes zero jitter).
+   * Right corners  → right property (no width read needed).
+   * Top corners    → top: EDGE (constant, also jitter-free).
+   * ──────────────────────────────────────────────────────────────────────── */
+  function _moveTo(el, isLeft, isBot, hOff, vOff, immediate) {
+    function apply() {
+      if (isLeft) { el.style.right  = 'auto'; el.style.left   = hOff + 'px'; }
+      else        { el.style.left   = 'auto'; el.style.right  = hOff + 'px'; }
+      if (isBot)  { el.style.top    = 'auto'; el.style.bottom = vOff + 'px'; }
+      else        { el.style.bottom = 'auto'; el.style.top    = vOff + 'px'; }
+    }
     if (immediate) {
-      // Disable transition, set position, flush, re-enable
       el.style.transition = 'none';
-      el.style.left = tLeft + 'px';
-      el.style.top  = tTop  + 'px';
+      apply();
       el.getBoundingClientRect(); // force reflow
-      el.style.transition = '';  // restore CSS transition
+      el.style.transition = '';   // restore CSS transition
     } else {
-      el.style.left = tLeft + 'px';
-      el.style.top  = tTop  + 'px';
+      apply();
     }
   }
 
@@ -7248,28 +7258,21 @@ const FWM = (() => {
       const primaryStack  = menuHere ? stack.filter(n => n.id === 'menu') : stack;
       const lateralStack  = menuHere ? stack.filter(n => n.id !== 'menu') : [];
 
-      /* ── Primary (menu) — normal vertical stack at EDGE ── */
+      /* ── Primary (menu) — vertical stack at EDGE from corner ── */
       let slotOff = EDGE;
       for (const node of primaryStack) {
         const w = node.el.offsetWidth, h = node.el.offsetHeight;
         if (!w || !h) continue;
-        const tL = isLeft ? EDGE : window.innerWidth - w - EDGE;
-        const tT = isBot  ? window.innerHeight - slotOff - h : slotOff;
-        _moveTo(node.el, tL, tT, immediate);
+        _moveTo(node.el, isLeft, isBot, EDGE, slotOff, immediate);
         slotOff += h + GAP;
       }
 
-      /* ── Lateral (non-menu siblings in menu's corner) ── */
-      /* Placed to the right of the menu (left corners) or left (right corners) */
+      /* ── Lateral (non-menu siblings) — beside menu, same vertical anchor ── */
       let sidOff = EDGE;
       for (const node of lateralStack) {
         const w = node.el.offsetWidth, h = node.el.offsetHeight;
         if (!w || !h) continue;
-        const tL = isLeft
-          ? EDGE + menuW + GAP
-          : window.innerWidth - EDGE - menuW - GAP - w;
-        const tT = isBot ? window.innerHeight - sidOff - h : sidOff;
-        _moveTo(node.el, tL, tT, immediate);
+        _moveTo(node.el, isLeft, isBot, EDGE + menuW + GAP, sidOff, immediate);
         sidOff += h + GAP;
       }
     }
