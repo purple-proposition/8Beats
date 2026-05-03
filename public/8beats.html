@@ -3276,6 +3276,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     <div class="explore-section-border" style="padding:var(--space-5);display:flex;align-items:center;gap:var(--space-4);">
       <i data-lucide="search" style="width:16px;height:16px;stroke:var(--text-tertiary);fill:none;display:block;flex-shrink:0;"></i>
       <input id="explore-input" placeholder="Search shows, residents, games, genres…" oninput="handleSearch(this.value)" class="explore-input" style="flex:1;background:none;border:none;outline:none;font-family:var(--font);font-size:var(--text-base);color:var(--text-secondary);"/>
+      <kbd style="flex-shrink:0;font-family:var(--font);font-size:11px;color:var(--text-tertiary);background:var(--surface-subtle);border:1px solid var(--border-default);border-radius:5px;padding:2px 6px;line-height:1.5;letter-spacing:.02em;pointer-events:none;">Esc</kbd>
     </div>
 
     <!-- Tabs + Filter on one row -->
@@ -3284,7 +3285,6 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       <button id="tab-residents" onclick="setTab('residents')" class="explore-tab"><i data-lucide="users" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Residents</button>
       <button id="tab-schedule" onclick="setTab('schedule')" class="explore-tab"><i data-lucide="calendar" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;"></i>Schedule</button>
       <div id="explore-filter-bar" style="margin-left:auto;display:flex;align-items:stretch;padding-right:var(--space-5);">
-        <div style="width:1px;background:var(--border-default);flex-shrink:0;margin:var(--space-5);"></div>
         <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:var(--space-2);background:none;border:none;cursor:pointer;padding:0;font-family:var(--font);font-size:var(--text-base);font-weight:400;color:var(--text-tertiary);transition:color var(--dur-micro) var(--ease-hover);align-self:center;">
           <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="width:14px;height:14px;stroke:var(--text-tertiary);fill:none;display:block;transition:stroke var(--dur-micro) var(--ease-hover);"></i>
           Filters
