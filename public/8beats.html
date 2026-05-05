@@ -1335,23 +1335,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
               border-color var(--dur-short) var(--ease-out),
               transform var(--dur-micro) var(--ease-out);
 }
-/* Glass shell — fixed oversized height so blur surface never resizes during height anim */
-.vol-popup-glass {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 200px; /* larger than open height (146px) — blur is static, no repaint */
-  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
-  background: var(--glass-bg);
-  border-radius: var(--radius-control);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
-  transition: opacity var(--dur-short) var(--ease-out);
-}
-.vol-popup.vol-open .vol-popup-glass { opacity: 1; }
-/* hover/active come from .icon-btn — only override when open */
+/* vol-popup-glass kept as empty element for backwards compat — glass applied directly */
+.vol-popup-glass { display: none; }
+/* Open state: same glass as other windows */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border-color: var(--glass-border);
   /* Open: ease-out (decelerate — organic enter) */
   transition: height var(--dur-short) var(--ease-out),
