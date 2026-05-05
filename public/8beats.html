@@ -5427,11 +5427,14 @@ function openVol() {
     volPopup.style.flexDirection = 'column-reverse';
   }
   volPopup.classList.add('vol-open');
+  // Let vol-popup escape player-shell's overflow:hidden clip
+  playerShell.style.overflow = 'visible';
   // Elevate player above all overlays (cookie panel etc.) while vol is open
   playerWrap.style.zIndex = '10000';
 }
 function closeVol() {
   volPopup.classList.remove('vol-open');
+  playerShell.style.overflow = '';
   playerWrap.style.zIndex = '';
 }
 
