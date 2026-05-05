@@ -2185,6 +2185,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-sm); color: var(--text-disabled);
 }
+.slot-tags { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.slot-tag {
+  font-size: 10px; font-weight: 400; letter-spacing: -.02em;
+  color: var(--text-secondary); background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: 8px; padding: 2px 7px; white-space: nowrap;
+  pointer-events: none;
+}
 
 /* ── Support / Pricing view ── */
 #view-support {
@@ -3338,7 +3346,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     <header class="section-header">
       <div class="section-header-text">
         <h2><a href="#" class="section-link">Latest shows<i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i></a></h2>
-        <h3 style="margin-top:20px;">Fresh video game music mixes from our residents — new shows every week.</h3>
+        <p style="margin-top:8px;font-size:20px;line-height:1.4;color:var(--text-secondary);">Fresh video game music mixes from our residents — new shows every week.</p>
       </div>
     </header>
 
@@ -6667,6 +6675,7 @@ function renderSchedule() {
                 <span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>
                 Live
               </div>
+              ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="slot-tag">${g}</span>`).join('')}</div>` : ''}
               <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
                 title="${isAlerted ? 'Rappel activé' : 'Me rappeler'}"
                 onclick="event.stopPropagation(); toggleAlert(this, '${alertKey}', ${i}, '${slot.time}', '${safeTitle}')">
@@ -6772,6 +6781,7 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
             <div class="sp-show-name">${showTitle}</div>
             <div class="sp-show-artist">${artistName}</div>
           </div>
+          ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="slot-tag">${g}</span>`).join('')}</div>` : ''}
           <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
             title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
             onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${slot.title.replace(/'/g,"\\'")}')">
