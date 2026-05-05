@@ -43,7 +43,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
 @font-face {
@@ -169,7 +169,7 @@
   /* ══════════════════════════════════════════
      PRIMITIVES — Spacing (4px grid)
      ══════════════════════════════════════════ */
-  --font:        'Inter', system-ui, sans-serif;
+  --font:        'Geist', system-ui, sans-serif;
   --radius:      12px;
   --radius-sm:   12px;
 
@@ -390,7 +390,7 @@ a { text-decoration: none; color: inherit; }
    ============================================================ */
 h1,
 .show-title {
-  font-family: 'Alpha Lyrae', 'Inter', system-ui, sans-serif;
+  font-family: 'Alpha Lyrae', 'Geist', system-ui, sans-serif;
   color: var(--text-primary);
 }
 .section-header-text h2 { color: var(--text-primary); }
@@ -1171,11 +1171,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Legacy — kept for compat */
 .track-ts {
   font-size: var(--text-sm); font-weight: 400; color: var(--text-secondary);
-  flex-shrink: 0; letter-spacing: .06em; font-family: 'Inter', system-ui, sans-serif;
+  flex-shrink: 0; letter-spacing: .06em; font-family: 'Geist', system-ui, sans-serif;
   cursor: pointer; transition: color var(--dur-short) var(--ease-hover); min-width: 36px;
 }
 .track-ts:hover { color: var(--text-secondary); }
-.track-duration { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; font-family: 'Inter', system-ui, sans-serif; }
+.track-duration { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; font-family: 'Geist', system-ui, sans-serif; }
 .track-stream-icon {
   width: 16px; height: 16px; flex-shrink: 0; fill: var(--text-secondary);
   transition: fill var(--dur-short) var(--ease-hover); cursor: pointer;
@@ -1210,7 +1210,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; align-items: center; gap: var(--space-3);
 }
 .progress-bar-wrap.visible { height: 48px; padding: 0 var(--space-5) var(--space-3); }
-.progress-time { font-size: var(--text-sm); font-weight: 400; line-height: 1; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: 'Inter', system-ui, sans-serif; }
+.progress-time { font-size: var(--text-sm); font-weight: 400; line-height: 1; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: 'Geist', system-ui, sans-serif; }
 .progress-time.end { text-align: right; }
 .progress-track {
   flex: 1; height: 4px; background: var(--border-default);
@@ -1304,7 +1304,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
   cursor: pointer; font-size: var(--text-xs); letter-spacing: .04em;
   font-variant-numeric: tabular-nums;
-  color: var(--icon-secondary); font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
+  color: var(--icon-secondary); font-family: 'Geist', system-ui, sans-serif; font-optical-sizing: none;
   transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
 .ts-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
@@ -2156,7 +2156,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .schedule-slot.is-live { background: var(--surface-elevated); }
 .schedule-slot-time {
   font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 40px;
-  font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
+  font-family: 'Geist', system-ui, sans-serif; font-optical-sizing: none;
 }
 .schedule-slot.is-live .schedule-slot-time { color: var(--text-primary); }
 .schedule-slot-body { flex: 1; min-width: 0; }
@@ -2561,7 +2561,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .track-num {
   display: block; flex-shrink: 0;
   font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
-  font-family: 'Inter', system-ui, sans-serif; font-optical-sizing: none;
+  font-family: 'Geist', system-ui, sans-serif; font-optical-sizing: none;
   min-width: 20px; text-align: left;
 }
 
@@ -6194,7 +6194,7 @@ function makeArtistSvg(hostName) {
     <rect width="400" height="600" fill="url(#${id}g)"/>
     <rect width="400" height="600" fill="url(#${id}r)"/>
     <text x="200" y="310" text-anchor="middle" dominant-baseline="middle"
-      font-family="Inter,system-ui,sans-serif" font-size="112" font-weight="400"
+      font-family="Geist,system-ui,sans-serif" font-size="112" font-weight="400"
       fill="rgba(255,255,255,0.10)" letter-spacing="-4">${initials}</text>
   </svg>`;
 }
