@@ -2105,29 +2105,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #view-artist.visible { opacity: 1; }
 
 /* ── Schedule view ── */
-#view-schedule {
-  display: none; opacity: 0;
-  position: relative; z-index: var(--z-base);
-  transition: opacity var(--dur-large) var(--ease-hover);
-}
-#view-schedule.active { display: block; }
-#view-schedule.visible { opacity: 1; }
 
-/* .schedule-wrap = unique .content container, row-gap controls vertical rhythm */
-.schedule-wrap { padding-top: var(--space-9); padding-bottom: 0; row-gap: var(--space-7); align-items: start; }
-
-.schedule-hero { display: flex; flex-direction: column; gap: var(--space-3); align-items: center; text-align: center; padding: var(--space-8) 0; }
-.schedule-hero .page-eyebrow {
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--text-secondary);
-}
-.schedule-hero h1 {
-  font-family: 'Alpha Lyrae', var(--font); font-size: clamp(32px, 5.5vw, 64px);
-  line-height: 1.05; margin: 0;
-}
-.schedule-hero .page-desc {
-  font-size: var(--text-base); color: var(--text-secondary); line-height: 1.5; margin: 0;
-}
 
 .schedule-days {
   display: flex; flex-wrap: wrap; gap: var(--space-5);
@@ -3621,15 +3599,6 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 </div><!-- /#view-artist -->
 
 <!-- SCHEDULE VIEW -->
-<div id="view-schedule">
-  <div class="content schedule-wrap">
-    <div class="schedule-hero col-editorial">
-      <h1>Schedule</h1>
-      <p class="page-desc">What's on this week. From ambient journeys to club nights — every show, every slot.</p>
-    </div>
-    <div class="schedule-days col-editorial" id="schedule-days"></div>
-  </div>
-</div><!-- /#view-schedule -->
 
 <!-- SUPPORT VIEW -->
 <div id="view-support">
@@ -7085,12 +7054,10 @@ function openSupport() {
   const homeEl = document.getElementById('view-home');
   const showEl = document.getElementById('view-show');
   const artistEl = document.getElementById('view-artist');
-  const schedEl = document.getElementById('view-schedule');
 
   let fromEl = homeEl;
   if (showEl.classList.contains('active')) { supportPreviousView = 'show'; fromEl = showEl; }
   else if (artistEl.classList.contains('active')) { supportPreviousView = 'artist'; fromEl = artistEl; }
-  else if (schedEl.classList.contains('active')) { supportPreviousView = 'schedule'; fromEl = schedEl; }
   else { supportPreviousView = 'home'; }
 
   fromEl.style.opacity = '0';
@@ -7160,13 +7127,11 @@ function openAbout() {
   const homeEl  = document.getElementById('view-home');
   const showEl  = document.getElementById('view-show');
   const artistEl = document.getElementById('view-artist');
-  const schedEl = document.getElementById('view-schedule');
   const supportEl = document.getElementById('view-support');
 
   let fromEl = homeEl, prevView = 'home';
   if (showEl.classList.contains('active'))    { prevView = 'show';    fromEl = showEl; }
   else if (artistEl.classList.contains('active')) { prevView = 'artist'; fromEl = artistEl; }
-  else if (schedEl.classList.contains('active'))  { prevView = 'schedule'; fromEl = schedEl; }
   else if (supportEl.classList.contains('active')){ prevView = 'support'; fromEl = supportEl; }
 
   aboutEl._prevView = prevView;
