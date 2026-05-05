@@ -188,7 +188,7 @@
   /* ── Primitives — Typography scale ── */
   --text-xs:     11px;
   --text-sm:     12px;
-  --text-base:   14px;
+  --text-base:   16px;
   --text-md:     16px;
   --text-lg:     20px;
   --text-xl:     24px;
@@ -1005,7 +1005,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel-header-actions { display: flex; align-items: center; gap: var(--space-3); }
 
 .panel p { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.7; letter-spacing: -0.1px; position: relative; z-index: var(--z-base); }
-.panel-cookie p { font-size: 16px; }
 .panel p strong { color: var(--text-primary); font-weight: 500; }
 
 .panel-btn { display: flex; align-items: center; justify-content: center; gap: var(--space-2); width: 100%; height: 32px; padding: 0 var(--space-4); font-family: var(--font); font-size: var(--text-base); font-weight: 500; letter-spacing: -.1px; color: var(--action-primary-fg); background: var(--action-primary-bg); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity var(--dur-short) var(--ease-hover); position: relative; z-index: var(--z-base); }
@@ -2186,14 +2185,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-sm); color: var(--text-disabled);
 }
-.slot-tags { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-.slot-tag {
-  font-size: 10px; font-weight: 400; letter-spacing: -.02em;
-  color: var(--text-secondary); background: transparent;
-  border: 1px solid var(--border-default);
-  border-radius: 8px; padding: 2px 7px; white-space: nowrap;
-  pointer-events: none;
-}
+.slot-tags { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 
 /* ── Support / Pricing view ── */
 #view-support {
@@ -6676,7 +6668,7 @@ function renderSchedule() {
                 <span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>
                 Live
               </div>
-              ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="slot-tag">${g}</span>`).join('')}</div>` : ''}
+              ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="chip">${g}</span>`).join('')}</div>` : ''}
               <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
                 title="${isAlerted ? 'Rappel activé' : 'Me rappeler'}"
                 onclick="event.stopPropagation(); toggleAlert(this, '${alertKey}', ${i}, '${slot.time}', '${safeTitle}')">
@@ -6782,7 +6774,7 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
             <div class="sp-show-name">${showTitle}</div>
             <div class="sp-show-artist">${artistName}</div>
           </div>
-          ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="slot-tag">${g}</span>`).join('')}</div>` : ''}
+          ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="chip">${g}</span>`).join('')}</div>` : ''}
           <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
             title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
             onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${slot.title.replace(/'/g,"\\'")}')">
