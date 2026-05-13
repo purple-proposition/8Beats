@@ -43,7 +43,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
 @font-face {
@@ -170,7 +170,6 @@
      PRIMITIVES — Spacing (4px grid)
      ══════════════════════════════════════════ */
   --font:        'Geist', system-ui, sans-serif;
-  --font-mono:   'Geist Mono', monospace;
   --radius:      12px;
   --radius-sm:   12px;
 
@@ -399,7 +398,7 @@ h1,
 .label {
   font-size: var(--text-sm);
   font-weight: 400;
-  font-family: var(--font-mono);
+  font-family: var(--font);
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--text-tertiary);
@@ -982,7 +981,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .host-name { font-size: var(--text-base); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
 .host-name:hover { color: var(--text-primary); }
 
-.card-meta   { font-size: var(--text-base); color: var(--text-tertiary); font-family: var(--font-mono); text-transform: uppercase; }
+.card-meta   { font-size: var(--text-base); color: var(--text-tertiary); font-family: var(--font); text-transform: uppercase; }
 .card-tags   { display: none; }
 
 /* ── Family 3: Chip (.chip) ── */
@@ -1177,7 +1176,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   cursor: pointer; transition: color var(--dur-short) var(--ease-hover); min-width: 36px;
 }
 .track-ts:hover { color: var(--text-secondary); }
-.track-duration { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; font-family: var(--font-mono); }
+.track-duration { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; font-family: var(--font); }
 .track-stream-icon {
   width: 16px; height: 16px; flex-shrink: 0; fill: var(--text-secondary);
   transition: fill var(--dur-short) var(--ease-hover); cursor: pointer;
@@ -1212,7 +1211,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; align-items: center; gap: var(--space-3);
 }
 .progress-bar-wrap.visible { height: 48px; padding: 0 var(--space-5) var(--space-3); }
-.progress-time { font-size: var(--text-sm); font-weight: 400; line-height: 1; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: var(--font-mono); }
+.progress-time { font-size: var(--text-sm); font-weight: 400; line-height: 1; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: var(--font); }
 .progress-time.end { text-align: right; }
 .progress-track {
   flex: 1; height: 4px; background: var(--border-default);
@@ -1252,7 +1251,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color var(--dur-micro) var(--ease-out), background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out); color: var(--icon-secondary); }
 .play-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 .play-btn:active { transform: scale(0.92); }
-.play-btn svg { width: 32px; height: 32px; fill: currentColor; stroke: none; transition: fill var(--dur-micro) var(--ease-out); }
+.play-btn svg { width: 20px; height: 20px; fill: currentColor; stroke: none; transition: fill var(--dur-micro) var(--ease-out); }
 
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; height: 68px; gap: 0; }
 .player-info-top { display: flex; align-items: center; gap: var(--space-3); }
@@ -1471,8 +1470,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .hero-inner { grid-column: unset; width: 100%; }
   .hero-inner h1 { font-size: clamp(32px,9vw,48px); letter-spacing: -0.03em; }
   .hero-inner p  { font-size: var(--text-base); max-width: 320px; }
-  .hero-actions  { display: flex; flex-direction: column; width: 100%; gap: var(--space-3); }
-  .btn { width: 100%; justify-content: center; padding: var(--space-3) var(--space-5); }
+  .hero-actions  { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: var(--space-3); }
+  .hero-actions > :first-child { justify-self: stretch; }
+  .hero-actions > :last-child  { justify-self: stretch; }
+  .btn { width: 100%; justify-content: center; padding: var(--space-3) var(--space-4); white-space: nowrap; }
 
   /* ── Content ── */
   .content { display: flex; flex-direction: column; padding: 0 var(--space); gap: var(--space-4); }
@@ -1594,6 +1595,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   }
   .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; }
   .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: 8px; }
+  .play-btn svg { width: 24px; height: 24px; }
   .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: var(--space-1); justify-content: center; }
   .player-info-top { gap: var(--space-2); }
   .player-info-top .label { font-size: var(--text-sm); }
