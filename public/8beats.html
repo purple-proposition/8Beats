@@ -1407,8 +1407,21 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .hero { padding: var(--space-9) var(--space); }
   .hero-inner { grid-column: 4 / span 6; }
 
-  /* Cards: 3 columns instead of 4 */
-  .cards { grid-template-columns: repeat(3, 1fr); gap: var(--space); }
+  /* Cards — carousel, ~3.5 visible on large tablet */
+  .cards {
+    display: flex;
+    gap: var(--space-3);
+    overflow-x: auto;
+    padding: 4px var(--space) 12px;
+    margin: 0 calc(-1 * var(--space));
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-padding-left: var(--space);
+    align-items: start;
+  }
+  .cards::-webkit-scrollbar { display: none; }
+  .card { flex: 0 0 240px; max-width: unset; scroll-snap-align: start; }
 
   /* Player: fill all available width right of compact nav */
   .player-wrap { width: calc(100vw - var(--space) * 3 - var(--sidebar-icon)); }
@@ -1484,16 +1497,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .section-header-text h2 { font-size: var(--text-lg); letter-spacing: -0.03em; }
   .section-header-text h3 { font-size: var(--text-sm); }
 
-  /* ── Cards — 2-column grid on mobile ── */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space);
-    overflow-x: unset;
-    padding: 0;
-    margin: 0;
-  }
-  .card { flex: unset; max-width: unset; scroll-snap-align: unset; }
+  /* ── Cards — carousel mobile, ~3 visible on tablet portrait ── */
+  .card { flex: 0 0 195px; }
   .card-body { padding: var(--space-3) 0 0; gap: var(--space-2); }
   .card-body h3 { font-size: var(--text-sm); line-height: 1.3; max-height: calc(var(--text-sm) * 1.3 * 2); }
   .card-host .host-name { font-size: var(--text-sm); }
@@ -1668,6 +1673,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
   /* ── Footer ── */
   .site-footer { margin-top: var(--space-5) !important; }
+}
+
+/* ── Small phones (≤480px): narrower cards, ~2.2 visible ── */
+@media (max-width: 480px) {
+  .card { flex: 0 0 150px; }
 }
 
 /* ── Backdrops plein écran — couleur uniforme, pas de blur (coût GPU trop élevé) ── */
