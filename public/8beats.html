@@ -1466,7 +1466,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .hero {
     display: flex; flex-direction: column; align-items: center; text-align: center;
     gap: var(--space-5);
-    padding: var(--space-8) var(--space);
+    padding: var(--space-8) var(--space) var(--space-6);
   }
   .hero-inner { grid-column: unset; width: 100%; }
   .hero-inner h1 { font-size: clamp(32px,9vw,48px); letter-spacing: -0.03em; }
@@ -1476,7 +1476,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
   /* ── Content ── */
   .content { display: flex; flex-direction: column; padding: 0 var(--space); gap: var(--space-4); }
-  #view-home > .content { margin-top: var(--space-5) !important; }
+  #view-home > .content { margin-top: 0 !important; }
   /* Reset inline section margins so they don't stack with flex gap */
   .content .section[style] { margin-top: 0 !important; margin-bottom: 0 !important; grid-column: unset !important; }
   .section { grid-column: unset; gap: var(--space); }
@@ -1662,6 +1662,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .artist-name { font-size: clamp(28px, 9vw, 40px); margin-bottom: var(--space-3); }
   .artist-bio  { font-size: var(--text-base); margin-bottom: var(--space-4); }
   .artist-stats { margin-bottom: var(--space-5); }
+
+  /* ── Footer ── */
+  .site-footer { margin-top: var(--space-5) !important; }
 }
 
 /* ── Backdrops plein écran — couleur uniforme, pas de blur (coût GPU trop élevé) ── */
@@ -2958,8 +2961,12 @@ body { padding-top: var(--space-9); }
 /* ── Sidebar footer (compat, hidden) ── */
 .sidebar-footer { display: none !important; }
 
-/* ── Hide legacy collapse elements ── */
+/* ── Hide legacy collapse elements (desktop only) ── */
 .nav-sep, .nav-dots-collapsed, .hamburger, .nav-sep-mobile { display: none !important; }
+@media (max-width: 768px) {
+  /* Restore hamburger trigger for mobile nav */
+  #nav-dots-collapsed { display: flex !important; align-items: center; }
+}
 
 /* ── Compact (icon-only) ────────────────────────────────────────────────────
    Icons centered via animated padding-inline-start — no justify-content snap.
@@ -3254,7 +3261,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     <!-- ── Compat (hidden, keep IDs for JS) ── -->
     <div class="nav-sep" id="sep-main-1" style="display:none!important"></div>
     <div class="nav-sep sep-collapsible" id="sep-main-3" style="display:none!important"></div>
-    <div class="nav-dots-collapsed" id="nav-dots-collapsed" style="display:none!important">
+    <div class="nav-dots-collapsed" id="nav-dots-collapsed">
       <button class="nav-ic nav-dots" id="nav-dots-btn" aria-label="More">
         <span class="dot-span" style="width:3px;height:3px;border-radius:50%;background:var(--text-secondary);display:block;"></span>
         <span class="dot-span" style="width:3px;height:3px;border-radius:50%;background:var(--text-secondary);display:block;"></span>
