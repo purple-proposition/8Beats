@@ -1471,11 +1471,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .hero-inner { grid-column: unset; width: 100%; }
   .hero-inner h1 { font-size: clamp(32px,9vw,48px); letter-spacing: -0.03em; }
   .hero-inner p  { font-size: var(--text-base); max-width: 320px; }
-  .hero-actions  { flex-direction: column; width: 100%; gap: var(--space-3); }
+  .hero-actions  { display: flex; flex-direction: column; width: 100%; gap: var(--space-3); }
   .btn { width: 100%; justify-content: center; padding: var(--space-3) var(--space-5); }
 
   /* ── Content ── */
-  .content { display: flex; flex-direction: column; padding: 0 var(--space); gap: var(--space-6); }
+  .content { display: flex; flex-direction: column; padding: 0 var(--space); gap: var(--space-4); }
+  #view-home > .content { margin-top: var(--space-5) !important; }
+  /* Reset inline section margins so they don't stack with flex gap */
+  .content .section[style] { margin-top: 0 !important; margin-bottom: 0 !important; grid-column: unset !important; }
   .section { grid-column: unset; gap: var(--space); }
   #artist-series-sections { grid-column: unset; }
   .section-header { padding-right: 0; }
