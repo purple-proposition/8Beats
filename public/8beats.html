@@ -693,14 +693,15 @@ html.light .theme-knob { transform: translateX(20px); }
 #mno-backdrop {
   display: none; position: fixed; inset: 0; z-index: var(--z-backdrop);
   background: transparent;
+  transition: background var(--dur-short) var(--ease-standard);
 }
-#mno-backdrop.open { background: transparent; }
-/* Dropdown: appears below the nav pill, same style as desktop dropdown */
+#mno-backdrop.open { background: rgba(0,0,0,0.32); }
+/* Centered overlay — same glass style as desktop dropdown */
 #mobile-nav-overlay {
   display: none; position: fixed; z-index: var(--z-mno);
-  left: 16px; right: 16px;
-  top: 76px; /* nav top 12px + nav height 48px + 16px gap */
-  transform: translateY(4px);
+  top: 50%; left: 50%;
+  width: min(300px, calc(100vw - 32px));
+  transform: translate(-50%, calc(-50% + 12px));
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
@@ -710,7 +711,7 @@ html.light .theme-knob { transform: translateX(20px); }
   opacity: 0;
   transition: opacity var(--dur-short) var(--ease-standard), transform var(--dur-short) var(--ease-standard);
 }
-#mobile-nav-overlay.open { opacity: 1; transform: translateY(0); }
+#mobile-nav-overlay.open { opacity: 1; transform: translate(-50%, -50%); }
 .mno-body { display: flex; flex-direction: column; }
 .mno-links { display: flex; flex-direction: column; }
 .mno-sep { height: 1px; background: var(--border-default); }
@@ -3135,24 +3136,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 
 <!-- NAV DROPDOWN — must live directly in body, outside any backdrop-filter ancestor -->
 <div id="nav-dropdown">
-  <div class="nav-dropdown-links">
-    <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openSchedule()">
-      <i data-lucide="calendar" style="stroke:currentColor;fill:none;display:block"></i>
-      Schedule
-    </a>
-    <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openAbout()">
-      <i data-lucide="info" style="stroke:currentColor;fill:none;display:block"></i>
-      About
-    </a>
-    <a href="#" class="nav-dd-item">
-      <i data-lucide="shopping-bag" style="stroke:currentColor;fill:none;display:block"></i>
-      Shop
-    </a>
-    <a href="#" class="nav-dd-item" onclick="event.preventDefault();closeNavMenu();openSupport()">
-      <i data-lucide="heart" style="stroke:currentColor;fill:none;display:block"></i>
-      Support us
-    </a>
-  </div>
+  <div class="nav-dropdown-links" id="nav-dd-links"></div>
   <div class="nav-dd-theme-row">
     <i data-lucide="monitor" style="stroke:currentColor;fill:none;display:block"></i>
     <span class="nav-dd-theme-label">Theme</span>
@@ -3191,24 +3175,8 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 <!-- MOBILE NAV OVERLAY -->
 <div id="mno-backdrop" style="display:none;"></div>
 <div id="mobile-nav-overlay">
-  <div class="mno-links">
-        <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openSchedule()">
-          <span class="mno-link-left"><i data-lucide="calendar" style="stroke:currentColor;fill:none;display:block"></i>Schedule</span>
-          <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i>
-        </a>
-        <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openAbout()">
-          <span class="mno-link-left"><i data-lucide="info" style="stroke:currentColor;fill:none;display:block"></i>About</span>
-          <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i>
-        </a>
-        <a href="#" class="mno-link">
-          <span class="mno-link-left"><i data-lucide="shopping-bag" style="stroke:currentColor;fill:none;display:block"></i>Shop</span>
-          <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i>
-        </a>
-        <a href="#" class="mno-link" onclick="event.preventDefault();closeNavMenu();openSupport()">
-          <span class="mno-link-left"><i data-lucide="heart" style="stroke:currentColor;fill:none;display:block"></i>Support us</span>
-          <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i>
-        </a>
-        <div class="mno-theme-row">
+  <div class="mno-links" id="mno-links"></div>
+  <div class="mno-theme-row">
           <i data-lucide="monitor" class="mno-theme-icon" style="stroke:currentColor;fill:none;display:block"></i>
           <span class="mno-theme-label">Theme</span>
           <button class="mno-toggle" id="mno-theme-toggle" aria-label="Toggle theme">
@@ -3224,7 +3192,6 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <button class="icon-btn icon-btn--ghost" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></button>
           <button class="icon-btn icon-btn--ghost" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></button>
         </div>
-    </div>
 </div>
 
 <!-- NAV -->
@@ -4205,9 +4172,11 @@ const mnoBackdrop = document.getElementById('mno-backdrop');
 function openNavMenu() {
   navMenuOpen = true;
   if (window.innerWidth <= 768) {
+    mnoBackdrop.style.display = 'block';
     mobileNavOverlay.style.display = 'block';
     updateMnoKnobIcon();
     requestAnimationFrame(() => {
+      mnoBackdrop.classList.add('open');
       mobileNavOverlay.classList.add('open');
     });
   } else {
@@ -4230,8 +4199,12 @@ function openNavMenu() {
 function closeNavMenu() {
   navMenuOpen = false;
   // Mobile
+  mnoBackdrop.classList.remove('open');
   mobileNavOverlay.classList.remove('open');
-  setTimeout(() => { mobileNavOverlay.style.display = 'none'; }, 200);
+  setTimeout(() => {
+    mobileNavOverlay.style.display = 'none';
+    mnoBackdrop.style.display = 'none';
+  }, 200);
   // Desktop
   navDropdown.classList.remove('open');
   navBackdrop.classList.remove('open');
@@ -7178,6 +7151,49 @@ function closeAbout() {
     wordmark.onclick = null; wordmark.title = '';
   }, 280);
 }
+
+/* ── Nav items — single source of truth for desktop + mobile menus ── */
+const NAV_ITEMS = [
+  { label: 'Explorer',   icon: 'search',   action: () => { closeNavMenu(); openExplore();  } },
+  { label: 'About',      icon: 'info',     action: () => { closeNavMenu(); openAbout();    } },
+  { label: 'Support us', icon: 'heart',    action: () => { closeNavMenu(); openSupport();  } },
+  { label: 'Settings',   icon: 'settings', action: () => { closeNavMenu(); openSettings(); } },
+];
+
+function buildNavMenus() {
+  // Desktop dropdown
+  const ddLinks = document.getElementById('nav-dd-links');
+  if (ddLinks) {
+    ddLinks.innerHTML = NAV_ITEMS.map(item => `
+      <div class="nav-dd-item">
+        <i data-lucide="${item.icon}" style="stroke:currentColor;fill:none;display:block"></i>
+        <span>${item.label}</span>
+      </div>
+    `).join('');
+    ddLinks.querySelectorAll('.nav-dd-item').forEach((el, i) => {
+      el.addEventListener('click', NAV_ITEMS[i].action);
+    });
+  }
+  // Mobile overlay
+  const mnoLinks = document.getElementById('mno-links');
+  if (mnoLinks) {
+    mnoLinks.innerHTML = NAV_ITEMS.map(item => `
+      <div class="mno-link">
+        <div style="display:flex;align-items:center;gap:var(--space-3);">
+          <i data-lucide="${item.icon}" style="stroke:currentColor;fill:none;display:block"></i>
+          <span>${item.label}</span>
+        </div>
+        <i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block;opacity:0.4"></i>
+      </div>
+    `).join('');
+    mnoLinks.querySelectorAll('.mno-link').forEach((el, i) => {
+      el.addEventListener('click', NAV_ITEMS[i].action);
+    });
+  }
+  lucide.createIcons({ nodes: [ddLinks, mnoLinks].filter(Boolean) });
+}
+
+buildNavMenus();
 
 /* ── Init Lucide icons ── */
 lucide.createIcons();
