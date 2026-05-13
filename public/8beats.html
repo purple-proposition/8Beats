@@ -693,16 +693,14 @@ html.light .theme-knob { transform: translateX(20px); }
 #mno-backdrop {
   display: none; position: fixed; inset: 0; z-index: var(--z-backdrop);
   background: transparent;
-  transition: background var(--dur-large) var(--ease-hover);
 }
-#mno-backdrop.open {
-  background: var(--glass-bg);
-}
-/* Popup window: fixed centered, same as tracklist */
+#mno-backdrop.open { background: transparent; }
+/* Dropdown: appears below the nav pill, same style as desktop dropdown */
 #mobile-nav-overlay {
   display: none; position: fixed; z-index: var(--z-mno);
   left: 16px; right: 16px;
-  top: 50%; transform: translateY(calc(-50% + 8px));
+  top: 76px; /* nav top 12px + nav height 48px + 16px gap */
+  transform: translateY(4px);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
@@ -710,9 +708,9 @@ html.light .theme-knob { transform: translateX(20px); }
   -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
   opacity: 0;
-  transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard);
+  transition: opacity var(--dur-short) var(--ease-standard), transform var(--dur-short) var(--ease-standard);
 }
-#mobile-nav-overlay.open { opacity: 1; transform: translateY(-50%); }
+#mobile-nav-overlay.open { opacity: 1; transform: translateY(0); }
 .mno-body { display: flex; flex-direction: column; }
 .mno-links { display: flex; flex-direction: column; }
 .mno-sep { height: 1px; background: var(--border-default); }
@@ -4208,11 +4206,9 @@ function openNavMenu() {
   navMenuOpen = true;
   if (window.innerWidth <= 768) {
     mobileNavOverlay.style.display = 'block';
-    mnoBackdrop.style.display = 'block';
     updateMnoKnobIcon();
     requestAnimationFrame(() => {
       mobileNavOverlay.classList.add('open');
-      mnoBackdrop.classList.add('open');
     });
   } else {
     const r = navDotsBtn.getBoundingClientRect();
@@ -4235,11 +4231,7 @@ function closeNavMenu() {
   navMenuOpen = false;
   // Mobile
   mobileNavOverlay.classList.remove('open');
-  if (mnoBackdrop) {
-    mnoBackdrop.classList.remove('open');
-    setTimeout(() => { mnoBackdrop.style.display = 'none'; }, 250);
-  }
-  setTimeout(() => { mobileNavOverlay.style.display = 'none'; }, 250);
+  setTimeout(() => { mobileNavOverlay.style.display = 'none'; }, 200);
   // Desktop
   navDropdown.classList.remove('open');
   navBackdrop.classList.remove('open');
