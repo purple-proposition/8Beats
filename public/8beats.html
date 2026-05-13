@@ -1469,9 +1469,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .hero-inner { grid-column: unset; width: 100%; }
   .hero-inner h1 { font-size: clamp(32px,9vw,48px); letter-spacing: -0.03em; }
   .hero-inner p  { font-size: var(--text-base); max-width: 320px; }
-  .hero-actions  { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: var(--space-3); }
-  .hero-actions > :first-child { justify-self: stretch; }
-  .hero-actions > :last-child  { justify-self: stretch; }
+  .hero-actions  { display: flex; flex-direction: column; width: 100%; gap: var(--space-3); }
+  .hero-actions > * { width: 100%; justify-content: center; }
   .btn { width: 100%; justify-content: center; padding: var(--space-3) var(--space-4); white-space: nowrap; }
 
   /* ── Content ── */
