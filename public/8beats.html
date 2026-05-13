@@ -1607,11 +1607,19 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .player-controls .divider { display: none; }
   #playlist-btn { display: flex; }
 
-  /* ── Explore — same card design on mobile, with padding ── */
-  #explore { padding: var(--space); align-items: center; }
+  /* ── Explore / Schedule / Settings — full width on mobile ── */
+  #explore, #schedule, #settings {
+    padding: calc(var(--nav-h) + var(--space)) var(--space) calc(var(--player-h) + var(--space)) !important;
+    align-items: stretch !important;
+  }
+  #explore-card, #schedule-card, #settings-card { max-width: 100% !important; }
   .explore-section-border::after { left: var(--space); right: var(--space); }
   #explore-filter-bar { padding: 0 var(--space) !important; }
-  .explore-show-row { padding: var(--space) !important; }
+  .explore-show-row { padding: var(--space) !important; flex-direction: column !important; align-items: flex-start !important; gap: var(--space-2) !important; }
+  .explore-show-row > div:last-child { margin-left: 0 !important; flex-shrink: unset !important; }
+  /* Tabs: tighter on mobile so all 3 fit */
+  .explore-tab { padding: var(--space-4) var(--space-2) !important; font-size: var(--text-sm) !important; }
+  .explore-tab:first-child { padding-left: var(--space) !important; }
 
   /* ── Playlist ── */
   .player-wrap.pl-open .playlist-clip { max-height: 260px; } /* matches .playlist-inner on mobile */
