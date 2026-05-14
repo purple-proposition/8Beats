@@ -1982,11 +1982,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   flex-shrink: 0; position: relative;
   display: flex; overflow-x: auto; scrollbar-width: none;
 }
-/* Sticky day bar in explorer schedule scroll container */
-#es-day-bar {
-  position: sticky; top: 0; z-index: 2;
-  background: var(--glass-bg);
-}
+/* Day bar is outside the scroll container — no sticky needed */
 .sp-day-bar::-webkit-scrollbar { display: none; }
 
 
@@ -3314,6 +3310,9 @@ html.fwm-is-dragging { cursor: grabbing !important; }
       </div>
     </div>
 
+    <!-- Day bar (schedule tab only — outside scroll container) -->
+    <div id="es-day-bar-host"></div>
+
     <!-- Results -->
     <div id="explore-content" style="flex:1;overflow-y:auto;transition:opacity 160ms ease-in-out;"></div>
 
@@ -4523,6 +4522,9 @@ function setTab(t, instant) {
       if (icon) icon.style.stroke = 'var(--text-tertiary)';
     }
     bar.style.display = (t === 'shows') ? 'flex' : 'none';
+    // Clear day bar host when leaving schedule tab
+    const dayBarHost = document.getElementById('es-day-bar-host');
+    if (dayBarHost && t !== 'schedule') dayBarHost.innerHTML = '';
     if (t === 'shows') {
       content.style.paddingTop = 'var(--space-3)';
       applyFilters();
@@ -4587,8 +4589,12 @@ function renderExploreSchedule(container) {
   const today    = new Date();
   const todayDow = (today.getDay() + 6) % 7;
 
+  // Day bar lives outside the scroll container
+  const host = document.getElementById('es-day-bar-host');
+  if (host) host.innerHTML = `<div id="es-day-bar">${_buildCalHeader('es', 'selectExploreScheduleDay', today)}</div>`;
+
   container.style.paddingTop = '0';
-  container.innerHTML = `<div id="es-day-bar">${_buildCalHeader('es', 'selectExploreScheduleDay', today)}</div><div id="es-slots" style="padding-top:var(--space-5);padding-bottom:var(--space-5);"></div>`;
+  container.innerHTML = `<div id="es-slots" style="padding-top:var(--space-5);padding-bottom:var(--space-5);"></div>`;
   _renderExploreScheduleDaySlots(todayDow);
   requestAnimationFrame(() => {
     container.scrollTop = 0;
