@@ -1190,9 +1190,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .back-to-live {
   display: none; align-items: center; gap: var(--space-2);
   background: none; border: none; cursor: pointer; padding: 0;
-  font-size: var(--text-sm); font-weight: 400;
-  letter-spacing: 1px; text-transform: uppercase;
-  color: var(--text-tertiary); white-space: nowrap;
+  white-space: nowrap;
   transition: color var(--dur-micro) var(--ease-hover);
 }
 .back-to-live:hover { color: var(--text-primary); }
@@ -1989,7 +1987,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Calendar header (schedule & explore-schedule) ── */
 .sp-cal-header {
   display: flex; align-items: stretch;
-  padding: var(--space-3) var(--space-5);
+  padding: var(--space-5) var(--space-5);
   position: relative; flex-shrink: 0;
 }
 /* Separator line */
@@ -3995,7 +3993,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
             <span class="player-game" id="player-game">Crash Bandicoot 2: Cortex Strikes Back</span>
           </div>
           <div class="player-controls">
-            <button class="back-to-live" id="back-to-live-btn" onclick="backToLive()">
+            <button class="back-to-live label" id="back-to-live-btn" onclick="backToLive()">
               <span class="back-live-dot"></span>
               Back to live
             </button>
