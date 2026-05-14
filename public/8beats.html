@@ -1020,10 +1020,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
 .panel.glass { background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); }
 .panel.closing {
-  opacity: 0; transform: translateY(4px); pointer-events: none;
-  /* Exit plus rapide que l'entrée (180ms vs 260ms) */
-  transition: opacity var(--dur-short) var(--ease-exit),
-              transform var(--dur-short) var(--ease-exit);
+  opacity: 0; transform: translateY(8px) scale(0.97); pointer-events: none;
+  transition: opacity 180ms var(--ease-collapse),
+              transform 180ms var(--ease-collapse);
 }
 
 .panel-header { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: var(--z-base); cursor: grab; }
@@ -5463,7 +5462,7 @@ playBtn.addEventListener('click', e => {
 })();
 
 /* ── Panels ── */
-function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.display='none',200); }
+function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.display='none',180); }
 
 /* ── Playlist ── */
 let plOpen = false;
