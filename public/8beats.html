@@ -2075,9 +2075,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   transition: background var(--dur-micro) var(--ease-hover);
 }
 .sp-show-row:hover { background: var(--surface-btn-hover); }
+.sp-show-row:hover .sp-show-name { color: var(--text-secondary); }
 .sp-show-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-.sp-show-name   { font-size: var(--text-base); color: var(--text-primary);   font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sp-show-artist { font-size: var(--text-base); color: var(--text-secondary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-show-name   { font-size: var(--text-base); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-micro) var(--ease-hover); }
+.sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Right section: tags + live btn + bell */
 .sp-show-right { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 .sp-new {
