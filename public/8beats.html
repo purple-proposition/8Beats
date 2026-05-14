@@ -1618,7 +1618,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   #explore-card, #schedule-card, #settings-card { max-width: 100% !important; }
   .explore-section-border::after { left: var(--space); right: var(--space); }
   #explore-filter-bar { padding: 0 var(--space) !important; }
-  .explore-show-row { padding: var(--space) !important; flex-direction: column !important; align-items: flex-start !important; gap: var(--space-2) !important; }
+  .explore-show-row { padding: 0 var(--space) !important; flex-direction: column !important; align-items: flex-start !important; gap: var(--space-2) !important; }
   .explore-show-row > div:last-child { margin-left: 0 !important; flex-shrink: unset !important; }
   /* Tabs: tighter on mobile so all 3 fit */
   .explore-tab { padding: var(--space-4) var(--space-2) !important; font-size: var(--text-sm) !important; }
@@ -1904,7 +1904,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .explore-show-row {
   display:flex;align-items:center;justify-content:space-between;
-  padding:var(--space-3) var(--space-5);cursor:pointer;
+  padding:0 var(--space-5);cursor:pointer;
 }
 .explore-show-row:hover .explore-show-title { color: var(--text-secondary); }
 .explore-show-title { transition: color var(--dur-micro) var(--ease-hover); }
@@ -4468,7 +4468,7 @@ function applyFilters() {
 
 function renderShows(list, q) {
   q = (q || '').toLowerCase();
-  return list.map(s => {
+  const rows = list.map(s => {
     const matchedGames = q && s.games ? s.games.filter(g => g.toLowerCase().includes(q)) : [];
     const gameHint = matchedGames.length
       ? `<span style="font-size:var(--text-sm);color:var(--text-tertiary);margin-top:2px;display:block;">
@@ -4488,6 +4488,7 @@ function renderShows(list, q) {
       </div>
     </div>
   `}).join('');
+  return `<div style="display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-5) 0;">${rows}</div>`;
 }
 function renderResidents(list) {
   return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-5);padding:var(--space-5);">` + list.map(r => `
