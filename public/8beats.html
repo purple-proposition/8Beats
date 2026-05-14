@@ -4458,7 +4458,6 @@ function applyFilters() {
 
   const content = document.getElementById('explore-content');
   content.innerHTML = list.length ? renderShows(list, q) : '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No shows found.</p>';
-  wireTagTooltips(content);
   initScrollFade(content, 48);
 }
 
@@ -4531,7 +4530,7 @@ function setTab(t, instant) {
       const f = q ? residents.filter(r => r.name.toLowerCase().includes(q)) : residents;
       content.innerHTML = f.length ? renderResidents(f) : '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No residents found.</p>';
       initScrollFade(content, 48);
-      wireTagTooltips(content);
+  
     } else {
       renderExploreSchedule(content);
     }
@@ -4606,7 +4605,6 @@ function handleSearch(q) {
     const ql = q.toLowerCase();
     const f = ql ? residents.filter(r=>r.name.toLowerCase().includes(ql)||r.desc.toLowerCase().includes(ql)) : residents;
     document.getElementById('explore-content').innerHTML = f.length ? renderResidents(f) : '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No residents found.</p>';
-    wireTagTooltips(document.getElementById('explore-content'));
     initScrollFade(document.getElementById('explore-content'), 48);
   }
 }
@@ -5831,7 +5829,6 @@ function openShow(key) {
     return isNaN(db - da) ? 0 : db - da;
   });
   document.getElementById('show-related-cards').innerHTML = sorted.map((r,i) => makeRelatedCard(r,i)).join('');
-  wireTagTooltips(document.getElementById('show-related-cards'));
 
   // You Might Also Like — match by shared tags with shows[], exclude current & related
   const currentTags = data.tags.map(t => t.toLowerCase());
@@ -5874,7 +5871,6 @@ function openShow(key) {
         g1: gp.g1, g2: gp.g2, rg: gp.rg
       }, i);
     }).join('');
-    wireTagTooltips(recCards);
     recSection.style.display = '';
   } else {
     recSection.style.display = 'none';
@@ -6286,7 +6282,6 @@ function openArtist(hostName) {
   }
   const sectionsEl = document.getElementById('artist-series-sections');
   sectionsEl.innerHTML = sectionsHtml;
-  wireTagTooltips(sectionsEl);
 
   const artistEl = document.getElementById('view-artist');
   lucide.createIcons({ nodes: [artistEl] });
