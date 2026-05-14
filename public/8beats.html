@@ -2048,7 +2048,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-tertiary); flex-shrink: 0;
 }
-.sp-live-badge .live-dot { background: var(--text-tertiary); }
+/* live-dot inside sp-live-badge keeps its red color */
 
 /* ── Schedule flat list — shared time column ── */
 .sp-block-time {
@@ -2064,7 +2064,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   padding: var(--space-3) var(--space-5);
   font-size: var(--text-base); font-weight: 400; color: var(--text-secondary);
 }
-.sp-block-hdr:not(:first-child) { margin-top: var(--space-4); }
+.sp-block-hdr:not(:first-child) { margin-top: 0; }
 
 /* ── Show row ── */
 .sp-show-row {
