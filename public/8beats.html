@@ -2048,6 +2048,13 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: var(--text-sm); font-weight: 400;
   color: var(--text-secondary);
 }
+/* Live badge in schedule block headers */
+.sp-live-badge {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-size: var(--text-sm); font-weight: 400; font-family: var(--font);
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--color-live); flex-shrink: 0;
+}
 
 /* ── Schedule flat list — shared time column ── */
 .sp-block-time {
@@ -6764,11 +6771,11 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
   SP_BLOCKS.forEach(({ label, start, time }) => {
     const end         = start + 6;
     const isBlockLive = isToday && nowMin >= start * 60 && nowMin < end * 60;
-    const labelHtml   = isBlockLive
-      ? `<span class="live-status"><span class="live-dot"></span>${label}</span>`
-      : label;
+    const liveBadge   = isBlockLive
+      ? `<span class="sp-live-badge"><span class="live-dot"></span>Live</span>`
+      : '';
 
-    html += `<div class="sp-block-hdr"><span class="sp-block-time">${time}</span>${labelHtml}</div>`;
+    html += `<div class="sp-block-hdr"><span class="sp-block-time">${time}</span><span>${label}</span>${liveBadge}</div>`;
 
     /* Resident shows whose time falls within [start, end) */
     const blockShows = allSlots.filter(s => {
