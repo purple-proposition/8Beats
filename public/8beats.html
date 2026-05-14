@@ -1968,7 +1968,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Tool panel body ── */
 .tool-panel-body {
   flex: 1; overflow-y: auto; overflow-x: hidden; min-height: 0;
-  padding-top: var(--space-3);
+  padding-top: var(--space-5);
   padding-bottom: var(--space-5);
 }
 
@@ -2066,16 +2066,15 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .sp-block-hdr {
   display: flex; align-items: center;
   gap: var(--space-5);
-  padding: var(--space-3) var(--space-5);
+  padding: 0 var(--space-5);
   font-size: var(--text-base); font-weight: 400; color: var(--text-secondary);
 }
-.sp-block-hdr:not(:first-child) { margin-top: 0; }
 
 /* ── Show row ── */
 .sp-show-row {
   display: flex; align-items: center;
   gap: var(--space-5);
-  padding: var(--space-3) var(--space-5);
+  padding: 0 var(--space-5);
   cursor: pointer;
   transition: background var(--dur-micro) var(--ease-hover);
 }
@@ -4588,7 +4587,7 @@ function renderExploreSchedule(container) {
   const todayDow = (today.getDay() + 6) % 7;
 
   container.style.paddingTop = '0';
-  container.innerHTML = `<div id="es-day-bar">${_buildCalHeader('es', 'selectExploreScheduleDay', today)}</div><div id="es-slots" style="padding-top:var(--space-3);padding-bottom:var(--space-5);"></div>`;
+  container.innerHTML = `<div id="es-day-bar">${_buildCalHeader('es', 'selectExploreScheduleDay', today)}</div><div id="es-slots" style="padding-top:var(--space-5);padding-bottom:var(--space-5);"></div>`;
   _renderExploreScheduleDaySlots(todayDow);
   requestAnimationFrame(() => {
     container.scrollTop = 0;
@@ -6816,7 +6815,7 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
     });
   });
 
-  return html;
+  return `<div style="display:flex;flex-direction:column;gap:var(--space-5);">${html}</div>`;
 }
 
 function _renderSchedulePanelDaySlots(ri) {
