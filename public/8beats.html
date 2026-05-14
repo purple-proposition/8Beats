@@ -1953,11 +1953,13 @@ html.light .keepbeat-card { background: radial-gradient(ellipse at 50% 40%, #dde
 
 .explore-show-row {
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 var(--space-5);cursor:pointer;
+  padding: 12px var(--space-5);
+  margin: -12px 0;
+  cursor:pointer;
   border-radius: var(--radius-control);
   transition: background var(--dur-micro) var(--ease-hover);
 }
-.explore-show-row:hover { background: rgba(var(--text-primary-rgb), 0.05); }
+.explore-show-row:hover { background: rgba(var(--text-primary-rgb), 0.08); }
 .explore-show-row:hover .explore-show-title { color: var(--text-secondary); }
 .explore-show-title { transition: color var(--dur-micro) var(--ease-hover); }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
