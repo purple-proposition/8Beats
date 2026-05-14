@@ -1045,6 +1045,27 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .pitch-deco-left  { left: var(--space-7); }
 .pitch-deco-right { right: var(--space-7); }
 
+/* ── Keep the Beat Going ── */
+.keepbeat-card {
+  position: relative; overflow: hidden;
+  border: 1px solid var(--border-default); border-radius: var(--radius);
+  padding: var(--space-8) var(--space-7);
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 45%, #0d1030 0%, #06060a 65%);
+  display: flex; align-items: center; justify-content: center;
+}
+.keepbeat-title {
+  font-size: clamp(28px, 3.5vw, 44px); font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--text-primary);
+  line-height: 1.1;
+}
+.keepbeat-deco {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  opacity: 0.13; pointer-events: none;
+}
+.keepbeat-deco-left  { left: var(--space-6); }
+.keepbeat-deco-right { right: var(--space-6); }
+
 .orb { display: none; }
 
 .panel-cookie {
@@ -3399,42 +3420,6 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     </div>
   </div>
 
-  <div class="section" style="margin-top:80px;margin-bottom:80px;grid-column:5/span 4;">
-    <div class="pitch-card">
-
-        <!-- Pixel-art dancer (left deco) -->
-        <svg class="pitch-deco pitch-deco-left" width="72" height="90" viewBox="0 0 9 11" fill="var(--text-secondary)" shape-rendering="crispEdges">
-          <rect x="3" y="0" width="3" height="3"/>
-          <rect x="4" y="3" width="1" height="1"/>
-          <rect x="2" y="4" width="5" height="3"/>
-          <rect x="0" y="4" width="2" height="2"/>
-          <rect x="7" y="4" width="2" height="2"/>
-          <rect x="2" y="7" width="2" height="4"/>
-          <rect x="5" y="7" width="2" height="4"/>
-        </svg>
-
-        <!-- Pixel-art music note (right deco) -->
-        <svg class="pitch-deco pitch-deco-right" width="72" height="90" viewBox="0 0 9 11" fill="var(--text-secondary)" shape-rendering="crispEdges">
-          <rect x="3" y="0" width="2" height="7"/>
-          <rect x="5" y="0" width="4" height="2"/>
-          <rect x="5" y="2" width="2" height="3"/>
-          <rect x="1" y="6" width="4" height="3"/>
-          <rect x="5" y="5" width="4" height="3"/>
-        </svg>
-
-        <div class="pitch-inner">
-          <span class="label">Open to creators</span>
-          <h2 class="pitch-title">Join the party</h2>
-          <p class="pitch-body">Have an idea for a new show or podcast that you'd like to share with a global audience? We're all ears!</p>
-          <a href="mailto:hello@8beats.fm" class="btn btn-secondary" style="letter-spacing:1px;text-transform:uppercase;font-size:var(--text-sm);">
-            <i data-lucide="clipboard-list" style="fill:none;display:block"></i>
-            Show proposal
-          </a>
-        </div>
-
-      </div>
-    </div>
-
   <div id="home-themed-sections" style="display:contents;"></div>
 
 
@@ -4241,6 +4226,10 @@ const shows = [
   {title:'Mud In Tallon IV (Chozo Mix)',host:'Mud Deep',date:'2022-11-03',genres:['Ambient','Breakbeat','Electronic'],themes:['vault'],games:['Metroid Prime']},
   {title:'BemaniBeats Anthology',host:'Saki Mondo',date:'2023-12-23',genres:['Hip-Hop','House','Reggae'],themes:['vault'],games:[]},
   {title:"Let's Be Perfectly Queer",host:'Zenibuka',date:'2024-03-28',genres:['Chiptune','Electronic'],themes:['vault'],games:[]},
+  {title:'Neon District',host:'Neon Waves',date:'2024-03-12',genres:['Synthwave','Electronic','Techno'],themes:['after dark'],games:['Cyberpunk 2077',"Mirror's Edge",'Tron: Evolution']},
+  {title:'Speed Run',host:'ElFamosoDemon',date:'2023-08-08',genres:['Drum & Bass','Breakbeat','Electronic'],themes:['after dark'],games:['Sonic the Hedgehog','F-Zero','WipEout']},
+  {title:'System Override',host:'Submerse',date:'2024-02-20',genres:['Techno','Industrial','Electronic'],themes:['after dark'],games:['DOOM Eternal','Quake','Ghostrunner']},
+  {title:'Late Night Frequencies',host:'8Beats Sound Team',date:'2023-11-18',genres:['Electronic','Ambient','Trip Hop'],themes:['after dark'],games:['Deus Ex','Transistor','Hades']},
 ];
 const residents = [
   {name:'Purple Proposition',initials:'PP',frequency:'Monthly'},
@@ -5691,7 +5680,8 @@ const HOME_SECTIONS = [
       {g1:'#100a00',g2:'#5a4020',rg:'#c09060'},
       {g1:'#0a1a10',g2:'#2a5a30',rg:'#60c070'},
       {g1:'#001828',g2:'#006888',rg:'#40b0d0'},
-    ]
+    ],
+    interstitialAfter: 'pitch-card',
   },
   {
     theme: 'club errera',
@@ -5702,7 +5692,8 @@ const HOME_SECTIONS = [
       {g1:'#080808',g2:'#303030',rg:'#d0d0d0'},
       {g1:'#031520',g2:'#086080',rg:'#00cfff'},
       {g1:'#140500',g2:'#703000',rg:'#ff8020'},
-    ]
+    ],
+    interstitialAfter: 'keep-beat',
   },
   {
     theme: 'vault',
@@ -5715,14 +5706,83 @@ const HOME_SECTIONS = [
       {g1:'#080418',g2:'#4a1880',rg:'#a060ff'},
     ]
   },
+  {
+    theme: 'after dark',
+    title: 'After Dark',
+    subtitle: 'After-hours sets — high-voltage mixes for when the night truly begins.',
+    grads: [
+      {g1:'#030013',g2:'#1a0050',rg:'#8b00ff'},
+      {g1:'#001320',g2:'#003050',rg:'#00aaff'},
+      {g1:'#100003',g2:'#400010',rg:'#ff0055'},
+      {g1:'#000d00',g2:'#001800',rg:'#00ff66'},
+    ]
+  },
 ];
+
+const HOME_INTERSTITIALS = {
+  'pitch-card': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
+    <div class="pitch-card">
+      <svg class="pitch-deco pitch-deco-left" width="72" height="90" viewBox="0 0 9 11" fill="var(--text-secondary)" shape-rendering="crispEdges">
+        <rect x="3" y="0" width="3" height="3"/><rect x="4" y="3" width="1" height="1"/>
+        <rect x="2" y="4" width="5" height="3"/><rect x="0" y="4" width="2" height="2"/>
+        <rect x="7" y="4" width="2" height="2"/><rect x="2" y="7" width="2" height="4"/>
+        <rect x="5" y="7" width="2" height="4"/>
+      </svg>
+      <svg class="pitch-deco pitch-deco-right" width="72" height="90" viewBox="0 0 9 11" fill="var(--text-secondary)" shape-rendering="crispEdges">
+        <rect x="3" y="0" width="2" height="7"/><rect x="5" y="0" width="4" height="2"/>
+        <rect x="5" y="2" width="2" height="3"/><rect x="1" y="6" width="4" height="3"/>
+        <rect x="5" y="5" width="4" height="3"/>
+      </svg>
+      <div class="pitch-inner">
+        <span class="label">Open to creators</span>
+        <h2 class="pitch-title">Join the party</h2>
+        <p class="pitch-body">Have an idea for a new show or podcast that you'd like to share with a global audience? We're all ears!</p>
+        <a href="mailto:hello@8beats.fm" class="btn btn-secondary" style="letter-spacing:1px;text-transform:uppercase;font-size:var(--text-sm);">
+          <i data-lucide="clipboard-list" style="fill:none;display:block"></i>
+          Show proposal
+        </a>
+      </div>
+    </div>
+  </div>`,
+
+  'keep-beat': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:3/span 8;">
+    <div class="keepbeat-card">
+      <svg class="keepbeat-deco keepbeat-deco-left" width="110" height="96" viewBox="0 0 9 8" fill="var(--text-primary)" shape-rendering="crispEdges">
+        <rect x="1" y="0" width="3" height="1"/><rect x="5" y="0" width="3" height="1"/>
+        <rect x="0" y="1" width="9" height="3"/>
+        <rect x="1" y="4" width="7" height="1"/>
+        <rect x="2" y="5" width="5" height="1"/>
+        <rect x="3" y="6" width="3" height="1"/>
+        <rect x="4" y="7" width="1" height="1"/>
+      </svg>
+      <svg class="keepbeat-deco keepbeat-deco-right" width="130" height="90" viewBox="0 0 13 9" fill="var(--text-primary)" shape-rendering="crispEdges">
+        <rect x="2" y="0" width="9" height="1"/>
+        <rect x="0" y="1" width="13" height="2"/>
+        <rect x="0" y="3" width="4" height="2"/><rect x="9" y="3" width="4" height="2"/>
+        <rect x="0" y="5" width="13" height="2"/>
+        <rect x="2" y="7" width="2" height="2"/><rect x="5" y="7" width="3" height="1"/>
+        <rect x="9" y="7" width="2" height="2"/>
+      </svg>
+      <div class="pitch-inner">
+        <span class="label">Support independent radio</span>
+        <h2 class="keepbeat-title">Keep the beat going</h2>
+        <p class="pitch-body">Completely independent, we need you to help us build the ultimate destination for both gamers and music enthusiasts.</p>
+        <a href="#" onclick="document.querySelector('[data-nav=\\'support\\']')?.click();return false;" class="btn btn-secondary" style="letter-spacing:1px;text-transform:uppercase;font-size:var(--text-sm);min-width:180px;">
+          Support us
+          <i data-lucide="arrow-right" style="fill:none;display:block"></i>
+        </a>
+      </div>
+    </div>
+  </div>`,
+};
 
 function renderHomeSections() {
   const container = document.getElementById('home-themed-sections');
   if (!container) return;
-  container.innerHTML = HOME_SECTIONS.map(sec => {
+  const parts = [];
+  HOME_SECTIONS.forEach(sec => {
     const secShows = shows.filter(s => s.themes && s.themes.includes(sec.theme)).slice(0, 4);
-    if (!secShows.length) return '';
+    if (!secShows.length) return;
     const cards = secShows.map((s, i) => {
       const gp = sec.grads[i % sec.grads.length];
       const resident = residents.find(r => r.name === s.host) || { initials: s.host.replace(/[^A-Z]/g,'').slice(0,2) || s.host.slice(0,2).toUpperCase() };
@@ -5736,7 +5796,7 @@ function renderHomeSections() {
         g1: gp.g1, g2: gp.g2, rg: gp.rg
       }, i);
     }).join('');
-    return `<div class="section col-editorial" style="margin-top:var(--space-8);">
+    parts.push(`<div class="section col-editorial" style="margin-top:var(--space-8);">
       <header class="section-header">
         <div class="section-header-text">
           <h2><a href="#" class="section-link">${sec.title}<i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i></a></h2>
@@ -5744,8 +5804,12 @@ function renderHomeSections() {
         </div>
       </header>
       <div class="cards">${cards}</div>
-    </div>`;
-  }).join('');
+    </div>`);
+    if (sec.interstitialAfter && HOME_INTERSTITIALS[sec.interstitialAfter]) {
+      parts.push(HOME_INTERSTITIALS[sec.interstitialAfter]);
+    }
+  });
+  container.innerHTML = parts.join('');
   lucide.createIcons({ nodes: [container] });
 }
 renderHomeSections();
