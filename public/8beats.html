@@ -7462,17 +7462,31 @@ function renderSupportPlans() {
 
 let supportPreviousView = 'home';
 
+/* Force-hide all secondary views except the one specified — prevents stale
+   active/visible classes when navigating across views non-linearly. */
+function _cleanSecondaryViews(exceptId) {
+  ['view-show','view-artist','view-support','view-about','view-proposal'].forEach(id => {
+    if (id === exceptId) return;
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('active','visible'); el.style.opacity=''; el.style.pointerEvents=''; }
+  });
+}
+
 function openSupport() {
   renderSupportPlans();
   const supportEl = document.getElementById('view-support');
 
-  const homeEl = document.getElementById('view-home');
-  const showEl = document.getElementById('view-show');
-  const artistEl = document.getElementById('view-artist');
+  const homeEl    = document.getElementById('view-home');
+  const showEl    = document.getElementById('view-show');
+  const artistEl  = document.getElementById('view-artist');
+  const aboutEl   = document.getElementById('view-about');
+  const proposalEl= document.getElementById('view-proposal');
 
   let fromEl = homeEl;
-  if (showEl.classList.contains('active')) { supportPreviousView = 'show'; fromEl = showEl; }
-  else if (artistEl.classList.contains('active')) { supportPreviousView = 'artist'; fromEl = artistEl; }
+  if (showEl.classList.contains('active'))      { supportPreviousView = 'show';    fromEl = showEl; }
+  else if (artistEl.classList.contains('active')){ supportPreviousView = 'artist';  fromEl = artistEl; }
+  else if (aboutEl.classList.contains('active')) { supportPreviousView = 'about';   fromEl = aboutEl; }
+  else if (proposalEl.classList.contains('active')){ supportPreviousView = 'proposal'; fromEl = proposalEl; }
   else { supportPreviousView = 'home'; }
 
   fromEl.style.opacity = '0';
@@ -7480,6 +7494,7 @@ function openSupport() {
   setTimeout(() => {
     if (supportPreviousView === 'home') homeEl.style.display = 'none';
     else fromEl.classList.remove('active');
+    _cleanSecondaryViews('view-support');
     supportEl.classList.add('active');
     window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
@@ -7538,16 +7553,18 @@ function animateCounters() {
 }
 
 function openAbout() {
-  const aboutEl = document.getElementById('view-about');
-  const homeEl  = document.getElementById('view-home');
-  const showEl  = document.getElementById('view-show');
-  const artistEl = document.getElementById('view-artist');
+  const aboutEl   = document.getElementById('view-about');
+  const homeEl    = document.getElementById('view-home');
+  const showEl    = document.getElementById('view-show');
+  const artistEl  = document.getElementById('view-artist');
   const supportEl = document.getElementById('view-support');
+  const proposalEl= document.getElementById('view-proposal');
 
   let fromEl = homeEl, prevView = 'home';
-  if (showEl.classList.contains('active'))    { prevView = 'show';    fromEl = showEl; }
-  else if (artistEl.classList.contains('active')) { prevView = 'artist'; fromEl = artistEl; }
-  else if (supportEl.classList.contains('active')){ prevView = 'support'; fromEl = supportEl; }
+  if (showEl.classList.contains('active'))       { prevView = 'show';     fromEl = showEl; }
+  else if (artistEl.classList.contains('active')) { prevView = 'artist';   fromEl = artistEl; }
+  else if (supportEl.classList.contains('active')){ prevView = 'support';  fromEl = supportEl; }
+  else if (proposalEl.classList.contains('active')){ prevView = 'proposal'; fromEl = proposalEl; }
 
   aboutEl._prevView = prevView;
   fromEl.style.opacity = '0';
@@ -7555,6 +7572,7 @@ function openAbout() {
   setTimeout(() => {
     if (prevView === 'home') homeEl.style.display = 'none';
     else fromEl.classList.remove('active');
+    _cleanSecondaryViews('view-about');
     aboutEl.classList.add('active');
     window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
@@ -7606,6 +7624,7 @@ function openProposal() {
   setTimeout(() => {
     if (prevView === 'home') homeEl.style.display = 'none';
     else fromEl.classList.remove('active');
+    _cleanSecondaryViews('view-proposal');
     el.classList.add('active');
     window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
