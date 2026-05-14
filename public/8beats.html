@@ -4474,7 +4474,7 @@ function renderShows(list, q) {
     <div class="explore-show-row" role="button" tabindex="0" onclick="closeExplore();openShow('${s.title.replace(/'/g, "\\'")}')">
       <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
         <span class="explore-show-title">${s.title}</span>
-        <span style="font-size:var(--text-base);color:var(--text-secondary);">${s.host} · ${formatDate(s.date)}</span>
+        <span style="font-size:var(--text-base);color:var(--text-secondary);"><span onclick="event.stopPropagation();closeExplore();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color=''">${s.host}</span> · ${formatDate(s.date)}</span>
         ${gameHint}
       </div>
       <div style="display:flex;gap:var(--space-2);flex-shrink:0;margin-left:var(--space-4);">
@@ -4485,7 +4485,7 @@ function renderShows(list, q) {
 }
 function renderResidents(list) {
   return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-5);padding:var(--space-5);">` + list.map(r => `
-    <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);border:1px solid var(--border-default);border-radius:var(--radius-control);cursor:pointer;transition:background var(--dur-short) var(--ease-hover);" onmouseenter="this.style.background='rgba(128,128,128,.06)'" onmouseleave="this.style.background='transparent'">
+    <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);border:1px solid var(--border-default);border-radius:var(--radius-control);cursor:pointer;transition:background var(--dur-short) var(--ease-hover);" onmouseenter="this.style.background='rgba(128,128,128,.06)'" onmouseleave="this.style.background='transparent'" onclick="closeExplore();openArtist('${r.name.replace(/'/g,"\\'")}')">
       <div style="width:48px;height:48px;border-radius:50%;background:var(--surface-elevated);border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font-size:var(--text-base);font-weight:600;color:var(--text-tertiary);flex-shrink:0;">${r.initials}</div>
       <div style="display:flex;flex-direction:column;gap:6px;min-width:0;">
         <div style="font-size:var(--text-md);color:var(--text-primary);font-weight:400;line-height:1.2;">${r.name}</div>
