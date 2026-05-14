@@ -5274,118 +5274,134 @@ playBtn.addEventListener('click', e => {
 });
 
 /* ═══════════════════════════════════════════════════════════════
-   HERO WAVEFORM — canvas audio-reactive sine waves
+   HERO WAVEFORM — audio-reactive, CPU-optimised
    ═══════════════════════════════════════════════════════════════ */
 (function () {
   const canvas = document.getElementById('hero-waveform');
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
 
-  let dpr = window.devicePixelRatio || 1;
-  let W, H;
+  /* desynchronized: lets the browser composite without waiting for main thread */
+  const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
+
+  /* Cap DPR at 2 — no visible gain above that, just 4× more pixels on 3× screens */
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W = 0, H = 0;
 
   function resize() {
-    dpr = window.devicePixelRatio || 1;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = canvas.offsetWidth;
     H = canvas.offsetHeight;
     canvas.width  = W * dpr;
     canvas.height = H * dpr;
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); /* reset + scale in one call */
   }
   resize();
-  window.addEventListener('resize', () => { ctx.setTransform(1,0,0,1,0,0); resize(); });
+  window.addEventListener('resize', resize, { passive: true });
+
+  /* ── Visibility guards — stop RAF when not needed ── */
+  let rafId = null;
+  let inView = true;
+  let tabVisible = true;
+
+  const io = new IntersectionObserver(
+    ([e]) => { inView = e.isIntersecting; toggle(); },
+    { threshold: 0 }
+  );
+  io.observe(canvas);
+
+  document.addEventListener('visibilitychange', () => {
+    tabVisible = document.visibilityState === 'visible';
+    toggle();
+  }, { passive: true });
+
+  function toggle() {
+    if (inView && tabVisible) { if (!rafId) rafId = requestAnimationFrame(tick); }
+    else                       { if (rafId)  { cancelAnimationFrame(rafId); rafId = null; } }
+  }
 
   /* ── Web Audio analyser ── */
-  let analyser = null, freqData = null;
-  let _audioCtx = null;
+  let analyser = null, freqData = null, _audioCtx = null;
 
   window.connectHeroAnalyser = function (audioEl) {
-    if (_audioCtx) return;  /* connect only once */
+    if (_audioCtx) return;
     try {
       _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const src  = _audioCtx.createMediaElementSource(audioEl);
-      analyser   = _audioCtx.createAnalyser();
-      analyser.fftSize = 1024;
-      analyser.smoothingTimeConstant = 0.82;
+      const src = _audioCtx.createMediaElementSource(audioEl);
+      analyser  = _audioCtx.createAnalyser();
+      analyser.fftSize = 512;               /* 256 bins — half the previous cost */
+      analyser.smoothingTimeConstant = 0.8;
       src.connect(analyser);
       analyser.connect(_audioCtx.destination);
       freqData = new Uint8Array(analyser.frequencyBinCount);
-    } catch (e) {
-      /* CORS or unsupported — fall back to decorative animation */
-      _audioCtx = 'failed';
-      analyser  = null;
-    }
+    } catch (e) { _audioCtx = 'failed'; }
   };
 
-  /* ── Animation state ── */
+  /* ── Wave config — 2 waves, pre-computed colour strings ── */
   const WAVES = [
-    { freqMult: 1.4, phaseOff: 0,    ampScale: 1.00, opacity: 0.13, lw: 1.5 },
-    { freqMult: 2.2, phaseOff: 1.8,  ampScale: 0.62, opacity: 0.08, lw: 1.0 },
-    { freqMult: 3.5, phaseOff: 3.4,  ampScale: 0.38, opacity: 0.06, lw: 1.0 },
+    { freq: 1.4, phOff: 0,   aScale: 1.00, color: 'rgba(255,255,255,0.11)', lw: 1.5 },
+    { freq: 2.6, phOff: 1.9, aScale: 0.55, color: 'rgba(255,255,255,0.07)', lw: 1.0 },
   ];
+  const PTS = 28; /* points per wave — plenty for a smooth sine */
 
-  let phase    = 0;
-  let smoothAmp = 24;   /* current displayed amplitude (lerps toward target) */
-  let energySmooth = 1; /* smoothed audio energy multiplier */
+  /* ── Animation state ── */
+  let phase       = 0;
+  let smoothAmp   = 22;
+  let energySm    = 1;
+  let lastTs      = 0;
+  const ACTIVE_MS = 1000 / 24;  /* 24 fps cap when playing */
+  const IDLE_MS   = 250;        /* ~4 fps when dormant */
 
-  function getEnergy() {
-    if (!analyser || !freqData) return 1;
-    analyser.getByteFrequencyData(freqData);
-    /* Focus on low-mid band (kick + bass) — first ~20% of bins */
-    const end = Math.floor(freqData.length * 0.20);
-    let sum = 0;
-    for (let i = 2; i < end; i++) sum += freqData[i];
-    const avg = sum / (end - 2);
-    /* Map 0-255 avg → multiplier 0.4 – 2.2 */
-    return 0.4 + (avg / 128) * 1.8;
-  }
-
-  /* Smooth wave via quadratic bezier through midpoints */
-  function drawWave(wave, amp) {
-    const pts = 64;
-    const points = [];
-    for (let i = 0; i <= pts; i++) {
-      const t = i / pts;
-      points.push({
-        x: t * W,
-        y: H / 2 + Math.sin(t * Math.PI * 2 * wave.freqMult + phase + wave.phaseOff) * amp * wave.ampScale,
-      });
-    }
-
-    ctx.beginPath();
-    ctx.strokeStyle = `rgba(255,255,255,${wave.opacity})`;
-    ctx.lineWidth   = wave.lw;
-    ctx.moveTo(points[0].x, points[0].y);
-    for (let i = 1; i < points.length - 1; i++) {
-      const mx = (points[i].x + points[i + 1].x) / 2;
-      const my = (points[i].y + points[i + 1].y) / 2;
-      ctx.quadraticCurveTo(points[i].x, points[i].y, mx, my);
-    }
-    ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
-    ctx.stroke();
-  }
-
-  function tick() {
-    requestAnimationFrame(tick);
-    ctx.clearRect(0, 0, W, H);
-
+  function tick(ts) {
     const isPlaying = typeof playing !== 'undefined' && playing;
-    const targetAmp = isPlaying ? 68 : 20;
-    const phaseSpeed = isPlaying ? 0.018 : 0.006;
-    phase += phaseSpeed;
+    const dormant   = !isPlaying && Math.abs(smoothAmp - 20) < 0.6;
 
-    /* Smooth amplitude toward target */
+    /* Throttle: 24 fps active, ~4 fps dormant */
+    const interval = dormant ? IDLE_MS : ACTIVE_MS;
+    if (ts - lastTs < interval) { rafId = requestAnimationFrame(tick); return; }
+    lastTs = ts;
+
+    /* Update state */
+    const targetAmp  = isPlaying ? 68 : 20;
+    phase += isPlaying ? 0.018 : 0.006;
     smoothAmp += (targetAmp - smoothAmp) * 0.04;
 
-    /* Smooth energy */
-    const rawEnergy = getEnergy();
-    energySmooth += (rawEnergy - energySmooth) * 0.12;
+    if (analyser && freqData && isPlaying) {
+      analyser.getByteFrequencyData(freqData);
+      const end = Math.floor(freqData.length * 0.18); /* low-mid band only */
+      let sum = 0;
+      for (let i = 2; i < end; i++) sum += freqData[i];
+      const raw = 0.4 + (sum / (end - 2) / 128) * 1.8;
+      energySm += (raw - energySm) * 0.1;
+    }
 
-    const amp = smoothAmp * (isPlaying ? energySmooth : 1);
-    WAVES.forEach(w => drawWave(w, amp));
+    const amp = smoothAmp * (isPlaying ? energySm : 1);
+
+    ctx.clearRect(0, 0, W, H);
+
+    for (let w = 0; w < WAVES.length; w++) {
+      const wave = WAVES[w];
+      const ph   = phase + wave.phOff;
+      const twoPI_freq = Math.PI * 2 * wave.freq;
+      const yAmp = amp * wave.aScale;
+
+      ctx.beginPath();
+      ctx.strokeStyle = wave.color;
+      ctx.lineWidth   = wave.lw;
+
+      /* Draw as line segments — fast enough at 28 pts, visually smooth */
+      for (let i = 0; i <= PTS; i++) {
+        const t = i / PTS;
+        const x = t * W;
+        const y = H * 0.5 + Math.sin(t * twoPI_freq + ph) * yAmp;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    rafId = requestAnimationFrame(tick);
   }
 
-  tick();
+  rafId = requestAnimationFrame(tick);
 })();
 
 /* ── Panels ── */
