@@ -1982,6 +1982,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   flex-shrink: 0; position: relative;
   display: flex; overflow-x: auto; scrollbar-width: none;
 }
+/* Sticky day bar in explorer schedule scroll container */
+#es-day-bar {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--glass-bg);
+}
 .sp-day-bar::-webkit-scrollbar { display: none; }
 
 
