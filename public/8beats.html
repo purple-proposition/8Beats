@@ -1583,8 +1583,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   /* ── Player ── */
   .player-wrap {
     display: flex; flex-direction: column; gap: var(--space);
-    left: var(--space); right: var(--space); width: auto;
-    bottom: calc(var(--space) + env(safe-area-inset-bottom,0px));
+    left: var(--space) !important;
+    right: var(--space) !important;
+    width: auto !important;
+    bottom: calc(var(--space) + env(safe-area-inset-bottom,0px)) !important;
+    top: auto !important;
   }
   .player-inner { grid-column: unset; }
   .player-shell {
