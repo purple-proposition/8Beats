@@ -4561,9 +4561,9 @@ function _renderExploreScheduleDaySlots(ri) {
   const today    = new Date();
   const todayDow = (today.getDay() + 6) % 7;
   const nowMin   = today.getHours() * 60 + today.getMinutes();
-  const dayIndex = (todayDow + ri) % 7;
-  const isToday  = ri === 0;
-  slotsEl.innerHTML = _buildScheduleHTML(dayIndex, isToday, nowMin, 'closeExplore()');
+  // ri is now the weekday index (0=Mon … 6=Sun) — matches SCHEDULE_SHOWS .day directly
+  const isToday  = ri === todayDow;
+  slotsEl.innerHTML = _buildScheduleHTML(ri, isToday, nowMin, 'closeExplore()');
   lucide.createIcons({ nodes: [slotsEl] });
   const content = document.getElementById('explore-content');
   if (content) content.scrollTop = 0;
@@ -4583,7 +4583,7 @@ function renderExploreSchedule(container) {
 
   container.style.paddingTop = '0';
   container.innerHTML = `<div id="es-day-bar">${_buildCalHeader('es', 'selectExploreScheduleDay', today)}</div><div id="es-slots" style="padding-top:var(--space-5);padding-bottom:var(--space-5);"></div>`;
-  _renderExploreScheduleDaySlots(0);
+  _renderExploreScheduleDaySlots(todayDow);
   requestAnimationFrame(() => {
     container.scrollTop = 0;
     initScrollFade(container, 48);
@@ -6719,15 +6719,18 @@ let _schedActiveDow    = -1;  // -1 = auto-select today's day-of-week
 const SP_DAY_SHORT  = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const SP_DAY_LETTER = ['M',   'T',   'W',   'T',   'F',   'S',   'S'];
 
-/* Build the single-line calendar header used in schedule panel + explore schedule */
+/* Build the single-line calendar header — Mon–Sun of current week, today highlighted */
 function _buildCalHeader(prefix, fnName, today) {
-  const todayDow = (today.getDay() + 6) % 7;
+  const todayDow = (today.getDay() + 6) % 7; // 0=Mon … 6=Sun
+  // Monday of this week
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - todayDow);
   const days = Array.from({length: 7}, (_, ri) => {
-    const dow = (todayDow + ri) % 7;
-    const d   = new Date(today); d.setDate(d.getDate() + ri);
-    const dayName = ri === 0 ? 'Today' : SP_DAY_SHORT[dow];
+    const d = new Date(monday); d.setDate(monday.getDate() + ri);
+    const isToday = ri === todayDow;
+    const dayName = isToday ? 'Today' : SP_DAY_SHORT[ri];
     const label   = `${dayName}, ${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`;
-    return `<button class="sp-cal-tab${ri === 0 ? ' active' : ''}" id="${prefix}-tab-${ri}" onclick="${fnName}(${ri})">${label}</button>`;
+    return `<button class="sp-cal-tab${isToday ? ' active' : ''}" id="${prefix}-tab-${ri}" onclick="${fnName}(${ri})">${label}</button>`;
   }).join('');
   return `<div class="sp-cal-header"><div class="sp-cal-days">${days}</div></div>`;
 }
@@ -6816,9 +6819,9 @@ function _renderSchedulePanelDaySlots(ri) {
   const today    = new Date();
   const todayDow = (today.getDay() + 6) % 7;
   const nowMin   = today.getHours() * 60 + today.getMinutes();
-  const dayIndex = (todayDow + ri) % 7;
-  const isToday  = ri === 0;
-  body.innerHTML = _buildScheduleHTML(dayIndex, isToday, nowMin, 'closeSchedulePanel()');
+  // ri is now weekday index (0=Mon … 6=Sun)
+  const isToday  = ri === todayDow;
+  body.innerHTML = _buildScheduleHTML(ri, isToday, nowMin, 'closeSchedulePanel()');
   body.scrollTop = 0;
   lucide.createIcons({ nodes: [body] });
 }
@@ -6826,8 +6829,10 @@ function _renderSchedulePanelDaySlots(ri) {
 function renderSchedulePanel() {
   const dayBar = document.getElementById('sp-day-bar');
   if (!dayBar) return;
-  dayBar.innerHTML = _buildCalHeader('sp', 'selectScheduleDay', new Date());
-  _renderSchedulePanelDaySlots(0);
+  const today = new Date();
+  const todayDow = (today.getDay() + 6) % 7;
+  dayBar.innerHTML = _buildCalHeader('sp', 'selectScheduleDay', today);
+  _renderSchedulePanelDaySlots(todayDow);
 }
 
 function selectScheduleDay(ri) {
