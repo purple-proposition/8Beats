@@ -3401,7 +3401,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
     <h1>The webradio for video game music</h1>
     <p>Weekly shows, live mixes, and curated sets celebrating the finest video game soundtracks — 4,000 listeners and counting.</p>
     <div class="hero-actions">
-      <a href="#" class="btn btn-primary" onclick="event.preventDefault();setPlaying(!playing)"><i data-lucide="play" style="display:block"></i>Listen now</a>
+      <a href="#" class="btn btn-primary" id="hero-listen-btn" onclick="event.preventDefault();setPlaying(!playing)"><i data-lucide="play" style="display:block"></i>Listen now</a>
       <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openExplore()"><i data-lucide="search" style="stroke:currentColor;fill:none;display:block"></i>Browse shows</a>
     </div>
   </div>
@@ -5248,6 +5248,7 @@ function _getAudio() {
 }
 
 function setPlayIcon(state) {
+  /* — Player bar button — */
   playBtn.innerHTML = '';
   const i = document.createElement('i');
   i.setAttribute('data-lucide', state ? 'pause' : 'play');
@@ -5255,6 +5256,22 @@ function setPlayIcon(state) {
   lucide.createIcons({ nodes: [playBtn] });
   const s = playBtn.querySelector('svg');
   if (s) s.style.cssText = 'fill:currentColor;stroke:none;display:block;';
+
+  /* — Hero "Listen now / Pause now" button — */
+  const heroBtn = document.getElementById('hero-listen-btn');
+  if (heroBtn) {
+    const hi = heroBtn.querySelector('i[data-lucide], svg');
+    if (hi) hi.remove();
+    const newI = document.createElement('i');
+    newI.setAttribute('data-lucide', state ? 'pause' : 'play');
+    newI.style.display = 'block';
+    heroBtn.prepend(newI);
+    lucide.createIcons({ nodes: [heroBtn] });
+    const hs = heroBtn.querySelector('svg');
+    if (hs) hs.style.cssText = 'fill:currentColor;stroke:none;display:block;';
+    heroBtn.childNodes.forEach(n => { if (n.nodeType === 3) n.remove(); });
+    heroBtn.insertAdjacentText('beforeend', state ? 'Pause now' : 'Listen now');
+  }
 }
 setPlayIcon(false);
 
