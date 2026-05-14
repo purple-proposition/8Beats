@@ -5342,10 +5342,10 @@ playBtn.addEventListener('click', e => {
   let phase = 0;
 
   /* ── Animation state ── */
-  let globalAmp = 0;   /* lerps 0→1 when playing */
+  let globalAmp = 0.28; /* never goes to 0 — rests at 0.28 (decorative) */
   let lastTs = 0;
   const ACTIVE_MS = 1000 / 30;   /* 30 fps while playing */
-  const IDLE_MS   = 240;         /* ~4 fps at rest */
+  const IDLE_MS   = 240;         /* ~4 fps at rest — saves CPU */
 
   /* Pre-computed layer config */
   const LAYERS = [
@@ -5355,27 +5355,26 @@ playBtn.addEventListener('click', e => {
 
   function tick(ts) {
     const isPlaying = typeof playing !== 'undefined' && playing;
-    const dormant   = !isPlaying && globalAmp < 0.02;
-    const interval  = dormant ? IDLE_MS : ACTIVE_MS;
+    /* Dormant = not playing: always throttle to ~4fps regardless of amp */
+    const interval  = isPlaying ? ACTIVE_MS : IDLE_MS;
     if (ts - lastTs < interval) { rafId = requestAnimationFrame(tick); return; }
     lastTs = ts;
 
-    /* Global envelope: fade in when playing, fade out when stopped */
-    globalAmp += ((isPlaying ? 1 : 0) - globalAmp) * (isPlaying ? 0.06 : 0.03);
+    /* Envelope: lerp toward 1 when playing, back to 0.28 (rest) when not */
+    const targetAmp = isPlaying ? 1.0 : 0.28;
+    globalAmp += (targetAmp - globalAmp) * (isPlaying ? 0.06 : 0.03);
 
     if (isPlaying && analyser && timeDom) {
       /* Read time-domain waveform (values 0–255, silence = 128) */
       analyser.getByteTimeDomainData(timeDom);
       const step = Math.floor(timeDom.length / N);
       for (let i = 0; i < N; i++) {
-        /* Normalise to -1…+1, take absolute value for "spike" shape */
         const raw = Math.abs((timeDom[i * step] - 128) / 128);
-        /* Lerp toward new value for smoothness */
         smooth[i] += (raw - smooth[i]) * 0.25;
       }
-      phase += 0.005;  /* very slow drift — barely moves */
+      phase += 0.005;
     } else {
-      /* Decorative gentle sine when no audio */
+      /* Decorative gentle sine — always visible at rest */
       phase += 0.008;
       for (let i = 0; i < N; i++) {
         const t = i / N;
@@ -5385,7 +5384,6 @@ playBtn.addEventListener('click', e => {
     }
 
     ctx.clearRect(0, 0, W, H);
-    if (globalAmp < 0.005) { rafId = requestAnimationFrame(tick); return; }
 
     const cy  = H * 0.5;
     const maxH = H * 0.42;   /* max half-height of wave */
