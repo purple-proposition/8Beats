@@ -5878,25 +5878,34 @@ function openShow(key) {
   updateShowPlayBtn();
   lucide.createIcons({ nodes: [document.getElementById('view-show')] });
 
-  // Transition: fade out home, fade in show
-  const home = document.getElementById('view-home');
-  const show = document.getElementById('view-show');
-  home.style.opacity = '0';
-  home.style.pointerEvents = 'none';
+  // Transition: fade out origin view, fade in show
+  const home     = document.getElementById('view-home');
+  const show     = document.getElementById('view-show');
+  const artistEl = document.getElementById('view-artist');
+  const fromArtist = artistEl.classList.contains('active');
+  showPreviousView = fromArtist ? 'artist' : 'home';
+
+  const fromEl = fromArtist ? artistEl : home;
+  fromEl.style.opacity = '0';
+  fromEl.style.pointerEvents = 'none';
   setTimeout(() => {
-    home.style.display = 'none';
+    if (fromArtist) {
+      artistEl.classList.remove('visible');
+      artistEl.classList.remove('active');
+    } else {
+      home.style.display = 'none';
+    }
     show.classList.add('active');
     window.scrollTo(0,0);
     navCollapsed = false;
     navPill.classList.remove('collapsed');
-    // Cookie reste visible sur la page show
     requestAnimationFrame(() => show.classList.add('visible'));
   }, 280);
 
   // Update nav wordmark to be a back button
   const wordmark = document.querySelector('.nav-wordmark');
   wordmark.onclick = (e) => { e.preventDefault(); closeShow(); };
-  wordmark.title = 'Back to all shows';
+  wordmark.title = 'Back';
 }
 
 function seekToShow(ts, showKey) {
@@ -5937,27 +5946,41 @@ function playShowFromPage() {
 }
 
 function closeShow() {
-  const home = document.getElementById('view-home');
-  const show = document.getElementById('view-show');
+  const home     = document.getElementById('view-home');
+  const show     = document.getElementById('view-show');
+  const artistEl = document.getElementById('view-artist');
   show.classList.remove('visible');
+  const goToArtist = showPreviousView === 'artist';
   setTimeout(() => {
     show.classList.remove('active');
-    home.style.display = '';
-    home.style.pointerEvents = '';
-    requestAnimationFrame(() => { home.style.opacity = '1'; });
+    if (goToArtist) {
+      artistEl.classList.add('active');
+      artistEl.style.opacity = '0';
+      artistEl.style.pointerEvents = '';
+      requestAnimationFrame(() => {
+        artistEl.style.opacity = '';
+        artistEl.classList.add('visible');
+      });
+      const wordmark = document.querySelector('.nav-wordmark');
+      wordmark.onclick = (e) => { e.preventDefault(); closeArtist(); };
+      wordmark.title = 'Back';
+      if (currentArtistName) history.replaceState({ artist: currentArtistName }, '', '#artist/' + encodeURIComponent(currentArtistName));
+    } else {
+      home.style.display = '';
+      home.style.pointerEvents = '';
+      requestAnimationFrame(() => { home.style.opacity = '1'; });
+      const wordmark = document.querySelector('.nav-wordmark');
+      wordmark.onclick = null;
+      wordmark.title = '';
+      if (cookieEl && cookieEl.style.display === 'none') cookieEl.style.display = '';
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    }
     window.scrollTo(0,0);
     navCollapsed = false;
     navPill.classList.remove('collapsed');
-    // Remettre le cookie si pas encore fermé
-    if (cookieEl && cookieEl.style.display === 'none') cookieEl.style.display = '';
   }, 280);
 
-  // Restore wordmark
-  const wordmark = document.querySelector('.nav-wordmark');
-  wordmark.onclick = null;
-  wordmark.title = '';
   closeShowTracklist();
-  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
 }
 
 // Wire card title clicks (not just the play button) to open show
@@ -6167,6 +6190,7 @@ function makeArtistSvg(hostName) {
 
 let currentArtistName = null;
 let artistPreviousView = 'home';
+let showPreviousView   = 'home'; // 'home' | 'artist'
 
 function openArtist(hostName) {
   const artist = ARTISTS[hostName] || { role: 'Guest', photo: null, bio: '', since: '2022', location: null, social: {} };
