@@ -820,8 +820,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   content: ''; position: absolute; top: 0; bottom: 0;
   width: 28%; z-index: 2; pointer-events: none;
 }
-.hero::before { left:  0; background: linear-gradient(to right, var(--surface-page) 0%, transparent 100%); }
-.hero::after  { right: 0; background: linear-gradient(to left,  var(--surface-page) 0%, transparent 100%); }
+.hero::before { left:  0; background: linear-gradient(to right, #050505 0%, #050505 6%, rgba(5,5,5,0.9) 18%, rgba(5,5,5,0) 100%); }
+.hero::after  { right: 0; background: linear-gradient(to left,  #050505 0%, #050505 6%, rgba(5,5,5,0.9) 18%, rgba(5,5,5,0) 100%); }
 #hero-waveform {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -5373,8 +5373,19 @@ playBtn.addEventListener('click', e => {
         smooth[i] += (raw - smooth[i]) * 0.25;
       }
       phase += 0.005;
+    } else if (isPlaying) {
+      /* CORS-blocked fallback — energetic multi-harmonic simulation */
+      phase += 0.038;
+      for (let i = 0; i < N; i++) {
+        const t = i / (N - 1);
+        const a = Math.abs(Math.sin(t * Math.PI * 2.1 + phase));
+        const b = Math.abs(Math.sin(t * Math.PI * 5.3 + phase * 1.7 + 0.8));
+        const c = Math.abs(Math.sin(t * Math.PI * 1.3 + phase * 0.5 + 1.4));
+        const target = Math.pow(a * 0.5 + b * 0.3 + c * 0.2, 0.7) * 0.88;
+        smooth[i] += (target - smooth[i]) * 0.12;
+      }
     } else {
-      /* Decorative gentle sine — always visible at rest */
+      /* Gentle decorative sine at rest */
       phase += 0.008;
       for (let i = 0; i < N; i++) {
         const t = i / N;
