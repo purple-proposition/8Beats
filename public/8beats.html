@@ -395,11 +395,12 @@ h1,
 }
 .section-header-text h2 { color: var(--text-primary); }
 
+/* ── .label — classe unique pour tous les titres en majuscules ── */
 .label {
   font-size: var(--text-sm);
   font-weight: 400;
   font-family: var(--font);
-  letter-spacing: .08em;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text-tertiary);
 }
@@ -980,7 +981,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .host-name { font-size: var(--text-base); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
 .host-name:hover { color: var(--text-primary); }
 
-.card-meta   { font-size: var(--text-base); color: var(--text-tertiary); font-family: var(--font); text-transform: uppercase; }
+.card-meta   { font-size: var(--text-sm); color: var(--text-tertiary); font-family: var(--font); text-transform: uppercase; letter-spacing: 1px; }
 .card-tags   { display: none; }
 
 /* ── Family 3: Chip (.chip) ── */
@@ -1028,7 +1029,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .pitch-title {
   font-size: clamp(24px, 3vw, 36px); font-weight: 600;
-  letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-primary);
+  letter-spacing: 1px; text-transform: uppercase; color: var(--text-primary);
   line-height: 1.1;
 }
 .pitch-body {
@@ -1182,14 +1183,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .track-stream-icon:hover { fill: var(--text-primary); }
 .replay-badge {
-  font-size: var(--text-sm); font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  font-size: var(--text-sm); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-tertiary);
 }
 .back-to-live {
   display: none; align-items: center; gap: var(--space-2);
   background: none; border: none; cursor: pointer; padding: 0;
   font-size: var(--text-sm); font-weight: 400;
-  letter-spacing: .06em; text-transform: uppercase;
+  letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-tertiary); white-space: nowrap;
   transition: color var(--dur-micro) var(--ease-hover);
 }
@@ -1804,7 +1805,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .settings-section-heading {
   display: flex; align-items: center; gap: var(--space-2);
   font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
-  letter-spacing: .08em; text-transform: uppercase;
+  letter-spacing: 1px; text-transform: uppercase;
   margin-bottom: var(--space-5);
 }
 .settings-group { display: flex; flex-direction: column; gap: var(--space-5); }
@@ -2037,7 +2038,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .sp-day-section-header {
   padding: var(--space-3) var(--space-5) var(--space-2);
   font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
-  text-transform: uppercase; letter-spacing: .08em;
+  text-transform: uppercase; letter-spacing: 1px;
   position: sticky; top: 0;
   background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
   z-index: 1; border-bottom: 1px solid var(--border-subtle);
@@ -2191,14 +2192,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .schedule-slot-alert.alerted { background: rgba(var(--color-live-rgb),.12); border-color: rgba(var(--color-live-rgb),.4); color: var(--color-live); }
 .schedule-slot-live-badge {
   display: none; align-items: center; gap: var(--space-1);
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+  font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-primary); padding: var(--space-1) var(--space-2);
   border: 1px solid var(--border-btn);
   border-radius: 100px;
 }
 .schedule-slot.is-live .schedule-slot-live-badge { display: flex; }
 .schedule-slot-new {
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-secondary); background: var(--surface-subtle);
   border: 1px solid var(--border-default);
   border-radius: 100px; padding: var(--space-1) var(--space-2); flex-shrink: 0;
@@ -2222,7 +2223,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .support-hero { display: flex; flex-direction: column; gap: var(--space-3); align-items: center; text-align: center; padding: var(--space-8) 0; }
 .support-hero .page-eyebrow {
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-secondary);
 }
 .support-hero h1 {
@@ -2251,7 +2252,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .support-plan-badge {
   display: none; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
   background: var(--text-primary); color: var(--surface-page);
   padding: var(--space-1) var(--space-3); border-radius: 100px; white-space: nowrap;
 }
@@ -2335,7 +2336,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .about-wrap { padding-top: var(--space-9); padding-bottom: 0; row-gap: var(--space-8); align-items: start; }
 .about-hero { display: flex; flex-direction: column; gap: var(--space-4); align-items: center; text-align: center; padding: var(--space-8) 0; }
-.about-hero .page-eyebrow { font-size: var(--text-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-secondary); }
+.about-hero .page-eyebrow { font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); }
 .about-hero h1 { font-family: 'Alpha Lyrae', var(--font); font-size: clamp(32px, 5.5vw, 64px); line-height: 1; margin: 0; }
 .about-hero .about-tagline { font-size: var(--text-lg); color: var(--text-secondary); line-height: 1.5; margin: 0; max-width: 560px; }
 
@@ -2362,7 +2363,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .about-contact-col:nth-child(1) { grid-column: 1; }
 .about-contact-col:nth-child(2) { grid-column: 3; }
 .about-contact-col:nth-child(3) { grid-column: 5; }
-.about-contact-col h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--text-primary); margin: 0; }
+.about-contact-col h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-primary); margin: 0; }
 .about-contact-col p { font-size: var(--text-base); color: var(--text-secondary); line-height: 1.6; margin: 0; flex: 1; }
 .about-contact-link {
   font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);
@@ -2546,7 +2547,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .show-tl-label {
   font-size: var(--text-sm); color: var(--text-tertiary); font-weight: 400; white-space: nowrap;
-  text-transform: uppercase; letter-spacing: .08em;
+  text-transform: uppercase; letter-spacing: 1px;
 }
 /* Horizontal separator between label and track list */
 .show-tl-vdivider {
@@ -3474,7 +3475,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <span class="label">Open to creators</span>
           <h2 class="pitch-title">Join the party</h2>
           <p class="pitch-body">Have an idea for a new show or podcast that you'd like to share with a global audience? We're all ears!</p>
-          <a href="mailto:hello@8beats.fm" class="btn btn-secondary" style="letter-spacing:0.06em;text-transform:uppercase;font-size:var(--text-sm);">
+          <a href="mailto:hello@8beats.fm" class="btn btn-secondary" style="letter-spacing:1px;text-transform:uppercase;font-size:var(--text-sm);">
             <i data-lucide="clipboard-list" style="fill:none;display:block"></i>
             Show proposal
           </a>
