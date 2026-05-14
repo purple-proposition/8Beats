@@ -271,6 +271,7 @@
   --muted-color:    var(--text-tertiary);   /* #898989 — metadata, inactive tabs */
   --overlay-radius: var(--radius);          /* centered modal border-radius */
   --panel-gap:      var(--space-5);         /* 24px internal panel spacing */
+  --surface-btn:    var(--surface-subtle);  /* settings icon bg, kbd tag bg */
 }
 
 /* ── LIGHT MODE — semantic overrides only ── */
@@ -330,7 +331,12 @@ html.light {
   --badge-border:           #d0d0d0;
   --color-live:             #E05A4A;
   --color-live-rgb:         224,90,74;
-  --color-debug:        #707070;
+  --color-debug:            #707070;
+
+  /* ── Glass overrides for light mode ── */
+  --glass-bg:               rgba(247, 247, 247, 0.90);
+  --glass-border:           rgba(0, 0, 0, 0.09);
+  --surface-glass:          rgba(247, 247, 247, 0.90);
 }
 
 /* ============================================================
@@ -822,6 +828,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 }
 .hero::before { left:  0; background: linear-gradient(to right, #050505 0%, #050505 6%, rgba(5,5,5,0.9) 18%, rgba(5,5,5,0) 100%); }
 .hero::after  { right: 0; background: linear-gradient(to left,  #050505 0%, #050505 6%, rgba(5,5,5,0.9) 18%, rgba(5,5,5,0) 100%); }
+html.light .hero::before { background: linear-gradient(to right, #f7f7f7 0%, #f7f7f7 6%, rgba(247,247,247,0.9) 18%, rgba(247,247,247,0) 100%); }
+html.light .hero::after  { background: linear-gradient(to left,  #f7f7f7 0%, #f7f7f7 6%, rgba(247,247,247,0.9) 18%, rgba(247,247,247,0) 100%); }
 #hero-waveform {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -1002,8 +1010,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Family 3: Chip (.chip) + Genre tag (.genre-tag) ── */
 .chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
 .chip:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
-.chip--active { border-color: var(--text-primary); background: rgba(242,242,242,0.08); color: var(--text-primary); }
-.chip--active:hover { border-color: var(--text-primary); background: rgba(242,242,242,0.12); }
+.chip--active { border-color: var(--text-primary); background: var(--accent-soft); color: var(--text-primary); }
+.chip--active:hover { border-color: var(--text-primary); background: var(--accent-soft); opacity: 0.85; }
 /* .genre-tag is a semantic marker — all genre buttons carry this class.
    Visual styles come from .chip. Tooltip is wired via event delegation. */
 .genre-tag { position: relative; }
@@ -1070,6 +1078,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   background: radial-gradient(ellipse at 50% 45%, #0d1030 0%, #06060a 65%);
   display: flex; align-items: center; justify-content: center;
 }
+html.light .keepbeat-card { background: radial-gradient(ellipse at 50% 40%, #dde0f0 0%, #ececf4 65%); }
 .keepbeat-title {
   font-size: clamp(28px, 3.5vw, 44px); font-weight: 700;
   letter-spacing: 3px; text-transform: uppercase; color: var(--text-primary);
@@ -3136,6 +3145,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   opacity: 0; transform: scale(0.75);
   transition: opacity var(--dur-fade) var(--ease-hover), transform var(--dur-fade) var(--ease-panel);
 }
+html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.14); background: rgba(0,0,0,0.03); }
 .fwm-snap-hint--active { opacity: 1 !important; transform: scale(1) !important; }
 
 /* ── FWM: drag grip icon ── */
@@ -5364,10 +5374,10 @@ playBtn.addEventListener('click', e => {
   const ACTIVE_MS = 1000 / 30;   /* 30 fps while playing */
   const IDLE_MS   = 240;         /* ~4 fps at rest — saves CPU */
 
-  /* Pre-computed layer config */
+  /* Layer config — colors resolved per-frame to respect theme switches */
   const LAYERS = [
-    { aScale: 1.00, color: 'rgba(255,255,255,0.12)', lw: 1.5 },
-    { aScale: 0.55, color: 'rgba(255,255,255,0.07)', lw: 1.0 },
+    { aScale: 1.00, lw: 1.5,  darkColor: 'rgba(255,255,255,0.12)', lightColor: 'rgba(0,0,0,0.13)' },
+    { aScale: 0.55, lw: 1.0,  darkColor: 'rgba(255,255,255,0.07)', lightColor: 'rgba(0,0,0,0.07)' },
   ];
 
   function tick(ts) {
@@ -5415,11 +5425,12 @@ playBtn.addEventListener('click', e => {
 
     const cy  = H * 0.5;
     const maxH = H * 0.42;   /* max half-height of wave */
+    const isLight = document.documentElement.classList.contains('light');
 
     for (let l = 0; l < LAYERS.length; l++) {
       const layer = LAYERS[l];
       ctx.beginPath();
-      ctx.strokeStyle = layer.color;
+      ctx.strokeStyle = isLight ? layer.lightColor : layer.darkColor;
       ctx.lineWidth   = layer.lw;
 
       for (let i = 0; i < N; i++) {
