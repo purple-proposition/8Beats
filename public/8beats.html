@@ -983,11 +983,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-meta   { font-size: var(--text-sm); color: var(--text-tertiary); font-family: var(--font); }
 .card-tags   { display: none; }
 
-/* ── Family 3: Chip (.chip) ── */
+/* ── Family 3: Chip (.chip) + Genre tag (.genre-tag) ── */
 .chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 var(--space-4); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
 .chip:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
 .chip--active { border-color: var(--text-primary); background: rgba(242,242,242,0.08); color: var(--text-primary); }
 .chip--active:hover { border-color: var(--text-primary); background: rgba(242,242,242,0.12); }
+/* .genre-tag is a semantic marker — all genre buttons carry this class.
+   Visual styles come from .chip. Tooltip is wired via event delegation. */
+.genre-tag { position: relative; }
 
 /* ── Panels ── */
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
@@ -3349,7 +3352,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>International Radio Day</h3>
           <div class="card-host"><div class="avatar">PP</div><span class="host-name">Purple Proposition</span></div>
           <p class="card-meta">2 days ago · 1:01:26</p>
-          <div class="card-tags"><span class="chip">Ambient</span><span class="chip">Downtempo</span><span class="chip">Drum & Bass</span></div>
+          <div class="card-tags"><span class="chip genre-tag">Ambient</span><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">Drum & Bass</span></div>
         </div>
       </article>
       <article class="card">
@@ -3361,7 +3364,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Dusk</h3>
           <div class="card-host"><div class="avatar">NW</div><span class="host-name">Neon Waves</span></div>
           <p class="card-meta">5 days ago · 54:12</p>
-          <div class="card-tags"><span class="chip">Synthwave</span><span class="chip">Chillout</span></div>
+          <div class="card-tags"><span class="chip genre-tag">Synthwave</span><span class="chip genre-tag">Chillout</span></div>
         </div>
       </article>
       <article class="card">
@@ -3373,7 +3376,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Retro RPG Evening</h3>
           <div class="card-host"><div class="avatar">KJ</div><span class="host-name">Koji & Friends</span></div>
           <p class="card-meta">1 week ago · 1:22:04</p>
-          <div class="card-tags"><span class="chip">Chiptune</span><span class="chip">OST</span><span class="chip">Retro</span></div>
+          <div class="card-tags"><span class="chip genre-tag">Chiptune</span><span class="chip genre-tag">OST</span><span class="chip genre-tag">Retro</span></div>
         </div>
       </article>
       <article class="card">
@@ -3385,7 +3388,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Midnight Walks Through the Forest & Field</h3>
           <div class="card-host"><div class="avatar">SR</div><span class="host-name">Sakura Records</span></div>
           <p class="card-meta">3 months ago · 48:30</p>
-          <div class="card-tags"><span class="chip">Acoustic</span><span class="chip">Ambient</span></div>
+          <div class="card-tags"><span class="chip genre-tag">Acoustic</span><span class="chip genre-tag">Ambient</span></div>
         </div>
       </article>
     </div>
@@ -3409,7 +3412,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Moody Jazz 2</h3>
           <div class="card-host"><div class="avatar">BS</div><span class="host-name">8Beats Sound Team</span></div>
           <p class="card-meta">May 6, 2022 · 1:12:34</p>
-          <div class="card-tags"><span class="chip">Jazz</span><span class="chip">Lounge</span></div>
+          <div class="card-tags"><span class="chip genre-tag">Jazz</span><span class="chip genre-tag">Lounge</span></div>
         </div>
       </article>
       <article class="card">
@@ -3421,7 +3424,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>X2</h3>
           <div class="card-host"><div class="avatar">SB</div><span class="host-name">Submerse</span></div>
           <p class="card-meta">Aug 17, 2024 · 58:20</p>
-          <div class="card-tags"><span class="chip">Downtempo</span><span class="chip">New Age</span></div>
+          <div class="card-tags"><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">New Age</span></div>
         </div>
       </article>
       <article class="card">
@@ -3433,7 +3436,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Settings</h3>
           <div class="card-host"><div class="avatar">EF</div><span class="host-name">ElFamosoDemon</span></div>
           <p class="card-meta">Jul 15, 2024 · 1:04:15</p>
-          <div class="card-tags"><span class="chip">Downtempo</span><span class="chip">Folk</span><span class="chip">Fusion</span></div>
+          <div class="card-tags"><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">Folk</span><span class="chip genre-tag">Fusion</span></div>
         </div>
       </article>
       <article class="card">
@@ -3445,7 +3448,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
           <h3>Beach Day Mixtape</h3>
           <div class="card-host"><div class="avatar">JE</div><span class="host-name">JamesonEmpire</span></div>
           <p class="card-meta">Jul 2, 2024 · 1:21:07</p>
-          <div class="card-tags"><span class="chip">Chiptune</span><span class="chip">Folk</span><span class="chip">Lounge</span><span class="chip">Talk</span></div>
+          <div class="card-tags"><span class="chip genre-tag">Chiptune</span><span class="chip genre-tag">Folk</span><span class="chip genre-tag">Lounge</span><span class="chip genre-tag">Talk</span></div>
         </div>
       </article>
     </div>
@@ -3519,7 +3522,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
         </div>
         <p class="show-desc" id="show-desc"></p>
         <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:var(--space-2);">
-          <span class="chip">Ambient</span><span class="chip">Downtempo</span><span class="chip">Drum &amp; Bass</span>
+          <span class="chip genre-tag">Ambient</span><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">Drum &amp; Bass</span>
         </div>
         <div class="show-actions">
           <button class="btn btn-primary show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
@@ -4396,19 +4399,13 @@ function hideGenreTooltip() {
   genreTooltipEl.classList.remove('visible');
 }
 
-function makeFilterChip(label, isActive, onClick, showTooltip) {
+function makeFilterChip(label, isActive, onClick, isGenre) {
   const btn = document.createElement('button');
   btn.textContent = label;
   btn.classList.add('chip');
+  if (isGenre) btn.classList.add('genre-tag'); // tooltip via event delegation
   if (isActive) btn.classList.add('chip--active');
   btn.addEventListener('click', onClick);
-  if (showTooltip) {
-    btn.addEventListener('mouseenter', () => {
-      clearTimeout(tooltipTimer);
-      tooltipTimer = setTimeout(() => showGenreTooltip(label, btn), 700);
-    });
-    btn.addEventListener('mouseleave', () => hideGenreTooltip());
-  }
   return btn;
 }
 
@@ -4480,7 +4477,7 @@ function renderShows(list, q) {
         ${gameHint}
       </div>
       <div style="display:flex;gap:var(--space-2);flex-shrink:0;margin-left:var(--space-4);">
-        ${s.genres.slice(0,2).map(t=>`<span class="chip">${t}</span>`).join('')}
+        ${s.genres.slice(0,2).map(t=>`<span class="chip genre-tag">${t}</span>`).join('')}
       </div>
     </div>
   `}).join('');
@@ -5171,24 +5168,21 @@ document.addEventListener('click', e => {
   playShow(show, host, show);
 });
 
-/* ── Genre tooltips : fonction centrale réutilisable ── */
-function wireTagTooltips(container) {
-  (container || document).querySelectorAll('.chip').forEach(el => {
-    if (el._tooltipWired) return; // éviter les doublons
-    el._tooltipWired = true;
-    const lbl = el.textContent.trim();
-    let tt;
-    el.addEventListener('mouseenter', () => {
-      tt = setTimeout(() => showGenreTooltip(lbl, el), 700);
-    });
-    el.addEventListener('mouseleave', () => {
-      clearTimeout(tt);
-      hideGenreTooltip();
-    });
-  });
-}
-// Câbler tous les chips présents au chargement (cards homepage)
-wireTagTooltips();
+/* ── Genre tooltips : event delegation globale sur .genre-tag ── */
+// Un seul listener sur document couvre tous les chips présents et futurs.
+let _gtTimer = null;
+document.addEventListener('mouseover', e => {
+  const el = e.target.closest('.genre-tag');
+  if (!el) return;
+  clearTimeout(_gtTimer);
+  _gtTimer = setTimeout(() => showGenreTooltip(el.textContent.trim(), el), 400);
+});
+document.addEventListener('mouseout', e => {
+  const el = e.target.closest('.genre-tag');
+  if (!el) return;
+  clearTimeout(_gtTimer);
+  hideGenreTooltip();
+});
 
 /* ── Play / Pause ── */
 let playing = false;
@@ -5755,7 +5749,7 @@ function makeRelatedCard(r, i) {
       <h3>${r.title}</h3>
       <div class="card-host"><div class="avatar">${r.initials}</div><span class="host-name">${r.host}</span></div>
       <p class="card-meta">${r.meta}</p>
-      <div class="card-tags">${r.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      <div class="card-tags">${r.tags.map(t=>`<span class="chip genre-tag">${t}</span>`).join('')}</div>
     </div>
   </article>`;
 }
@@ -5808,8 +5802,7 @@ function openShow(key) {
   // Tags — filtrer 'Classics', gap 6px
   const tagsEl = document.getElementById('show-tags');
   const filteredTags = data.tags.filter(t => t !== 'Classics');
-  tagsEl.innerHTML = filteredTags.map(t => `<span class="chip">${t}</span>`).join('');
-  wireTagTooltips(tagsEl);
+  tagsEl.innerHTML = filteredTags.map(t => `<span class="chip genre-tag">${t}</span>`).join('');
 
   // Tracklist inline
   const tl = TRACKLISTS[key] || [];
@@ -6696,7 +6689,7 @@ function renderSchedule() {
                 <span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>
                 Live
               </div>
-              ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="chip">${g}</span>`).join('')}</div>` : ''}
+              ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="chip genre-tag">${g}</span>`).join('')}</div>` : ''}
               <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
                 title="${isAlerted ? 'Rappel activé' : 'Me rappeler'}"
                 onclick="event.stopPropagation(); toggleAlert(this, '${alertKey}', ${i}, '${slot.time}', '${safeTitle}')">
@@ -6808,7 +6801,7 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
             <div class="sp-show-artist">${artistName}</div>
           </div>
           <div class="sp-show-right">
-            ${slot.genres?.length ? slot.genres.map(g => `<span class="chip">${g}</span>`).join('') : ''}
+            ${slot.genres?.length ? slot.genres.map(g => `<span class="chip genre-tag">${g}</span>`).join('') : ''}
             <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
               title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
               onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${slot.title.replace(/'/g,"\\'")}')">
