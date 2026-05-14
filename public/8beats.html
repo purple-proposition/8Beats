@@ -4517,7 +4517,7 @@ function setTab(t, instant) {
       if (btn)  btn.style.color = 'var(--text-tertiary)';
       if (icon) icon.style.stroke = 'var(--text-tertiary)';
     }
-    bar.style.display = 'flex'; // filter button always visible on all tabs
+    bar.style.display = (t === 'shows') ? 'flex' : 'none';
     if (t === 'shows') {
       content.style.paddingTop = 'var(--space-3)';
       applyFilters();
