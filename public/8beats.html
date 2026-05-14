@@ -1858,14 +1858,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #explore-card,
 #schedule-card,
 #settings-card {
-  transition: transform var(--dur-panel) var(--ease-standard);
-  will-change: transform;
+  transition: opacity 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: top center;
+  will-change: transform, opacity;
 }
 #explore-card.is-closing,
 #schedule-card.is-closing,
 #settings-card.is-closing {
-  transition: opacity var(--dur-panel) var(--ease-collapse),
-              transform var(--dur-panel) var(--ease-collapse);
+  transition: opacity 180ms var(--ease-collapse),
+              transform 180ms var(--ease-collapse);
 }
 
 /* ── Explore modal theming ── */
@@ -3276,7 +3278,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <!-- Backdrop -->
   <div id="explore-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background var(--dur-panel) var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);opacity:0;">
+  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:scale(0.94) translateY(6px);opacity:0;">
 
     <!-- Search bar -->
     <div class="explore-section-border" style="padding:var(--space-5);display:flex;align-items:center;gap:var(--space-4);">
@@ -3698,7 +3700,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <!-- Backdrop -->
   <div id="schedule-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background var(--dur-panel) var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="schedule-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);opacity:0;">
+  <div id="schedule-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:scale(0.94) translateY(6px);opacity:0;">
     <!-- Day picker — rendered by JS -->
     <div id="sp-day-bar" class="sp-day-bar"></div>
     <!-- Slot list — scrollable body -->
@@ -3711,7 +3713,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   <!-- Backdrop -->
   <div id="settings-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background var(--dur-panel) var(--ease-hover);"></div>
   <!-- Card -->
-  <div id="settings-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:translateY(8px);opacity:0;">
+  <div id="settings-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:scale(0.94) translateY(6px);opacity:0;">
 
     <!-- Section tab bar -->
     <div class="sp-day-bar" id="settings-tab-bar">
@@ -4644,7 +4646,7 @@ function openExplore() {
     exploreCard.style.opacity = '0.01';
     requestAnimationFrame(() => {
       exploreCard.style.opacity = '1';
-      exploreCard.style.transform = 'translateY(0)';
+      exploreCard.style.transform = 'scale(1) translateY(0)';
       if (backdrop) backdrop.classList.add('open');
       if (ec) { void ec.offsetWidth; ec.classList.add('text-reveal'); }
     });
@@ -4662,7 +4664,7 @@ function closeExplore() {
   const backdrop = document.getElementById('explore-backdrop');
   exploreCard.classList.add('is-closing');
   exploreCard.style.opacity = '0';
-  exploreCard.style.transform = 'translateY(8px)';
+  exploreCard.style.transform = 'scale(0.94) translateY(6px)';
   if (backdrop) backdrop.classList.remove('open');
   setTimeout(() => {
     exploreEl.style.display = 'none';
