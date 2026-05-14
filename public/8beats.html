@@ -1996,28 +1996,25 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   content: ''; position: absolute; bottom: 0;
   left: var(--space-5); right: var(--space-5); height: 1px; background: var(--border-default);
 }
-.sp-cal-label {
-  display: flex; flex-direction: column; justify-content: center;
-  gap: 2px; padding-right: var(--space-4); flex-shrink: 0;
-}
-.sp-cal-month,
-.sp-cal-year { font-size: var(--text-xs); color: var(--text-tertiary); font-weight: 400; line-height: 1.5; }
-.sp-cal-days { display: flex; flex: 1; }
+.sp-cal-days { display: flex; flex: 1; overflow-x: auto; scrollbar-width: none; }
+.sp-cal-days::-webkit-scrollbar { display: none; }
 .sp-cal-tab {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   flex: 1; background: none; border: none; cursor: pointer;
-  padding: 0 var(--space-1); gap: 2px; position: relative;
+  padding: 0 var(--space-3); position: relative; white-space: nowrap;
+  font-family: var(--font); font-size: var(--text-base); font-weight: 400;
+  color: var(--text-tertiary);
   transition: color var(--dur-micro) var(--ease-hover);
 }
+.sp-cal-tab:hover { color: var(--text-secondary); }
 /* Active indicator sits on the separator */
+.sp-cal-tab.active {
+  color: var(--text-primary); font-weight: 500;
+}
 .sp-cal-tab.active::after {
   content: ''; position: absolute; bottom: 0;
   left: 0; right: 0; height: 2px; background: var(--text-primary); z-index: 1;
 }
-.sp-cal-dow { font-size: var(--text-xs); color: var(--text-tertiary); font-weight: 400; line-height: 1.5; text-transform: uppercase; }
-.sp-cal-num { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 400; line-height: 1.5; }
-.sp-cal-tab:hover .sp-cal-num { color: var(--text-primary); }
-.sp-cal-tab.active .sp-cal-num { color: var(--text-primary); font-weight: 500; }
 
 /* Day tab — kept for settings panel tabs */
 .sp-day-tab {
@@ -2054,16 +2051,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Schedule flat list — shared time column ── */
 .sp-block-time {
-  font-size: var(--text-base); color: var(--text-tertiary);
+  font-size: 12px; color: var(--text-tertiary);
   font-variant-numeric: tabular-nums; flex-shrink: 0;
-  width: 52px;
+  width: 40px;
 }
 
 /* ── Block header row (e.g. "06:00  Morning program") ── */
 .sp-block-hdr {
   display: flex; align-items: center;
   gap: var(--space-5);
-  padding: var(--space-3) var(--space-3);
+  padding: var(--space-3) var(--space-5);
   font-size: var(--text-base); font-weight: 400; color: var(--text-secondary);
 }
 .sp-block-hdr:not(:first-child) { margin-top: var(--space-4); }
@@ -2072,7 +2069,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .sp-show-row {
   display: flex; align-items: center;
   gap: var(--space-5);
-  padding: var(--space-3) var(--space-3);
+  padding: var(--space-3) var(--space-5);
   cursor: pointer;
   transition: background var(--dur-micro) var(--ease-hover);
 }
@@ -6721,15 +6718,17 @@ let _schedActiveDow    = -1;  // -1 = auto-select today's day-of-week
 const SP_DAY_SHORT  = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const SP_DAY_LETTER = ['M',   'T',   'W',   'T',   'F',   'S',   'S'];
 
-/* Build the 2-row calendar header used in schedule panel + explore schedule */
+/* Build the single-line calendar header used in schedule panel + explore schedule */
 function _buildCalHeader(prefix, fnName, today) {
   const todayDow = (today.getDay() + 6) % 7;
   const days = Array.from({length: 7}, (_, ri) => {
     const dow = (todayDow + ri) % 7;
     const d   = new Date(today); d.setDate(d.getDate() + ri);
-    return `<button class="sp-cal-tab${ri === 0 ? ' active' : ''}" id="${prefix}-tab-${ri}" onclick="${fnName}(${ri})"><span class="sp-cal-dow">${SP_DAY_LETTER[dow]}</span><span class="sp-cal-num">${d.getDate()}</span></button>`;
+    const dayName = ri === 0 ? 'Today' : SP_DAY_SHORT[dow];
+    const label   = `${dayName}, ${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`;
+    return `<button class="sp-cal-tab${ri === 0 ? ' active' : ''}" id="${prefix}-tab-${ri}" onclick="${fnName}(${ri})">${label}</button>`;
   }).join('');
-  return `<div class="sp-cal-header"><div class="sp-cal-label"><span class="sp-cal-month">${SHORT_MONTHS[today.getMonth()]}</span><span class="sp-cal-year">${today.getFullYear()}</span></div><div class="sp-cal-days">${days}</div></div>`;
+  return `<div class="sp-cal-header"><div class="sp-cal-days">${days}</div></div>`;
 }
 
 /* Convert day-of-week → days-from-today (for notification scheduling) */
