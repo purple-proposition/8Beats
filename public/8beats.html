@@ -200,7 +200,7 @@
 
   /* ── Primitives — Border-radius scale ── */
   --radius-btn:     12px;
-  --radius-control: 12px;
+  --radius-control: 8px;
 
   /* ── Primitives — Z-index scale ── */
   --z-base:            1;
@@ -984,7 +984,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-tags   { display: none; }
 
 /* ── Family 3: Chip (.chip) ── */
-.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); border-radius: 12px; height: 32px; display: inline-flex; align-items: center; padding: 0 var(--space-4); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
+.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 var(--space-4); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
 .chip:hover { color: var(--text-primary); border-color: var(--border-hover); background: var(--surface-btn-hover); }
 .chip--active { border-color: var(--text-primary); background: rgba(242,242,242,0.08); color: var(--text-primary); }
 .chip--active:hover { border-color: var(--text-primary); background: rgba(242,242,242,0.12); }
@@ -2182,7 +2182,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .schedule-slot-avatar svg { width: 100%; height: 100%; display: block; }
 .schedule-slot-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; margin-left: auto; }
 .schedule-slot-alert {
-  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  width: 32px; height: 32px; border-radius: var(--radius-control); flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: transparent; border: 1px solid var(--border-btn);
   color: var(--icon-secondary); cursor: pointer;
