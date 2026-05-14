@@ -4420,7 +4420,7 @@ function renderShows(list, q) {
         <span style="font-size:var(--text-base);color:var(--text-secondary);"><span onclick="event.stopPropagation();closeExplore();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color=''">${s.host}</span> · ${formatDate(s.date)}</span>
         ${gameHint}
       </div>
-      <div style="display:flex;gap:var(--space-2);flex-shrink:0;margin-left:var(--space-4);">
+      <div style="display:flex;gap:var(--space-3);flex-shrink:0;margin-left:var(--space-4);">
         ${s.genres.slice(0,2).map(t=>`<span class="chip genre-tag">${t}</span>`).join('')}
       </div>
     </div>
