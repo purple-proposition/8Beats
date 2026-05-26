@@ -2323,11 +2323,13 @@ html.light .keepbeat-card { background: radial-gradient(ellipse at 50% 40%, #dde
 .sp-show-row {
   display: flex; align-items: center;
   gap: var(--space-5);
-  padding: 0 var(--space-5);
+  padding: 12px 12px;
+  margin: -12px 12px;
   cursor: pointer;
+  border-radius: var(--radius-control);
   transition: background var(--dur-micro) var(--ease-hover);
 }
-.sp-show-row:hover { background: var(--surface-btn-hover); }
+.sp-show-row:hover { background: rgba(var(--text-primary-rgb), 0.08); }
 .sp-show-row:hover .sp-show-name { color: var(--text-secondary); }
 .sp-show-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .sp-show-name   { font-size: var(--text-base); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-micro) var(--ease-hover); }
