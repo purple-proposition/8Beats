@@ -1365,7 +1365,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 }
 .player-bar-main { min-height: 0; display: flex; align-items: center; padding: var(--space-5); gap: var(--space-5); }
 
-.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color var(--dur-micro) var(--ease-out), background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out); color: var(--icon-secondary); }
+.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color var(--dur-micro) var(--ease-out), background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out); color: var(--icon-tertiary); }
 .play-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 .play-btn:active { transform: scale(0.92); }
 .play-btn svg { width: 20px; height: 20px; fill: currentColor; stroke: none; transition: fill var(--dur-micro) var(--ease-out); }
@@ -1406,8 +1406,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 /* Social variant — has border, fill SVG (about page social links) */
 .icon-btn--social svg { fill: currentColor; stroke: none; }
 /* Spotify variant — has border, fill SVG using icon-secondary token */
-.icon-btn--spotify svg { fill: var(--icon-secondary); stroke: none; transition: fill var(--dur-micro) var(--ease-out); }
-.icon-btn--spotify:hover svg { fill: var(--text-primary); }
+.icon-btn--spotify svg { fill: currentColor; stroke: none; transition: fill var(--dur-micro) var(--ease-out); }
 /* Action variant — has .active selected state (show follow/bookmark) */
 .icon-btn--action.active { border-color: var(--border-hover); background: var(--surface-hover); color: var(--text-primary); }
 /* Stream variant — fill SVG, context-specific sizes */
@@ -1426,8 +1425,6 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .playlist-inner .icon-btn,
 .playlist-inner .icon-btn--stream,
 .show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; }
-.player-inner .icon-btn--spotify svg,
-.playlist-inner .icon-btn--spotify svg { fill: var(--icon-tertiary); }
 /* ── Family 4: TimestampButton (.ts-btn) ── */
 .ts-btn {
   width: 64px; height: 32px; flex-shrink: 0;
@@ -1455,7 +1452,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
    Visual base (border, radius, color, size) comes from .icon-btn. */
 .vol-popup {
   position: absolute;
-  bottom: 0; left: 0;
+  bottom: 0; left: 0; width: 32px;
   z-index: 10;
   flex-direction: column; /* override icon-btn row → column for track+face stack */
   overflow: hidden;
