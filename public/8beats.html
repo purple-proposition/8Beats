@@ -1132,7 +1132,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 }
 .newsletter-input {
   flex: 1; min-width: 0;
-  height: 44px; padding: 0 var(--space-4);
+  height: 40px; padding: 0 var(--space-4);
   background: transparent;
   border: 1px solid var(--border-btn); border-radius: var(--radius-btn);
   font-family: var(--font); font-size: var(--text-base);
@@ -1141,17 +1141,6 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 }
 .newsletter-input::placeholder { color: var(--text-tertiary); }
 .newsletter-input:focus { border-color: var(--border-hover); }
-.newsletter-submit {
-  height: 44px; padding: 0 var(--space-5);
-  background: var(--action-primary-bg); color: var(--action-primary-fg);
-  border: 1px solid var(--action-primary-border); border-radius: var(--radius-btn);
-  font-family: var(--font); font-size: var(--text-base); font-weight: 500;
-  cursor: pointer; white-space: nowrap; flex-shrink: 0;
-  transition: opacity var(--dur-micro) var(--ease-hover);
-  display: flex; align-items: center; gap: var(--space-2);
-}
-.newsletter-submit:hover { opacity: .88; }
-.newsletter-submit svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
 .newsletter-socials {
   display: flex; align-items: center; gap: var(--space-5);
 }
@@ -2701,21 +2690,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   transition: color var(--dur-base);
 }
 .about-contact-link:hover { color: var(--text-secondary); }
-.about-contact-btn {
-  display: inline-flex; align-items: center; gap: var(--space-2); align-self: flex-start;
-  padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm);
-  font-size: var(--text-sm); font-weight: 600; cursor: pointer;
-  transition: background var(--dur-base), color var(--dur-base), border-color var(--dur-base);
-  text-decoration: none;
-}
-.about-contact-btn-mail {
-  background: transparent; border: 1px solid var(--border-btn); color: var(--icon-secondary);
-}
-.about-contact-btn-mail:hover { background: var(--surface-btn-hover); border-color: var(--border-hover); color: var(--text-primary); }
-.about-contact-btn-proposal {
-  background: var(--action-primary-bg); border: 1px solid var(--action-primary-border); color: var(--action-primary-fg);
-}
-.about-contact-btn-proposal:hover { opacity: .88; }
+.about-contact-btn { font-size: var(--text-sm); font-weight: 600; text-decoration: none; align-self: flex-start; }
 
 .about-stats {
   display: flex; gap: var(--space-5);
@@ -3956,7 +3931,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.14); background: rgba(0,0
       <div class="about-contact-col">
         <h3>Submit a show</h3>
         <p>8Beats is always open to new show proposals. Residents, one-offs, or series — we listen to everything.</p>
-        <a href="#" onclick="event.preventDefault();openProposal()" class="about-contact-btn about-contact-btn-proposal">
+        <a href="#" onclick="event.preventDefault();openProposal()" class="btn btn-primary about-contact-btn">
           <i data-lucide="file-text" style="flex-shrink:0"></i>
           Proposal
         </a>
@@ -3964,7 +3939,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.14); background: rgba(0,0
       <div class="about-contact-col">
         <h3>Get in touch</h3>
         <p>Feedback, partnership enquiries, or just want to say hello — we'd love to hear from you.</p>
-        <a href="mailto:contact@8beats.fm" class="about-contact-btn about-contact-btn-mail">
+        <a href="mailto:contact@8beats.fm" class="btn btn-secondary about-contact-btn">
           <i data-lucide="mail" style="flex-shrink:0"></i>
           Contact
         </a>
@@ -6322,7 +6297,7 @@ const HOME_INTERSTITIALS = {
         <p class="newsletter-desc">New shows every week. Stay in the loop — get the latest from the radio straight to your inbox.</p>
         <form class="newsletter-form" onsubmit="newsletterSubmit(event)">
           <input class="newsletter-input" type="email" placeholder="Your e-mail address" required id="newsletter-input">
-          <button class="newsletter-submit" type="submit">
+          <button class="btn btn-primary" type="submit">
             Subscribe
             <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
