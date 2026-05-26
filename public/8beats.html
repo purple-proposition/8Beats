@@ -1102,6 +1102,74 @@ html.light .keepbeat-card { background: radial-gradient(ellipse at 50% 40%, #dde
 .keepbeat-deco-left  { left: var(--space-6); }
 .keepbeat-deco-right { right: var(--space-6); }
 
+/* ── Newsletter card ── */
+.newsletter-card {
+  position: relative; overflow: hidden;
+  border: 1px solid var(--border-default); border-radius: var(--radius);
+  padding: var(--space-8) var(--space-7);
+  text-align: center;
+  background: var(--surface-page);
+  display: flex; align-items: center; justify-content: center;
+}
+html.light .newsletter-card { background: var(--surface-subtle); }
+.newsletter-inner {
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-5); position: relative; z-index: 1; width: 100%;
+}
+.newsletter-title {
+  font-family: 'Alpha Lyrae', var(--font);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 400; letter-spacing: -0.02em; line-height: 1.05;
+  color: var(--text-primary); margin: 0;
+}
+.newsletter-desc {
+  font-size: var(--text-base); color: var(--text-secondary);
+  line-height: 1.6; margin: 0; max-width: 420px;
+}
+.newsletter-form {
+  display: flex; gap: var(--space-3); width: 100%; max-width: 480px;
+  transition: opacity 0.2s ease;
+}
+.newsletter-input {
+  flex: 1; min-width: 0;
+  height: 44px; padding: 0 var(--space-4);
+  background: transparent;
+  border: 1px solid var(--border-btn); border-radius: var(--radius-btn);
+  font-family: var(--font); font-size: var(--text-base);
+  color: var(--text-primary); outline: none;
+  transition: border-color var(--dur-micro) var(--ease-hover);
+}
+.newsletter-input::placeholder { color: var(--text-tertiary); }
+.newsletter-input:focus { border-color: var(--border-hover); }
+.newsletter-submit {
+  height: 44px; padding: 0 var(--space-5);
+  background: var(--action-primary-bg); color: var(--action-primary-fg);
+  border: 1px solid var(--action-primary-border); border-radius: var(--radius-btn);
+  font-family: var(--font); font-size: var(--text-base); font-weight: 500;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: opacity var(--dur-micro) var(--ease-hover);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.newsletter-submit:hover { opacity: .88; }
+.newsletter-submit svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
+.newsletter-socials {
+  display: flex; align-items: center; gap: var(--space-5);
+}
+.newsletter-socials a {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-tertiary); transition: color var(--dur-micro) var(--ease-hover);
+}
+.newsletter-socials a:hover { color: var(--text-primary); }
+.newsletter-socials svg {
+  width: 18px; height: 18px; fill: currentColor; display: block;
+}
+.newsletter-confirm {
+  font-size: var(--text-base); color: var(--text-secondary);
+  display: none; align-items: center; gap: var(--space-2);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.newsletter-confirm svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
 .orb { display: none; }
 
 .panel-cookie {
@@ -6216,7 +6284,8 @@ const HOME_SECTIONS = [
       {g1:'#080f02',g2:'#3a6010',rg:'#80ff40'},
       {g1:'#180200',g2:'#781800',rg:'#ff4010'},
       {g1:'#080418',g2:'#4a1880',rg:'#a060ff'},
-    ]
+    ],
+    interstitialAfter: 'newsletter',
   },
 ];
 
@@ -6246,6 +6315,30 @@ const HOME_INTERSTITIALS = {
     </div>
   </div>`,
 
+  'newsletter': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:3/span 8;">
+    <div class="newsletter-card">
+      <div class="newsletter-inner">
+        <h2 class="newsletter-title">Don't sleep on it</h2>
+        <p class="newsletter-desc">New shows every week. Stay in the loop — get the latest from the radio straight to your inbox.</p>
+        <form class="newsletter-form" onsubmit="newsletterSubmit(event)">
+          <input class="newsletter-input" type="email" placeholder="Your e-mail address" required id="newsletter-input">
+          <button class="newsletter-submit" type="submit">
+            Subscribe
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </form>
+        <p class="newsletter-confirm" id="newsletter-confirm">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          You're in — talk soon.
+        </p>
+        <div class="newsletter-socials">
+          <a href="https://instagram.com/8beats" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="#" target="_blank" rel="noopener" aria-label="X / Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="#" target="_blank" rel="noopener" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>`,
   'keep-beat': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="keepbeat-card">
       <svg class="keepbeat-deco keepbeat-deco-left" width="110" height="96" viewBox="0 0 9 8" fill="var(--text-primary)" shape-rendering="crispEdges">
@@ -7928,6 +8021,18 @@ function submitProposal(e) {
     `Name / artist: ${name}\nContact: ${email}\nGenres: ${genres}\n\n${desc}`
   );
   window.location.href = `mailto:hello@8beats.fm?subject=${subject}&body=${body}`;
+}
+
+function newsletterSubmit(e) {
+  e.preventDefault();
+  const form    = e.target;
+  const confirm = document.getElementById('newsletter-confirm');
+  form.style.opacity = '0';
+  form.style.pointerEvents = 'none';
+  setTimeout(() => {
+    form.style.display = 'none';
+    if (confirm) { confirm.style.display = 'flex'; requestAnimationFrame(() => { confirm.style.opacity = '1'; }); }
+  }, 200);
 }
 
 /* ── Nav items — single source of truth for desktop + mobile menus ── */
