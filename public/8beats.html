@@ -101,7 +101,7 @@
   /* ── Semantic — Icons (miroir du texte) ── */
   --icon-primary:       #f2f2f2;
   --icon-secondary:     #bfbfbf;   /* icônes au repos */
-  --icon-tertiary:      #898989;
+  --icon-tertiary:      #A1A1A1;
 
   /* ── Semantic — Overlays & Shadows ── */
   --overlay:            rgba(0,0,0,0.65);
@@ -1422,7 +1422,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .playlist-inner .icon-btn--stream,
 .show-tracklist-inline .icon-btn--stream,
 .ts-btn { color: var(--icon-tertiary); }
-.player-inner .icon-btn,
+.player-inner .icon-btn:not(.vol-popup),
 .playlist-inner .icon-btn,
 .playlist-inner .icon-btn--stream,
 .show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; }
@@ -1447,7 +1447,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 /* ── Volume growing button ── */
 /* vol-wrap: flow anchor in player bar — vol-popup is absolutely positioned inside it */
-.vol-wrap { flex-shrink: 0; width: 40px; height: 40px; position: relative; }
+.vol-wrap { flex-shrink: 0; width: 32px; height: 32px; position: relative; }
 
 /* vol-popup: growing button (track + face in one pill), anchored to vol-wrap.
    backdrop-filter is on .vol-popup-glass (fixed-size child) NOT on vol-popup itself,
@@ -1509,7 +1509,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
 .vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
 .vol-btn-face {
-  width: 40px; height: 40px; flex-shrink: 0;
+  width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: transparent; border: none; cursor: pointer;
   color: var(--icon-tertiary); padding: 0;
