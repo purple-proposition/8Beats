@@ -8369,6 +8369,27 @@ function syncSettingsShortcuts() {
 
 FWM.init();
 
+/* ── Layout preferences — persist player + menu corner across page loads ── */
+const _LAYOUT_KEY = '8beats-layout';
+const _layoutPrefs = { player: 'bottom-right', menu: 'top-left' };
+
+(function _applyLayoutPrefs() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(_LAYOUT_KEY) || '{}');
+    if (saved.player) { _layoutPrefs.player = saved.player; FWM.setCorner('player', saved.player); }
+    if (saved.menu)   { _layoutPrefs.menu   = saved.menu;   FWM.setCorner('menu',   saved.menu);   }
+    // Sync pickers to reflect loaded state
+    document.querySelectorAll('#player-layout-picker .layout-option').forEach(o =>
+      o.classList.toggle('active', o.dataset.corner === _layoutPrefs.player));
+    document.querySelectorAll('#menu-layout-picker .layout-option').forEach(o =>
+      o.classList.toggle('active', o.dataset.corner === _layoutPrefs.menu));
+  } catch {}
+})();
+
+function _saveLayoutPrefs() {
+  try { localStorage.setItem(_LAYOUT_KEY, JSON.stringify(_layoutPrefs)); } catch {}
+}
+
 /* ── Keyboard shortcuts — platform-adaptive hints + toggle actions ── */
 (function() {
   const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform) || /Mac/.test(navigator.userAgent);
@@ -8416,6 +8437,7 @@ function setPlayerCornerOnly(corner) {
   document.querySelectorAll('#player-layout-picker .layout-option').forEach(opt => {
     opt.classList.toggle('active', opt.dataset.corner === corner);
   });
+  _layoutPrefs.player = corner; _saveLayoutPrefs();
 }
 
 function setMenuCornerOnly(corner) {
@@ -8424,6 +8446,7 @@ function setMenuCornerOnly(corner) {
   document.querySelectorAll('#menu-layout-picker .layout-option').forEach(opt => {
     opt.classList.toggle('active', opt.dataset.corner === corner);
   });
+  _layoutPrefs.menu = corner; _saveLayoutPrefs();
 }
 
 /* Legacy alias — keep in case called elsewhere */
