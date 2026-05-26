@@ -1043,9 +1043,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel p { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.7; letter-spacing: -0.1px; position: relative; z-index: var(--z-base); }
 .panel p strong { color: var(--text-primary); font-weight: 500; }
 
-.panel-btn { display: flex; align-items: center; justify-content: center; gap: var(--space-2); width: 100%; height: 32px; padding: 0 var(--space-4); font-family: var(--font); font-size: var(--text-base); font-weight: 500; letter-spacing: -.1px; color: var(--action-primary-fg); background: var(--action-primary-bg); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity var(--dur-short) var(--ease-hover); position: relative; z-index: var(--z-base); }
-.panel-btn:hover { opacity: .84; }
-.panel-btn svg { width: 16px; height: 16px; stroke: var(--action-primary-fg); fill: none; display: block; flex-shrink: 0; }
+
 
 .panel-close { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; }
 .panel-close svg { width: 16px; height: 16px; stroke: var(--text-tertiary); fill: none; display: block; transition: stroke var(--dur-short) var(--ease-hover); }
@@ -1648,7 +1646,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
     flex: 1;
     line-height: 1.4;
   }
-  .panel-cookie .panel-btn {
+  .panel-cookie .btn {
     width: auto;
     padding: var(--space-2) var(--space);
     font-size: var(--text-sm);
@@ -4037,7 +4035,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.14); background: rgba(0,0
     <span class="label">Cookies</span>
   </div>
   <p>We use cookies to keep the stream running and understand how you listen. No tracking, no third parties.</p>
-  <button class="panel-btn" onclick="closePanel(document.getElementById('panel-cookie'))">Accept</button>
+  <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="closePanel(document.getElementById('panel-cookie'))">Accept</button>
 </aside>
 
 <!-- SCHEDULE MODAL (Explorer pattern — centered, no title, click-outside closes) -->
@@ -6298,8 +6296,8 @@ const HOME_INTERSTITIALS = {
         <form class="newsletter-form" onsubmit="newsletterSubmit(event)">
           <input class="newsletter-input" type="email" placeholder="Your e-mail address" required id="newsletter-input">
           <button class="btn btn-primary" type="submit">
+            <i data-lucide="mail" style="fill:none;display:block"></i>
             Subscribe
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
         </form>
         <p class="newsletter-confirm" id="newsletter-confirm">
@@ -6337,8 +6335,8 @@ const HOME_INTERSTITIALS = {
         <h2 class="keepbeat-title">Keep the beat going</h2>
         <p class="pitch-body">Completely independent, we need you to help us build the ultimate destination for both gamers and music enthusiasts.</p>
         <a href="#" onclick="document.querySelector('[data-nav=\\'support\\']')?.click();return false;" class="btn btn-secondary" style="letter-spacing:1px;text-transform:uppercase;font-size:var(--text-sm);min-width:180px;">
+          <i data-lucide="heart" style="fill:none;display:block"></i>
           Support us
-          <i data-lucide="arrow-right" style="fill:none;display:block"></i>
         </a>
       </div>
     </div>
