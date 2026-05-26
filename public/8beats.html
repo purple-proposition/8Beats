@@ -1370,6 +1370,24 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .play-btn:active { transform: scale(0.92); }
 .play-btn svg { width: 20px; height: 20px; fill: currentColor; stroke: none; transition: fill var(--dur-micro) var(--ease-out); }
 
+/* ── Player control buttons (secondary: 32px, tertiary color) ── */
+.player-ctrl {
+  width: 32px; height: 32px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border-btn);
+  border-radius: var(--radius-control);
+  cursor: pointer; color: var(--icon-tertiary);
+  transition: border-color var(--dur-micro) var(--ease-out),
+              background var(--dur-short) var(--ease-out),
+              color var(--dur-micro) var(--ease-out),
+              transform var(--dur-micro) var(--ease-out);
+}
+.player-ctrl:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
+.player-ctrl:active { transform: scale(0.92); }
+.player-ctrl svg { width: 16px; height: 16px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; }
+.player-ctrl.icon-btn--spotify svg { fill: currentColor; stroke: none; }
+#playlist-btn.active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
+
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; height: 68px; gap: 0; }
 .player-info-top { display: flex; align-items: center; gap: var(--space-3); }
 .player-info-top .label { line-height: 1; }
@@ -1414,17 +1432,11 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .playlist.tracklist .icon-btn--stream svg { width: 12px; height: 12px; }
 .show-tracklist-inline .icon-btn--stream svg { width: 14px; height: 14px; }
 
-/* ── Player + tracklist: tertiary icon color + 32px size ── */
-.player-inner .icon-btn,
-.player-inner .play-btn,
+/* ── Tracklist icon color ── */
 .playlist-inner .icon-btn,
 .playlist-inner .icon-btn--stream,
-.show-tracklist-inline .icon-btn--stream,
+.show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; color: var(--icon-tertiary); }
 .ts-btn { color: var(--icon-tertiary); }
-.player-inner .icon-btn:not(.vol-popup),
-.playlist-inner .icon-btn,
-.playlist-inner .icon-btn--stream,
-.show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; }
 /* ── Family 4: TimestampButton (.ts-btn) ── */
 .ts-btn {
   width: 64px; height: 32px; flex-shrink: 0;
@@ -1439,9 +1451,6 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 .divider { width: 1px; height: 16px; background: var(--border-default); flex-shrink: 0; }
 
-#playlist-btn.active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
-#playlist-btn.active:hover { color: var(--text-primary); }
-
 /* ── Volume growing button ── */
 /* vol-wrap: flow anchor in player bar — vol-popup is absolutely positioned inside it */
 .vol-wrap { flex-shrink: 0; width: 32px; height: 32px; position: relative; }
@@ -1452,7 +1461,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
    Visual base (border, radius, color, size) comes from .icon-btn. */
 .vol-popup {
   position: absolute;
-  bottom: 0; left: 0; width: 32px;
+  bottom: 0; left: 0;
   z-index: 10;
   flex-direction: column; /* override icon-btn row → column for track+face stack */
   overflow: hidden;
@@ -4309,11 +4318,11 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.14); background: rgba(0,0
               <span class="back-live-dot"></span>
               Back to live
             </button>
-            <button class="icon-btn icon-btn--spotify" id="spotify-btn" aria-label="Spotify">
+            <button class="player-ctrl icon-btn--spotify" id="spotify-btn" aria-label="Spotify">
               <svg viewBox="0 0 24 24" style="stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
             </button>
             <div class="vol-wrap" id="vol-wrap">
-              <div class="vol-popup icon-btn" id="vol-popup">
+              <div class="vol-popup player-ctrl" id="vol-popup">
                 <div class="vol-popup-glass"></div>
                 <div class="vol-track-area" id="vol-slider">
                   <div class="vol-track" id="vol-track">
@@ -4324,7 +4333,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.14); background: rgba(0,0
                 <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
               </div>
             </div>
-            <button class="icon-btn" id="playlist-btn"
+            <button class="player-ctrl" id="playlist-btn"
                     aria-label="Playlist" aria-expanded="false" aria-controls="playlist">
               <i data-lucide="list-music" style="fill:none;display:block"></i>
             </button>
