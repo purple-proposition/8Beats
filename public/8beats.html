@@ -937,7 +937,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .btn-secondary svg { stroke: currentColor; fill: none; }
 .btn-secondary:hover, .btn-secondary:active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 /* ── Tertiary: same as secondary, 32px height ── */
-.btn-tertiary { height: 32px; background: transparent; color: var(--action-secondary-fg); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
+.btn-tertiary { height: 32px; background: transparent; color: #A1A1A1; border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
 .btn-tertiary svg { stroke: currentColor; fill: none; }
 .btn-tertiary:hover, .btn-tertiary:active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 
@@ -1424,8 +1424,6 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .ts-btn { color: var(--icon-tertiary); }
 .player-inner .icon-btn--spotify svg,
 .playlist-inner .icon-btn--spotify svg { fill: var(--icon-tertiary); }
-.vol-btn-face { color: var(--icon-tertiary); }
-
 /* ── Family 4: TimestampButton (.ts-btn) ── */
 .ts-btn {
   width: 64px; height: 32px; flex-shrink: 0;
@@ -1510,7 +1508,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   width: 40px; height: 40px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: transparent; border: none; cursor: pointer;
-  color: var(--icon-secondary); padding: 0;
+  color: var(--icon-tertiary); padding: 0;
   position: relative; z-index: 1; /* above .vol-popup-glass */
   transition: color var(--dur-micro) var(--ease-out);
 }
