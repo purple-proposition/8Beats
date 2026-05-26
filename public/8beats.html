@@ -936,6 +936,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .btn-secondary { background: transparent; color: var(--action-secondary-fg); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
 .btn-secondary svg { stroke: currentColor; fill: none; }
 .btn-secondary:hover, .btn-secondary:active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
+/* ── Tertiary: same as secondary, 32px height ── */
+.btn-tertiary { height: 32px; background: transparent; color: var(--action-secondary-fg); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
+.btn-tertiary svg { stroke: currentColor; fill: none; }
+.btn-tertiary:hover, .btn-tertiary:active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 
 /* ── Content grid ── */
 /* .content = conteneur grille, .section = colonne éditoriale (cols 3–10) */
@@ -6295,7 +6299,7 @@ const HOME_INTERSTITIALS = {
         <p class="newsletter-desc">New shows every week. Stay in the loop — get the latest from the radio straight to your inbox.</p>
         <form class="newsletter-form" onsubmit="newsletterSubmit(event)">
           <input class="newsletter-input" type="email" placeholder="Your e-mail address" required id="newsletter-input">
-          <button class="btn btn-primary" type="submit">
+          <button class="btn btn-secondary" type="submit">
             <i data-lucide="mail" style="fill:none;display:block"></i>
             Subscribe
           </button>
