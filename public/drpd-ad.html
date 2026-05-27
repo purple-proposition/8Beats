@@ -40,10 +40,7 @@
       -webkit-user-select: none;
     }
 
-    #app {
-      width: 100vw; height: 100svh;
-      position: relative; overflow: hidden;
-    }
+    #app { width: 100vw; height: 100svh; position: relative; overflow: hidden; }
 
     /* ─── SCREENS ─── */
     .screen {
@@ -58,76 +55,62 @@
     /* ─── INTRO ─── */
     #screen-intro {
       background: radial-gradient(ellipse at 50% 0%, #ECEAE4 0%, var(--bg) 60%);
-      padding: 40px;
-      gap: 0;
+      padding: 40px; gap: 0;
     }
 
     .logo {
       font-family: 'Staatliches', sans-serif;
       font-size: clamp(44px, 12vw, 80px);
-      color: var(--fg);
-      line-height: 1;
-      text-align: center;
-      letter-spacing: 0;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+      color: var(--fg); line-height: 1;
+      text-align: center; letter-spacing: 0;
+      text-transform: uppercase; margin-bottom: 8px;
     }
     .tagline {
       font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 5px;
-      color: var(--sub);
-      text-transform: uppercase;
+      font-size: 10px; letter-spacing: 5px;
+      color: var(--sub); text-transform: uppercase;
       margin-bottom: 20px;
     }
 
-    /* B=MAT — Motivation : badge urgence */
+    /* Badge dynamique : live ou countdown */
     .badge {
       display: flex; align-items: center; gap: 7px;
       font-family: var(--font-mono);
       font-size: 10px; font-weight: 600;
       letter-spacing: 1.5px; text-transform: uppercase;
-      color: var(--red);
       margin-bottom: 20px;
     }
     .badge-dot {
       width: 7px; height: 7px; border-radius: 50%;
-      background: var(--red);
-      animation: dot-pulse 1.6s ease-in-out infinite;
       flex-shrink: 0;
+      animation: dot-pulse 1.6s ease-in-out infinite;
     }
     @keyframes dot-pulse {
       0%,100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: .4; transform: scale(.7); }
+      50%      { opacity: .35; transform: scale(.65); }
     }
 
-    /* B=MAT — Déclencheur : pulse sur START */
-    @keyframes btn-pulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(28,28,28,.18); }
-      60%      { box-shadow: 0 0 0 14px rgba(28,28,28,0); }
-    }
-    .btn-primary { animation: btn-pulse 2.4s ease infinite; }
     .hero-emoji {
       font-size: clamp(64px, 16vw, 90px);
       filter: drop-shadow(0 8px 24px rgba(0,0,0,.12));
       animation: float 3s ease-in-out infinite;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
     @keyframes float {
       0%,100% { transform: translateY(0) rotate(-12deg); }
       50%      { transform: translateY(-16px) rotate(-12deg); }
     }
 
+    /* Hick : 2 règles seulement */
     .rules {
       width: 100%; max-width: 300px;
       border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      margin-bottom: 32px;
+      border-radius: 14px; overflow: hidden;
+      margin-bottom: 28px;
     }
     .rule {
       display: flex; align-items: center; gap: 14px;
-      padding: 13px 18px;
+      padding: 14px 18px;
       font-size: 13px; color: var(--sub);
       background: var(--surface);
       border-bottom: 1px solid var(--border);
@@ -136,34 +119,27 @@
     .rule span.icon { font-size: 20px; flex-shrink: 0; }
     .rule em { font-style: normal; font-weight: 700; }
     .rule.good em { color: var(--fg); }
-    .rule.bad  em { color: var(--red); }
     .rule.fake em { color: var(--amber); }
 
-    /* ─── BUTTONS ─── */
+    /* Boutons */
     .btn {
       border: none; border-radius: 100px; cursor: pointer;
-      font-family: var(--font-ui);
-      font-weight: 700;
+      font-family: var(--font-ui); font-weight: 700;
       transition: transform .15s, box-shadow .2s;
     }
     .btn:active { transform: scale(.96) !important; }
 
+    /* B=MAT Déclencheur — pulse sur START */
+    @keyframes btn-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(28,28,28,.18); }
+      60%      { box-shadow: 0 0 0 14px rgba(28,28,28,0); }
+    }
     .btn-primary {
-      padding: 20px 52px;
-      font-size: 16px;
-      background: var(--accent);
-      color: var(--bg);
+      padding: 20px 52px; font-size: 16px;
+      background: var(--accent); color: var(--bg);
+      animation: btn-pulse 2.4s ease infinite;
     }
     .btn-primary:hover { box-shadow: 0 8px 32px rgba(0,0,0,.18); }
-
-    .btn-ghost {
-      padding: 14px 36px;
-      font-size: 14px;
-      background: none;
-      color: var(--sub);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { color: var(--fg); border-color: #B0AA9F; }
 
     /* ─── GAME SCREEN ─── */
     #screen-game { background: var(--bg); }
@@ -191,8 +167,7 @@
     .hud-timer-val {
       font-family: var(--font-mono);
       font-size: 22px; font-weight: 700; color: var(--fg);
-      min-width: 32px; text-align: right;
-      transition: color .3s;
+      min-width: 32px; text-align: right; transition: color .3s;
     }
     .hud-timer-s { font-family: var(--font-mono); font-size: 11px; color: var(--sub); }
 
@@ -215,32 +190,20 @@
       align-items: center; justify-content: center; gap: 5px;
       border-radius: 18px; cursor: pointer;
     }
-    .item-emoji  { font-size: 42px; line-height: 1; pointer-events: none; }
-    .item-label  {
+    .item-emoji { font-size: 42px; line-height: 1; pointer-events: none; }
+    .item-label {
       font-family: var(--font-mono);
       font-size: 9px; font-weight: 600; letter-spacing: 1px; pointer-events: none;
     }
 
-    .item-ltd {
+    .item-sneaker {
       background: rgba(28,28,28,.04);
       border: 1.5px solid rgba(28,28,28,.28);
       animation: pulse-accent 1.5s ease-in-out infinite;
     }
-    .item-ltd .item-label { color: var(--accent); }
     @keyframes pulse-accent {
       0%,100% { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
       50%      { box-shadow: 0 6px 24px rgba(0,0,0,.15); }
-    }
-
-    .item-bot {
-      background: rgba(229,53,53,.07);
-      border: 1.5px solid rgba(229,53,53,.5);
-      animation: pulse-red .55s ease-in-out infinite;
-    }
-    .item-bot .item-label { color: var(--red); }
-    @keyframes pulse-red {
-      0%,100% { box-shadow: 0 2px 8px rgba(229,53,53,.15); }
-      50%      { box-shadow: 0 4px 20px rgba(229,53,53,.35); }
     }
 
     .item-stock {
@@ -266,11 +229,9 @@
 
     /* ─── FEEDBACK POPS ─── */
     .pop {
-      font-family: var(--font-mono);
-      font-weight: 700;
+      font-family: var(--font-mono); font-weight: 700;
       position: absolute; pointer-events: none;
-      font-size: 12px;
-      white-space: nowrap; z-index: 20;
+      font-size: 12px; white-space: nowrap; z-index: 20;
       animation: pop-up .7s ease forwards;
     }
     .pop.pos { color: var(--accent); }
@@ -284,7 +245,7 @@
     /* ─── END SCREEN ─── */
     #screen-end {
       background: radial-gradient(ellipse at 50% 0%, #ECEAE4 0%, var(--bg) 60%);
-      padding: 48px 40px; gap: 0;
+      padding: 40px 40px; gap: 0;
     }
     #confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
     .spark {
@@ -297,41 +258,63 @@
       100% { opacity: 0; transform: translateY(100px) scale(0); }
     }
 
-    .end-logo    { font-family: 'Staatliches', sans-serif; font-size: clamp(24px, 6vw, 40px); letter-spacing: 0; text-transform: uppercase; color: var(--fg); margin-bottom: 36px; text-align: center; }
-    .end-shoe    { font-size: 64px; filter: drop-shadow(0 4px 16px rgba(0,0,0,.12)); margin-bottom: 12px; }
-    .end-pre     { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 8px; }
-    .end-score   { font-family: var(--font-mono); font-size: clamp(52px, 13vw, 80px); font-weight: 700; color: var(--fg); line-height: 1; margin-bottom: 6px; }
-    .end-unit    { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
-    .end-verdict { font-family: var(--font-ui); font-size: 15px; font-weight: 600; color: var(--fg); margin-bottom: 6px; text-align: center; }
-    .end-model   { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-bottom: 32px; letter-spacing: 1.5px; }
+    .end-logo    { font-family: 'Staatliches', sans-serif; font-size: clamp(24px, 6vw, 40px); letter-spacing: 0; text-transform: uppercase; color: var(--fg); margin-bottom: 28px; text-align: center; }
+    .end-shoe    { font-size: 56px; filter: drop-shadow(0 4px 16px rgba(0,0,0,.12)); margin-bottom: 10px; }
+    .end-pre     { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 6px; }
+    .end-score   { font-family: var(--font-mono); font-size: clamp(52px, 13vw, 80px); font-weight: 700; color: var(--fg); line-height: 1; margin-bottom: 4px; }
+    .end-unit    { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+    .end-verdict { font-family: var(--font-ui); font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 4px; text-align: center; }
+    .end-model   { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-bottom: 20px; letter-spacing: 1.5px; }
 
     .stats {
       display: flex; gap: 10px;
-      width: 100%; max-width: 320px;
-      margin-bottom: 24px;
+      width: 100%; margin-bottom: 16px;
     }
     .stat {
-      flex: 1; text-align: center; padding: 16px 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      flex: 1; text-align: center; padding: 14px 8px;
+      background: var(--surface); border: 1px solid var(--border);
       border-radius: 12px;
     }
-    .stat-val   { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--fg); }
-    .stat-lbl   { font-family: var(--font-mono); font-size: 8px; color: var(--sub); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
+    .stat-val { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--fg); }
+    .stat-lbl { font-family: var(--font-mono); font-size: 8px; color: var(--sub); margin-top: 6px; letter-spacing: 1px; text-transform: uppercase; }
 
-    /* Fitts — cible principale max */
-    .btn-cta {
-      width: 100%; padding: 22px;
-      font-size: 17px; background: var(--accent); color: var(--bg);
-      margin-bottom: 16px; border-radius: 16px;
+    /* Fogg — Daily Drop countdown */
+    .next-drop {
+      width: 100%; padding: 16px 20px;
+      background: var(--accent); border-radius: 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
     }
-    .btn-cta:hover { box-shadow: 0 8px 32px rgba(0,0,0,.18); }
+    .next-drop-left { display: flex; flex-direction: column; gap: 3px; }
+    .next-drop-label {
+      font-family: var(--font-mono); font-size: 9px;
+      font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(245,242,238,.5);
+    }
+    .next-drop-sub {
+      font-family: var(--font-ui); font-size: 12px;
+      color: rgba(245,242,238,.7);
+    }
+    .next-drop-val {
+      font-family: var(--font-mono); font-size: 26px; font-weight: 700;
+      color: var(--bg); letter-spacing: 2px;
+    }
 
-    /* Hick — rejouer en lien discret, pas un bouton concurrent */
+    /* Fitts — CTA pleine largeur */
+    .btn-cta {
+      width: 100%; padding: 22px; font-size: 17px;
+      background: var(--surface);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 14px;
+    }
+    .btn-cta:hover { background: var(--border); }
+
+    /* Hick — rejouer en lien discret */
     .btn-replay {
       background: none; border: none; border-radius: 0;
-      font-family: var(--font-mono);
-      font-size: 11px; font-weight: 400;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 400;
       color: var(--muted); letter-spacing: 1px;
       text-decoration: underline; text-underline-offset: 3px;
       padding: 8px;
@@ -339,10 +322,7 @@
     .btn-replay:hover { color: var(--sub); }
 
     /* ─── LUCIDE ICONS ─── */
-    .lucide {
-      display: inline-block; vertical-align: middle;
-      width: 1em; height: 1em; stroke-width: 1.75;
-    }
+    .lucide { display: inline-block; vertical-align: middle; width: 1em; height: 1em; stroke-width: 1.75; }
     .hud-icon .lucide { width: 20px; height: 20px; color: var(--sub); }
     .btn .lucide { width: 1em; height: 1em; margin-right: 8px; }
   </style>
@@ -354,25 +334,24 @@
   <div class="screen active" id="screen-intro">
     <div class="logo">Sneaker Drop Ninja</div>
     <div class="tagline">Protect The Drop</div>
-    <!-- B=MAT Motivation : urgence visible dès l'entrée -->
-    <div class="badge"><span class="badge-dot"></span>Drop en direct · Stock limité</div>
+    <!-- B=MAT Motivation : badge dynamique live/countdown -->
+    <div class="badge" id="intro-badge">
+      <span class="badge-dot" id="badge-dot"></span>
+      <span id="badge-text">Drop en direct · Stock limité</span>
+    </div>
     <div class="hero-emoji">👟</div>
-    <!-- Hick : 3 règles au lieu de 4 — STOCK supprimé (passif, aucune action) -->
+    <!-- Hick : 2 règles seulement -->
     <div class="rules">
       <div class="rule good">
         <span class="icon">👟</span>
-        <span><em>LTD</em> · Tape pour l'attraper</span>
-      </div>
-      <div class="rule bad">
-        <span class="icon">🤖</span>
-        <span><em>BOT</em> · Évite-les absolument</span>
+        <span>La vraie paire · <em>Tape</em> pour l'attraper</span>
       </div>
       <div class="rule fake">
         <span class="icon">👠</span>
-        <span><em>FAKE</em> · Mauvaise chaussure</span>
+        <span><em>FAKE</em> · Mauvaise paire, évite</span>
       </div>
     </div>
-    <!-- Déclencheur : pulse CSS sur le bouton -->
+    <!-- B=MAT Déclencheur : pulse CSS -->
     <button class="btn btn-primary" id="btn-start">
       <i data-lucide="play"></i> Start the drop
     </button>
@@ -402,64 +381,121 @@
     <div class="end-shoe">👟</div>
     <div class="end-pre">Tu as sécurisé</div>
     <div class="end-score" id="end-score">0</div>
-    <div class="end-unit">éditions limitées</div>
+    <div class="end-unit">paires exclusives</div>
     <div class="end-verdict" id="end-verdict"></div>
     <div class="end-model">SDN-001 × PHANTOM · Stock limité</div>
     <div class="stats">
       <div class="stat">
         <div class="stat-val" id="s-caught">0</div>
-        <div class="stat-lbl">Capturées</div>
+        <div class="stat-lbl">Sécurisées</div>
       </div>
       <div class="stat">
-        <div class="stat-val" id="s-bots">0</div>
-        <div class="stat-lbl">Pièges tapés</div>
+        <div class="stat-val" id="s-fakes">0</div>
+        <div class="stat-lbl">Fakes tapées</div>
       </div>
       <div class="stat">
         <div class="stat-val" id="s-missed">0</div>
         <div class="stat-lbl">Ratées</div>
       </div>
     </div>
-    <!-- Fitts — CTA pleine largeur, cible la plus grande -->
+    <!-- Fogg — Daily Drop : trigger de retour quotidien -->
+    <div class="next-drop">
+      <div class="next-drop-left">
+        <div class="next-drop-label">Prochain drop</div>
+        <div class="next-drop-sub">Reviens sécuriser la suivante</div>
+      </div>
+      <div class="next-drop-val" id="next-drop-val">00:00:00</div>
+    </div>
+    <!-- Fitts — CTA secondaire après le countdown -->
     <button class="btn btn-cta" id="btn-cta">
       <i data-lucide="lock"></i> Sécuriser mon achat
     </button>
-    <!-- Hick — rejouer en lien discret pour ne pas concurrencer le CTA -->
+    <!-- Hick — rejouer en lien discret -->
     <button class="btn btn-replay" id="btn-replay">Rejouer</button>
   </div>
 
 </div>
 <script>
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
-const DURATION   = 30;
-const ITEM_W     = 82;
-const ITEM_H     = 92;
-const HALF_W     = ITEM_W / 2;
+const DURATION = 30;
+const ITEM_W   = 82;
+const ITEM_H   = 92;
+const HALF_W   = ITEM_W / 2;
 
 const FAKE_SHOES = ['👠', '👡', '🥾', '👞', '🥿'];
 
+// BOT supprimé — seulement vraie paire vs fakes
 const TYPES = [
-  { id:'LTD',   emoji:'👟', label:'LTD', cls:'item-ltd',   weight:26 },
-  { id:'BOT',   emoji:'🤖', label:'BOT', cls:'item-bot',   weight:22 },
-  { id:'FAKE',  emoji:null,  label:'',    cls:'item-fake',  weight:27 },
-  { id:'STOCK', emoji:'📦', label:'',    cls:'item-stock', weight:25 },
+  { id:'SNEAKER', emoji:'👟', label:'', cls:'item-sneaker', weight:30 },
+  { id:'FAKE',    emoji:null,  label:'', cls:'item-fake',   weight:38 },
+  { id:'STOCK',   emoji:'📦', label:'', cls:'item-stock',  weight:32 },
 ];
 
 const VERDICTS = [
-  [0,  0, '💀 Les bots ont tout pris'],
+  [0,  0, '💀 Les fakes ont tout eu'],
   [1,  2, '😤 Trop lent, retente ta chance'],
-  [3,  5, '😅 Pas mal, tu connais les bases'],
-  [6,  8, '🔥 Solide. Tu protèges ton drop'],
+  [3,  5, '😅 Pas mal, tu commences à voir la différence'],
+  [6,  8, '🔥 Solide. Tu repères les fakes'],
   [9, 11, '🏆 DROP MASTER. Respect total'],
-  [12, Infinity, '👑 LÉGENDAIRE. Les bots ont rien eu'],
+  [12, Infinity, '👑 LÉGENDAIRE. Aucune fake ne t\'a eu'],
 ];
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-let cart=0, caught=0, botTaps=0, fakeTaps=0, missed=0;
+let cart=0, caught=0, fakeTaps=0, missed=0;
 let timeLeft=DURATION, gameRunning=false;
 let items=[], lastTs=0, spawnAcc=0, rafId=null, tickId=null;
 
+// ─── FOGG — DAILY DROP CLOCK ──────────────────────────────────────────────────
+const DROP_HOUR = 12; // Drop quotidien à midi
+let dropClockId = null;
+
+function nextDropTime() {
+  const now = new Date();
+  const t   = new Date(now);
+  t.setHours(DROP_HOUR, 0, 0, 0);
+  if (now >= t) t.setDate(t.getDate() + 1);
+  return t;
+}
+
+function fmtCountdown(ms) {
+  const s   = Math.max(0, Math.floor(ms / 1000));
+  const h   = Math.floor(s / 3600);
+  const m   = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return [h, m, sec].map(n => String(n).padStart(2,'0')).join(':');
+}
+
+function isLive() {
+  const h = new Date().getHours();
+  return h === DROP_HOUR;
+}
+
+function startDropClock() {
+  const el = $('next-drop-val');
+  clearInterval(dropClockId);
+  function tick() { el.textContent = fmtCountdown(nextDropTime() - new Date()); }
+  tick();
+  dropClockId = setInterval(tick, 1000);
+}
+
+function updateIntroBadge() {
+  const badge = $('intro-badge');
+  const dot   = $('badge-dot');
+  const txt   = $('badge-text');
+  if (isLive()) {
+    badge.style.color  = 'var(--red)';
+    dot.style.background = 'var(--red)';
+    txt.textContent    = 'Drop en direct · Stock limité';
+  } else {
+    badge.style.color  = 'var(--sub)';
+    dot.style.background = 'var(--sub)';
+    const ms = nextDropTime() - new Date();
+    txt.textContent = 'Prochain drop · ' + fmtCountdown(ms);
+  }
+}
+
 // ─── UTILS ────────────────────────────────────────────────────────────────────
-const $  = id => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -469,9 +505,8 @@ function showScreen(id) {
 function pickType() {
   const elapsed = DURATION - timeLeft;
   const weights = TYPES.map(t => {
-    if (t.id === 'BOT'   && elapsed > 15) return t.weight + 8;
-    if (t.id === 'FAKE'  && elapsed > 15) return t.weight + 6;
-    if (t.id === 'STOCK' && elapsed > 15) return Math.max(10, t.weight - 14);
+    if (t.id === 'FAKE'  && elapsed > 15) return t.weight + 10;
+    if (t.id === 'STOCK' && elapsed > 15) return Math.max(8, t.weight - 14);
     return t.weight;
   });
   const total = weights.reduce((s, w) => s + w, 0);
@@ -480,7 +515,7 @@ function pickType() {
     r -= weights[i];
     if (r <= 0) return TYPES[i];
   }
-  return TYPES[2];
+  return TYPES[1];
 }
 
 function spawnInterval() {
@@ -505,8 +540,8 @@ function haptic(pattern) {
 // ─── ITEM SPAWN ───────────────────────────────────────────────────────────────
 function spawnItem() {
   const arena = $('arena');
-  const W = arena.clientWidth;
-  const type = pickType();
+  const W     = arena.clientWidth;
+  const type  = pickType();
 
   const emoji = type.id === 'FAKE'
     ? FAKE_SHOES[Math.floor(Math.random() * FAKE_SHOES.length)]
@@ -514,9 +549,7 @@ function spawnItem() {
 
   const el = document.createElement('div');
   el.className = `item ${type.cls}`;
-  el.innerHTML =
-    `<span class="item-emoji">${emoji}</span>` +
-    (type.label ? `<span class="item-label">${type.label}</span>` : '');
+  el.innerHTML = `<span class="item-emoji">${emoji}</span>`;
 
   const cx  = HALF_W + 10 + Math.random() * (W - ITEM_W - 20);
   const top = -ITEM_H - 6;
@@ -527,10 +560,7 @@ function spawnItem() {
   items.push(item);
   arena.appendChild(el);
 
-  el.addEventListener('pointerdown', ev => {
-    ev.preventDefault();
-    tap(item);
-  }, { passive: false });
+  el.addEventListener('pointerdown', ev => { ev.preventDefault(); tap(item); }, { passive: false });
 }
 
 // ─── TAP HANDLER ─────────────────────────────────────────────────────────────
@@ -538,22 +568,18 @@ function tap(item) {
   if (!item.alive || !gameRunning) return;
   item.alive = false;
 
-  if (item.typeId === 'LTD') {
+  if (item.typeId === 'SNEAKER') {
     cart++; caught++;
     updateCart();
     pop(item.cx, item.top, '+1 🔥', 'pos');
     haptic(50);
-  } else if (item.typeId === 'BOT') {
-    botTaps++;
-    if (cart > 0) { cart--; updateCart(); }
-    pop(item.cx, item.top, '–1 🤖', 'neg');
-    haptic([30, 15, 30]);
   } else if (item.typeId === 'FAKE') {
     fakeTaps++;
     if (cart > 0) { cart--; updateCart(); }
     pop(item.cx, item.top, 'FAKE ❌', 'neg');
     haptic([20, 10, 20]);
   }
+  // STOCK : suppression silencieuse
 
   item.el.classList.add('item-hit');
   setTimeout(() => { if (item.el.parentNode) item.el.remove(); }, 180);
@@ -574,9 +600,7 @@ function updateCart() {
   const el = $('hud-cart');
   el.textContent = cart;
   el.style.transform = 'scale(1.5)';
-  requestAnimationFrame(() => {
-    el.style.transform = 'scale(1)';
-  });
+  requestAnimationFrame(() => { el.style.transform = 'scale(1)'; });
 }
 
 // ─── GAME LOOP ────────────────────────────────────────────────────────────────
@@ -584,7 +608,6 @@ function loop(ts) {
   if (!gameRunning) return;
   const dt = Math.min(ts - lastTs, 80);
   lastTs = ts;
-
   const H = $('arena').clientHeight;
 
   for (let i = items.length - 1; i >= 0; i--) {
@@ -593,7 +616,7 @@ function loop(ts) {
     it.top += it.speed * dt / 1000;
     it.el.style.top = it.top + 'px';
     if (it.top > H + 10) {
-      if (it.typeId === 'LTD') missed++;
+      if (it.typeId === 'SNEAKER') missed++;
       it.alive = false;
       if (it.el.parentNode) it.el.remove();
       items.splice(i, 1);
@@ -604,9 +627,7 @@ function loop(ts) {
   if (spawnAcc >= spawnInterval()) {
     spawnAcc = 0;
     spawnItem();
-    if (timeLeft <= 10 && Math.random() < 0.3) {
-      setTimeout(spawnItem, 240);
-    }
+    if (timeLeft <= 10 && Math.random() < 0.3) setTimeout(spawnItem, 240);
   }
 
   rafId = requestAnimationFrame(loop);
@@ -616,10 +637,9 @@ function loop(ts) {
 function tick() {
   timeLeft--;
   const tEl = $('hud-timer');
-  const bar = $('progress-bar');
+  const bar  = $('progress-bar');
   tEl.textContent = timeLeft;
   bar.style.width = (timeLeft / DURATION * 100) + '%';
-
   if (timeLeft <= 10) { bar.style.backgroundColor = '#D4720A'; tEl.style.color = '#D4720A'; }
   if (timeLeft <= 5)  { bar.style.backgroundColor = 'var(--red)'; tEl.style.color = 'var(--red)'; }
   if (timeLeft <= 0)  stopGame();
@@ -627,30 +647,27 @@ function tick() {
 
 // ─── START / STOP ─────────────────────────────────────────────────────────────
 function startGame() {
-  cart=0; caught=0; botTaps=0; fakeTaps=0; missed=0;
+  cart=0; caught=0; fakeTaps=0; missed=0;
   timeLeft=DURATION; items=[]; spawnAcc=0; gameRunning=true;
+  clearInterval(dropClockId);
 
-  const cartEl = $('hud-cart');
-  cartEl.textContent = '0';
-  cartEl.style.transform = '';
-
-  const tEl = $('hud-timer');
-  tEl.textContent = DURATION;
-  tEl.style.color = 'var(--fg)';
+  $('hud-cart').textContent = '0';
+  $('hud-cart').style.transform = '';
+  $('hud-timer').textContent = DURATION;
+  $('hud-timer').style.color = 'var(--fg)';
 
   const bar = $('progress-bar');
   bar.style.transition = 'none';
   bar.style.width = '100%';
   bar.style.backgroundColor = 'var(--accent)';
-  requestAnimationFrame(() => {
-    bar.style.transition = 'width 1s linear, background-color .4s';
-  });
+  requestAnimationFrame(() => { bar.style.transition = 'width 1s linear, background-color .4s'; });
 
   $('arena').innerHTML = '';
   showScreen('screen-game');
+  lucide.createIcons();
 
   lastTs = performance.now();
-  rafId = requestAnimationFrame(loop);
+  rafId  = requestAnimationFrame(loop);
   tickId = setInterval(tick, 1000);
 }
 
@@ -664,11 +681,15 @@ function stopGame() {
   $('end-score').textContent   = cart;
   $('end-verdict').textContent = getVerdict(cart);
   $('s-caught').textContent    = caught;
-  $('s-bots').textContent      = botTaps + fakeTaps;
+  $('s-fakes').textContent     = fakeTaps;
   $('s-missed').textContent    = missed;
 
   if (cart >= 3) spawnSparks();
   showScreen('screen-end');
+  lucide.createIcons();
+
+  // Fogg — lance le countdown du prochain drop
+  startDropClock();
 }
 
 function spawnSparks() {
@@ -680,10 +701,8 @@ function spawnSparks() {
     s.className = 'spark';
     const size = 2 + Math.random() * 5;
     s.style.cssText =
-      `left:${5 + Math.random()*90}%;` +
-      `top:${Math.random()*65}%;` +
-      `width:${size}px;height:${size}px;` +
-      `animation-delay:${Math.random()*1.4}s;`;
+      `left:${5+Math.random()*90}%;top:${Math.random()*65}%;` +
+      `width:${size}px;height:${size}px;animation-delay:${Math.random()*1.4}s;`;
     c.appendChild(s);
   }
 }
@@ -692,14 +711,16 @@ function spawnSparks() {
 $('btn-start').addEventListener('pointerdown', startGame);
 $('btn-replay').addEventListener('pointerdown', startGame);
 $('btn-cta').addEventListener('pointerdown', () => {
-  alert('🔒 Achat sécurisé !\n\nRedirection vers SneakerDropNinja.com — SDN-001 × PHANTOM');
+  alert('Achat sécurisé !\n\nRedirection vers SneakerDropNinja.com — SDN-001 × PHANTOM');
 });
 
 document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
+// Init
 lucide.createIcons();
-const _origShowScreen = showScreen;
-window.showScreen = function(id) { _origShowScreen(id); lucide.createIcons(); };
+updateIntroBadge();
+// Mise à jour du badge intro toutes les secondes (pour le countdown)
+setInterval(updateIntroBadge, 1000);
 </script>
 </body>
 </html>
