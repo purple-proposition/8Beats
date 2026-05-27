@@ -78,8 +78,35 @@
       letter-spacing: 5px;
       color: var(--sub);
       text-transform: uppercase;
-      margin-bottom: 32px;
+      margin-bottom: 20px;
     }
+
+    /* B=MAT — Motivation : badge urgence */
+    .badge {
+      display: flex; align-items: center; gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 20px;
+    }
+    .badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--red);
+      animation: dot-pulse 1.6s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes dot-pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .4; transform: scale(.7); }
+    }
+
+    /* B=MAT — Déclencheur : pulse sur START */
+    @keyframes btn-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(28,28,28,.18); }
+      60%      { box-shadow: 0 0 0 14px rgba(28,28,28,0); }
+    }
+    .btn-primary { animation: btn-pulse 2.4s ease infinite; }
     .hero-emoji {
       font-size: clamp(64px, 16vw, 90px);
       filter: drop-shadow(0 8px 24px rgba(0,0,0,.12));
@@ -292,13 +319,24 @@
     .stat-val   { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--fg); }
     .stat-lbl   { font-family: var(--font-mono); font-size: 8px; color: var(--sub); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
 
+    /* Fitts — cible principale max */
     .btn-cta {
-      width: 100%; max-width: 320px; padding: 20px;
-      font-size: 16px; background: var(--accent); color: var(--bg);
-      margin-bottom: 12px;
+      width: 100%; padding: 22px;
+      font-size: 17px; background: var(--accent); color: var(--bg);
+      margin-bottom: 16px; border-radius: 16px;
     }
     .btn-cta:hover { box-shadow: 0 8px 32px rgba(0,0,0,.18); }
-    .btn-replay { max-width: 320px; width: 100%; }
+
+    /* Hick — rejouer en lien discret, pas un bouton concurrent */
+    .btn-replay {
+      background: none; border: none; border-radius: 0;
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 400;
+      color: var(--muted); letter-spacing: 1px;
+      text-decoration: underline; text-underline-offset: 3px;
+      padding: 8px;
+    }
+    .btn-replay:hover { color: var(--sub); }
 
     /* ─── LUCIDE ICONS ─── */
     .lucide {
@@ -316,7 +354,10 @@
   <div class="screen active" id="screen-intro">
     <div class="logo">Sneaker Drop Ninja</div>
     <div class="tagline">Protect The Drop</div>
+    <!-- B=MAT Motivation : urgence visible dès l'entrée -->
+    <div class="badge"><span class="badge-dot"></span>Drop en direct · Stock limité</div>
     <div class="hero-emoji">👟</div>
+    <!-- Hick : 3 règles au lieu de 4 — STOCK supprimé (passif, aucune action) -->
     <div class="rules">
       <div class="rule good">
         <span class="icon">👟</span>
@@ -330,11 +371,8 @@
         <span class="icon">👠</span>
         <span><em>FAKE</em> · Mauvaise chaussure</span>
       </div>
-      <div class="rule">
-        <span class="icon">📦</span>
-        <span style="color:var(--muted)">Stock normal · ignore</span>
-      </div>
     </div>
+    <!-- Déclencheur : pulse CSS sur le bouton -->
     <button class="btn btn-primary" id="btn-start">
       <i data-lucide="play"></i> Start the drop
     </button>
@@ -381,10 +419,12 @@
         <div class="stat-lbl">Ratées</div>
       </div>
     </div>
+    <!-- Fitts — CTA pleine largeur, cible la plus grande -->
     <button class="btn btn-cta" id="btn-cta">
       <i data-lucide="lock"></i> Sécuriser mon achat
     </button>
-    <button class="btn btn-ghost btn-replay" id="btn-replay">Rejouer</button>
+    <!-- Hick — rejouer en lien discret pour ne pas concurrencer le CTA -->
+    <button class="btn btn-replay" id="btn-replay">Rejouer</button>
   </div>
 
 </div>
