@@ -206,11 +206,6 @@
       50%      { box-shadow: 0 6px 24px rgba(0,0,0,.15); }
     }
 
-    .item-stock {
-      background: rgba(28,28,28,.025);
-      border: 1.5px solid var(--border);
-    }
-
     .item-fake {
       background: rgba(196,144,64,.07);
       border: 1.5px solid rgba(196,144,64,.45);
@@ -258,58 +253,70 @@
       100% { opacity: 0; transform: translateY(100px) scale(0); }
     }
 
-    .end-logo    { font-family: 'Staatliches', sans-serif; font-size: clamp(24px, 6vw, 40px); letter-spacing: 0; text-transform: uppercase; color: var(--fg); margin-bottom: 28px; text-align: center; }
-    .end-shoe    { font-size: 56px; filter: drop-shadow(0 4px 16px rgba(0,0,0,.12)); margin-bottom: 10px; }
-    .end-pre     { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 6px; }
-    .end-score   { font-family: var(--font-mono); font-size: clamp(52px, 13vw, 80px); font-weight: 700; color: var(--fg); line-height: 1; margin-bottom: 4px; }
-    .end-unit    { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+    .end-logo    { font-family: 'Staatliches', sans-serif; font-size: clamp(24px, 6vw, 40px); letter-spacing: 0; text-transform: uppercase; color: var(--fg); margin-bottom: 24px; text-align: center; }
+    .end-shoe    { font-size: 48px; filter: drop-shadow(0 4px 16px rgba(0,0,0,.12)); margin-bottom: 8px; }
+    .end-pre     { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 4px; }
+    .end-score   { font-family: var(--font-mono); font-size: clamp(48px, 12vw, 72px); font-weight: 700; color: var(--fg); line-height: 1; margin-bottom: 2px; }
+    .end-unit    { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
     .end-verdict { font-family: var(--font-ui); font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 4px; text-align: center; }
-    .end-model   { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-bottom: 20px; letter-spacing: 1.5px; }
+    .end-model   { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-bottom: 16px; letter-spacing: 1.5px; }
 
     .stats {
       display: flex; gap: 10px;
-      width: 100%; margin-bottom: 16px;
+      width: 100%; margin-bottom: 14px;
     }
     .stat {
-      flex: 1; text-align: center; padding: 14px 8px;
+      flex: 1; text-align: center; padding: 12px 8px;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 12px;
     }
     .stat-val { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--fg); }
-    .stat-lbl { font-family: var(--font-mono); font-size: 8px; color: var(--sub); margin-top: 6px; letter-spacing: 1px; text-transform: uppercase; }
+    .stat-lbl { font-family: var(--font-mono); font-size: 8px; color: var(--sub); margin-top: 5px; letter-spacing: 1px; text-transform: uppercase; }
 
-    /* Fogg — Daily Drop countdown */
+    /* Fogg — Daily Drop countdown (split layout) */
     .next-drop {
-      width: 100%; padding: 16px 20px;
+      width: 100%;
       background: var(--accent); border-radius: 14px;
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 16px;
+      display: flex; align-items: stretch;
+      margin-bottom: 14px; overflow: hidden;
     }
-    .next-drop-left { display: flex; flex-direction: column; gap: 3px; }
+    .next-drop-img {
+      width: 96px; flex-shrink: 0;
+      background: #111;
+      overflow: hidden;
+    }
+    .next-drop-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .next-drop-info {
+      flex: 1; padding: 14px 18px;
+      display: flex; flex-direction: column; justify-content: center; gap: 2px;
+    }
+    .next-drop-pair {
+      font-family: var(--font-ui); font-size: 13px; font-weight: 700;
+      color: var(--bg); margin-bottom: 4px;
+    }
     .next-drop-label {
       font-family: var(--font-mono); font-size: 9px;
       font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-      color: rgba(245,242,238,.5);
-    }
-    .next-drop-sub {
-      font-family: var(--font-ui); font-size: 12px;
-      color: rgba(245,242,238,.7);
+      color: rgba(245,242,238,.45);
     }
     .next-drop-val {
-      font-family: var(--font-mono); font-size: 26px; font-weight: 700;
+      font-family: var(--font-mono); font-size: 24px; font-weight: 700;
       color: var(--bg); letter-spacing: 2px;
     }
 
-    /* Fitts — CTA pleine largeur */
+    /* Fitts — CTA pleine largeur, action primaire */
     .btn-cta {
-      width: 100%; padding: 22px; font-size: 17px;
-      background: var(--surface);
-      color: var(--fg);
-      border: 1px solid var(--border);
+      width: 100%; padding: 22px; font-size: 16px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
       border-radius: 16px;
       margin-bottom: 14px;
+      animation: btn-pulse 2.4s ease infinite;
     }
-    .btn-cta:hover { background: var(--border); }
+    .btn-cta:hover { box-shadow: 0 8px 32px rgba(0,0,0,.22); }
 
     /* Hick — rejouer en lien discret */
     .btn-replay {
@@ -333,7 +340,7 @@
   <!-- ── INTRO ── -->
   <div class="screen active" id="screen-intro">
     <div class="logo">Sneaker Drop Ninja</div>
-    <div class="tagline">Protect The Drop</div>
+    <div class="tagline">Grimpe dans le classement</div>
     <!-- B=MAT Motivation : badge dynamique live/countdown -->
     <div class="badge" id="intro-badge">
       <span class="badge-dot" id="badge-dot"></span>
@@ -344,7 +351,7 @@
     <div class="rules">
       <div class="rule good">
         <span class="icon">👟</span>
-        <span>La vraie paire · <em>Tape</em> pour l'attraper</span>
+        <span>La vraie paire · <em>Tape</em> pour grimper</span>
       </div>
       <div class="rule fake">
         <span class="icon">👠</span>
@@ -361,7 +368,7 @@
   <div class="screen" id="screen-game">
     <div id="hud">
       <div class="hud-cart">
-        <span class="hud-icon"><i data-lucide="shopping-basket"></i></span>
+        <span class="hud-icon"><i data-lucide="award"></i></span>
         <span class="hud-cart-val" id="hud-cart">0</span>
       </div>
       <div class="hud-brand">SDN</div>
@@ -378,16 +385,16 @@
   <div class="screen" id="screen-end">
     <div id="confetti"></div>
     <div class="end-logo">Sneaker Drop Ninja</div>
-    <div class="end-shoe">👟</div>
-    <div class="end-pre">Tu as sécurisé</div>
-    <div class="end-score" id="end-score">0</div>
-    <div class="end-unit">paires exclusives</div>
+    <div class="end-shoe">🏆</div>
+    <div class="end-pre">Classement waitlist</div>
+    <div class="end-score" id="end-score">#—</div>
+    <div class="end-unit">sur 1 000 participants</div>
     <div class="end-verdict" id="end-verdict"></div>
-    <div class="end-model">SDN-001 × PHANTOM · Stock limité</div>
+    <div class="end-model">Phantomatik LTD 500 · 500 paires</div>
     <div class="stats">
       <div class="stat">
         <div class="stat-val" id="s-caught">0</div>
-        <div class="stat-lbl">Sécurisées</div>
+        <div class="stat-lbl">Bonnes paires</div>
       </div>
       <div class="stat">
         <div class="stat-val" id="s-fakes">0</div>
@@ -398,17 +405,20 @@
         <div class="stat-lbl">Ratées</div>
       </div>
     </div>
-    <!-- Fogg — Daily Drop : trigger de retour quotidien -->
+    <!-- Fogg — Daily Drop : trigger de retour quotidien (split layout) -->
     <div class="next-drop">
-      <div class="next-drop-left">
-        <div class="next-drop-label">Prochain drop</div>
-        <div class="next-drop-sub">Reviens sécuriser la suivante</div>
+      <div class="next-drop-img">
+        <img src="./phantomatik.jpg" alt="Phantomatik LTD 500">
       </div>
-      <div class="next-drop-val" id="next-drop-val">00:00:00</div>
+      <div class="next-drop-info">
+        <div class="next-drop-pair">Phantomatik LTD 500</div>
+        <div class="next-drop-label">Prochain drop</div>
+        <div class="next-drop-val" id="next-drop-val">00:00:00</div>
+      </div>
     </div>
-    <!-- Fitts — CTA secondaire après le countdown -->
+    <!-- Fitts — CTA pleine largeur -->
     <button class="btn btn-cta" id="btn-cta">
-      <i data-lucide="lock"></i> Sécuriser mon achat
+      <i data-lucide="trophy"></i> Sécurise ta place dans le classement
     </button>
     <!-- Hick — rejouer en lien discret -->
     <button class="btn btn-replay" id="btn-replay">Rejouer</button>
@@ -417,27 +427,26 @@
 </div>
 <script>
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
-const DURATION = 30;
-const ITEM_W   = 82;
-const ITEM_H   = 92;
-const HALF_W   = ITEM_W / 2;
+const DURATION      = 30;
+const ITEM_W        = 82;
+const ITEM_H        = 92;
+const HALF_W        = ITEM_W / 2;
+const WAITLIST_SIZE = 1000;
 
 const FAKE_SHOES = ['👠', '👡', '🥾', '👞', '🥿'];
 
-// BOT supprimé — seulement vraie paire vs fakes
+// Seulement vraie paire vs fakes — pas de caisses
 const TYPES = [
-  { id:'SNEAKER', emoji:'👟', label:'', cls:'item-sneaker', weight:30 },
-  { id:'FAKE',    emoji:null,  label:'', cls:'item-fake',   weight:38 },
-  { id:'STOCK',   emoji:'📦', label:'', cls:'item-stock',  weight:32 },
+  { id:'SNEAKER', emoji:'👟', cls:'item-sneaker', weight:42 },
+  { id:'FAKE',    emoji:null,  cls:'item-fake',   weight:58 },
 ];
 
 const VERDICTS = [
-  [0,  0, '💀 Les fakes ont tout eu'],
-  [1,  2, '😤 Trop lent, retente ta chance'],
-  [3,  5, '😅 Pas mal, tu commences à voir la différence'],
-  [6,  8, '🔥 Solide. Tu repères les fakes'],
-  [9, 11, '🏆 DROP MASTER. Respect total'],
-  [12, Infinity, '👑 LÉGENDAIRE. Aucune fake ne t\'a eu'],
+  [1,   50, '👑 Légendaire. Top du classement'],
+  [51, 150, '🏆 Excellent. Accès prioritaire assuré'],
+  [151, 350, '🔥 Solide. Tu es bien placé'],
+  [351, 600, '😅 Milieu de classement — retente ta chance'],
+  [601, WAITLIST_SIZE, '💀 Trop de fakes. Tu perds des places'],
 ];
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
@@ -446,7 +455,7 @@ let timeLeft=DURATION, gameRunning=false;
 let items=[], lastTs=0, spawnAcc=0, rafId=null, tickId=null;
 
 // ─── FOGG — DAILY DROP CLOCK ──────────────────────────────────────────────────
-const DROP_HOUR = 12; // Drop quotidien à midi
+const DROP_HOUR = 12;
 let dropClockId = null;
 
 function nextDropTime() {
@@ -483,11 +492,11 @@ function updateIntroBadge() {
   const dot   = $('badge-dot');
   const txt   = $('badge-text');
   if (isLive()) {
-    badge.style.color  = 'var(--red)';
+    badge.style.color    = 'var(--red)';
     dot.style.background = 'var(--red)';
-    txt.textContent    = 'Drop en direct · Stock limité';
+    txt.textContent      = 'Drop en direct · Stock limité';
   } else {
-    badge.style.color  = 'var(--sub)';
+    badge.style.color    = 'var(--sub)';
     dot.style.background = 'var(--sub)';
     const ms = nextDropTime() - new Date();
     txt.textContent = 'Prochain drop · ' + fmtCountdown(ms);
@@ -502,11 +511,16 @@ function showScreen(id) {
   $(id).classList.add('active');
 }
 
+function calcRank(caughtN, fakeTapsN, missedN) {
+  const raw = WAITLIST_SIZE - caughtN * 80 + fakeTapsN * 30 + missedN * 15;
+  return Math.max(1, Math.min(WAITLIST_SIZE, Math.round(raw)));
+}
+
 function pickType() {
   const elapsed = DURATION - timeLeft;
   const weights = TYPES.map(t => {
-    if (t.id === 'FAKE'  && elapsed > 15) return t.weight + 10;
-    if (t.id === 'STOCK' && elapsed > 15) return Math.max(8, t.weight - 14);
+    if (t.id === 'FAKE'    && elapsed > 15) return t.weight + 15;
+    if (t.id === 'SNEAKER' && elapsed > 15) return Math.max(10, t.weight - 15);
     return t.weight;
   });
   const total = weights.reduce((s, w) => s + w, 0);
@@ -528,8 +542,8 @@ function itemSpeed() {
   return 125 + elapsed * 4.5 + Math.random() * 38;
 }
 
-function getVerdict(n) {
-  for (const [lo, hi, msg] of VERDICTS) if (n >= lo && n <= hi) return msg;
+function getVerdict(rank) {
+  for (const [lo, hi, msg] of VERDICTS) if (rank >= lo && rank <= hi) return msg;
   return '';
 }
 
@@ -579,7 +593,6 @@ function tap(item) {
     pop(item.cx, item.top, 'FAKE ❌', 'neg');
     haptic([20, 10, 20]);
   }
-  // STOCK : suppression silencieuse
 
   item.el.classList.add('item-hit');
   setTimeout(() => { if (item.el.parentNode) item.el.remove(); }, 180);
@@ -678,24 +691,24 @@ function stopGame() {
   $('arena').innerHTML = '';
   items = [];
 
-  $('end-score').textContent   = cart;
-  $('end-verdict').textContent = getVerdict(cart);
+  const rank = calcRank(caught, fakeTaps, missed);
+  $('end-score').textContent   = '#' + rank;
+  $('end-verdict').textContent = getVerdict(rank);
   $('s-caught').textContent    = caught;
   $('s-fakes').textContent     = fakeTaps;
   $('s-missed').textContent    = missed;
 
-  if (cart >= 3) spawnSparks();
+  if (rank <= 200) spawnSparks();
   showScreen('screen-end');
   lucide.createIcons();
 
-  // Fogg — lance le countdown du prochain drop
   startDropClock();
 }
 
 function spawnSparks() {
   const c = $('confetti');
   c.innerHTML = '';
-  const count = Math.min(6 + cart * 2, 28);
+  const count = 18;
   for (let i = 0; i < count; i++) {
     const s = document.createElement('div');
     s.className = 'spark';
@@ -711,7 +724,7 @@ function spawnSparks() {
 $('btn-start').addEventListener('pointerdown', startGame);
 $('btn-replay').addEventListener('pointerdown', startGame);
 $('btn-cta').addEventListener('pointerdown', () => {
-  alert('Achat sécurisé !\n\nRedirection vers SneakerDropNinja.com — SDN-001 × PHANTOM');
+  window.open('https://sneakerdropninja.com/waitlist', '_blank');
 });
 
 document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
@@ -719,7 +732,6 @@ document.addEventListener('touchmove', e => e.preventDefault(), { passive: false
 // Init
 lucide.createIcons();
 updateIntroBadge();
-// Mise à jour du badge intro toutes les secondes (pour le countdown)
 setInterval(updateIntroBadge, 1000);
 </script>
 </body>
