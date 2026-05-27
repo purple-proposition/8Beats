@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>Sneaker Drop Ninja — Protect The Drop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/style.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/style.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:  #1C1C1C;
+      --red:     #E53535;
+      --amber:   #C49040;
+      --bg:      #F5F2EE;
+      --surface: #ECEAE4;
+      --border:  #DEDAD2;
+      --fg:      #1C1C1C;
+      --sub:     #7C7870;
+      --muted:   #BAB6AE;
+
+      --font-ui:   'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Geist Mono', 'Geist', monospace;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: var(--font-ui);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #app {
+      width: 100vw; height: 100svh;
+      position: relative; overflow: hidden;
+    }
+
+    /* ─── SCREENS ─── */
+    .screen {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .screen.active { opacity: 1; pointer-events: all; }
+
+    /* ─── INTRO ─── */
+    #screen-intro {
+      background: radial-gradient(ellipse at 50% 0%, #ECEAE4 0%, var(--bg) 60%);
+      padding: 40px;
+      gap: 0;
+    }
+
+    .logo {
+      font-family: 'Staatliches', sans-serif;
+      font-size: clamp(44px, 12vw, 80px);
+      color: var(--fg);
+      line-height: 1;
+      text-align: center;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .tagline {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--sub);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .hero-emoji {
+      font-size: clamp(64px, 16vw, 90px);
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,.12));
+      animation: float 3s ease-in-out infinite;
+      margin-bottom: 32px;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0) rotate(-12deg); }
+      50%      { transform: translateY(-16px) rotate(-12deg); }
+    }
+
+    .rules {
+      width: 100%; max-width: 300px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .rule {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 18px;
+      font-size: 13px; color: var(--sub);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .rule:last-child { border-bottom: none; }
+    .rule span.icon { font-size: 20px; flex-shrink: 0; }
+    .rule em { font-style: normal; font-weight: 700; }
+    .rule.good em { color: var(--fg); }
+    .rule.bad  em { color: var(--red); }
+    .rule.fake em { color: var(--amber); }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      border: none; border-radius: 100px; cursor: pointer;
+      font-family: var(--font-ui);
+      font-weight: 700;
+      transition: transform .15s, box-shadow .2s;
+    }
+    .btn:active { transform: scale(.96) !important; }
+
+    .btn-primary {
+      padding: 20px 52px;
+      font-size: 16px;
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 32px rgba(0,0,0,.18); }
+
+    .btn-ghost {
+      padding: 14px 36px;
+      font-size: 14px;
+      background: none;
+      color: var(--sub);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { color: var(--fg); border-color: #B0AA9F; }
+
+    /* ─── GAME SCREEN ─── */
+    #screen-game { background: var(--bg); }
+
+    #hud {
+      position: absolute; top: 0; left: 0; right: 0;
+      padding: 20px 28px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 10; pointer-events: none;
+      background: linear-gradient(to bottom, var(--bg) 45%, transparent);
+    }
+
+    .hud-cart { display: flex; align-items: center; gap: 10px; }
+    .hud-icon { line-height: 1; }
+    .hud-cart-val {
+      font-family: var(--font-mono);
+      font-size: 22px; font-weight: 700; color: var(--accent);
+      min-width: 28px; transition: transform .18s;
+    }
+    .hud-brand {
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 600; letter-spacing: 3px; color: var(--accent);
+    }
+    .hud-timer { display: flex; align-items: baseline; gap: 4px; }
+    .hud-timer-val {
+      font-family: var(--font-mono);
+      font-size: 22px; font-weight: 700; color: var(--fg);
+      min-width: 32px; text-align: right;
+      transition: color .3s;
+    }
+    .hud-timer-s { font-family: var(--font-mono); font-size: 11px; color: var(--sub); }
+
+    #progress {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: var(--border);
+    }
+    #progress-bar {
+      height: 100%; background: var(--accent);
+      transition: width 1s linear, background-color .4s;
+    }
+
+    #arena { position: absolute; inset: 0; }
+
+    /* ─── ITEMS ─── */
+    .item {
+      position: absolute;
+      width: 82px; height: 92px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 5px;
+      border-radius: 18px; cursor: pointer;
+    }
+    .item-emoji  { font-size: 42px; line-height: 1; pointer-events: none; }
+    .item-label  {
+      font-family: var(--font-mono);
+      font-size: 9px; font-weight: 600; letter-spacing: 1px; pointer-events: none;
+    }
+
+    .item-ltd {
+      background: rgba(28,28,28,.04);
+      border: 1.5px solid rgba(28,28,28,.28);
+      animation: pulse-accent 1.5s ease-in-out infinite;
+    }
+    .item-ltd .item-label { color: var(--accent); }
+    @keyframes pulse-accent {
+      0%,100% { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+      50%      { box-shadow: 0 6px 24px rgba(0,0,0,.15); }
+    }
+
+    .item-bot {
+      background: rgba(229,53,53,.07);
+      border: 1.5px solid rgba(229,53,53,.5);
+      animation: pulse-red .55s ease-in-out infinite;
+    }
+    .item-bot .item-label { color: var(--red); }
+    @keyframes pulse-red {
+      0%,100% { box-shadow: 0 2px 8px rgba(229,53,53,.15); }
+      50%      { box-shadow: 0 4px 20px rgba(229,53,53,.35); }
+    }
+
+    .item-stock {
+      background: rgba(28,28,28,.025);
+      border: 1.5px solid var(--border);
+    }
+
+    .item-fake {
+      background: rgba(196,144,64,.07);
+      border: 1.5px solid rgba(196,144,64,.45);
+      animation: pulse-amber 1.1s ease-in-out infinite;
+    }
+    @keyframes pulse-amber {
+      0%,100% { box-shadow: 0 2px 8px rgba(196,144,64,.12); }
+      50%      { box-shadow: 0 4px 18px rgba(196,144,64,.3); }
+    }
+
+    .item-hit {
+      transform: scale(1.15) !important;
+      opacity: 0 !important;
+      transition: transform .15s, opacity .15s !important;
+    }
+
+    /* ─── FEEDBACK POPS ─── */
+    .pop {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      position: absolute; pointer-events: none;
+      font-size: 12px;
+      white-space: nowrap; z-index: 20;
+      animation: pop-up .7s ease forwards;
+    }
+    .pop.pos { color: var(--accent); }
+    .pop.neg { color: var(--red); }
+    @keyframes pop-up {
+      0%   { opacity: 1; transform: translate(-50%, 0) scale(1.1); }
+      65%  { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -60px) scale(.8); }
+    }
+
+    /* ─── END SCREEN ─── */
+    #screen-end {
+      background: radial-gradient(ellipse at 50% 0%, #ECEAE4 0%, var(--bg) 60%);
+      padding: 48px 40px; gap: 0;
+    }
+    #confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .spark {
+      position: absolute; border-radius: 50%;
+      background: var(--accent); opacity: 0;
+      animation: spark-fall 2s ease forwards;
+    }
+    @keyframes spark-fall {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(100px) scale(0); }
+    }
+
+    .end-logo    { font-family: 'Staatliches', sans-serif; font-size: clamp(24px, 6vw, 40px); letter-spacing: 5px; text-transform: uppercase; color: var(--fg); margin-bottom: 36px; text-align: center; }
+    .end-shoe    { font-size: 64px; filter: drop-shadow(0 4px 16px rgba(0,0,0,.12)); margin-bottom: 12px; }
+    .end-pre     { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 8px; }
+    .end-score   { font-family: var(--font-mono); font-size: clamp(52px, 13vw, 80px); font-weight: 700; color: var(--fg); line-height: 1; margin-bottom: 6px; }
+    .end-unit    { font-family: var(--font-mono); font-size: 10px; color: var(--sub); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
+    .end-verdict { font-family: var(--font-ui); font-size: 15px; font-weight: 600; color: var(--fg); margin-bottom: 6px; text-align: center; }
+    .end-model   { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-bottom: 32px; letter-spacing: 1.5px; }
+
+    .stats {
+      display: flex; gap: 10px;
+      width: 100%; max-width: 320px;
+      margin-bottom: 24px;
+    }
+    .stat {
+      flex: 1; text-align: center; padding: 16px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .stat-val   { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--fg); }
+    .stat-lbl   { font-family: var(--font-mono); font-size: 8px; color: var(--sub); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
+
+    .btn-cta {
+      width: 100%; max-width: 320px; padding: 20px;
+      font-size: 16px; background: var(--accent); color: var(--bg);
+      margin-bottom: 12px;
+    }
+    .btn-cta:hover { box-shadow: 0 8px 32px rgba(0,0,0,.18); }
+    .btn-replay { max-width: 320px; width: 100%; }
+
+    /* ─── LUCIDE ICONS ─── */
+    .lucide {
+      display: inline-block; vertical-align: middle;
+      width: 1em; height: 1em; stroke-width: 1.75;
+    }
+    .hud-icon .lucide { width: 20px; height: 20px; color: var(--sub); }
+    .btn .lucide { width: 1em; height: 1em; margin-right: 8px; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── INTRO ── -->
+  <div class="screen active" id="screen-intro">
+    <div class="logo">Sneaker Drop Ninja</div>
+    <div class="tagline">Protect The Drop</div>
+    <div class="hero-emoji">👟</div>
+    <div class="rules">
+      <div class="rule good">
+        <span class="icon">👟</span>
+        <span><em>LTD</em> · Tape pour l'attraper</span>
+      </div>
+      <div class="rule bad">
+        <span class="icon">🤖</span>
+        <span><em>BOT</em> · Évite-les absolument</span>
+      </div>
+      <div class="rule fake">
+        <span class="icon">👠</span>
+        <span><em>FAKE</em> · Mauvaise chaussure</span>
+      </div>
+      <div class="rule">
+        <span class="icon">📦</span>
+        <span style="color:var(--muted)">Stock normal · ignore</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="btn-start">
+      <i data-lucide="play"></i> Start the drop
+    </button>
+  </div>
+
+  <!-- ── GAME ── -->
+  <div class="screen" id="screen-game">
+    <div id="hud">
+      <div class="hud-cart">
+        <span class="hud-icon"><i data-lucide="shopping-basket"></i></span>
+        <span class="hud-cart-val" id="hud-cart">0</span>
+      </div>
+      <div class="hud-brand">SDN</div>
+      <div class="hud-timer">
+        <span class="hud-timer-val" id="hud-timer">30</span>
+        <span class="hud-timer-s">s</span>
+      </div>
+      <div id="progress"><div id="progress-bar"></div></div>
+    </div>
+    <div id="arena"></div>
+  </div>
+
+  <!-- ── END ── -->
+  <div class="screen" id="screen-end">
+    <div id="confetti"></div>
+    <div class="end-logo">Sneaker Drop Ninja</div>
+    <div class="end-shoe">👟</div>
+    <div class="end-pre">Tu as sécurisé</div>
+    <div class="end-score" id="end-score">0</div>
+    <div class="end-unit">éditions limitées</div>
+    <div class="end-verdict" id="end-verdict"></div>
+    <div class="end-model">SDN-001 × PHANTOM · Stock limité</div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val" id="s-caught">0</div>
+        <div class="stat-lbl">Capturées</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" id="s-bots">0</div>
+        <div class="stat-lbl">Pièges tapés</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" id="s-missed">0</div>
+        <div class="stat-lbl">Ratées</div>
+      </div>
+    </div>
+    <button class="btn btn-cta" id="btn-cta">
+      <i data-lucide="lock"></i> Sécuriser mon achat
+    </button>
+    <button class="btn btn-ghost btn-replay" id="btn-replay">Rejouer</button>
+  </div>
+
+</div>
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+const DURATION   = 30;
+const ITEM_W     = 82;
+const ITEM_H     = 92;
+const HALF_W     = ITEM_W / 2;
+
+const FAKE_SHOES = ['👠', '👡', '🥾', '👞', '🥿'];
+
+const TYPES = [
+  { id:'LTD',   emoji:'👟', label:'LTD', cls:'item-ltd',   weight:26 },
+  { id:'BOT',   emoji:'🤖', label:'BOT', cls:'item-bot',   weight:22 },
+  { id:'FAKE',  emoji:null,  label:'',    cls:'item-fake',  weight:27 },
+  { id:'STOCK', emoji:'📦', label:'',    cls:'item-stock', weight:25 },
+];
+
+const VERDICTS = [
+  [0,  0, '💀 Les bots ont tout pris'],
+  [1,  2, '😤 Trop lent, retente ta chance'],
+  [3,  5, '😅 Pas mal, tu connais les bases'],
+  [6,  8, '🔥 Solide. Tu protèges ton drop'],
+  [9, 11, '🏆 DROP MASTER. Respect total'],
+  [12, Infinity, '👑 LÉGENDAIRE. Les bots ont rien eu'],
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let cart=0, caught=0, botTaps=0, fakeTaps=0, missed=0;
+let timeLeft=DURATION, gameRunning=false;
+let items=[], lastTs=0, spawnAcc=0, rafId=null, tickId=null;
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+const $  = id => document.getElementById(id);
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+
+function pickType() {
+  const elapsed = DURATION - timeLeft;
+  const weights = TYPES.map(t => {
+    if (t.id === 'BOT'   && elapsed > 15) return t.weight + 8;
+    if (t.id === 'FAKE'  && elapsed > 15) return t.weight + 6;
+    if (t.id === 'STOCK' && elapsed > 15) return Math.max(10, t.weight - 14);
+    return t.weight;
+  });
+  const total = weights.reduce((s, w) => s + w, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < TYPES.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return TYPES[i];
+  }
+  return TYPES[2];
+}
+
+function spawnInterval() {
+  const elapsed = DURATION - timeLeft;
+  return Math.max(520, 1180 - elapsed * 22);
+}
+
+function itemSpeed() {
+  const elapsed = DURATION - timeLeft;
+  return 125 + elapsed * 4.5 + Math.random() * 38;
+}
+
+function getVerdict(n) {
+  for (const [lo, hi, msg] of VERDICTS) if (n >= lo && n <= hi) return msg;
+  return '';
+}
+
+function haptic(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+// ─── ITEM SPAWN ───────────────────────────────────────────────────────────────
+function spawnItem() {
+  const arena = $('arena');
+  const W = arena.clientWidth;
+  const type = pickType();
+
+  const emoji = type.id === 'FAKE'
+    ? FAKE_SHOES[Math.floor(Math.random() * FAKE_SHOES.length)]
+    : type.emoji;
+
+  const el = document.createElement('div');
+  el.className = `item ${type.cls}`;
+  el.innerHTML =
+    `<span class="item-emoji">${emoji}</span>` +
+    (type.label ? `<span class="item-label">${type.label}</span>` : '');
+
+  const cx  = HALF_W + 10 + Math.random() * (W - ITEM_W - 20);
+  const top = -ITEM_H - 6;
+  el.style.left = (cx - HALF_W) + 'px';
+  el.style.top  = top + 'px';
+
+  const item = { el, typeId: type.id, cx, top, speed: itemSpeed(), alive: true };
+  items.push(item);
+  arena.appendChild(el);
+
+  el.addEventListener('pointerdown', ev => {
+    ev.preventDefault();
+    tap(item);
+  }, { passive: false });
+}
+
+// ─── TAP HANDLER ─────────────────────────────────────────────────────────────
+function tap(item) {
+  if (!item.alive || !gameRunning) return;
+  item.alive = false;
+
+  if (item.typeId === 'LTD') {
+    cart++; caught++;
+    updateCart();
+    pop(item.cx, item.top, '+1 🔥', 'pos');
+    haptic(50);
+  } else if (item.typeId === 'BOT') {
+    botTaps++;
+    if (cart > 0) { cart--; updateCart(); }
+    pop(item.cx, item.top, '–1 🤖', 'neg');
+    haptic([30, 15, 30]);
+  } else if (item.typeId === 'FAKE') {
+    fakeTaps++;
+    if (cart > 0) { cart--; updateCart(); }
+    pop(item.cx, item.top, 'FAKE ❌', 'neg');
+    haptic([20, 10, 20]);
+  }
+
+  item.el.classList.add('item-hit');
+  setTimeout(() => { if (item.el.parentNode) item.el.remove(); }, 180);
+  items = items.filter(i => i !== item);
+}
+
+function pop(cx, y, text, cls) {
+  const el = document.createElement('div');
+  el.className = 'pop ' + cls;
+  el.textContent = text;
+  el.style.left = cx + 'px';
+  el.style.top  = Math.max(60, y) + 'px';
+  $('arena').appendChild(el);
+  setTimeout(() => el.remove(), 700);
+}
+
+function updateCart() {
+  const el = $('hud-cart');
+  el.textContent = cart;
+  el.style.transform = 'scale(1.5)';
+  requestAnimationFrame(() => {
+    el.style.transform = 'scale(1)';
+  });
+}
+
+// ─── GAME LOOP ────────────────────────────────────────────────────────────────
+function loop(ts) {
+  if (!gameRunning) return;
+  const dt = Math.min(ts - lastTs, 80);
+  lastTs = ts;
+
+  const H = $('arena').clientHeight;
+
+  for (let i = items.length - 1; i >= 0; i--) {
+    const it = items[i];
+    if (!it.alive) continue;
+    it.top += it.speed * dt / 1000;
+    it.el.style.top = it.top + 'px';
+    if (it.top > H + 10) {
+      if (it.typeId === 'LTD') missed++;
+      it.alive = false;
+      if (it.el.parentNode) it.el.remove();
+      items.splice(i, 1);
+    }
+  }
+
+  spawnAcc += dt;
+  if (spawnAcc >= spawnInterval()) {
+    spawnAcc = 0;
+    spawnItem();
+    if (timeLeft <= 10 && Math.random() < 0.3) {
+      setTimeout(spawnItem, 240);
+    }
+  }
+
+  rafId = requestAnimationFrame(loop);
+}
+
+// ─── TIMER ────────────────────────────────────────────────────────────────────
+function tick() {
+  timeLeft--;
+  const tEl = $('hud-timer');
+  const bar = $('progress-bar');
+  tEl.textContent = timeLeft;
+  bar.style.width = (timeLeft / DURATION * 100) + '%';
+
+  if (timeLeft <= 10) { bar.style.backgroundColor = '#D4720A'; tEl.style.color = '#D4720A'; }
+  if (timeLeft <= 5)  { bar.style.backgroundColor = 'var(--red)'; tEl.style.color = 'var(--red)'; }
+  if (timeLeft <= 0)  stopGame();
+}
+
+// ─── START / STOP ─────────────────────────────────────────────────────────────
+function startGame() {
+  cart=0; caught=0; botTaps=0; fakeTaps=0; missed=0;
+  timeLeft=DURATION; items=[]; spawnAcc=0; gameRunning=true;
+
+  const cartEl = $('hud-cart');
+  cartEl.textContent = '0';
+  cartEl.style.transform = '';
+
+  const tEl = $('hud-timer');
+  tEl.textContent = DURATION;
+  tEl.style.color = 'var(--fg)';
+
+  const bar = $('progress-bar');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  bar.style.backgroundColor = 'var(--accent)';
+  requestAnimationFrame(() => {
+    bar.style.transition = 'width 1s linear, background-color .4s';
+  });
+
+  $('arena').innerHTML = '';
+  showScreen('screen-game');
+
+  lastTs = performance.now();
+  rafId = requestAnimationFrame(loop);
+  tickId = setInterval(tick, 1000);
+}
+
+function stopGame() {
+  gameRunning = false;
+  clearInterval(tickId);
+  cancelAnimationFrame(rafId);
+  $('arena').innerHTML = '';
+  items = [];
+
+  $('end-score').textContent   = cart;
+  $('end-verdict').textContent = getVerdict(cart);
+  $('s-caught').textContent    = caught;
+  $('s-bots').textContent      = botTaps + fakeTaps;
+  $('s-missed').textContent    = missed;
+
+  if (cart >= 3) spawnSparks();
+  showScreen('screen-end');
+}
+
+function spawnSparks() {
+  const c = $('confetti');
+  c.innerHTML = '';
+  const count = Math.min(6 + cart * 2, 28);
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'spark';
+    const size = 2 + Math.random() * 5;
+    s.style.cssText =
+      `left:${5 + Math.random()*90}%;` +
+      `top:${Math.random()*65}%;` +
+      `width:${size}px;height:${size}px;` +
+      `animation-delay:${Math.random()*1.4}s;`;
+    c.appendChild(s);
+  }
+}
+
+// ─── EVENTS ───────────────────────────────────────────────────────────────────
+$('btn-start').addEventListener('pointerdown', startGame);
+$('btn-replay').addEventListener('pointerdown', startGame);
+$('btn-cta').addEventListener('pointerdown', () => {
+  alert('🔒 Achat sécurisé !\n\nRedirection vers SneakerDropNinja.com — SDN-001 × PHANTOM');
+});
+
+document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+lucide.createIcons();
+const _origShowScreen = showScreen;
+window.showScreen = function(id) { _origShowScreen(id); lucide.createIcons(); };
+</script>
+</body>
+</html>
