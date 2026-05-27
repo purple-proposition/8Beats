@@ -16,14 +16,14 @@
 
     :root {
       --accent:  #1C1C1C;
-      --red:     #E53535;
-      --amber:   #C49040;
+      --red:     #D42B2B;
+      --amber:   #8B6020;
       --bg:      #F5F2EE;
       --surface: #ECEAE4;
       --border:  #DEDAD2;
       --fg:      #1C1C1C;
-      --sub:     #7C7870;
-      --muted:   #BAB6AE;
+      --sub:     #5E5A56;
+      --muted:   #8C8882;
 
       --font-ui:   'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'Geist Mono', 'Geist', monospace;
@@ -63,13 +63,13 @@
       font-size: clamp(44px, 12vw, 80px);
       color: var(--fg); line-height: 1;
       text-align: center; letter-spacing: 0;
-      text-transform: uppercase; margin-bottom: 8px;
+      text-transform: uppercase; margin-bottom: 6px;
     }
     .tagline {
       font-family: var(--font-mono);
       font-size: 10px; letter-spacing: 5px;
       color: var(--sub); text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .badge {
@@ -77,44 +77,58 @@
       font-family: var(--font-mono);
       font-size: 10px; font-weight: 600;
       letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .badge-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      flex-shrink: 0;
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
       animation: dot-pulse 1.6s ease-in-out infinite;
     }
     @keyframes dot-pulse {
       0%,100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: .35; transform: scale(.65); }
+      50%      { opacity: .4; transform: scale(.65); }
     }
 
-    .hero-emoji {
-      font-size: clamp(64px, 16vw, 90px);
-      filter: drop-shadow(0 8px 24px rgba(0,0,0,.12));
-      animation: float 3s ease-in-out infinite;
-      margin-bottom: 28px;
+    /* Drop preview card */
+    .drop-preview {
+      width: 100%; max-width: 300px;
+      display: flex; align-items: center;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; margin-bottom: 18px;
     }
-    @keyframes float {
-      0%,100% { transform: translateY(0) rotate(-12deg); }
-      50%      { transform: translateY(-16px) rotate(-12deg); }
+    .drop-preview-img {
+      width: 86px; height: 86px; object-fit: cover; flex-shrink: 0;
+    }
+    .drop-preview-info {
+      padding: 0 16px;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .drop-preview-label {
+      font-family: var(--font-mono); font-size: 9px;
+      font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--sub);
+    }
+    .drop-preview-name {
+      font-family: var(--font-ui); font-size: 15px; font-weight: 700; color: var(--fg);
+    }
+    .drop-preview-qty {
+      font-family: var(--font-mono); font-size: 10px;
+      font-weight: 600; color: var(--muted);
     }
 
     .rules {
       width: 100%; max-width: 300px;
-      border: 1px solid var(--border);
-      border-radius: 14px; overflow: hidden;
-      margin-bottom: 28px;
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+      margin-bottom: 22px;
     }
     .rule {
       display: flex; align-items: center; gap: 14px;
-      padding: 14px 18px;
+      padding: 12px 16px;
       font-size: 13px; color: var(--sub);
       background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
     .rule:last-child { border-bottom: none; }
-    .rule span.icon { font-size: 20px; flex-shrink: 0; }
+    .rule span.icon { font-size: 18px; flex-shrink: 0; }
     .rule em { font-style: normal; font-weight: 700; }
     .rule.good em { color: var(--fg); }
     .rule.fake em { color: var(--amber); }
@@ -141,21 +155,29 @@
     /* ─── GAME SCREEN ─── */
     #screen-game { background: var(--bg); }
 
+    /* Flash vie perdue */
+    #screen-game::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(212, 43, 43, .14);
+      pointer-events: none; opacity: 0; transition: opacity .4s;
+    }
+    #screen-game.flash-life::after { opacity: 1; transition: none; }
+
     #hud {
       position: absolute; top: 0; left: 0; right: 0;
-      padding: 20px 28px 32px;
+      padding: 18px 24px 30px;
       display: flex; align-items: center; justify-content: space-between;
       z-index: 10; pointer-events: none;
       background: linear-gradient(to bottom, var(--bg) 45%, transparent);
     }
 
-    .hud-cart { display: flex; align-items: center; gap: 10px; }
+    .hud-left { display: flex; align-items: center; gap: 9px; }
     .hud-icon { line-height: 1; }
     .hud-score-wrap { display: flex; flex-direction: column; align-items: flex-start; }
     .hud-cart-val {
       font-family: var(--font-mono);
-      font-size: 22px; font-weight: 700; color: var(--accent);
-      min-width: 28px; transition: transform .18s; line-height: 1.1;
+      font-size: 22px; font-weight: 600; color: var(--fg);
+      min-width: 24px; transition: transform .18s; line-height: 1.15;
     }
     .hud-combo {
       font-family: var(--font-mono);
@@ -163,15 +185,20 @@
       color: var(--amber); letter-spacing: 0.5px;
       min-height: 11px; line-height: 11px;
     }
-    .hud-brand {
-      font-family: var(--font-mono);
-      font-size: 11px; font-weight: 600; letter-spacing: 3px; color: var(--accent);
+
+    /* Vies — centre HUD */
+    .hud-lives { display: flex; gap: 4px; align-items: center; }
+    .life {
+      font-size: 15px; color: var(--red);
+      transition: opacity .25s; line-height: 1;
     }
-    .hud-timer { display: flex; align-items: baseline; gap: 4px; }
+    .life.lost { opacity: 0.15; }
+
+    .hud-timer { display: flex; align-items: baseline; gap: 3px; }
     .hud-timer-val {
       font-family: var(--font-mono);
-      font-size: 22px; font-weight: 700; color: var(--fg);
-      min-width: 32px; text-align: right; transition: color .3s;
+      font-size: 22px; font-weight: 600; color: var(--fg);
+      min-width: 28px; text-align: right; transition: color .3s;
     }
     .hud-timer-s { font-family: var(--font-mono); font-size: 11px; color: var(--sub); }
 
@@ -180,7 +207,7 @@
       background: var(--border);
     }
     #progress-bar {
-      height: 100%; background: var(--accent);
+      height: 100%; background: var(--fg);
       transition: width 1s linear, background-color .4s;
     }
 
@@ -207,13 +234,13 @@
     }
 
     .item-fake {
-      background: rgba(196,144,64,.07);
-      border: 1.5px solid rgba(196,144,64,.45);
+      background: rgba(139,96,32,.06);
+      border: 1.5px solid rgba(139,96,32,.35);
       animation: pulse-amber 1.1s ease-in-out infinite;
     }
     @keyframes pulse-amber {
-      0%,100% { box-shadow: 0 2px 8px rgba(196,144,64,.12); }
-      50%      { box-shadow: 0 4px 18px rgba(196,144,64,.3); }
+      0%,100% { box-shadow: 0 2px 8px rgba(139,96,32,.1); }
+      50%      { box-shadow: 0 4px 18px rgba(139,96,32,.25); }
     }
 
     .item-hit {
@@ -229,7 +256,7 @@
       font-size: 12px; white-space: nowrap; z-index: 20;
       animation: pop-up .7s ease forwards;
     }
-    .pop.pos   { color: var(--accent); }
+    .pop.pos   { color: var(--fg); }
     .pop.neg   { color: var(--red); }
     .pop.combo { color: var(--amber); font-size: 14px; }
     @keyframes pop-up {
@@ -246,7 +273,7 @@
     #confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
     .spark {
       position: absolute; border-radius: 50%;
-      background: var(--accent); opacity: 0;
+      background: var(--fg); opacity: 0;
       animation: spark-fall 2s ease forwards;
     }
     @keyframes spark-fall {
@@ -268,8 +295,7 @@
     }
     .lb-header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 14px;
-      background: var(--fg);
+      padding: 10px 14px; background: var(--fg);
     }
     .lb-header-title {
       font-family: var(--font-mono); font-size: 9px;
@@ -277,8 +303,9 @@
       color: var(--bg);
     }
     .lb-header-count {
-      font-family: var(--font-mono); font-size: 9px;
-      color: rgba(245,242,238,.45);
+      font-family: var(--font-mono); font-size: 10px;
+      font-weight: 600; color: rgba(245,242,238,.65);
+      /* number ticks up — keep mono so layout doesn't shift */
     }
     .lb-row {
       display: flex; align-items: center; gap: 10px;
@@ -287,19 +314,20 @@
       border-bottom: 1px solid var(--border);
     }
     .lb-row:last-child { border-bottom: none; }
-    .lb-row.lb-you { background: rgba(28,28,28,.065); }
+    .lb-row.lb-you { background: rgba(28,28,28,.07); }
     .lb-rank {
       font-family: var(--font-mono);
-      font-size: 11px; font-weight: 700;
+      font-size: 11px; font-weight: 600;
       min-width: 38px; color: var(--sub);
     }
-    .lb-row.lb-you .lb-rank { color: var(--fg); }
+    .lb-row.lb-you .lb-rank { color: var(--fg); font-weight: 700; }
     .lb-name {
       flex: 1; font-size: 12px; font-weight: 500; color: var(--fg);
     }
     .lb-row.lb-you .lb-name { font-weight: 700; }
     .lb-pairs {
-      font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+      font-family: var(--font-mono); font-size: 11px;
+      font-weight: 600; color: var(--muted);
     }
     .lb-you-tag {
       font-family: var(--font-mono);
@@ -316,30 +344,36 @@
     .end-model {
       font-family: var(--font-mono); font-size: 9px;
       color: var(--muted); margin-bottom: 12px; letter-spacing: 1.5px;
+      font-weight: 600;
     }
 
     .stats {
-      display: flex; gap: 8px;
-      width: 100%; margin-bottom: 10px;
+      display: flex; gap: 8px; width: 100%; margin-bottom: 10px;
     }
     .stat {
       flex: 1; text-align: center; padding: 10px 6px;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 12px;
     }
-    .stat-val { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--fg); }
-    .stat-lbl { font-family: var(--font-mono); font-size: 8px; color: var(--sub); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
+    .stat-val {
+      font-family: var(--font-mono); font-size: 18px;
+      font-weight: 600; color: var(--fg);
+    }
+    .stat-lbl {
+      font-family: var(--font-mono); font-size: 8px;
+      color: var(--sub); margin-top: 4px;
+      letter-spacing: 1px; text-transform: uppercase;
+      font-weight: 600;
+    }
 
-    /* Fogg — Daily Drop (split layout, reordered) */
+    /* Fogg — Daily Drop (PROCHAIN DROP en haut, puis paire, puis décompte) */
     .next-drop {
-      width: 100%;
-      background: var(--accent); border-radius: 14px;
+      width: 100%; background: var(--fg); border-radius: 14px;
       display: flex; align-items: stretch;
       margin-bottom: 10px; overflow: hidden;
     }
     .next-drop-img {
-      width: 90px; flex-shrink: 0;
-      background: #111; overflow: hidden;
+      width: 88px; flex-shrink: 0; background: #111; overflow: hidden;
     }
     .next-drop-img img {
       width: 100%; height: 100%; object-fit: cover; display: block;
@@ -348,57 +382,49 @@
       flex: 1; padding: 12px 16px;
       display: flex; flex-direction: column; justify-content: center; gap: 1px;
     }
-    /* label "PROCHAIN DROP" — en haut */
     .next-drop-label {
       font-family: var(--font-mono); font-size: 9px;
       font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
       color: rgba(245,242,238,.45); margin-bottom: 2px;
     }
-    /* nom de la paire — au milieu */
     .next-drop-pair {
       font-family: var(--font-ui); font-size: 13px; font-weight: 700;
       color: var(--bg); margin-bottom: 3px;
     }
-    /* décompte — en bas, mono semi-bold */
     .next-drop-val {
       font-family: var(--font-mono); font-size: 22px; font-weight: 600;
       color: var(--bg); letter-spacing: 2px;
     }
 
-    /* Fitts — CTA */
-    .btn-cta {
-      width: 100%; padding: 20px; font-size: 15px;
-      background: var(--accent); color: var(--bg);
-      border: none; border-radius: 14px;
-      margin-bottom: 8px;
-      animation: btn-pulse 2.4s ease infinite;
-    }
-    .btn-cta:hover { box-shadow: 0 8px 32px rgba(0,0,0,.22); }
-
     /* Partager */
     .btn-share {
-      width: 100%; padding: 14px; font-size: 14px;
+      width: 100%; padding: 14px; font-size: 14px; font-weight: 700;
       background: none; color: var(--fg);
       border: 1.5px solid var(--border); border-radius: 14px;
-      margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: var(--font-ui); cursor: pointer;
+      transition: background .15s;
     }
+    .btn-share:active { transform: scale(.97); }
     .btn-share:hover { background: var(--surface); }
-    .btn-share .lucide { width: 15px; height: 15px; }
+    .btn-share .lucide { width: 15px; height: 15px; stroke-width: 2; }
 
-    /* Hick — rejouer en lien discret */
-    .btn-replay {
-      background: none; border: none; border-radius: 0;
-      font-family: var(--font-mono); font-size: 11px; font-weight: 400;
-      color: var(--muted); letter-spacing: 1px;
-      text-decoration: underline; text-underline-offset: 3px;
-      padding: 8px;
+    /* CTA primaire */
+    .btn-cta {
+      width: 100%; padding: 20px; font-size: 15px;
+      background: var(--fg); color: var(--bg);
+      border: none; border-radius: 14px;
+      animation: btn-pulse 2.4s ease infinite;
+      font-family: var(--font-ui); font-weight: 700; cursor: pointer;
     }
-    .btn-replay:hover { color: var(--sub); }
+    .btn-cta:active { transform: scale(.97) !important; }
+    .btn-cta:hover { box-shadow: 0 8px 32px rgba(0,0,0,.22); }
+    .btn-cta .lucide { display: inline-block; vertical-align: middle; width: 1em; height: 1em; margin-right: 6px; stroke-width: 1.75; }
 
     /* ─── LUCIDE ICONS ─── */
     .lucide { display: inline-block; vertical-align: middle; width: 1em; height: 1em; stroke-width: 1.75; }
-    .hud-icon .lucide { width: 20px; height: 20px; color: var(--sub); }
-    .btn .lucide { width: 1em; height: 1em; margin-right: 6px; }
+    .hud-icon .lucide { width: 18px; height: 18px; color: var(--sub); }
   </style>
 </head>
 <body>
@@ -410,9 +436,17 @@
     <div class="tagline">Grimpe dans le classement</div>
     <div class="badge" id="intro-badge">
       <span class="badge-dot" id="badge-dot"></span>
-      <span id="badge-text">Drop en direct · Stock limité</span>
+      <span id="badge-text">Prochain drop · …</span>
     </div>
-    <div class="hero-emoji">👟</div>
+    <!-- Drop du jour -->
+    <div class="drop-preview">
+      <img src="./phantomatik.jpg" alt="Phantomatik LTD 500" class="drop-preview-img">
+      <div class="drop-preview-info">
+        <div class="drop-preview-label">Drop du jour</div>
+        <div class="drop-preview-name">Phantomatik LTD 500</div>
+        <div class="drop-preview-qty">500 exemplaires</div>
+      </div>
+    </div>
     <div class="rules">
       <div class="rule good">
         <span class="icon">👟</span>
@@ -420,7 +454,7 @@
       </div>
       <div class="rule fake">
         <span class="icon">👠</span>
-        <span><em>FAKE</em> · Mauvaise paire, évite</span>
+        <span><em>FAKE</em> · Tu perds une vie</span>
       </div>
     </div>
     <button class="btn btn-primary" id="btn-start">
@@ -431,14 +465,19 @@
   <!-- ── GAME ── -->
   <div class="screen" id="screen-game">
     <div id="hud">
-      <div class="hud-cart">
+      <div class="hud-left">
         <span class="hud-icon"><i data-lucide="award"></i></span>
         <div class="hud-score-wrap">
           <span class="hud-cart-val" id="hud-cart">0</span>
           <span class="hud-combo" id="hud-combo"></span>
         </div>
       </div>
-      <div class="hud-brand">SDN</div>
+      <!-- Vies au centre -->
+      <div class="hud-lives" id="hud-lives">
+        <span class="life">♥</span>
+        <span class="life">♥</span>
+        <span class="life">♥</span>
+      </div>
       <div class="hud-timer">
         <span class="hud-timer-val" id="hud-timer">30</span>
         <span class="hud-timer-s">s</span>
@@ -452,11 +491,10 @@
   <div class="screen" id="screen-end">
     <div id="confetti"></div>
     <div class="end-logo">Sneaker Drop Ninja</div>
-    <!-- Leaderboard battle-royale -->
     <div class="leaderboard">
       <div class="lb-header">
         <span class="lb-header-title">Classement waitlist</span>
-        <span class="lb-header-count">1 000 participants</span>
+        <span class="lb-header-count" id="lb-participant-count">… joueurs</span>
       </div>
       <div id="leaderboard-body"></div>
     </div>
@@ -476,7 +514,6 @@
         <div class="stat-lbl">Ratées</div>
       </div>
     </div>
-    <!-- Fogg — Daily Drop (reordered: label → pair name → countdown) -->
     <div class="next-drop">
       <div class="next-drop-img">
         <img src="./phantomatik.jpg" alt="Phantomatik LTD 500">
@@ -487,22 +524,19 @@
         <div class="next-drop-val" id="next-drop-val">00:00:00</div>
       </div>
     </div>
-    <!-- Partager son score -->
-    <button class="btn btn-share" id="btn-share">
+    <button class="btn-share" id="btn-share">
       <i data-lucide="share-2"></i> Partager mon score
     </button>
-    <!-- CTA primaire -->
     <button class="btn btn-cta" id="btn-cta">
       <i data-lucide="trophy"></i> Sécurise ta place dans le classement
     </button>
-    <!-- Rejouer discret -->
-    <button class="btn btn-replay" id="btn-replay">Rejouer</button>
   </div>
 
 </div>
 <script>
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 const DURATION      = 30;
+const MAX_LIVES     = 3;
 const ITEM_W        = 82;
 const ITEM_H        = 92;
 const HALF_W        = ITEM_W / 2;
@@ -533,9 +567,36 @@ const VERDICTS = [
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let cart=0, caught=0, fakeTaps=0, missed=0;
-let streak=0, effectiveCaught=0, currentRank=WAITLIST_SIZE;
+let lives=MAX_LIVES, streak=0, effectiveCaught=0, currentRank=WAITLIST_SIZE;
 let timeLeft=DURATION, gameRunning=false;
 let items=[], lastTs=0, spawnAcc=0, rafId=null, tickId=null;
+
+// ─── PARTICIPANT COUNTER (FOMO) ────────────────────────────────────────────────
+let participantCount = 1100 + Math.floor(Math.random() * 900); // 1100–2000
+let participantClockId = null;
+
+function fmtParticipants(n) {
+  return n.toLocaleString('fr-FR');
+}
+
+function startParticipantCounter() {
+  clearInterval(participantClockId);
+  const el = $('lb-participant-count');
+  if (!el) return;
+  function tick() {
+    participantCount += Math.floor(Math.random() * 3) + 1;
+    el.textContent = fmtParticipants(participantCount) + ' joueurs';
+  }
+  tick();
+  // Interval irrégulier pour paraître organique
+  (function schedule() {
+    participantClockId = setTimeout(() => { tick(); schedule(); }, 2500 + Math.random() * 3500);
+  })();
+}
+
+function stopParticipantCounter() {
+  clearTimeout(participantClockId);
+}
 
 // ─── FOGG — DAILY DROP CLOCK ──────────────────────────────────────────────────
 const DROP_HOUR = 12;
@@ -602,7 +663,6 @@ function renderLeaderboard(playerRank, playerCaught) {
     if (r < 1 || r > WAITLIST_SIZE) continue;
 
     const div = document.createElement('div');
-
     if (offset === 0) {
       div.className = 'lb-row lb-you';
       div.innerHTML =
@@ -611,12 +671,12 @@ function renderLeaderboard(playerRank, playerCaught) {
         `<span class="lb-pairs">${playerCaught} paires</span>`;
     } else {
       const delta = Math.ceil(Math.random() * 2 + 0.5);
-      const fakePairs = Math.max(0, playerCaught + (offset < 0 ? delta : -delta));
+      const fp = Math.max(0, playerCaught + (offset < 0 ? delta : -delta));
       div.className = 'lb-row';
       div.innerHTML =
         `<span class="lb-rank">#${r}</span>` +
         `<span class="lb-name">${names[ni++]}</span>` +
-        `<span class="lb-pairs">${fakePairs} paires</span>`;
+        `<span class="lb-pairs">${fp} paires</span>`;
     }
     body.appendChild(div);
   }
@@ -644,8 +704,8 @@ function getMultiplier(s) {
 function pickType() {
   const elapsed = DURATION - timeLeft;
   const weights = TYPES.map(t => {
-    if (t.id === 'FAKE'    && elapsed > 15) return t.weight + 15;
-    if (t.id === 'SNEAKER' && elapsed > 15) return Math.max(10, t.weight - 15);
+    if (t.id === 'FAKE'    && elapsed > 12) return t.weight + 18;
+    if (t.id === 'SNEAKER' && elapsed > 12) return Math.max(8, t.weight - 18);
     return t.weight;
   });
   const total = weights.reduce((s, w) => s + w, 0);
@@ -659,12 +719,15 @@ function pickType() {
 
 function spawnInterval() {
   const elapsed = DURATION - timeLeft;
-  return Math.max(520, 1180 - elapsed * 22);
+  // Démarre à 1 300ms, accélère à 360ms — courbe quadratique
+  return Math.max(360, 1300 - elapsed * 31 - Math.pow(elapsed, 1.6) * 0.9);
 }
 
 function itemSpeed() {
   const elapsed = DURATION - timeLeft;
-  return 125 + elapsed * 4.5 + Math.random() * 38;
+  const t = elapsed / DURATION; // 0→1
+  // Accélération quadratique : lent au début, rapide à la fin
+  return 85 + t * t * 260 + Math.random() * 40;
 }
 
 function getVerdict(rank) {
@@ -674,6 +737,26 @@ function getVerdict(rank) {
 
 function haptic(pattern) {
   if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+// ─── VIES ─────────────────────────────────────────────────────────────────────
+function updateLivesHud() {
+  const container = $('hud-lives');
+  const spans = container.querySelectorAll('.life');
+  spans.forEach((s, i) => {
+    s.classList.toggle('lost', i >= lives);
+  });
+}
+
+function loseLife() {
+  lives--;
+  updateLivesHud();
+  haptic([30, 15, 30]);
+  // Flash rouge
+  const g = $('screen-game');
+  g.classList.add('flash-life');
+  setTimeout(() => g.classList.remove('flash-life'), 30);
+  if (lives <= 0) stopGame();
 }
 
 // ─── ITEM SPAWN ───────────────────────────────────────────────────────────────
@@ -709,26 +792,20 @@ function tap(item) {
 
   if (item.typeId === 'SNEAKER') {
     streak++;
-    caught++;
+    caught++; cart++;
     const multi = getMultiplier(streak);
     effectiveCaught += multi;
-    cart = Math.max(0, cart + 1);
-    updateCart();
+    updateCartHud();
     updateComboHud();
-
-    if (streak >= 3) {
-      pop(item.cx, item.top, `×${multi} COMBO!`, 'combo');
-    } else {
-      pop(item.cx, item.top, '+1 🔥', 'pos');
-    }
+    if (streak >= 3) pop(item.cx, item.top, `×${multi} COMBO!`, 'combo');
+    else             pop(item.cx, item.top, '+1 🔥', 'pos');
     haptic(50);
   } else if (item.typeId === 'FAKE') {
     streak = 0;
     fakeTaps++;
-    if (cart > 0) { cart--; updateCart(); }
     updateComboHud();
     pop(item.cx, item.top, 'FAKE ❌', 'neg');
-    haptic([20, 10, 20]);
+    loseLife();
   }
 
   item.el.classList.add('item-hit');
@@ -741,12 +818,12 @@ function pop(cx, y, text, cls) {
   el.className = 'pop ' + cls;
   el.textContent = text;
   el.style.left = cx + 'px';
-  el.style.top  = Math.max(60, y) + 'px';
+  el.style.top  = Math.max(70, y) + 'px';
   $('arena').appendChild(el);
   setTimeout(() => el.remove(), 700);
 }
 
-function updateCart() {
+function updateCartHud() {
   const el = $('hud-cart');
   el.textContent = cart;
   el.style.transform = 'scale(1.5)';
@@ -784,7 +861,9 @@ function loop(ts) {
   if (spawnAcc >= spawnInterval()) {
     spawnAcc = 0;
     spawnItem();
-    if (timeLeft <= 10 && Math.random() < 0.3) setTimeout(spawnItem, 240);
+    // Double spawn en fin de partie
+    const elapsed = DURATION - timeLeft;
+    if (elapsed > 20 && Math.random() < 0.35) setTimeout(spawnItem, 220);
   }
 
   rafId = requestAnimationFrame(loop);
@@ -797,7 +876,7 @@ function tick() {
   const bar  = $('progress-bar');
   tEl.textContent = timeLeft;
   bar.style.width = (timeLeft / DURATION * 100) + '%';
-  if (timeLeft <= 10) { bar.style.backgroundColor = '#D4720A'; tEl.style.color = '#D4720A'; }
+  if (timeLeft <= 10) { bar.style.backgroundColor = '#C24E10'; tEl.style.color = '#C24E10'; }
   if (timeLeft <= 5)  { bar.style.backgroundColor = 'var(--red)'; tEl.style.color = 'var(--red)'; }
   if (timeLeft <= 0)  stopGame();
 }
@@ -805,20 +884,22 @@ function tick() {
 // ─── START / STOP ─────────────────────────────────────────────────────────────
 function startGame() {
   cart=0; caught=0; fakeTaps=0; missed=0;
-  streak=0; effectiveCaught=0;
+  lives=MAX_LIVES; streak=0; effectiveCaught=0;
   timeLeft=DURATION; items=[]; spawnAcc=0; gameRunning=true;
   clearInterval(dropClockId);
+  stopParticipantCounter();
 
   $('hud-cart').textContent  = '0';
   $('hud-cart').style.transform = '';
   $('hud-combo').textContent = '';
   $('hud-timer').textContent = DURATION;
   $('hud-timer').style.color = 'var(--fg)';
+  updateLivesHud();
 
   const bar = $('progress-bar');
   bar.style.transition = 'none';
   bar.style.width = '100%';
-  bar.style.backgroundColor = 'var(--accent)';
+  bar.style.backgroundColor = 'var(--fg)';
   requestAnimationFrame(() => { bar.style.transition = 'width 1s linear, background-color .4s'; });
 
   $('arena').innerHTML = '';
@@ -831,6 +912,7 @@ function startGame() {
 }
 
 function stopGame() {
+  if (!gameRunning) return;
   gameRunning = false;
   clearInterval(tickId);
   cancelAnimationFrame(rafId);
@@ -848,6 +930,7 @@ function stopGame() {
   showScreen('screen-end');
   lucide.createIcons();
   startDropClock();
+  startParticipantCounter();
 }
 
 function spawnSparks() {
@@ -858,7 +941,7 @@ function spawnSparks() {
     s.className = 'spark';
     const size = 2 + Math.random() * 5;
     s.style.cssText =
-      `left:${5+Math.random()*90}%;top:${Math.random()*65}%;` +
+      `left:${5+Math.random()*90}%;top:${Math.random()*60}%;` +
       `width:${size}px;height:${size}px;animation-delay:${Math.random()*1.4}s;`;
     c.appendChild(s);
   }
@@ -867,7 +950,7 @@ function spawnSparks() {
 // ─── SHARE ───────────────────────────────────────────────────────────────────
 async function shareScore() {
   const text =
-    `J'ai décroché la place #${currentRank} sur 1 000 dans la waitlist Phantomatik LTD 500 🏆\n` +
+    `J'ai décroché la place #${currentRank} sur ${fmtParticipants(participantCount)} dans la waitlist Phantomatik LTD 500 🏆\n` +
     `${caught} paires attrapées — Sneaker Drop Ninja\n` +
     `👉 sneakerdropninja.vercel.app`;
   const btn = $('btn-share');
@@ -877,7 +960,8 @@ async function shareScore() {
     } else {
       await navigator.clipboard.writeText(text);
       const orig = btn.innerHTML;
-      btn.innerHTML = 'Copié ✓';
+      btn.innerHTML = '<i data-lucide="check"></i> Copié !';
+      lucide.createIcons();
       setTimeout(() => { btn.innerHTML = orig; lucide.createIcons(); }, 2200);
     }
   } catch(e) {}
@@ -885,7 +969,6 @@ async function shareScore() {
 
 // ─── EVENTS ───────────────────────────────────────────────────────────────────
 $('btn-start').addEventListener('pointerdown', startGame);
-$('btn-replay').addEventListener('pointerdown', startGame);
 $('btn-share').addEventListener('pointerdown', shareScore);
 $('btn-cta').addEventListener('pointerdown', () => {
   window.open('https://sneakerdropninja.com/waitlist', '_blank');
