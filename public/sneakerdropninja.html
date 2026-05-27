@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sneaker Drop Ninja — Arrives First or Not at All</title>
 
+  <!-- Staatliches -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/style.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/style.css" rel="stylesheet">
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -20,240 +20,232 @@
             accent: { light: '#C4403F', DEFAULT: '#A52A2A', dark: '#8B1C1C' }
           },
           fontFamily: {
-            sans:    ['Geist',      'system-ui', 'sans-serif'],
-            mono:    ['Geist Mono', 'monospace'],
-            display: ['Staatliches','sans-serif'],
+            sans:    ['Geist', 'system-ui', 'sans-serif'],
+            mono:    ['"Geist Mono"', '"Courier New"', 'monospace'],
+            display: ['Staatliches', 'sans-serif'],
           }
         }
       }
     }
   </script>
+
+  <!-- Lucide -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
   <style>
+    /* ── Geist Sans ── */
+    @font-face {
+      font-family: 'Geist';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/GeistVF.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ── Geist Mono — explicit file references ── */
+    @font-face {
+      font-family: 'Geist Mono';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/GeistMonoVF.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ── Marquee ── */
     @keyframes marquee {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
     }
-    .marquee-track { animation: marquee 28s linear infinite; display: flex; width: max-content; }
+    .marquee-track { animation: marquee 30s linear infinite; display: flex; width: max-content; }
     .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
 
-    [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    /* ── Reveal ── */
+    [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
     [data-reveal].visible { opacity: 1; transform: translateY(0); }
     [data-reveal][data-d="1"] { transition-delay: 0.12s; }
     [data-reveal][data-d="2"] { transition-delay: 0.24s; }
     [data-reveal][data-d="3"] { transition-delay: 0.36s; }
 
-    .hero-img { transform: scale(1.06); transition: transform 9s ease; }
-    .hero-img.loaded { transform: scale(1); }
-
+    /* ── Card image hover ── */
     .drop-card .card-img { transition: transform 0.5s ease; }
     .drop-card:hover .card-img { transform: scale(1.04); }
 
-    .nav-link::after {
-      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
-      height: 1px; background: #A52A2A;
-      transform: scaleX(0); transition: transform 0.2s ease; transform-origin: left;
-    }
-    .nav-link { position: relative; }
-    .nav-link:hover::after { transform: scaleX(1); }
-
+    /* ── Input ── */
     input:focus { outline: 2px solid #A52A2A; outline-offset: 2px; }
+
+    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #0a0a0a; }
-    ::-webkit-scrollbar-thumb { background: #404040; border-radius: 2px; }
+    ::-webkit-scrollbar-track { background: #fafafa; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 2px; }
 
-    #site-header { transition: backdrop-filter 0.3s; }
-    #site-header.scrolled { backdrop-filter: blur(16px); background: rgba(10,10,10,0.92) !important; }
+    /* ── Header shadow on scroll ── */
+    #site-header { transition: box-shadow 0.3s; }
+    #site-header.scrolled { box-shadow: 0 1px 0 #e5e5e5, 0 4px 24px rgba(0,0,0,0.04); }
 
-    @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    /* ── Size chip ── */
+    .size-chip { transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .size-chip.active { background: #A52A2A !important; color: #fff !important; border-color: #A52A2A !important; }
+
+    @keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
     .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
-
-    #mobile-menu { transition: opacity 0.25s ease, transform 0.25s ease; }
-    #mobile-menu.menu-hidden  { opacity: 0; transform: translateY(-8px); pointer-events: none; }
-    #mobile-menu.menu-visible { opacity: 1; transform: translateY(0);     pointer-events: all; }
   </style>
 </head>
 
-<body class="bg-neutral-950 text-neutral-100 font-sans antialiased overflow-x-hidden">
+<body class="bg-white text-neutral-900 font-sans antialiased overflow-x-hidden">
 
-  <!-- ── Mobile menu ── -->
-  <div id="mobile-menu" class="menu-hidden fixed inset-0 z-40 bg-neutral-950 flex flex-col pt-24 px-6 pb-8 lg:hidden overflow-y-auto">
-    <nav class="flex flex-col gap-1 mb-8">
-      <a href="#drops"    data-mobile-link class="text-base font-semibold tracking-[0.15em] uppercase py-4 border-b border-neutral-800 flex items-center justify-between">Les Drops <i data-lucide="arrow-right" class="w-4 h-4 text-neutral-600"></i></a>
-      <a href="#game"     data-mobile-link class="text-base font-semibold tracking-[0.15em] uppercase py-4 border-b border-neutral-800 flex items-center justify-between">Le Jeu <i data-lucide="arrow-right" class="w-4 h-4 text-neutral-600"></i></a>
-      <a href="#waitlist" data-mobile-link class="text-base font-semibold tracking-[0.15em] uppercase py-4 border-b border-neutral-800 flex items-center justify-between">Waitlist <i data-lucide="arrow-right" class="w-4 h-4 text-neutral-600"></i></a>
-    </nav>
-    <a href="./drpd-ad.html" class="bg-accent text-neutral-100 text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 text-center mt-auto">Entrer dans l'arène →</a>
-  </div>
+  <!-- ══════════════════════════════════════
+       HEADER — logo left · 3 icons right
+  ══════════════════════════════════════ -->
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-neutral-200 h-16">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12 h-full flex items-center justify-between">
 
-  <!-- ── Fixed header ── -->
-  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-neutral-950">
+      <a href="#top" class="font-display text-2xl md:text-3xl lg:text-4xl text-neutral-900 leading-none hover:text-accent transition-colors">
+        SNEAKER DROP NINJA
+      </a>
 
-    <!-- Announcement strip -->
-    <div class="bg-accent">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 py-2 flex items-center justify-center gap-3">
-        <div class="w-1.5 h-1.5 rounded-full bg-neutral-100 pulse-dot flex-shrink-0"></div>
-        <span class="text-xs font-normal font-mono tracking-[0.12em] md:tracking-[0.18em] text-neutral-100 uppercase text-center">
-          <span class="hidden sm:inline">DROP 001 · PHANTOMATIK LTD 500 · 500 EXEMPLAIRES · </span>
-          <span class="sm:hidden">DROP 001 · </span>
-          <span id="strip-countdown">--:--:--</span>
-          <span class="hidden sm:inline"> restantes</span>
-        </span>
+      <div class="flex items-center gap-5 md:gap-6">
+        <button class="text-neutral-500 hover:text-neutral-900 transition-colors" aria-label="Mon compte">
+          <i data-lucide="user" class="w-5 h-5"></i>
+        </button>
+        <button class="text-neutral-500 hover:text-neutral-900 transition-colors" aria-label="Panier">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        </button>
+        <button class="text-neutral-500 hover:text-neutral-900 transition-colors" aria-label="Favoris">
+          <i data-lucide="heart" class="w-5 h-5"></i>
+        </button>
       </div>
-    </div>
 
-    <!-- Nav -->
-    <div class="border-b border-neutral-800 h-16 flex items-center">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 w-full flex items-center justify-between gap-4">
-        <a href="#top" class="font-display text-2xl md:text-3xl lg:text-4xl text-neutral-100 leading-none hover:text-accent transition-colors flex-shrink-0">SNEAKER DROP NINJA</a>
-        <nav class="hidden lg:flex items-center gap-8">
-          <a href="#drops"    class="nav-link text-xs font-semibold tracking-[0.2em] text-neutral-400 hover:text-neutral-100 transition-colors uppercase">Les Drops</a>
-          <a href="#game"     class="nav-link text-xs font-semibold tracking-[0.2em] text-neutral-400 hover:text-neutral-100 transition-colors uppercase">Le Jeu</a>
-          <a href="#waitlist" class="nav-link text-xs font-semibold tracking-[0.2em] text-neutral-400 hover:text-neutral-100 transition-colors uppercase">Waitlist</a>
-        </nav>
-        <div class="flex items-center gap-4 md:gap-6">
-          <button class="text-neutral-400 hover:text-neutral-100 transition-colors hidden sm:block" aria-label="Rechercher"><i data-lucide="search" class="w-4 h-4"></i></button>
-          <button class="text-neutral-400 hover:text-neutral-100 transition-colors" aria-label="Wishlist"><i data-lucide="heart" class="w-4 h-4"></i></button>
-          <button id="menu-btn" class="lg:hidden text-neutral-400 hover:text-neutral-100 transition-colors" aria-label="Menu"><i data-lucide="menu" class="w-5 h-5" id="menu-icon"></i></button>
-        </div>
-      </div>
     </div>
   </header>
 
-  <div id="top" class="h-24"></div>
+  <div id="top" class="h-16"></div>
 
   <main>
 
-    <!-- ═══════════ HERO — H1 + SLOGAN ═══════════ -->
-    <section class="flex flex-col lg:grid lg:grid-cols-2 min-h-[calc(100vh-96px)]">
+    <!-- ══════════════════════════════════════
+         HERO — catchphrase + concept
+    ══════════════════════════════════════ -->
+    <section class="min-h-[calc(100vh-64px)] flex flex-col justify-between px-6 md:px-12 lg:px-24 py-12 md:py-16 bg-white">
 
-      <!-- Left: brand -->
-      <div class="bg-neutral-950 flex flex-col justify-center px-6 md:px-12 lg:px-24 py-12">
-        <h1 data-reveal class="font-display text-[clamp(56px,8vw,96px)] leading-none text-neutral-100 mb-6 md:mb-8">
-          SNEAKER<br>DROP<br>NINJA
+      <!-- Catchphrase -->
+      <div class="flex-1 flex items-center py-8 md:py-12">
+        <h1 data-reveal
+            class="font-display text-neutral-900 leading-none"
+            style="font-size: clamp(52px, 9.5vw, 128px); line-height: 0.92;">
+          ARRIVES<br>FIRST OR<br>NOT AT ALL.
         </h1>
-        <p data-reveal data-d="1" class="text-xl font-normal text-neutral-400 leading-relaxed mb-8 md:mb-12 max-w-xs">
-          Arrives first or not at all.
+      </div>
+
+      <!-- Concept + CTAs -->
+      <div data-reveal data-d="1" class="border-t border-neutral-200 pt-8 md:pt-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-end">
+
+        <p class="text-base font-normal text-neutral-500 leading-relaxed max-w-sm">
+          Des drops exclusifs, une waitlist qui se mérite. Ici, les sneakers les plus rares du moment ne s'achètent pas — elles se gagnent dans une arène de 30 secondes. Joue, classe-toi, accède.
         </p>
-        <div data-reveal data-d="2" class="flex flex-wrap items-center gap-4 md:gap-6">
-          <a href="#drops"         class="bg-accent hover:bg-accent-dark text-neutral-100 text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors">Voir les drops</a>
-          <a href="./drpd-ad.html" class="flex items-center gap-2 text-xs font-semibold tracking-[0.2em] text-neutral-400 hover:text-neutral-100 uppercase transition-colors">Le jeu <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
-        </div>
-        <!-- Stats -->
-        <div data-reveal data-d="3" class="flex items-center gap-4 md:gap-8 mt-12 md:mt-16 pt-6 md:pt-8 border-t border-neutral-800 overflow-hidden">
-          <div class="min-w-0">
-            <div class="text-xl font-normal font-mono text-neutral-100 truncate" id="hero-participants">—</div>
-            <div class="text-xs font-semibold text-neutral-500 tracking-normal uppercase mt-1 whitespace-nowrap">En attente</div>
-          </div>
-          <div class="w-px h-8 bg-neutral-800 flex-shrink-0"></div>
-          <div class="min-w-0">
-            <div class="text-xl font-normal font-mono text-neutral-100">500</div>
-            <div class="text-xs font-semibold text-neutral-500 tracking-normal uppercase mt-1 whitespace-nowrap">Exemplaires</div>
-          </div>
-          <div class="w-px h-8 bg-neutral-800 flex-shrink-0"></div>
-          <div class="min-w-0">
-            <div class="text-xl font-normal font-mono text-accent truncate" id="hero-countdown">--:--:--</div>
-            <div class="text-xs font-semibold text-neutral-500 tracking-normal uppercase mt-1 whitespace-nowrap">Avant le drop</div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Right: shoe -->
-      <div class="bg-[#F0ECE6] relative flex items-center justify-center overflow-hidden" style="min-height:320px;">
-        <div class="p-8 md:p-12 w-full h-full flex items-center justify-center">
-          <img src="./phantomatik.jpg" alt="Phantomatik LTD 500"
-               class="hero-img w-full max-w-xs md:max-w-sm lg:max-w-lg object-contain mix-blend-multiply"
-               onload="this.classList.add('loaded')">
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="#drops"
+             class="bg-neutral-900 hover:bg-neutral-700 text-white text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors">
+            Voir les drops
+          </a>
+          <a href="./drpd-ad.html"
+             class="border border-neutral-300 hover:border-neutral-700 text-neutral-600 hover:text-neutral-900 text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors">
+            Entrer dans l'arène
+          </a>
+          <div class="flex items-center gap-2 ml-2 hidden sm:flex">
+            <div class="w-1.5 h-1.5 rounded-full bg-accent pulse-dot"></div>
+            <span class="text-xs font-normal font-mono text-neutral-400"><span id="hero-participants">—</span> en attente</span>
+          </div>
         </div>
-        <div class="absolute top-4 md:top-8 right-4 md:right-8 bg-neutral-950 text-neutral-100 text-xs font-normal font-mono tracking-[0.15em] px-3 md:px-4 py-2 uppercase">
-          Drop 001 — Live
-        </div>
-        <div class="absolute bottom-4 md:bottom-8 left-4 md:left-8 flex items-center gap-2">
-          <div class="w-2 h-2 rounded-full bg-accent pulse-dot"></div>
-          <span class="text-xs font-normal font-mono text-neutral-950 tracking-[0.08em]" id="hero-live">— en attente</span>
-        </div>
-      </div>
 
+      </div>
     </section>
 
-    <!-- ═══════════ MARQUEE ═══════════ -->
-    <div class="bg-neutral-950 border-y border-neutral-800 py-4 overflow-hidden marquee-wrap select-none">
+    <!-- ══════════════════════════════════════
+         MARQUEE — dark band
+    ══════════════════════════════════════ -->
+    <div class="bg-neutral-900 py-4 overflow-hidden marquee-wrap select-none">
       <div class="marquee-track">
         <template id="marquee-seg">
           <span class="text-xs font-normal font-mono text-neutral-100 tracking-[0.22em] uppercase px-8">SNEAKER DROP NINJA</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-mono font-normal">✦</span>
           <span class="text-xs font-normal font-mono text-neutral-400 tracking-[0.22em] uppercase px-8">ARRIVES FIRST OR NOT AT ALL</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-mono font-normal">✦</span>
           <span class="text-xs font-normal font-mono text-neutral-100 tracking-[0.22em] uppercase px-8">PHANTOMATIK LTD 500</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
-          <span class="text-xs font-normal font-mono text-neutral-400 tracking-[0.22em] uppercase px-8">€ 280 — 500 PAIRES — ÉDITION LIMITÉE</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-mono font-normal">✦</span>
           <span class="text-xs font-normal font-mono text-accent tracking-[0.22em] uppercase px-8">DROP 001 — LIVE</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-mono font-normal">✦</span>
+          <span class="text-xs font-normal font-mono text-neutral-400 tracking-[0.22em] uppercase px-8">€ 280 · 500 EXEMPLAIRES · WAITLIST ONLY</span>
+          <span class="text-neutral-600 px-4 font-mono font-normal">✦</span>
         </template>
       </div>
     </div>
 
-    <!-- ═══════════ DROPS (2e section) ═══════════ -->
-    <section id="drops" class="py-12 md:py-16 lg:py-24 bg-neutral-950">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+    <!-- ══════════════════════════════════════
+         DROPS — 2e section
+    ══════════════════════════════════════ -->
+    <section id="drops" class="py-12 md:py-16 lg:py-24 bg-neutral-50">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12">
 
         <div data-reveal class="flex items-end justify-between mb-8 md:mb-12">
-          <h2 class="font-display text-4xl md:text-5xl text-neutral-100 leading-none">LES DROPS</h2>
-          <span class="text-xs font-normal font-mono text-neutral-600 uppercase hidden sm:block">Saison 2026</span>
+          <h2 class="font-display text-4xl md:text-5xl text-neutral-900 leading-none">LES DROPS</h2>
+          <span class="text-xs font-normal font-mono text-neutral-400 uppercase hidden sm:block">Saison 2026</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
 
           <!-- Drop 001 — Live -->
-          <a data-reveal href="./product-phantomatik.html" class="drop-card group block">
+          <a data-reveal href="./product-phantomatik.html"
+             class="drop-card group block bg-white border border-neutral-200 hover:border-neutral-400 transition-colors">
             <div class="overflow-hidden bg-[#F0ECE6] aspect-square flex items-center justify-center p-8">
-              <img src="./phantomatik.jpg" alt="Phantomatik LTD 500" class="w-full object-contain mix-blend-multiply card-img">
+              <img src="./phantomatik.jpg" alt="Phantomatik LTD 500"
+                   class="w-full object-contain mix-blend-multiply card-img">
             </div>
-            <div class="flex items-start justify-between mt-3 md:mt-4">
+            <div class="p-4 flex items-start justify-between">
               <div>
-                <div class="text-xs font-normal font-mono text-neutral-500 uppercase mb-1">Drop 001</div>
-                <div class="text-base font-semibold text-neutral-100">Phantomatik LTD 500</div>
-                <div class="text-xs font-normal font-mono text-neutral-400 mt-1">€ 280 · 500 prs</div>
+                <div class="text-xs font-normal font-mono text-neutral-400 uppercase mb-1">Drop 001</div>
+                <div class="text-base font-semibold text-neutral-900">Phantomatik LTD 500</div>
+                <div class="text-xs font-normal font-mono text-neutral-500 mt-1">€ 280 · 500 prs</div>
               </div>
-              <span class="bg-accent text-neutral-100 text-xs font-normal font-mono px-2 py-1 uppercase flex-shrink-0">Live</span>
+              <span class="bg-accent text-white text-xs font-normal font-mono px-2 py-1 uppercase flex-shrink-0">Live</span>
             </div>
           </a>
 
           <!-- Drop 002 — Soon -->
-          <div data-reveal data-d="1" class="drop-card cursor-not-allowed">
-            <div class="bg-neutral-900 border border-neutral-800 aspect-square flex items-center justify-center p-8">
+          <div data-reveal data-d="1"
+               class="drop-card bg-white border border-neutral-200 cursor-not-allowed opacity-60">
+            <div class="bg-neutral-100 aspect-square flex items-center justify-center p-8">
               <div class="text-center">
-                <div class="font-display text-4xl md:text-5xl text-neutral-700 leading-none mb-4">DROP<br>002</div>
-                <div class="text-xs font-normal font-mono text-neutral-700 uppercase">Prochainement</div>
+                <div class="font-display text-4xl md:text-5xl text-neutral-400 leading-none mb-3">DROP<br>002</div>
+                <div class="text-xs font-normal font-mono text-neutral-400 uppercase">Prochainement</div>
               </div>
             </div>
-            <div class="flex items-start justify-between mt-3 md:mt-4">
+            <div class="p-4 flex items-start justify-between">
               <div>
-                <div class="text-xs font-normal font-mono text-neutral-600 uppercase mb-1">Drop 002</div>
-                <div class="text-base font-semibold text-neutral-700">Bientôt disponible</div>
-                <div class="text-xs font-normal font-mono text-neutral-800 mt-1">—</div>
+                <div class="text-xs font-normal font-mono text-neutral-400 uppercase mb-1">Drop 002</div>
+                <div class="text-base font-semibold text-neutral-400">Bientôt disponible</div>
+                <div class="text-xs font-normal font-mono text-neutral-300 mt-1">—</div>
               </div>
-              <span class="bg-neutral-800 text-neutral-600 text-xs font-normal font-mono px-2 py-1 uppercase flex-shrink-0">Soon</span>
+              <span class="bg-neutral-200 text-neutral-500 text-xs font-normal font-mono px-2 py-1 uppercase flex-shrink-0">Soon</span>
             </div>
           </div>
 
           <!-- Drop 003 — Soon -->
-          <div data-reveal data-d="2" class="drop-card cursor-not-allowed hidden sm:block">
-            <div class="bg-neutral-900 border border-neutral-800 aspect-square flex items-center justify-center p-8">
+          <div data-reveal data-d="2"
+               class="drop-card bg-white border border-neutral-200 cursor-not-allowed opacity-60 hidden sm:block">
+            <div class="bg-neutral-100 aspect-square flex items-center justify-center p-8">
               <div class="text-center">
-                <div class="font-display text-4xl md:text-5xl text-neutral-700 leading-none mb-4">DROP<br>003</div>
-                <div class="text-xs font-normal font-mono text-neutral-700 uppercase">Prochainement</div>
+                <div class="font-display text-4xl md:text-5xl text-neutral-400 leading-none mb-3">DROP<br>003</div>
+                <div class="text-xs font-normal font-mono text-neutral-400 uppercase">Prochainement</div>
               </div>
             </div>
-            <div class="flex items-start justify-between mt-3 md:mt-4">
+            <div class="p-4 flex items-start justify-between">
               <div>
-                <div class="text-xs font-normal font-mono text-neutral-600 uppercase mb-1">Drop 003</div>
-                <div class="text-base font-semibold text-neutral-700">Bientôt disponible</div>
-                <div class="text-xs font-normal font-mono text-neutral-800 mt-1">—</div>
+                <div class="text-xs font-normal font-mono text-neutral-400 uppercase mb-1">Drop 003</div>
+                <div class="text-base font-semibold text-neutral-400">Bientôt disponible</div>
+                <div class="text-xs font-normal font-mono text-neutral-300 mt-1">—</div>
               </div>
-              <span class="bg-neutral-800 text-neutral-600 text-xs font-normal font-mono px-2 py-1 uppercase flex-shrink-0">Soon</span>
+              <span class="bg-neutral-200 text-neutral-500 text-xs font-normal font-mono px-2 py-1 uppercase flex-shrink-0">Soon</span>
             </div>
           </div>
 
@@ -261,22 +253,25 @@
       </div>
     </section>
 
-    <!-- ═══════════ GAME CTA ═══════════ -->
+    <!-- ══════════════════════════════════════
+         GAME CTA — dark section
+    ══════════════════════════════════════ -->
     <section id="game" class="py-12 md:py-16 lg:py-24 bg-neutral-900 relative overflow-hidden">
       <div class="hidden lg:block absolute inset-0 pointer-events-none select-none overflow-hidden">
-        <span class="font-display text-[280px] leading-none text-neutral-800/40 absolute -bottom-12 -right-4">SDN</span>
+        <span class="font-display text-[320px] leading-none text-white/5 absolute -bottom-16 -right-8">SDN</span>
       </div>
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 relative grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-center">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12 relative grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-center">
 
         <div>
-          <h2 data-reveal class="font-display text-5xl md:text-6xl lg:text-7xl text-neutral-100 leading-none mb-6 md:mb-8">
+          <h2 data-reveal class="font-display text-5xl md:text-6xl lg:text-7xl text-white leading-none mb-6 md:mb-8">
             PROUVE<br>TA VALEUR.<br>GAGNE<br>TA PLACE.
           </h2>
           <p data-reveal data-d="1" class="text-base font-normal text-neutral-400 leading-relaxed mb-8 md:mb-12 max-w-sm">
-            La waitlist ne s'achète pas — elle se mérite. 30 secondes, une arène, un seul objectif : attrape les vraies paires, ignore les fakes. Ton score détermine ton rang.
+            La waitlist ne s'achète pas — elle se mérite. 30 secondes, une arène, un objectif : attrape les vraies paires, ignore les fakes. Ton score détermine ton rang.
           </p>
           <div data-reveal data-d="2" class="flex flex-wrap items-center gap-4 md:gap-6">
-            <a href="./drpd-ad.html" class="bg-accent hover:bg-accent-dark text-neutral-100 text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors flex items-center gap-2">
+            <a href="./drpd-ad.html"
+               class="bg-accent hover:bg-accent-dark text-white text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors flex items-center gap-2">
               <i data-lucide="zap" class="w-4 h-4"></i> Entrer dans l'arène
             </a>
             <div class="flex items-center gap-2">
@@ -284,17 +279,17 @@
               <span class="text-xs font-normal font-mono text-neutral-500"><span id="game-participants">—</span> en compétition</span>
             </div>
           </div>
-          <div data-reveal data-d="3" class="mt-8 md:mt-12 grid grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-8 border-t border-neutral-800">
+          <div data-reveal data-d="3" class="mt-8 md:mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-neutral-800">
             <div>
-              <div class="text-xl font-normal font-mono text-neutral-100 mb-1">30s</div>
+              <div class="text-xl font-normal font-mono text-white mb-1">30s</div>
               <div class="text-xs font-semibold text-neutral-500 uppercase">Durée</div>
             </div>
             <div>
-              <div class="text-xl font-normal font-mono text-neutral-100 mb-1">×3</div>
+              <div class="text-xl font-normal font-mono text-white mb-1">×3</div>
               <div class="text-xs font-semibold text-neutral-500 uppercase">Combo max</div>
             </div>
             <div>
-              <div class="text-xl font-normal font-mono text-neutral-100 mb-1">1 000</div>
+              <div class="text-xl font-normal font-mono text-white mb-1">1 000</div>
               <div class="text-xs font-semibold text-neutral-500 uppercase">Places waitlist</div>
             </div>
           </div>
@@ -302,7 +297,7 @@
 
         <!-- Mockup — tablet+ -->
         <div data-reveal data-d="1" class="hidden md:flex justify-center relative">
-          <div class="relative" style="width:260px;aspect-ratio:9/16;max-height:520px;background:#F5F2EE;overflow:hidden;box-shadow:0 0 48px rgba(165,42,42,0.22),0 0 100px rgba(165,42,42,0.08);">
+          <div class="relative" style="width:260px;aspect-ratio:9/16;max-height:520px;background:#F5F2EE;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.06), 0 32px 80px rgba(0,0,0,0.5);">
             <div class="flex justify-between items-center px-4 pt-4 pb-2">
               <div class="flex items-center gap-1"><span class="text-xl">🏆</span><span class="font-mono font-normal text-neutral-950 text-base">7</span><span class="text-xs font-normal font-mono text-neutral-950/50 ml-1">×2</span></div>
               <div class="flex gap-0.5"><span class="text-lg text-red-600">♥</span><span class="text-lg text-red-600">♥</span><span class="text-lg text-neutral-300">♥</span></div>
@@ -311,112 +306,131 @@
             <div class="relative" style="height:300px;">
               <div class="absolute text-5xl animate-bounce" style="top:15%;left:12%">👟</div>
               <div class="absolute text-5xl" style="top:40%;left:58%">👠</div>
-              <div class="absolute text-5xl animate-bounce" style="top:62%;left:28%;animation-delay:0.4s">👟</div>
+              <div class="absolute text-5xl animate-bounce" style="top:62%;left:28%;animation-delay:.4s">👟</div>
               <div class="absolute text-3xl" style="top:22%;left:66%">👞</div>
             </div>
-            <div class="absolute bottom-0 left-0 right-0 bg-neutral-950 p-4">
+            <div class="absolute bottom-0 left-0 right-0 bg-neutral-900 p-4">
               <div class="text-xs font-normal font-mono text-neutral-500 uppercase">Prochain drop</div>
-              <div class="text-base font-semibold text-neutral-100 mt-1">Phantomatik LTD 500</div>
+              <div class="text-base font-semibold text-white mt-1">Phantomatik LTD 500</div>
               <div class="text-xs font-normal font-mono text-accent mt-1" id="mockup-countdown">--:--:--</div>
             </div>
           </div>
-          <div class="absolute -bottom-6 text-xs font-normal font-mono text-neutral-700 uppercase">Aperçu du jeu</div>
+          <div class="absolute -bottom-6 text-xs font-normal font-mono text-neutral-600 uppercase">Aperçu du jeu</div>
         </div>
 
       </div>
     </section>
 
-    <!-- ═══════════ COUNTDOWN ═══════════ -->
-    <section class="py-12 md:py-16 lg:py-24 bg-neutral-950 border-y border-neutral-800">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 text-center">
-        <h2 data-reveal class="font-display text-4xl md:text-5xl lg:text-7xl text-neutral-100 leading-none mb-8 md:mb-12">LE DROP APPROCHE</h2>
+    <!-- ══════════════════════════════════════
+         COUNTDOWN
+    ══════════════════════════════════════ -->
+    <section class="py-12 md:py-16 lg:py-24 bg-white border-y border-neutral-200">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12 text-center">
+        <h2 data-reveal class="font-display text-4xl md:text-5xl lg:text-7xl text-neutral-900 leading-none mb-8 md:mb-12">LE DROP APPROCHE</h2>
         <div data-reveal data-d="1" class="flex flex-wrap justify-center gap-6 md:gap-4 lg:items-end">
           <div class="text-center w-24 lg:w-auto">
-            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-100 tabular-nums" id="cd-days">--</div>
-            <div class="text-xs font-semibold text-neutral-500 uppercase mt-3 md:mt-4">Jours</div>
+            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-900 tabular-nums" id="cd-days">--</div>
+            <div class="text-xs font-semibold text-neutral-400 uppercase mt-3 md:mt-4">Jours</div>
           </div>
-          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-700 self-end pb-6 hidden md:block">:</div>
+          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-300 self-end pb-6 hidden md:block">:</div>
           <div class="text-center w-24 lg:w-auto">
-            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-100 tabular-nums" id="cd-hours">--</div>
-            <div class="text-xs font-semibold text-neutral-500 uppercase mt-3 md:mt-4">Heures</div>
+            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-900 tabular-nums" id="cd-hours">--</div>
+            <div class="text-xs font-semibold text-neutral-400 uppercase mt-3 md:mt-4">Heures</div>
           </div>
-          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-700 self-end pb-6 hidden md:block">:</div>
+          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-300 self-end pb-6 hidden md:block">:</div>
           <div class="text-center w-24 lg:w-auto">
-            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-100 tabular-nums" id="cd-mins">--</div>
-            <div class="text-xs font-semibold text-neutral-500 uppercase mt-3 md:mt-4">Minutes</div>
+            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-900 tabular-nums" id="cd-mins">--</div>
+            <div class="text-xs font-semibold text-neutral-400 uppercase mt-3 md:mt-4">Minutes</div>
           </div>
-          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-700 self-end pb-6 hidden md:block">:</div>
+          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-300 self-end pb-6 hidden md:block">:</div>
           <div class="text-center w-24 lg:w-auto">
             <div class="text-4xl md:text-5xl font-normal font-mono text-accent tabular-nums" id="cd-secs">--</div>
-            <div class="text-xs font-semibold text-neutral-500 uppercase mt-3 md:mt-4">Secondes</div>
+            <div class="text-xs font-semibold text-neutral-400 uppercase mt-3 md:mt-4">Secondes</div>
           </div>
         </div>
         <div data-reveal data-d="2" class="mt-8 md:mt-12">
-          <a href="./product-phantomatik.html" class="bg-accent hover:bg-accent-dark text-neutral-100 text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors inline-block">Voir le drop</a>
+          <a href="./product-phantomatik.html"
+             class="bg-neutral-900 hover:bg-neutral-700 text-white text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors inline-block">
+            Voir le drop
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ═══════════ WAITLIST ═══════════ -->
-    <section id="waitlist" class="py-12 md:py-16 lg:py-24 bg-neutral-900">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-center">
+    <!-- ══════════════════════════════════════
+         WAITLIST
+    ══════════════════════════════════════ -->
+    <section id="waitlist" class="py-12 md:py-16 lg:py-24 bg-neutral-50">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-center">
+
         <div>
-          <h2 data-reveal class="font-display text-4xl md:text-5xl text-neutral-100 leading-none mb-4 md:mb-6">NE RATE<br>AUCUN DROP.</h2>
-          <p data-reveal data-d="1" class="text-base font-normal text-neutral-400 leading-relaxed max-w-sm">
+          <h2 data-reveal class="font-display text-4xl md:text-5xl text-neutral-900 leading-none mb-4 md:mb-6">NE RATE<br>AUCUN DROP.</h2>
+          <p data-reveal data-d="1" class="text-base font-normal text-neutral-500 leading-relaxed max-w-sm mb-6 md:mb-8">
             Les ninjas inscrits reçoivent l'accès prioritaire au jeu de qualification — avant toute annonce publique. Une notification. Tout ou rien.
           </p>
-          <div data-reveal data-d="2" class="flex items-center gap-4 mt-6 md:mt-8">
+          <div data-reveal data-d="2" class="flex items-center gap-4">
             <div class="flex -space-x-2">
-              <div class="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center text-xs font-semibold font-mono text-neutral-400">S</div>
-              <div class="w-8 h-8 rounded-full bg-neutral-700 border border-neutral-600 flex items-center justify-center text-xs font-semibold font-mono text-neutral-300">D</div>
-              <div class="w-8 h-8 rounded-full bg-accent border border-accent-dark flex items-center justify-center text-xs font-semibold font-mono text-neutral-100">N</div>
+              <div class="w-8 h-8 rounded-full bg-neutral-200 border border-white flex items-center justify-center text-xs font-normal font-mono text-neutral-600">S</div>
+              <div class="w-8 h-8 rounded-full bg-neutral-300 border border-white flex items-center justify-center text-xs font-normal font-mono text-neutral-700">D</div>
+              <div class="w-8 h-8 rounded-full bg-accent border border-white flex items-center justify-center text-xs font-normal font-mono text-white">N</div>
             </div>
-            <span class="text-xs font-normal font-mono text-neutral-500"><span id="waitlist-social-count">—</span> ninjas déjà inscrits</span>
+            <span class="text-xs font-normal font-mono text-neutral-400"><span id="waitlist-social-count">—</span> ninjas déjà inscrits</span>
           </div>
         </div>
+
         <div data-reveal data-d="1">
-          <div class="bg-neutral-950 border border-neutral-800 p-6 md:p-8">
-            <div class="text-xs font-normal font-mono text-neutral-500 uppercase mb-4 md:mb-6">Rejoindre la liste d'attente</div>
+          <div class="bg-white border border-neutral-200 p-6 md:p-8">
+            <div class="text-xs font-normal font-mono text-neutral-400 uppercase mb-4 md:mb-6">Rejoindre la liste d'attente</div>
             <div class="flex flex-col gap-3 md:gap-4">
-              <input type="text"  id="wl-name"  placeholder="Ton pseudo ninja" class="bg-neutral-900 border border-neutral-700 hover:border-neutral-600 text-neutral-100 text-base font-normal px-4 py-4 placeholder:text-neutral-700 w-full transition-colors">
-              <input type="email" id="wl-email" placeholder="ton@email.com"     class="bg-neutral-900 border border-neutral-700 hover:border-neutral-600 text-neutral-100 text-base font-normal px-4 py-4 placeholder:text-neutral-700 w-full transition-colors">
-              <button onclick="handleWaitlist()" id="wl-btn" class="bg-accent hover:bg-accent-dark text-neutral-100 text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 transition-colors w-full">M'inscrire aux alertes drop</button>
+              <input type="text"  id="wl-name"  placeholder="Ton pseudo ninja"
+                     class="bg-white border border-neutral-300 hover:border-neutral-500 text-neutral-900 text-base font-normal px-4 py-4 placeholder:text-neutral-300 w-full transition-colors">
+              <input type="email" id="wl-email" placeholder="ton@email.com"
+                     class="bg-white border border-neutral-300 hover:border-neutral-500 text-neutral-900 text-base font-normal px-4 py-4 placeholder:text-neutral-300 w-full transition-colors">
+              <button onclick="handleWaitlist()" id="wl-btn"
+                      class="bg-neutral-900 hover:bg-neutral-700 text-white text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 transition-colors w-full">
+                M'inscrire aux alertes drop
+              </button>
             </div>
-            <div class="text-xs font-normal font-mono text-neutral-700 mt-3 md:mt-4">Aucun spam · Désinscription à tout moment</div>
+            <div class="text-xs font-normal font-mono text-neutral-400 mt-3 md:mt-4">Aucun spam · Désinscription à tout moment</div>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- ═══════════ MANIFESTE ═══════════ -->
-    <section class="py-12 md:py-16 lg:py-24 bg-neutral-950 border-t border-neutral-800">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 text-center">
-        <div data-reveal class="font-display text-3xl md:text-4xl lg:text-5xl text-neutral-100 leading-tight max-w-3xl mx-auto">
+    <!-- ══════════════════════════════════════
+         MANIFESTE
+    ══════════════════════════════════════ -->
+    <section class="py-12 md:py-16 lg:py-24 bg-white border-t border-neutral-200">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12 text-center">
+        <div data-reveal class="font-display text-3xl md:text-4xl lg:text-5xl text-neutral-900 leading-tight max-w-3xl mx-auto">
           "Dans le monde du drop,<br>la lenteur est une défaite.<br>
           <span class="text-accent">Sneaker Drop Ninja forme les meilleurs."</span>
         </div>
         <div data-reveal data-d="1" class="flex items-center justify-center gap-4 md:gap-6 mt-8 md:mt-12">
-          <div class="flex-1 max-w-[120px] md:max-w-xs h-px bg-neutral-800"></div>
-          <span class="text-xs font-normal font-mono text-neutral-700 uppercase">Manifeste SDN · 2026</span>
-          <div class="flex-1 max-w-[120px] md:max-w-xs h-px bg-neutral-800"></div>
+          <div class="flex-1 max-w-[120px] md:max-w-xs h-px bg-neutral-200"></div>
+          <span class="text-xs font-normal font-mono text-neutral-400 uppercase">Manifeste SDN · 2026</span>
+          <div class="flex-1 max-w-[120px] md:max-w-xs h-px bg-neutral-200"></div>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ═══════════ FOOTER ═══════════ -->
-  <footer class="bg-neutral-950 border-t border-neutral-800 pt-8 md:pt-12 pb-6 md:pb-8">
-    <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+  <!-- ══════════════════════════════════════
+       FOOTER — dark
+  ══════════════════════════════════════ -->
+  <footer class="bg-neutral-900 pt-8 md:pt-12 pb-6 md:pb-8">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
         <div class="col-span-2 lg:col-span-1">
-          <div class="font-display text-3xl md:text-4xl text-neutral-100 leading-none mb-4 md:mb-6">SNEAKER<br>DROP<br>NINJA</div>
-          <p class="text-xs font-normal font-mono text-neutral-600 leading-relaxed">Arrives first<br>or not at all.</p>
+          <a href="#top" class="font-display text-3xl md:text-4xl text-white leading-none mb-4 md:mb-6 block hover:text-accent transition-colors">SNEAKER<br>DROP<br>NINJA</a>
+          <p class="text-xs font-normal font-mono text-neutral-500 leading-relaxed">Arrives first<br>or not at all.</p>
         </div>
         <div>
           <div class="text-xs font-semibold text-neutral-500 uppercase mb-4 md:mb-6">Drops</div>
           <div class="flex flex-col gap-3 md:gap-4">
-            <a href="./product-phantomatik.html" class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Phantomatik LTD 500</a>
+            <a href="./product-phantomatik.html" class="text-xs font-normal font-mono text-neutral-400 hover:text-white transition-colors">Phantomatik LTD 500</a>
             <span class="text-xs font-normal font-mono text-neutral-700">Drop 002 — Bientôt</span>
             <span class="text-xs font-normal font-mono text-neutral-700">Drop 003 — Bientôt</span>
           </div>
@@ -424,26 +438,26 @@
         <div>
           <div class="text-xs font-semibold text-neutral-500 uppercase mb-4 md:mb-6">Le Jeu</div>
           <div class="flex flex-col gap-3 md:gap-4">
-            <a href="./drpd-ad.html"             class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Entrer dans l'arène</a>
-            <a href="#waitlist"                   class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Rejoindre la waitlist</a>
-            <a href="#drops"                      class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Archives drops</a>
+            <a href="./drpd-ad.html"         class="text-xs font-normal font-mono text-neutral-400 hover:text-white transition-colors">Entrer dans l'arène</a>
+            <a href="#waitlist"              class="text-xs font-normal font-mono text-neutral-400 hover:text-white transition-colors">Rejoindre la waitlist</a>
+            <a href="#drops"                 class="text-xs font-normal font-mono text-neutral-400 hover:text-white transition-colors">Archives drops</a>
           </div>
         </div>
         <div>
           <div class="text-xs font-semibold text-neutral-500 uppercase mb-4 md:mb-6">Contact</div>
           <div class="flex flex-col gap-3 md:gap-4">
-            <a href="mailto:hello@sneakerdropninja.com" class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">hello@sneakerdropninja.com</a>
-            <a href="#" class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Instagram</a>
-            <a href="#" class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Discord</a>
+            <a href="mailto:hello@sneakerdropninja.com" class="text-xs font-normal font-mono text-neutral-400 hover:text-white transition-colors">hello@sneakerdropninja.com</a>
+            <a href="#" class="text-xs font-normal font-mono text-neutral-400 hover:text-white transition-colors">Instagram</a>
+            <a href="#" class="text-xs font-normal font-mono text-neutral-400 hover:text-white transition-colors">Discord</a>
           </div>
         </div>
       </div>
       <div class="border-t border-neutral-800 pt-6 md:pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div class="text-xs font-normal font-mono text-neutral-700">© 2026 Sneaker Drop Ninja. Tous droits réservés.</div>
         <div class="flex gap-4 md:gap-6">
-          <a href="#" class="text-xs font-normal font-mono text-neutral-700 hover:text-neutral-500 transition-colors">Confidentialité</a>
-          <a href="#" class="text-xs font-normal font-mono text-neutral-700 hover:text-neutral-500 transition-colors">Mentions légales</a>
-          <a href="#" class="text-xs font-normal font-mono text-neutral-700 hover:text-neutral-500 transition-colors">CGU</a>
+          <a href="#" class="text-xs font-normal font-mono text-neutral-700 hover:text-neutral-400 transition-colors">Confidentialité</a>
+          <a href="#" class="text-xs font-normal font-mono text-neutral-700 hover:text-neutral-400 transition-colors">Mentions légales</a>
+          <a href="#" class="text-xs font-normal font-mono text-neutral-700 hover:text-neutral-400 transition-colors">CGU</a>
         </div>
       </div>
     </div>
@@ -451,22 +465,6 @@
 
   <script>
     lucide.createIcons();
-
-    // Mobile menu
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon = document.getElementById('menu-icon');
-    let menuOpen = false;
-    function setMenu(open) {
-      menuOpen = open;
-      mobileMenu.classList.toggle('menu-hidden', !open);
-      mobileMenu.classList.toggle('menu-visible',  open);
-      menuIcon.setAttribute('data-lucide', open ? 'x' : 'menu');
-      lucide.createIcons();
-      document.body.style.overflow = open ? 'hidden' : '';
-    }
-    if (menuBtn) menuBtn.addEventListener('click', () => setMenu(!menuOpen));
-    document.querySelectorAll('[data-mobile-link]').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
     // Marquee
     (function() {
@@ -476,23 +474,24 @@
       for (let i = 0; i < 2; i++) track.appendChild(tpl.content.cloneNode(true));
     })();
 
-    // Countdown
+    // Drop date
     const DROP_DATE = new Date('2026-06-02T10:00:00Z');
     function pad(n) { return String(n).padStart(2, '0'); }
-    function getCountdownParts() {
-      const diff = DROP_DATE - Date.now();
-      if (diff <= 0) return null;
-      return { days: Math.floor(diff/86400000), h: Math.floor(diff/3600000)%24, m: Math.floor(diff/60000)%60, s: Math.floor(diff/1000)%60 };
-    }
+
     function updateCountdown() {
-      const p = getCountdownParts();
+      const diff = DROP_DATE - Date.now();
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-      set('cd-days',  p ? pad(p.days) : '00');
-      set('cd-hours', p ? pad(p.h)    : '00');
-      set('cd-mins',  p ? pad(p.m)    : '00');
-      set('cd-secs',  p ? pad(p.s)    : '00');
-      const compact = p ? `${pad(p.h)}:${pad(p.m)}:${pad(p.s)}` : 'LIVE';
-      ['hero-countdown','strip-countdown','mockup-countdown'].forEach(id => set(id, compact));
+      if (diff <= 0) {
+        ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => set(id, '00'));
+        set('mockup-countdown', 'LIVE');
+        return;
+      }
+      set('cd-days',  pad(Math.floor(diff / 86400000)));
+      set('cd-hours', pad(Math.floor(diff / 3600000) % 24));
+      set('cd-mins',  pad(Math.floor(diff / 60000)   % 60));
+      set('cd-secs',  pad(Math.floor(diff / 1000)    % 60));
+      const h = Math.floor(diff/3600000)%24, m = Math.floor(diff/60000)%60, s = Math.floor(diff/1000)%60;
+      set('mockup-countdown', `${pad(h)}:${pad(m)}:${pad(s)}`);
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
@@ -502,17 +501,24 @@
     function fmtP(n) { return n >= 1000 ? (n/1000).toFixed(1).replace('.', ',') + 'k' : String(n); }
     function syncParticipants() {
       const p = fmtP(participants);
-      const map = { 'hero-participants': p, 'hero-live': p + ' en attente', 'game-participants': p, 'waitlist-social-count': p };
+      const map = {
+        'hero-participants':     p,
+        'game-participants':     p,
+        'waitlist-social-count': p,
+      };
       Object.entries(map).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.textContent = val; });
     }
     syncParticipants();
-    (function tick() { setTimeout(() => { participants += Math.floor(Math.random()*3)+1; syncParticipants(); tick(); }, 2500 + Math.random()*4000); })();
+    (function tick() {
+      setTimeout(() => { participants += Math.floor(Math.random()*3)+1; syncParticipants(); tick(); },
+        2500 + Math.random()*4000);
+    })();
 
     // Waitlist
     function handleWaitlist() {
-      const name = document.getElementById('wl-name')?.value.trim();
+      const name  = document.getElementById('wl-name')?.value.trim();
       const email = document.getElementById('wl-email')?.value.trim();
-      const btn = document.getElementById('wl-btn');
+      const btn   = document.getElementById('wl-btn');
       if (!name || !email || !email.includes('@')) {
         if (btn) { btn.textContent = 'Remplis tous les champs !'; setTimeout(() => { btn.textContent = "M'inscrire aux alertes drop"; }, 2000); }
         return;
@@ -522,12 +528,17 @@
     }
 
     // Reveal
-    const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }), { threshold: 0.1 });
+    const io = new IntersectionObserver(entries =>
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }),
+      { threshold: 0.08 }
+    );
     document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 
-    // Header blur
-    const header = document.getElementById('site-header');
-    window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 32), { passive: true });
+    // Header shadow on scroll
+    window.addEventListener('scroll', () =>
+      document.getElementById('site-header')?.classList.toggle('scrolled', window.scrollY > 16),
+      { passive: true }
+    );
 
     // Smooth anchors
     document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -537,7 +548,7 @@
         const t = document.querySelector(href);
         if (!t) return;
         e.preventDefault();
-        window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - 96), behavior: 'smooth' });
+        window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - 72), behavior: 'smooth' });
       });
     });
   </script>

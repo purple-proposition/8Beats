@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Phantomatik LTD 500 — Sneaker Drop Ninja</title>
 
+  <!-- Staatliches -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/style.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/style.css" rel="stylesheet">
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -20,155 +20,177 @@
             accent: { light: '#C4403F', DEFAULT: '#A52A2A', dark: '#8B1C1C' }
           },
           fontFamily: {
-            sans:    ['Geist',      'system-ui', 'sans-serif'],
-            mono:    ['Geist Mono', 'monospace'],
-            display: ['Staatliches','sans-serif'],
+            sans:    ['Geist', 'system-ui', 'sans-serif'],
+            mono:    ['"Geist Mono"', '"Courier New"', 'monospace'],
+            display: ['Staatliches', 'sans-serif'],
           }
         }
       }
     }
   </script>
+
+  <!-- Lucide -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
   <style>
-    [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    /* ── Geist Sans ── */
+    @font-face {
+      font-family: 'Geist';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/GeistVF.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* ── Geist Mono ── */
+    @font-face {
+      font-family: 'Geist Mono';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/GeistMonoVF.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ── Reveal ── */
+    [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
     [data-reveal].visible { opacity: 1; transform: translateY(0); }
     [data-reveal][data-d="1"] { transition-delay: 0.12s; }
     [data-reveal][data-d="2"] { transition-delay: 0.24s; }
     [data-reveal][data-d="3"] { transition-delay: 0.36s; }
     [data-reveal][data-d="4"] { transition-delay: 0.48s; }
 
+    /* ── Size chips ── */
     .size-chip { transition: background 0.15s, color 0.15s, border-color 0.15s; }
-    .size-chip.active { background: #A52A2A !important; color: #f5f5f5 !important; border-color: #A52A2A !important; }
+    .size-chip.active { background: #A52A2A !important; color: #fff !important; border-color: #A52A2A !important; }
 
-    .thumb { transition: ring-color 0.15s; cursor: pointer; }
+    /* ── Thumbs ── */
+    .thumb { transition: outline-color 0.15s; cursor: pointer; }
     .thumb.active { outline: 2px solid #A52A2A; outline-offset: 2px; }
 
+    /* ── Inputs ── */
     input:focus { outline: 2px solid #A52A2A; outline-offset: 2px; }
+
+    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #0a0a0a; }
-    ::-webkit-scrollbar-thumb { background: #404040; border-radius: 2px; }
+    ::-webkit-scrollbar-track { background: #fafafa; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 2px; }
 
-    #site-header { transition: backdrop-filter 0.3s; }
-    #site-header.scrolled { backdrop-filter: blur(16px); background: rgba(10,10,10,0.92) !important; }
+    /* ── Header scroll blur ── */
+    #site-header { transition: box-shadow 0.3s; }
+    #site-header.scrolled { box-shadow: 0 1px 16px rgba(0,0,0,0.06); backdrop-filter: blur(12px); background: rgba(255,255,255,0.92) !important; }
 
+    /* ── Live dot ── */
     @keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
     .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
 
+    /* ── Marquee ── */
     @keyframes marquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
     .marquee-track { animation: marquee 24s linear infinite; display: flex; width: max-content; }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
   </style>
 </head>
 
-<body class="bg-neutral-950 text-neutral-100 font-sans antialiased overflow-x-hidden">
+<body class="bg-white text-neutral-900 font-sans antialiased overflow-x-hidden">
 
   <!-- ── Fixed header ── -->
-  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-neutral-950">
-    <div class="bg-accent">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 py-2 flex items-center justify-center gap-3">
-        <div class="w-1.5 h-1.5 rounded-full bg-neutral-100 pulse-dot flex-shrink-0"></div>
-        <span class="text-xs font-normal font-mono tracking-[0.12em] md:tracking-[0.18em] text-neutral-100 uppercase text-center">
-          <span class="hidden sm:inline">DROP 001 · PHANTOMATIK LTD 500 · 500 EXEMPLAIRES · </span>
-          <span class="sm:hidden">DROP 001 · </span>
-          <span id="strip-countdown">--:--:--</span>
-          <span class="hidden sm:inline"> restantes</span>
-        </span>
-      </div>
-    </div>
-    <div class="border-b border-neutral-800 h-16 flex items-center">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 w-full flex items-center justify-between gap-4">
-        <a href="./sneakerdropninja.html" class="font-display text-2xl md:text-3xl lg:text-4xl text-neutral-100 leading-none hover:text-accent transition-colors flex-shrink-0">SNEAKER DROP NINJA</a>
-        <nav class="hidden lg:flex items-center gap-8">
-          <a href="./sneakerdropninja.html#drops"    class="text-xs font-semibold tracking-[0.2em] text-neutral-400 hover:text-neutral-100 transition-colors uppercase">Les Drops</a>
-          <a href="./sneakerdropninja.html#game"     class="text-xs font-semibold tracking-[0.2em] text-neutral-400 hover:text-neutral-100 transition-colors uppercase">Le Jeu</a>
-          <a href="./sneakerdropninja.html#waitlist" class="text-xs font-semibold tracking-[0.2em] text-neutral-400 hover:text-neutral-100 transition-colors uppercase">Waitlist</a>
-        </nav>
-        <div class="flex items-center gap-4 md:gap-6">
-          <button class="text-neutral-400 hover:text-neutral-100 transition-colors hidden sm:block" aria-label="Rechercher"><i data-lucide="search" class="w-4 h-4"></i></button>
-          <button class="text-neutral-400 hover:text-neutral-100 transition-colors" aria-label="Wishlist"><i data-lucide="heart" class="w-4 h-4"></i></button>
-        </div>
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-neutral-200 h-16">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12 h-full flex items-center justify-between">
+      <a href="./sneakerdropninja.html" class="font-display text-2xl md:text-3xl lg:text-4xl text-neutral-900 leading-none hover:text-accent transition-colors">
+        SNEAKER DROP NINJA
+      </a>
+      <div class="flex items-center gap-5 md:gap-6">
+        <button class="text-neutral-500 hover:text-neutral-900 transition-colors" aria-label="Mon compte">
+          <i data-lucide="user" class="w-5 h-5"></i>
+        </button>
+        <button class="text-neutral-500 hover:text-neutral-900 transition-colors" aria-label="Panier">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        </button>
+        <button class="text-neutral-500 hover:text-neutral-900 transition-colors" aria-label="Favoris">
+          <i data-lucide="heart" class="w-5 h-5"></i>
+        </button>
       </div>
     </div>
   </header>
 
-  <div class="h-24"></div>
+  <div id="top" class="h-16"></div>
 
   <!-- ── Breadcrumb ── -->
-  <div class="border-b border-neutral-800 py-4">
-    <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 flex items-center gap-3">
-      <a href="./sneakerdropninja.html" class="text-xs font-normal font-mono text-neutral-500 hover:text-neutral-300 transition-colors uppercase">Accueil</a>
-      <span class="text-neutral-700 font-mono font-normal">›</span>
-      <a href="./sneakerdropninja.html#drops" class="text-xs font-normal font-mono text-neutral-500 hover:text-neutral-300 transition-colors uppercase">Les Drops</a>
-      <span class="text-neutral-700 font-mono font-normal">›</span>
-      <span class="text-xs font-normal font-mono text-neutral-400 uppercase">Phantomatik LTD 500</span>
+  <div class="border-b border-neutral-200 py-4">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12 flex items-center gap-3">
+      <a href="./sneakerdropninja.html" class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-700 transition-colors uppercase">Accueil</a>
+      <span class="text-neutral-300 font-mono font-normal">›</span>
+      <a href="./sneakerdropninja.html#drops" class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-700 transition-colors uppercase">Les Drops</a>
+      <span class="text-neutral-300 font-mono font-normal">›</span>
+      <span class="text-xs font-normal font-mono text-neutral-600 uppercase">Phantomatik LTD 500</span>
     </div>
   </div>
 
   <main>
 
     <!-- ═══════════ PRODUCT DETAIL ═══════════ -->
-    <section class="py-12 md:py-16 lg:py-24 bg-neutral-950">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+    <section class="py-12 md:py-16 lg:py-24 bg-white">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12">
 
         <!-- Section label row -->
         <div class="flex items-center gap-4 mb-8 md:mb-12">
           <span class="text-xs font-normal font-mono text-accent uppercase">Drop 001</span>
-          <div class="flex-1 h-px bg-neutral-800"></div>
-          <span class="text-xs font-normal font-mono text-neutral-600 uppercase hidden md:block">Phantomatik Studio · 2026</span>
+          <div class="flex-1 h-px bg-neutral-200"></div>
+          <span class="text-xs font-normal font-mono text-neutral-400 uppercase hidden md:block">Phantomatik Studio · 2026</span>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-start">
 
-          <!-- Gallery -->
+          <!-- ── Gallery ── -->
           <div data-reveal>
             <!-- Main image -->
             <div class="bg-[#F0ECE6] aspect-square flex items-center justify-center p-8 md:p-12 overflow-hidden" id="main-img-wrap">
               <img src="./phantomatik.jpg" alt="Phantomatik LTD 500" class="w-full object-contain mix-blend-multiply" id="main-img">
             </div>
+
             <!-- Tags -->
             <div class="flex gap-2 mt-3 md:mt-4">
-              <span class="bg-accent text-neutral-100 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase">Nouveau</span>
-              <span class="bg-neutral-800 text-neutral-400 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase">Drop 001</span>
-              <span class="bg-neutral-800 text-neutral-400 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase hidden sm:inline-flex">Exclusif</span>
+              <span class="bg-accent text-white text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase">Nouveau</span>
+              <span class="bg-neutral-100 text-neutral-500 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase">Drop 001</span>
+              <span class="bg-neutral-100 text-neutral-500 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase hidden sm:inline-flex">Exclusif</span>
             </div>
+
             <!-- Thumbnails -->
             <div class="hidden md:grid grid-cols-3 gap-2 mt-3 md:mt-4">
               <div class="thumb active bg-[#F0ECE6] aspect-square flex items-center justify-center p-4 overflow-hidden">
                 <img src="./phantomatik.jpg" alt="" class="object-contain mix-blend-multiply w-full">
               </div>
-              <div class="thumb bg-neutral-900 aspect-square flex items-center justify-center p-4 ring-1 ring-neutral-800 opacity-40">
-                <span class="text-xs font-normal font-mono text-neutral-600 uppercase">Vue 2</span>
+              <div class="thumb bg-neutral-100 aspect-square flex items-center justify-center p-4 ring-1 ring-neutral-200 opacity-40">
+                <span class="text-xs font-normal font-mono text-neutral-400 uppercase">Vue 2</span>
               </div>
-              <div class="thumb bg-neutral-900 aspect-square flex items-center justify-center p-4 ring-1 ring-neutral-800 opacity-40">
-                <span class="text-xs font-normal font-mono text-neutral-600 uppercase">Vue 3</span>
+              <div class="thumb bg-neutral-100 aspect-square flex items-center justify-center p-4 ring-1 ring-neutral-200 opacity-40">
+                <span class="text-xs font-normal font-mono text-neutral-400 uppercase">Vue 3</span>
               </div>
             </div>
           </div>
 
-          <!-- Product info -->
+          <!-- ── Product info ── -->
           <div>
             <div data-reveal>
-              <div class="text-xs font-normal font-mono text-neutral-500 uppercase mb-3 md:mb-4">Phantomatik Studio · Coloris Obsidian Bone</div>
-              <h1 class="font-display text-5xl md:text-6xl lg:text-7xl text-neutral-100 leading-none mb-4">PHANTOMATIK<br>LTD 500</h1>
-              <p class="text-base font-normal text-neutral-400 leading-relaxed mb-6 md:mb-8 max-w-sm">
+              <div class="text-xs font-normal font-mono text-neutral-400 uppercase mb-3 md:mb-4">Phantomatik Studio · Coloris Obsidian Bone</div>
+              <h1 class="font-display text-5xl md:text-6xl lg:text-7xl text-neutral-900 leading-none mb-4">PHANTOMATIK<br>LTD 500</h1>
+              <p class="text-base font-normal text-neutral-500 leading-relaxed mb-6 md:mb-8 max-w-sm">
                 Conçue pour les ninjas du drop. Silhouette radicale, produite à seulement 500 paires mondiales. Cuir pleine fleur, semelle carbone, coloris exclusif Obsidian Bone.
               </p>
             </div>
 
             <!-- Price -->
-            <div data-reveal data-d="1" class="flex items-center gap-4 md:gap-6 pb-6 md:pb-8 mb-6 md:mb-8 border-b border-neutral-800">
-              <div class="text-xl font-normal font-mono text-neutral-100">€ 280</div>
-              <div class="h-4 w-px bg-neutral-700"></div>
-              <div class="text-xs font-normal font-mono text-neutral-500 uppercase">Waitlist uniquement</div>
+            <div data-reveal data-d="1" class="flex items-center gap-4 md:gap-6 pb-6 md:pb-8 mb-6 md:mb-8 border-b border-neutral-200">
+              <div class="text-xl font-normal font-mono text-neutral-900">€ 280</div>
+              <div class="h-4 w-px bg-neutral-300"></div>
+              <div class="text-xs font-normal font-mono text-neutral-400 uppercase">Waitlist uniquement</div>
             </div>
 
             <!-- Coloris -->
             <div data-reveal data-d="1" class="mb-6 md:mb-8">
               <div class="text-xs font-semibold text-neutral-500 uppercase mb-3 md:mb-4">Coloris · Obsidian Bone</div>
               <div class="flex gap-2">
-                <div class="w-8 h-8 bg-[#F0ECE6] border-2 border-neutral-100 cursor-pointer" title="Obsidian Bone"></div>
-                <div class="w-8 h-8 bg-neutral-900 border border-neutral-700 cursor-pointer opacity-40" title="Midnight (bientôt)"></div>
-                <div class="w-8 h-8 bg-accent border border-accent-dark cursor-pointer opacity-40" title="Oxblood (bientôt)"></div>
+                <div class="w-8 h-8 bg-[#F0ECE6] border-2 border-neutral-900 cursor-pointer" title="Obsidian Bone"></div>
+                <div class="w-8 h-8 bg-neutral-900 border border-neutral-300 cursor-pointer opacity-30" title="Midnight (bientôt)"></div>
+                <div class="w-8 h-8 bg-accent border border-accent-dark cursor-pointer opacity-30" title="Oxblood (bientôt)"></div>
               </div>
             </div>
 
@@ -176,49 +198,49 @@
             <div data-reveal data-d="2" class="mb-6 md:mb-8">
               <div class="flex items-center justify-between mb-3 md:mb-4">
                 <span class="text-xs font-semibold text-neutral-500 uppercase">Taille (EU)</span>
-                <span class="text-xs font-normal font-mono text-neutral-600 underline cursor-pointer hover:text-neutral-400 transition-colors">Guide des tailles</span>
+                <span class="text-xs font-normal font-mono text-neutral-400 underline cursor-pointer hover:text-neutral-700 transition-colors">Guide des tailles</span>
               </div>
               <div class="grid grid-cols-5 gap-2" id="size-grid"></div>
             </div>
 
             <!-- CTAs -->
             <div data-reveal data-d="3" class="flex flex-col gap-3 md:gap-4">
-              <a href="./drpd-ad.html" class="bg-accent hover:bg-accent-dark text-neutral-100 text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 text-center transition-colors">
+              <a href="./drpd-ad.html" class="bg-accent hover:bg-accent-dark text-white text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 text-center transition-colors">
                 Jouer pour accéder à la waitlist
               </a>
-              <button class="border border-neutral-700 hover:border-neutral-500 text-neutral-400 hover:text-neutral-100 text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 flex items-center justify-center gap-2 transition-colors">
+              <button class="border border-neutral-300 hover:border-neutral-700 text-neutral-500 hover:text-neutral-900 text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 flex items-center justify-center gap-2 transition-colors">
                 <i data-lucide="heart" class="w-4 h-4"></i> Ajouter à ma wishlist
               </button>
             </div>
 
             <!-- Details -->
-            <div data-reveal data-d="4" class="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-neutral-800 grid grid-cols-3 gap-4 md:gap-6">
+            <div data-reveal data-d="4" class="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-neutral-200 grid grid-cols-3 gap-4 md:gap-6">
               <div>
                 <div class="text-xs font-semibold text-neutral-500 uppercase mb-2">Matière</div>
-                <div class="text-xs font-normal font-mono text-neutral-400">Cuir pleine fleur</div>
+                <div class="text-xs font-normal font-mono text-neutral-600">Cuir pleine fleur</div>
               </div>
               <div>
                 <div class="text-xs font-semibold text-neutral-500 uppercase mb-2">Semelle</div>
-                <div class="text-xs font-normal font-mono text-neutral-400">Carbone · Caoutchouc</div>
+                <div class="text-xs font-normal font-mono text-neutral-600">Carbone · Caoutchouc</div>
               </div>
               <div>
                 <div class="text-xs font-semibold text-neutral-500 uppercase mb-2">Édition</div>
-                <div class="text-xs font-normal font-mono text-neutral-400">Mondiale · 500 prs</div>
+                <div class="text-xs font-normal font-mono text-neutral-600">Mondiale · 500 prs</div>
               </div>
             </div>
 
             <!-- Delivery info -->
-            <div data-reveal data-d="4" class="mt-6 pt-6 border-t border-neutral-800 flex flex-col gap-3">
+            <div data-reveal data-d="4" class="mt-6 pt-6 border-t border-neutral-200 flex flex-col gap-3">
               <div class="flex items-center gap-3">
-                <i data-lucide="clock" class="w-4 h-4 text-neutral-600 flex-shrink-0"></i>
+                <i data-lucide="clock" class="w-4 h-4 text-neutral-400 flex-shrink-0"></i>
                 <span class="text-xs font-normal font-mono text-neutral-500">Livraison sous 5–7 jours ouvrés après le drop</span>
               </div>
               <div class="flex items-center gap-3">
-                <i data-lucide="shield-check" class="w-4 h-4 text-neutral-600 flex-shrink-0"></i>
+                <i data-lucide="shield-check" class="w-4 h-4 text-neutral-400 flex-shrink-0"></i>
                 <span class="text-xs font-normal font-mono text-neutral-500">Authenticité garantie · Paire scellée en usine</span>
               </div>
               <div class="flex items-center gap-3">
-                <i data-lucide="users" class="w-4 h-4 text-neutral-600 flex-shrink-0"></i>
+                <i data-lucide="users" class="w-4 h-4 text-neutral-400 flex-shrink-0"></i>
                 <span class="text-xs font-normal font-mono text-neutral-500"><span id="pdp-participants">—</span> joueurs en compétition pour cette paire</span>
               </div>
             </div>
@@ -229,58 +251,58 @@
     </section>
 
     <!-- ═══════════ MARQUEE ═══════════ -->
-    <div class="bg-neutral-900 border-y border-neutral-800 py-4 overflow-hidden select-none">
+    <div class="bg-neutral-900 py-4 overflow-hidden select-none marquee-wrap">
       <div class="marquee-track">
         <template id="marquee-seg">
           <span class="text-xs font-normal font-mono text-neutral-100 uppercase tracking-[0.22em] px-8">PHANTOMATIK LTD 500</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
           <span class="text-xs font-normal font-mono text-neutral-400 uppercase tracking-[0.22em] px-8">DROP 001 — LIVE</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
           <span class="text-xs font-normal font-mono text-neutral-100 uppercase tracking-[0.22em] px-8">€ 280 — 500 PAIRES MONDIALES</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
           <span class="text-xs font-normal font-mono text-accent uppercase tracking-[0.22em] px-8">WAITLIST UNIQUEMENT</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
           <span class="text-xs font-normal font-mono text-neutral-400 uppercase tracking-[0.22em] px-8">COLORIS OBSIDIAN BONE</span>
-          <span class="text-neutral-700 px-4 font-normal font-mono">✦</span>
+          <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
         </template>
       </div>
     </div>
 
     <!-- ═══════════ COUNTDOWN ═══════════ -->
-    <section class="py-12 md:py-16 lg:py-24 bg-neutral-950 border-b border-neutral-800">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 text-center">
-        <h2 class="font-display text-4xl md:text-5xl lg:text-7xl text-neutral-100 leading-none mb-8 md:mb-12">LE DROP APPROCHE</h2>
+    <section class="py-12 md:py-16 lg:py-24 bg-neutral-50 border-b border-neutral-200">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12 text-center">
+        <h2 class="font-display text-4xl md:text-5xl lg:text-7xl text-neutral-900 leading-none mb-8 md:mb-12">LE DROP APPROCHE</h2>
         <div class="flex flex-wrap justify-center gap-6 md:gap-4 lg:items-end">
           <div class="text-center w-24 lg:w-auto">
-            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-100 tabular-nums" id="cd-days">--</div>
-            <div class="text-xs font-semibold text-neutral-500 uppercase mt-3 md:mt-4">Jours</div>
+            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-900 tabular-nums" id="cd-days">--</div>
+            <div class="text-xs font-semibold text-neutral-400 uppercase mt-3 md:mt-4">Jours</div>
           </div>
-          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-700 self-end pb-6 hidden md:block">:</div>
+          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-300 self-end pb-6 hidden md:block">:</div>
           <div class="text-center w-24 lg:w-auto">
-            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-100 tabular-nums" id="cd-hours">--</div>
-            <div class="text-xs font-semibold text-neutral-500 uppercase mt-3 md:mt-4">Heures</div>
+            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-900 tabular-nums" id="cd-hours">--</div>
+            <div class="text-xs font-semibold text-neutral-400 uppercase mt-3 md:mt-4">Heures</div>
           </div>
-          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-700 self-end pb-6 hidden md:block">:</div>
+          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-300 self-end pb-6 hidden md:block">:</div>
           <div class="text-center w-24 lg:w-auto">
-            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-100 tabular-nums" id="cd-mins">--</div>
-            <div class="text-xs font-semibold text-neutral-500 uppercase mt-3 md:mt-4">Minutes</div>
+            <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-900 tabular-nums" id="cd-mins">--</div>
+            <div class="text-xs font-semibold text-neutral-400 uppercase mt-3 md:mt-4">Minutes</div>
           </div>
-          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-700 self-end pb-6 hidden md:block">:</div>
+          <div class="text-4xl md:text-5xl font-normal font-mono text-neutral-300 self-end pb-6 hidden md:block">:</div>
           <div class="text-center w-24 lg:w-auto">
             <div class="text-4xl md:text-5xl font-normal font-mono text-accent tabular-nums" id="cd-secs">--</div>
-            <div class="text-xs font-semibold text-neutral-500 uppercase mt-3 md:mt-4">Secondes</div>
+            <div class="text-xs font-semibold text-neutral-400 uppercase mt-3 md:mt-4">Secondes</div>
           </div>
         </div>
         <div class="mt-8 md:mt-12">
-          <a href="./drpd-ad.html" class="bg-accent hover:bg-accent-dark text-neutral-100 text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors inline-block">Jouer pour ma place</a>
+          <a href="./drpd-ad.html" class="bg-neutral-900 hover:bg-neutral-700 text-white text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors inline-block">Jouer pour ma place</a>
         </div>
       </div>
     </section>
 
     <!-- ═══════════ BACK TO DROPS ═══════════ -->
-    <section class="py-8 md:py-12 bg-neutral-950">
-      <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
-        <a href="./sneakerdropninja.html#drops" class="flex items-center gap-2 text-xs font-normal font-mono text-neutral-500 hover:text-neutral-100 transition-colors uppercase">
+    <section class="py-8 md:py-12 bg-white border-b border-neutral-200">
+      <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+        <a href="./sneakerdropninja.html#drops" class="flex items-center gap-2 text-xs font-normal font-mono text-neutral-400 hover:text-neutral-900 transition-colors uppercase">
           <i data-lucide="arrow-left" class="w-3 h-3"></i> Retour aux drops
         </a>
       </div>
@@ -289,12 +311,12 @@
   </main>
 
   <!-- ── Footer ── -->
-  <footer class="bg-neutral-950 border-t border-neutral-800 pt-8 md:pt-12 pb-6 md:pb-8">
-    <div class="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+  <footer class="bg-neutral-900 pt-8 md:pt-12 pb-6 md:pb-8">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
         <div class="col-span-2 lg:col-span-1">
           <a href="./sneakerdropninja.html" class="font-display text-3xl md:text-4xl text-neutral-100 leading-none mb-4 md:mb-6 block hover:text-accent transition-colors">SNEAKER<br>DROP<br>NINJA</a>
-          <p class="text-xs font-normal font-mono text-neutral-600 leading-relaxed">Arrives first<br>or not at all.</p>
+          <p class="text-xs font-normal font-mono text-neutral-500 leading-relaxed">Arrives first<br>or not at all.</p>
         </div>
         <div>
           <div class="text-xs font-semibold text-neutral-500 uppercase mb-4 md:mb-6">Drops</div>
@@ -307,8 +329,8 @@
         <div>
           <div class="text-xs font-semibold text-neutral-500 uppercase mb-4 md:mb-6">Le Jeu</div>
           <div class="flex flex-col gap-3 md:gap-4">
-            <a href="./drpd-ad.html"                      class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Entrer dans l'arène</a>
-            <a href="./sneakerdropninja.html#waitlist"     class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Rejoindre la waitlist</a>
+            <a href="./drpd-ad.html" class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Entrer dans l'arène</a>
+            <a href="./sneakerdropninja.html#waitlist" class="text-xs font-normal font-mono text-neutral-400 hover:text-neutral-100 transition-colors">Rejoindre la waitlist</a>
           </div>
         </div>
         <div>
@@ -321,10 +343,10 @@
         </div>
       </div>
       <div class="border-t border-neutral-800 pt-6 md:pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div class="text-xs font-normal font-mono text-neutral-700">© 2026 Sneaker Drop Ninja. Tous droits réservés.</div>
+        <div class="text-xs font-normal font-mono text-neutral-600">© 2026 Sneaker Drop Ninja. Tous droits réservés.</div>
         <div class="flex gap-4 md:gap-6">
-          <a href="#" class="text-xs font-normal font-mono text-neutral-700 hover:text-neutral-500 transition-colors">Confidentialité</a>
-          <a href="#" class="text-xs font-normal font-mono text-neutral-700 hover:text-neutral-500 transition-colors">CGU</a>
+          <a href="#" class="text-xs font-normal font-mono text-neutral-600 hover:text-neutral-400 transition-colors">Confidentialité</a>
+          <a href="#" class="text-xs font-normal font-mono text-neutral-600 hover:text-neutral-400 transition-colors">CGU</a>
         </div>
       </div>
     </div>
@@ -347,28 +369,35 @@
     function updateCountdown() {
       const diff = DROP_DATE - Date.now();
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-      if (diff <= 0) { ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => set(id,'00')); set('strip-countdown','LIVE'); return; }
-      set('cd-days',  pad(Math.floor(diff/86400000)));
-      set('cd-hours', pad(Math.floor(diff/3600000)%24));
-      set('cd-mins',  pad(Math.floor(diff/60000)%60));
-      set('cd-secs',  pad(Math.floor(diff/1000)%60));
-      const h = Math.floor(diff/3600000)%24, m = Math.floor(diff/60000)%60, s = Math.floor(diff/1000)%60;
-      set('strip-countdown', `${pad(h)}:${pad(m)}:${pad(s)}`);
+      if (diff <= 0) {
+        ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => set(id, '00'));
+        return;
+      }
+      set('cd-days',  pad(Math.floor(diff / 86400000)));
+      set('cd-hours', pad(Math.floor(diff / 3600000) % 24));
+      set('cd-mins',  pad(Math.floor(diff / 60000) % 60));
+      set('cd-secs',  pad(Math.floor(diff / 1000) % 60));
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // Participants
+    // Participants FOMO counter
     let participants = 1200 + Math.floor(Math.random() * 600);
-    function fmtP(n) { return n >= 1000 ? (n/1000).toFixed(1).replace('.', ',') + 'k' : String(n); }
-    function syncP() {
+    function fmtP(n) { return n >= 1000 ? (n / 1000).toFixed(1).replace('.', ',') + 'k' : String(n); }
+    function syncParticipants() {
       const el = document.getElementById('pdp-participants');
       if (el) el.textContent = fmtP(participants);
     }
-    syncP();
-    (function tick() { setTimeout(() => { participants += Math.floor(Math.random()*3)+1; syncP(); tick(); }, 2500 + Math.random()*4000); })();
+    syncParticipants();
+    (function tick() {
+      setTimeout(() => {
+        participants += Math.floor(Math.random() * 3) + 1;
+        syncParticipants();
+        tick();
+      }, 2500 + Math.random() * 4000);
+    })();
 
-    // Sizes
+    // Size grid
     const SIZES = ['38','39','40','41','42','43','44','45','46','47'];
     const SOLD_OUT = new Set(['38','39','45','46','47']);
     (function() {
@@ -377,11 +406,15 @@
       SIZES.forEach(sz => {
         const btn = document.createElement('button');
         const out = SOLD_OUT.has(sz);
-        btn.className = ['size-chip border text-xs font-normal font-mono py-2',
-          out ? 'border-neutral-800 text-neutral-700 cursor-not-allowed opacity-30 line-through'
-              : 'border-neutral-700 text-neutral-400 hover:border-neutral-500 hover:text-neutral-100 cursor-pointer'
+        btn.className = [
+          'size-chip border text-xs font-normal font-mono py-2',
+          out
+            ? 'border-neutral-200 text-neutral-300 cursor-not-allowed opacity-40 line-through'
+            : 'border-neutral-300 text-neutral-600 hover:border-neutral-700 hover:text-neutral-900 cursor-pointer'
         ].join(' ');
-        btn.textContent = sz; btn.disabled = out; btn.title = out ? 'Épuisé' : `Taille ${sz}`;
+        btn.textContent = sz;
+        btn.disabled = out;
+        btn.title = out ? 'Épuisé' : `Taille ${sz}`;
         if (!out) btn.addEventListener('click', () => {
           document.querySelectorAll('.size-chip:not(:disabled)').forEach(c => c.classList.remove('active'));
           btn.classList.add('active');
@@ -390,12 +423,18 @@
       });
     })();
 
-    // Reveal
-    const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }), { threshold: 0.1 });
+    // Reveal on scroll
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
     document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 
-    // Header blur
-    window.addEventListener('scroll', () => document.getElementById('site-header')?.classList.toggle('scrolled', window.scrollY > 32), { passive: true });
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('site-header')?.classList.toggle('scrolled', window.scrollY > 32);
+    }, { passive: true });
   </script>
 </body>
 </html>
