@@ -43,8 +43,8 @@
       user-select: none; -webkit-user-select: none;
     }
 
-    /* ── App shell — 100px pour le header SDN ── */
-    #app { position: fixed; top: 100px; left: 0; right: 0; bottom: 0; overflow: hidden; }
+    /* ── App shell — 136px pour le header SDN (nav 64 + breadcrumb 36 + strip 36) ── */
+    #app { position: fixed; top: 136px; left: 0; right: 0; bottom: 0; overflow: hidden; }
 
     /* ── Transitions d'écran ── */
     .screen {
@@ -153,17 +153,23 @@
     /* ── Header SDN ── */
     #sdn-header { position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
     .sdn-nav {
-      height: 64px; background: #fff; border-bottom: 1px solid #e5e5e5;
+      height: 64px; background: #fff;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 24px;
     }
+    .sdn-nav-icons { display: flex; align-items: center; gap: 20px; }
+    .sdn-nav-icon { color: #737373; background: none; border: none; cursor: pointer; padding: 0; transition: color 0.2s; }
+    .sdn-nav-icon:hover { color: #1C1C1C; }
     .sdn-logo {
       font-family: 'Staatliches', sans-serif; font-size: 26px;
       color: #1C1C1C; text-decoration: none; line-height: 1;
       text-transform: uppercase; transition: color 0.2s;
     }
     .sdn-logo:hover { color: #A52A2A; }
-    .sdn-breadcrumb { display: flex; align-items: center; gap: 6px; }
+    .sdn-breadcrumb-bar {
+      height: 36px; background: #fff; border-top: 1px solid #e5e5e5;
+      display: flex; align-items: center; padding: 0 24px; gap: 6px;
+    }
     .sdn-bc-link, .sdn-bc-current, .sdn-bc-sep {
       font-family: 'DM Mono', monospace; font-size: 11px;
       font-weight: 500; letter-spacing: 0.1em; text-decoration: none;
@@ -194,17 +200,25 @@
 <body class="bg-white text-neutral-900 font-sans antialiased">
 
 <!-- ══════════════════════════════════════
-     HEADER SDN — nav h-64px + bandeau rouge h-36px
+     HEADER SDN — nav h-64px + breadcrumb h-36px + bandeau rouge h-36px
 ══════════════════════════════════════ -->
 <div id="sdn-header">
+  <!-- Row 1 — logo + icônes -->
   <div class="sdn-nav">
     <a href="./" class="sdn-logo">Sneaker Drop Ninja</a>
-    <nav class="sdn-breadcrumb" aria-label="Fil d'Ariane">
-      <a href="./" class="sdn-bc-link">[ Accueil ]</a>
-      <span class="sdn-bc-sep">&nbsp;/&nbsp;</span>
-      <span class="sdn-bc-current">[ L'Arène ]</span>
-    </nav>
+    <div class="sdn-nav-icons">
+      <button class="sdn-nav-icon" aria-label="Mon compte"><i data-lucide="user" style="width:20px;height:20px;display:block;"></i></button>
+      <button class="sdn-nav-icon" aria-label="Panier"><i data-lucide="shopping-bag" style="width:20px;height:20px;display:block;"></i></button>
+      <button class="sdn-nav-icon" aria-label="Favoris"><i data-lucide="heart" style="width:20px;height:20px;display:block;"></i></button>
+    </div>
   </div>
+  <!-- Row 2 — fil d'Ariane -->
+  <nav class="sdn-breadcrumb-bar" aria-label="Fil d'Ariane">
+    <a href="./" class="sdn-bc-link">Accueil</a>
+    <span class="sdn-bc-sep">›</span>
+    <span class="sdn-bc-current">L'Arène</span>
+  </nav>
+  <!-- Row 3 — bandeau rouge -->
   <div class="sdn-red-strip">
     <div class="sdn-strip-track" id="sdn-strip-track"></div>
   </div>
@@ -216,10 +230,10 @@
        INTRO
   ══════════════════════════════════════ -->
   <div class="screen active bg-white" id="screen-intro">
-    <div class="flex flex-col items-center px-6 py-10 w-full max-w-sm mx-auto">
+    <div class="flex flex-col items-center px-6 py-5 w-full max-w-sm mx-auto">
 
       <!-- Badge statut drop -->
-      <div class="flex items-center gap-2 mb-8">
+      <div class="flex items-center gap-2 mb-5">
         <span class="w-1.5 h-1.5 rounded-full bg-accent pulse-dot flex-shrink-0" id="badge-dot"></span>
         <span class="text-xs font-normal font-mono text-neutral-500 uppercase tracking-[0.15em]" id="badge-text">Prochain drop · …</span>
       </div>
@@ -241,7 +255,7 @@
       </a>
 
       <!-- Specs produit -->
-      <div class="w-full grid grid-cols-3 border border-t-0 border-neutral-200 mb-6">
+      <div class="w-full grid grid-cols-3 border border-t-0 border-neutral-200 mb-4">
         <div class="px-4 py-3">
           <div class="text-xs font-semibold text-neutral-500 uppercase mb-1">Matière</div>
           <div class="text-xs font-normal font-mono text-neutral-900">Cuir vegan<br>texturé</div>
@@ -257,7 +271,7 @@
       </div>
 
       <!-- Règles (même style que la trust bar) -->
-      <div class="w-full border border-neutral-200 divide-y divide-neutral-200 mb-8">
+      <div class="w-full border border-neutral-200 divide-y divide-neutral-200 mb-5">
         <div class="flex items-center gap-4 px-4 py-3">
           <span class="text-2xl flex-shrink-0">👟</span>
           <div class="text-sm font-normal text-neutral-500">
@@ -273,7 +287,7 @@
       </div>
 
       <!-- Stats jeu (même grille que la section jeu de la homepage) -->
-      <div class="w-full grid grid-cols-3 border-t border-neutral-200 pt-6 mb-8">
+      <div class="w-full grid grid-cols-3 border-t border-neutral-200 pt-4 mb-5">
         <div class="text-center">
           <div class="text-xl font-normal font-mono text-neutral-900 mb-1">30s</div>
           <div class="text-xs font-semibold text-neutral-500 uppercase">Durée</div>
