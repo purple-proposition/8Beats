@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aruko KUMO HIKER — Sneaker Drop Ninja</title>
+  <title>JS Hybrid Roamer V3 — Sneaker Drop Ninja</title>
 
   <!-- Fonts: Staatliches · DM Sans · DM Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,10 +45,6 @@
     .size-chip { transition: background 0.15s, color 0.15s, border-color 0.15s; }
     .size-chip.active { background: #A52A2A !important; color: #fff !important; border-color: #A52A2A !important; }
 
-    /* ── Thumbs ── */
-    .thumb { transition: outline-color 0.15s; cursor: pointer; }
-    .thumb.active { outline: 2px solid #A52A2A; outline-offset: 2px; }
-
     /* ── Inputs ── */
     input:focus { outline: 2px solid #A52A2A; outline-offset: 2px; }
 
@@ -61,14 +57,24 @@
     #site-header { transition: box-shadow 0.3s; }
     #site-header.scrolled { box-shadow: 0 1px 16px rgba(0,0,0,0.06); backdrop-filter: blur(12px); background: rgba(255,255,255,0.92) !important; }
 
-    /* ── Live dot ── */
-    @keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-    .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
-
     /* ── Marquee ── */
     @keyframes marquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
     .marquee-track { animation: marquee 24s linear infinite; display: flex; width: max-content; }
     .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+
+    /* ── Teaser noise ── */
+    .teaser-bg {
+      background: #111111;
+      position: relative;
+      overflow: hidden;
+    }
+    .teaser-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 30% 60%, rgba(165,42,42,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
   </style>
 </head>
 
@@ -105,7 +111,7 @@
       <span class="text-neutral-300 font-mono font-normal">›</span>
       <a href="./#drops" class="text-xs font-normal font-mono text-neutral-500 hover:text-neutral-700 transition-colors uppercase">Les Drops</a>
       <span class="text-neutral-300 font-mono font-normal">›</span>
-      <span class="text-xs font-normal font-mono text-neutral-600 uppercase">Aruko KUMO HIKER</span>
+      <span class="text-xs font-normal font-mono text-neutral-600 uppercase">JS Hybrid Roamer V3</span>
     </div>
   </div>
 
@@ -117,56 +123,49 @@
 
         <!-- Section label -->
         <div class="flex items-center gap-4 mb-8 md:mb-12">
-          <span class="text-xs font-normal font-mono text-neutral-500 uppercase">Drop 002</span>
+          <span class="text-xs font-normal font-mono text-neutral-500 uppercase">Drop 003</span>
           <div class="flex-1 h-px bg-neutral-200"></div>
-          <span class="text-xs font-normal font-mono text-neutral-500 uppercase hidden md:block">Aruko · 2026</span>
+          <span class="text-xs font-normal font-mono text-neutral-500 uppercase hidden md:block">JS · 2026</span>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-start">
 
           <!-- ── Gallery ── -->
           <div data-reveal>
-            <!-- Image principale -->
-            <div class="bg-[#eceae5] aspect-square flex items-center justify-center p-8 md:p-12 overflow-hidden" id="main-img-wrap">
-              <img src="./kumo-1.png" alt="Aruko KUMO HIKER" class="w-full object-contain" id="main-img">
+            <!-- Teaser principal -->
+            <div class="teaser-bg aspect-square flex items-center justify-center p-12 md:p-16">
+              <div class="text-center select-none">
+                <div class="font-display text-7xl md:text-8xl lg:text-9xl text-white leading-none tracking-tight">HYBRID<br>ROAMER<br>V3</div>
+                <div class="text-xs font-normal font-mono text-neutral-500 uppercase tracking-[0.3em] mt-6">JS · Ash Dune · 2026</div>
+              </div>
             </div>
 
             <!-- Tags -->
             <div class="flex gap-2 mt-3 md:mt-4">
               <span class="bg-neutral-900 text-white text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase">Prochainement</span>
-              <span class="bg-neutral-200 text-neutral-500 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase">Drop 002</span>
-              <span class="bg-neutral-200 text-neutral-500 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase hidden sm:inline-flex">Gore-Tex</span>
+              <span class="bg-neutral-200 text-neutral-500 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase">Drop 003</span>
+              <span class="bg-neutral-200 text-neutral-500 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase hidden sm:inline-flex">350 prs</span>
             </div>
 
-            <!-- Vignettes -->
-            <div class="grid grid-cols-3 gap-2 mt-3 md:mt-4">
-              <div class="thumb active bg-[#eceae5] aspect-square flex items-center justify-center p-4 overflow-hidden" data-src="./kumo-1.png">
-                <img src="./kumo-1.png" alt="Vue 1" class="object-contain w-full">
-              </div>
-              <div class="thumb bg-[#eceae5] aspect-square flex items-center justify-center p-4 overflow-hidden" data-src="./kumo-2.png">
-                <img src="./kumo-2.png" alt="Vue 2" class="object-contain w-full">
-              </div>
-              <div class="thumb bg-[#eceae5] aspect-square flex items-center justify-center p-4 overflow-hidden" data-src="./kumo-3.png">
-                <img src="./kumo-3.png" alt="Vue 3" class="object-contain w-full">
-              </div>
-            </div>
+            <!-- Note photo -->
+            <p class="text-xs font-normal font-mono text-neutral-400 mt-3">Visuels produit à venir — design final en cours de validation.</p>
           </div>
 
           <!-- ── Product info ── -->
           <div>
             <div data-reveal>
-              <div class="text-xs font-normal font-mono text-neutral-500 uppercase mb-3 md:mb-4">Aruko · Coloris Olive Shadow</div>
-              <h1 class="font-display text-5xl md:text-6xl lg:text-7xl text-neutral-900 leading-none mb-4">KUMO<br>HIKER</h1>
+              <div class="text-xs font-normal font-mono text-neutral-500 uppercase mb-3 md:mb-4">JS · Coloris Ash Dune</div>
+              <h1 class="font-display text-5xl md:text-6xl lg:text-7xl text-neutral-900 leading-none mb-4">THE HYBRID<br>ROAMER V3</h1>
               <p class="text-base font-normal text-neutral-600 leading-relaxed mb-6 md:mb-8 max-w-sm">
-                La montagne en édition limitée. Membrane GORE-TEX certifiée, semelle Vibram trail, tige en nylon technique balistique. Conçu pour les terrains extrêmes, pensé pour le drop exclusif.
+                Entre l'héritage trail et le quotidien urbain. La V3 réintroduit le coloris Ash Dune, épuisé en moins de 6 minutes lors de son précédent drop. Mesh bicolore aéré, amorti EVA compound, tige en daim milled qui gagne en patine avec le temps.
               </p>
             </div>
 
             <!-- Prix -->
             <div data-reveal data-d="1" class="flex items-center gap-4 md:gap-6 pb-6 md:pb-8 mb-6 md:mb-8 border-b border-neutral-200">
-              <div class="text-xl font-normal font-mono text-neutral-900">€ 340</div>
+              <div class="text-xl font-normal font-mono text-neutral-900">€ 295</div>
               <div class="h-4 w-px bg-neutral-300"></div>
-              <div class="text-xs font-normal font-mono text-neutral-500 uppercase">Prix officiel</div>
+              <div class="text-xs font-normal font-mono text-neutral-500 uppercase">350 exemplaires</div>
             </div>
 
             <!-- Tailles -->
@@ -195,15 +194,15 @@
             <div data-reveal data-d="4" class="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-neutral-200 grid grid-cols-3 gap-4 md:gap-6">
               <div>
                 <div class="text-xs font-semibold text-neutral-500 uppercase mb-2">Matière</div>
-                <div class="text-xs font-normal font-mono text-neutral-600">Nylon balistique</div>
+                <div class="text-xs font-normal font-mono text-neutral-600">Daim milled<br>Mesh tech.</div>
               </div>
               <div>
                 <div class="text-xs font-semibold text-neutral-500 uppercase mb-2">Semelle</div>
-                <div class="text-xs font-normal font-mono text-neutral-600">Vibram · Trail</div>
+                <div class="text-xs font-normal font-mono text-neutral-600">EVA compound<br>ultra-léger</div>
               </div>
               <div>
-                <div class="text-xs font-semibold text-neutral-500 uppercase mb-2">Technologie</div>
-                <div class="text-xs font-normal font-mono text-neutral-600">GORE-TEX</div>
+                <div class="text-xs font-semibold text-neutral-500 uppercase mb-2">Coloris</div>
+                <div class="text-xs font-normal font-mono text-neutral-600">Ash Dune<br>Exclusif</div>
               </div>
             </div>
 
@@ -232,15 +231,15 @@
     <div class="bg-neutral-900 py-4 overflow-hidden select-none marquee-wrap">
       <div class="marquee-track">
         <template id="marquee-seg">
-          <span class="text-xs font-normal font-mono text-neutral-200 uppercase tracking-[0.22em] px-8">ARUKO KUMO HIKER</span>
+          <span class="text-xs font-normal font-mono text-neutral-200 uppercase tracking-[0.22em] px-8">JS HYBRID ROAMER V3</span>
           <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
-          <span class="text-xs font-normal font-mono text-neutral-500 uppercase tracking-[0.22em] px-8">DROP 002 · BIENTÔT</span>
+          <span class="text-xs font-normal font-mono text-neutral-500 uppercase tracking-[0.22em] px-8">DROP 003 · BIENTÔT</span>
           <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
-          <span class="text-xs font-normal font-mono text-neutral-200 uppercase tracking-[0.22em] px-8">GORE-TEX · VIBRAM</span>
+          <span class="text-xs font-normal font-mono text-neutral-200 uppercase tracking-[0.22em] px-8">ASH DUNE · 350 PAIRES</span>
           <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
           <span class="text-xs font-normal font-mono text-neutral-500 uppercase tracking-[0.22em] px-8">WAITLIST UNIQUEMENT</span>
           <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
-          <span class="text-xs font-normal font-mono text-neutral-200 uppercase tracking-[0.22em] px-8">COLORIS OLIVE SHADOW</span>
+          <span class="text-xs font-normal font-mono text-neutral-200 uppercase tracking-[0.22em] px-8">EVA COMPOUND · DAIM MILLED</span>
           <span class="text-neutral-600 px-4 font-normal font-mono">✦</span>
         </template>
       </div>
@@ -249,9 +248,9 @@
     <!-- ═══════════ COMING SOON ═══════════ -->
     <section class="py-12 md:py-16 lg:py-24 bg-neutral-50 border-b border-neutral-200">
       <div class="max-w-[1440px] mx-auto px-6 md:px-12 text-center">
-        <h2 class="font-display text-4xl md:text-5xl lg:text-7xl text-neutral-900 leading-none mb-4 md:mb-6">DROP 002</h2>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-7xl text-neutral-900 leading-none mb-4 md:mb-6">DROP 003</h2>
         <p class="text-base font-normal text-neutral-600 leading-relaxed max-w-md mx-auto mb-8 md:mb-12">
-          € 340 · 350 paires. Inscris-toi à la waitlist pour être prévenu en premier et accéder au jeu de qualification avant tout le monde.
+          € 295 · 350 paires. Date à confirmer. Inscris-toi à la waitlist pour être prévenu en premier et accéder au jeu de qualification avant tout le monde.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
           <a href="./#waitlist"
@@ -259,7 +258,7 @@
             Rejoindre la waitlist
           </a>
           <a href="./drpd-ad.html"
-             class="border border-neutral-300 hover:border-neutral-700 text-neutral-600 hover:text-neutral-900 text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors inline-block flex items-center gap-2">
+             class="border border-neutral-300 hover:border-neutral-700 text-neutral-600 hover:text-neutral-900 text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors inline-flex items-center gap-2">
             <i data-lucide="zap" class="w-4 h-4"></i> Entrer dans l'arène
           </a>
         </div>
@@ -289,8 +288,8 @@
           <div class="text-xs font-semibold text-neutral-500 uppercase mb-4 md:mb-6">Drops</div>
           <div class="flex flex-col gap-3 md:gap-4">
             <a href="./product-phantomatik.html" class="text-xs font-normal font-mono text-neutral-500 hover:text-neutral-200 transition-colors">Phantomatik LTD 500</a>
-            <a href="./product-kumo.html" class="text-xs font-normal font-mono text-accent">Aruko KUMO HIKER</a>
-            <a href="./product-js.html" class="text-xs font-normal font-mono text-neutral-500 hover:text-white transition-colors">JS Hybrid Roamer V3</a>
+            <a href="./product-kumo.html" class="text-xs font-normal font-mono text-neutral-500 hover:text-neutral-200 transition-colors">Aruko KUMO HIKER</a>
+            <a href="./product-js.html" class="text-xs font-normal font-mono text-accent">JS Hybrid Roamer V3</a>
           </div>
         </div>
         <div>
@@ -331,7 +330,7 @@
     })();
 
     // Compteur FOMO
-    let participants = 800 + Math.floor(Math.random() * 400);
+    let participants = 500 + Math.floor(Math.random() * 300);
     function fmtP(n) { return n >= 1000 ? (n / 1000).toFixed(1).replace('.', ',') + 'k' : String(n); }
     function syncParticipants() {
       const el = document.getElementById('pdp-participants');
@@ -343,7 +342,7 @@
         2500 + Math.random() * 4000);
     })();
 
-    // Grille de tailles (désactivée — pas encore disponible)
+    // Grille de tailles (désactivée)
     const SIZES = ['38','39','40','41','42','43','44','45','46','47'];
     (function() {
       const grid = document.getElementById('size-grid');
@@ -356,17 +355,6 @@
         grid.appendChild(btn);
       });
     })();
-
-    // Vignettes — switch image principale
-    document.querySelectorAll('.thumb').forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        const src = thumb.dataset.src;
-        if (!src) return;
-        document.getElementById('main-img').src = src;
-        document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-        thumb.classList.add('active');
-      });
-    });
 
     // Scroll reveal
     const io = new IntersectionObserver(entries =>
