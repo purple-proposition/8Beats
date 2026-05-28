@@ -132,12 +132,9 @@
 
           <!-- ── Gallery ── -->
           <div data-reveal>
-            <!-- Teaser principal -->
-            <div class="teaser-bg aspect-square flex items-center justify-center p-12 md:p-16">
-              <div class="text-center select-none">
-                <div class="font-display text-7xl md:text-8xl lg:text-9xl text-white leading-none tracking-tight">HYBRID<br>ROAMER<br>V3</div>
-                <div class="text-xs font-normal font-mono text-neutral-500 uppercase tracking-[0.3em] mt-6">JS · Ash Dune · 2026</div>
-              </div>
+            <!-- Image principale -->
+            <div class="bg-[#eceae5] aspect-square flex items-center justify-center p-8 md:p-12 overflow-hidden" id="main-img-wrap">
+              <img src="./js-1.png" alt="JS Hybrid Roamer V3" class="w-full object-contain" id="main-img">
             </div>
 
             <!-- Tags -->
@@ -147,8 +144,18 @@
               <span class="bg-neutral-200 text-neutral-500 text-xs font-normal font-mono px-3 md:px-4 py-2 uppercase hidden sm:inline-flex">350 prs</span>
             </div>
 
-            <!-- Note photo -->
-            <p class="text-xs font-normal font-mono text-neutral-400 mt-3">Visuels produit à venir — design final en cours de validation.</p>
+            <!-- Vignettes -->
+            <div class="grid grid-cols-3 gap-2 mt-3 md:mt-4">
+              <div class="thumb active bg-[#eceae5] aspect-square flex items-center justify-center p-4 overflow-hidden" data-src="./js-1.png">
+                <img src="./js-1.png" alt="Vue 1" class="object-contain w-full">
+              </div>
+              <div class="thumb bg-[#eceae5] aspect-square flex items-center justify-center p-4 overflow-hidden" data-src="./js-2.jpg">
+                <img src="./js-2.jpg" alt="Vue 2" class="object-contain w-full">
+              </div>
+              <div class="thumb bg-[#eceae5] aspect-square flex items-center justify-center p-4 overflow-hidden" data-src="./js-3.png">
+                <img src="./js-3.png" alt="Vue 3" class="object-contain w-full">
+              </div>
+            </div>
           </div>
 
           <!-- ── Product info ── -->
@@ -341,6 +348,17 @@
       setTimeout(() => { participants += Math.floor(Math.random() * 3) + 1; syncParticipants(); tick(); },
         2500 + Math.random() * 4000);
     })();
+
+    // Vignettes — switch image principale
+    document.querySelectorAll('.thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const src = thumb.dataset.src;
+        if (!src) return;
+        document.getElementById('main-img').src = src;
+        document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+      });
+    });
 
     // Grille de tailles (désactivée)
     const SIZES = ['38','39','40','41','42','43','44','45','46','47'];
