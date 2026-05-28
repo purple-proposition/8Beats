@@ -4,458 +4,174 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
-  <title>Sneaker Drop Ninja — Protect The Drop</title>
+  <title>L'Arène · Sneaker Drop Ninja</title>
+
+  <!-- Fonts — même que la homepage -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Staatliches&display=swap" rel="stylesheet">
+
+  <!-- Tailwind — même config que la homepage -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: { light: '#C4403F', DEFAULT: '#A52A2A', dark: '#8B1C1C' }
+          },
+          fontFamily: {
+            sans:    ['"DM Sans"',  'system-ui', 'sans-serif'],
+            mono:    ['"DM Mono"',  'monospace'],
+            display: ['Staatliches', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
   <style>
+    /* ── Base jeu (override nécessaires uniquement) ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --accent:  #1C1C1C;
-      --red:     #D42B2B;
-      --amber:   #8B6020;
-      --bg:      #F5F2EE;
-      --surface: #ECEAE4;
-      --border:  #DEDAD2;
-      --fg:      #1C1C1C;
-      --sub:     #5E5A56;
-      --muted:   #8C8882;
-
-      --font-ui:   'DM Sans', system-ui, sans-serif;
-      --font-mono: 'DM Mono', monospace;
-    }
-
     html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-      font-family: var(--font-ui);
+      width: 100%; height: 100%; overflow: hidden;
       -webkit-tap-highlight-color: transparent;
-      touch-action: none;
-      user-select: none;
-      -webkit-user-select: none;
+      user-select: none; -webkit-user-select: none;
     }
 
-    /* Quand le header SDN est visible (intro/end) l'app part de 100px */
+    /* ── App shell — 100px pour le header SDN ── */
     #app { position: fixed; top: 100px; left: 0; right: 0; bottom: 0; overflow: hidden; }
 
-    /* ─── SCREENS ─── */
+    /* ── Transitions d'écran ── */
     .screen {
       position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
       opacity: 0; pointer-events: none;
       transition: opacity 0.35s ease;
+      display: flex; flex-direction: column;
     }
     .screen.active { opacity: 1; pointer-events: all; }
+    #screen-intro, #screen-end { overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
-    /* ─── INTRO ─── */
-    #screen-intro {
-      background: radial-gradient(ellipse at 50% 0%, #ECEAE4 0%, var(--bg) 60%);
-      padding: 40px; gap: 0;
-    }
-
-    .logo {
-      font-family: 'Staatliches', sans-serif;
-      font-size: clamp(44px, 12vw, 80px);
-      color: var(--fg); line-height: 1;
-      text-align: center; letter-spacing: 0;
-      text-transform: uppercase; margin-bottom: 6px;
-    }
-    .tagline {
-      font-family: var(--font-mono);
-      font-size: 10px; letter-spacing: 5px;
-      color: var(--sub); text-transform: uppercase;
-      margin-bottom: 18px;
-    }
-
-    .badge {
-      display: flex; align-items: center; gap: 7px;
-      font-family: var(--font-mono);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 18px;
-    }
-    .badge-dot {
-      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-      animation: dot-pulse 1.6s ease-in-out infinite;
-    }
-    @keyframes dot-pulse {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: .4; transform: scale(.65); }
-    }
-
-    /* Drop preview card */
-    .drop-preview {
-      width: 100%; max-width: 300px;
-      display: flex; align-items: center;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; overflow: hidden; margin-bottom: 18px;
-    }
-    .drop-preview-img {
-      width: 86px; height: 86px; object-fit: cover; flex-shrink: 0;
-    }
-    .drop-preview-info {
-      padding: 0 16px;
-      display: flex; flex-direction: column; gap: 3px;
-    }
-    .drop-preview-label {
-      font-family: var(--font-mono); font-size: 9px;
-      font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
-      color: var(--sub);
-    }
-    .drop-preview-name {
-      font-family: var(--font-ui); font-size: 15px; font-weight: 700; color: var(--fg);
-    }
-    .drop-preview-qty {
-      font-family: var(--font-mono); font-size: 10px;
-      font-weight: 600; color: var(--muted);
-    }
-
-    .rules {
-      width: 100%; max-width: 300px;
-      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
-      margin-bottom: 22px;
-    }
-    .rule {
-      display: flex; align-items: center; gap: 14px;
-      padding: 12px 16px;
-      font-size: 13px; color: var(--sub);
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-    .rule:last-child { border-bottom: none; }
-    .rule span.icon { font-size: 18px; flex-shrink: 0; }
-    .rule em { font-style: normal; font-weight: 700; }
-    .rule.good em { color: var(--fg); }
-    .rule.fake em { color: var(--amber); }
-
-    /* Boutons */
-    .btn {
-      border: none; border-radius: 100px; cursor: pointer;
-      font-family: var(--font-ui); font-weight: 700;
-      transition: transform .15s, box-shadow .2s;
-    }
-    .btn:active { transform: scale(.96) !important; }
-
-    @keyframes btn-pulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(28,28,28,.18); }
-      60%      { box-shadow: 0 0 0 14px rgba(28,28,28,0); }
-    }
-    .btn-primary {
-      padding: 20px 52px; font-size: 16px;
-      background: var(--accent); color: var(--bg);
-      animation: btn-pulse 2.4s ease infinite;
-    }
-    .btn-primary:hover { box-shadow: 0 8px 32px rgba(0,0,0,.18); }
-
-    /* ─── GAME SCREEN ─── */
-    #screen-game { background: var(--bg); }
-
-    /* Flash vie perdue */
+    /* ── Écran de jeu ── */
+    #screen-game { background: #fff; overflow: hidden; touch-action: none; }
     #screen-game::after {
       content: ''; position: absolute; inset: 0;
-      background: rgba(212, 43, 43, .14);
+      background: rgba(165,42,42,.12);
       pointer-events: none; opacity: 0; transition: opacity .4s;
     }
     #screen-game.flash-life::after { opacity: 1; transition: none; }
 
+    /* ── HUD ── */
     #hud {
       position: absolute; top: 0; left: 0; right: 0;
-      padding: 18px 24px 30px;
+      padding: 16px 20px 28px;
       display: flex; align-items: center; justify-content: space-between;
       z-index: 10; pointer-events: none;
-      background: linear-gradient(to bottom, var(--bg) 45%, transparent);
+      background: linear-gradient(to bottom, #fff 45%, transparent);
     }
-
-    .hud-left { display: flex; align-items: center; gap: 9px; }
-    .hud-icon { line-height: 1; }
-    .hud-score-wrap { display: flex; flex-direction: column; align-items: flex-start; }
-    .hud-cart-val {
-      font-family: var(--font-mono);
-      font-size: 22px; font-weight: 600; color: var(--fg);
-      min-width: 24px; transition: transform .18s; line-height: 1.15;
-    }
-    .hud-combo {
-      font-family: var(--font-mono);
-      font-size: 9px; font-weight: 700;
-      color: var(--amber); letter-spacing: 0.5px;
-      min-height: 11px; line-height: 11px;
-    }
-
-    /* Vies — centre HUD */
     .hud-lives { display: flex; gap: 4px; align-items: center; }
-    .life {
-      font-size: 15px; color: var(--red);
-      transition: opacity .25s; line-height: 1;
-    }
+    .life { font-size: 16px; color: #A52A2A; transition: opacity .25s; line-height: 1; }
     .life.lost { opacity: 0.15; }
 
-    .hud-timer { display: flex; align-items: baseline; gap: 3px; }
-    .hud-timer-val {
-      font-family: var(--font-mono);
-      font-size: 22px; font-weight: 600; color: var(--fg);
-      min-width: 28px; text-align: right; transition: color .3s;
-    }
-    .hud-timer-s { font-family: var(--font-mono); font-size: 11px; color: var(--sub); }
+    /* ── Barre de progression ── */
+    #progress { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: #e5e5e5; }
+    #progress-bar { height: 100%; background: #1C1C1C; transition: width 1s linear, background-color .4s; }
 
-    #progress {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-      background: var(--border);
-    }
-    #progress-bar {
-      height: 100%; background: var(--fg);
-      transition: width 1s linear, background-color .4s;
-    }
-
+    /* ── Arène ── */
     #arena { position: absolute; inset: 0; }
 
-    /* ─── ITEMS ─── */
+    /* ── Items ── */
     .item {
-      position: absolute;
-      width: 82px; height: 92px;
+      position: absolute; width: 82px; height: 92px;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 5px;
       border-radius: 18px; cursor: pointer;
     }
     .item-emoji { font-size: 42px; line-height: 1; pointer-events: none; }
-
     .item-sneaker {
       background: rgba(28,28,28,.04);
       border: 1.5px solid rgba(28,28,28,.28);
-      animation: pulse-accent 1.5s ease-in-out infinite;
+      animation: pulse-item 1.5s ease-in-out infinite;
     }
-    @keyframes pulse-accent {
+    @keyframes pulse-item {
       0%,100% { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
       50%      { box-shadow: 0 6px 24px rgba(0,0,0,.15); }
     }
-
     .item-fake {
       background: rgba(139,96,32,.06);
       border: 1.5px solid rgba(139,96,32,.35);
-      animation: pulse-amber 1.1s ease-in-out infinite;
+      animation: pulse-fake 1.1s ease-in-out infinite;
     }
-    @keyframes pulse-amber {
+    @keyframes pulse-fake {
       0%,100% { box-shadow: 0 2px 8px rgba(139,96,32,.1); }
       50%      { box-shadow: 0 4px 18px rgba(139,96,32,.25); }
     }
-
     .item-hit {
       transform: scale(1.15) !important;
       opacity: 0 !important;
       transition: transform .15s, opacity .15s !important;
     }
 
-    /* ─── FEEDBACK POPS ─── */
+    /* ── Feedback pops ── */
     .pop {
-      font-family: var(--font-mono); font-weight: 700;
+      font-family: 'DM Mono', monospace; font-weight: 700;
       position: absolute; pointer-events: none;
-      font-size: 12px; white-space: nowrap; z-index: 20;
+      font-size: 13px; white-space: nowrap; z-index: 20;
       animation: pop-up .7s ease forwards;
     }
-    .pop.pos   { color: var(--fg); }
-    .pop.neg   { color: var(--red); }
-    .pop.combo { color: var(--amber); font-size: 14px; }
+    .pop.pos { color: #1C1C1C; }
+    .pop.neg { color: #A52A2A; font-size: 15px; }
     @keyframes pop-up {
       0%   { opacity: 1; transform: translate(-50%, 0) scale(1.1); }
       65%  { opacity: 1; }
       100% { opacity: 0; transform: translate(-50%, -60px) scale(.8); }
     }
 
-    /* ─── END SCREEN ─── */
-    #screen-end {
-      background: radial-gradient(ellipse at 50% 0%, #ECEAE4 0%, var(--bg) 60%);
-      padding: 28px 28px; gap: 0;
-    }
+    /* ── Confetti ── */
     #confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-    .spark {
-      position: absolute; border-radius: 50%;
-      background: var(--fg); opacity: 0;
-      animation: spark-fall 2s ease forwards;
-    }
+    .spark { position: absolute; border-radius: 50%; background: #1C1C1C; opacity: 0; animation: spark-fall 2s ease forwards; }
     @keyframes spark-fall {
       0%   { opacity: 1; transform: translateY(0) scale(1); }
       100% { opacity: 0; transform: translateY(100px) scale(0); }
     }
 
-    .end-logo {
-      font-family: 'Staatliches', sans-serif;
-      font-size: clamp(22px, 6vw, 36px);
-      letter-spacing: 0; text-transform: uppercase;
-      color: var(--fg); margin-bottom: 14px; text-align: center;
-    }
+    /* ── Pulsation badge ── */
+    @keyframes dot-pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+    .pulse-dot { animation: dot-pulse 2s ease-in-out infinite; }
 
-    /* ─── LEADERBOARD ─── */
-    .leaderboard {
-      width: 100%; margin-bottom: 10px;
-      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    /* ── Pulsation CTA ── */
+    @keyframes cta-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(165,42,42,.25); }
+      60%      { box-shadow: 0 0 0 14px rgba(165,42,42,0); }
     }
-    .lb-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 14px; background: var(--fg);
-    }
-    .lb-header-title {
-      font-family: var(--font-mono); font-size: 9px;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--bg);
-    }
-    .lb-header-count {
-      font-family: var(--font-mono); font-size: 10px;
-      font-weight: 600; color: rgba(245,242,238,.65);
-      /* number ticks up — keep mono so layout doesn't shift */
-    }
-    .lb-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 14px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-    .lb-row:last-child { border-bottom: none; }
-    .lb-row.lb-you { background: rgba(28,28,28,.07); }
-    .lb-rank {
-      font-family: var(--font-mono);
-      font-size: 11px; font-weight: 600;
-      min-width: 38px; color: var(--sub);
-    }
-    .lb-row.lb-you .lb-rank { color: var(--fg); font-weight: 700; }
-    .lb-name {
-      flex: 1; font-size: 12px; font-weight: 500; color: var(--fg);
-    }
-    .lb-row.lb-you .lb-name { font-weight: 700; }
-    .lb-pairs {
-      font-family: var(--font-mono); font-size: 11px;
-      font-weight: 600; color: var(--muted);
-    }
-    .lb-you-tag {
-      font-family: var(--font-mono);
-      font-size: 8px; font-weight: 700; letter-spacing: .5px;
-      background: var(--fg); color: var(--bg);
-      padding: 2px 5px; border-radius: 3px; margin-left: 6px;
-      vertical-align: middle;
-    }
+    .btn-pulse { animation: cta-pulse 2.4s ease infinite; }
 
-    .end-verdict {
-      font-family: var(--font-ui); font-size: 13px; font-weight: 600;
-      color: var(--fg); margin-bottom: 3px; text-align: center;
-    }
-    .end-model {
-      font-family: var(--font-mono); font-size: 9px;
-      color: var(--muted); margin-bottom: 12px; letter-spacing: 1.5px;
-      font-weight: 600;
-    }
-
-    .stats {
-      display: flex; gap: 8px; width: 100%; margin-bottom: 10px;
-    }
-    .stat {
-      flex: 1; text-align: center; padding: 10px 6px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-    .stat-val {
-      font-family: var(--font-mono); font-size: 18px;
-      font-weight: 600; color: var(--fg);
-    }
-    .stat-lbl {
-      font-family: var(--font-mono); font-size: 8px;
-      color: var(--sub); margin-top: 4px;
-      letter-spacing: 1px; text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    /* Fogg — Daily Drop (PROCHAIN DROP en haut, puis paire, puis décompte) */
-    .next-drop {
-      width: 100%; background: var(--fg); border-radius: 14px;
-      display: flex; align-items: stretch;
-      margin-bottom: 10px; overflow: hidden;
-    }
-    .next-drop-img {
-      width: 88px; flex-shrink: 0; background: #111; overflow: hidden;
-    }
-    .next-drop-img img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
-    .next-drop-info {
-      flex: 1; padding: 12px 16px;
-      display: flex; flex-direction: column; justify-content: center; gap: 1px;
-    }
-    .next-drop-label {
-      font-family: var(--font-mono); font-size: 9px;
-      font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-      color: rgba(245,242,238,.45); margin-bottom: 2px;
-    }
-    .next-drop-pair {
-      font-family: var(--font-ui); font-size: 13px; font-weight: 700;
-      color: var(--bg); margin-bottom: 3px;
-    }
-    .next-drop-val {
-      font-family: var(--font-mono); font-size: 22px; font-weight: 600;
-      color: var(--bg); letter-spacing: 2px;
-    }
-
-    /* Partager */
-    .btn-share {
-      width: 100%; padding: 14px; font-size: 14px; font-weight: 700;
-      background: none; color: var(--fg);
-      border: 1.5px solid var(--border); border-radius: 14px;
-      margin-bottom: 8px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      font-family: var(--font-ui); cursor: pointer;
-      transition: background .15s;
-    }
-    .btn-share:active { transform: scale(.97); }
-    .btn-share:hover { background: var(--surface); }
-    .btn-share .lucide { width: 15px; height: 15px; stroke-width: 2; }
-
-    /* CTA primaire */
-    .btn-cta {
-      width: 100%; padding: 20px; font-size: 15px;
-      background: var(--fg); color: var(--bg);
-      border: none; border-radius: 14px;
-      animation: btn-pulse 2.4s ease infinite;
-      font-family: var(--font-ui); font-weight: 700; cursor: pointer;
-    }
-    .btn-cta:active { transform: scale(.97) !important; }
-    .btn-cta:hover { box-shadow: 0 8px 32px rgba(0,0,0,.22); }
-    .btn-cta .lucide { display: inline-block; vertical-align: middle; width: 1em; height: 1em; margin-right: 6px; stroke-width: 1.75; }
-
-    /* ─── LUCIDE ICONS ─── */
-    .lucide { display: inline-block; vertical-align: middle; width: 1em; height: 1em; stroke-width: 1.75; }
-    .hud-icon .lucide { width: 18px; height: 18px; color: var(--sub); }
-
-    /* ─── SDN HEADER ─── */
-    #sdn-header {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 200;
-    }
+    /* ── Header SDN ── */
+    #sdn-header { position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
     .sdn-nav {
-      height: 64px; background: #FFFFFF;
-      border-bottom: 1px solid #E5E5E5;
-      display: flex; align-items: center;
-      justify-content: space-between;
+      height: 64px; background: #fff; border-bottom: 1px solid #e5e5e5;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 0 24px;
     }
     .sdn-logo {
-      font-family: 'Staatliches', sans-serif;
-      font-size: 26px; color: #1C1C1C;
-      text-decoration: none; line-height: 1;
-      text-transform: uppercase;
-      transition: color 0.2s;
+      font-family: 'Staatliches', sans-serif; font-size: 26px;
+      color: #1C1C1C; text-decoration: none; line-height: 1;
+      text-transform: uppercase; transition: color 0.2s;
     }
     .sdn-logo:hover { color: #A52A2A; }
     .sdn-breadcrumb { display: flex; align-items: center; gap: 6px; }
     .sdn-bc-link, .sdn-bc-current, .sdn-bc-sep {
-      font-family: var(--font-mono); font-size: 11px;
-      font-weight: 500; letter-spacing: 0.1em;
-      text-decoration: none;
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      font-weight: 500; letter-spacing: 0.1em; text-decoration: none;
     }
-    .sdn-bc-link { color: var(--muted); transition: color 0.2s; }
-    .sdn-bc-link:hover { color: var(--fg); }
-    .sdn-bc-current { color: var(--fg); }
-    .sdn-bc-sep { color: var(--muted); opacity: 0.5; }
-
+    .sdn-bc-link { color: #737373; transition: color 0.2s; }
+    .sdn-bc-link:hover { color: #1C1C1C; }
+    .sdn-bc-current { color: #1C1C1C; }
+    .sdn-bc-sep { color: #737373; opacity: 0.5; }
     .sdn-red-strip {
       height: 36px; background: #A52A2A; overflow: hidden;
       display: flex; align-items: center;
@@ -469,17 +185,17 @@
       to   { transform: translateX(-50%); }
     }
 
-    /* ─── END SCREEN SCROLL ─── */
-    #screen-end {
-      overflow-y: auto;
-      justify-content: flex-start !important;
-      -webkit-overflow-scrolling: touch;
-    }
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #fafafa; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 2px; }
   </style>
 </head>
-<body>
+<body class="bg-white text-neutral-900 font-sans antialiased">
 
-<!-- ── SDN HEADER — nav h-64px + bandeau rouge h-36px ── -->
+<!-- ══════════════════════════════════════
+     HEADER SDN — nav h-64px + bandeau rouge h-36px
+══════════════════════════════════════ -->
 <div id="sdn-header">
   <div class="sdn-nav">
     <a href="./" class="sdn-logo">Sneaker Drop Ninja</a>
@@ -496,109 +212,176 @@
 
 <div id="app">
 
-  <!-- ── INTRO ── -->
-  <div class="screen active" id="screen-intro">
-    <div class="logo">Sneaker Drop Ninja</div>
-    <div class="tagline">Grimpe dans le classement</div>
-    <div class="badge" id="intro-badge">
-      <span class="badge-dot" id="badge-dot"></span>
-      <span id="badge-text">Prochain drop · …</span>
-    </div>
-    <!-- Drop du jour -->
-    <div class="drop-preview">
-      <img src="./phantomatik.jpg" alt="Phantomatik LTD 500" class="drop-preview-img">
-      <div class="drop-preview-info">
-        <div class="drop-preview-label">Drop du jour</div>
-        <div class="drop-preview-name">Phantomatik LTD 500</div>
-        <div class="drop-preview-qty">500 exemplaires</div>
-      </div>
-    </div>
-    <div class="rules">
-      <div class="rule good">
-        <span class="icon">👟</span>
-        <span>La vraie paire · <em>Tape</em> pour grimper</span>
-      </div>
-      <div class="rule fake">
-        <span class="icon">👠</span>
-        <span><em>FAKE</em> · Tu perds une vie</span>
-      </div>
-    </div>
-    <button class="btn btn-primary" id="btn-start">
-      <i data-lucide="play"></i> Start the drop
-    </button>
-  </div>
+  <!-- ══════════════════════════════════════
+       INTRO
+  ══════════════════════════════════════ -->
+  <div class="screen active bg-white" id="screen-intro">
+    <div class="flex flex-col items-center px-6 py-10 w-full max-w-sm mx-auto">
 
-  <!-- ── GAME ── -->
-  <div class="screen" id="screen-game">
-    <div id="hud">
-      <div class="hud-left">
-        <span class="hud-icon"><i data-lucide="award"></i></span>
-        <div class="hud-score-wrap">
-          <span class="hud-cart-val" id="hud-cart">0</span>
-          <span class="hud-combo" id="hud-combo"></span>
+      <!-- Badge statut drop -->
+      <div class="flex items-center gap-2 mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent pulse-dot flex-shrink-0" id="badge-dot"></span>
+        <span class="text-xs font-normal font-mono text-neutral-500 uppercase tracking-[0.15em]" id="badge-text">Prochain drop · …</span>
+      </div>
+
+      <!-- Carte drop (même style que les drops cards de la homepage) -->
+      <a href="./product-phantomatik.html"
+         class="w-full bg-white border border-neutral-200 hover:border-neutral-500 transition-colors mb-6 block">
+        <div class="flex items-stretch">
+          <div class="w-24 h-24 bg-[#F0ECE6] flex items-center justify-center p-3 flex-shrink-0">
+            <img src="./phantomatik.jpg" alt="Phantomatik LTD 500"
+                 class="w-full h-full object-contain mix-blend-multiply">
+          </div>
+          <div class="px-4 py-3 flex flex-col justify-center flex-1">
+            <div class="text-xs font-normal font-mono text-neutral-500 uppercase mb-1">Drop du jour</div>
+            <div class="text-sm font-semibold text-neutral-900 leading-tight">Phantomatik LTD 500</div>
+            <div class="text-xs font-normal font-mono text-neutral-500 mt-1">500 exemplaires · € 280</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Règles (même style que la trust bar) -->
+      <div class="w-full border border-neutral-200 divide-y divide-neutral-200 mb-8">
+        <div class="flex items-center gap-4 px-4 py-3">
+          <span class="text-2xl flex-shrink-0">👟</span>
+          <div class="text-sm font-normal text-neutral-600">
+            La vraie paire · <span class="font-semibold text-neutral-900">tape</span> pour grimper dans le classement
+          </div>
+        </div>
+        <div class="flex items-center gap-4 px-4 py-3">
+          <span class="text-2xl flex-shrink-0">👠</span>
+          <div class="text-sm font-normal text-neutral-600">
+            <span class="font-semibold text-neutral-900">Fake</span> · tu perds une vie — 3 erreurs et c'est terminé
+          </div>
         </div>
       </div>
-      <!-- Vies au centre -->
+
+      <!-- Stats jeu (même grille que la section jeu de la homepage) -->
+      <div class="w-full grid grid-cols-3 border-t border-neutral-200 pt-6 mb-8">
+        <div class="text-center">
+          <div class="text-xl font-normal font-mono text-neutral-900 mb-1">30s</div>
+          <div class="text-xs font-semibold text-neutral-500 uppercase">Durée</div>
+        </div>
+        <div class="text-center border-x border-neutral-200">
+          <div class="text-xl font-normal font-mono text-neutral-900 mb-1">3</div>
+          <div class="text-xs font-semibold text-neutral-500 uppercase">Vies</div>
+        </div>
+        <div class="text-center">
+          <div class="text-xl font-normal font-mono text-neutral-900 mb-1">1 000</div>
+          <div class="text-xs font-semibold text-neutral-500 uppercase">Places</div>
+        </div>
+      </div>
+
+      <!-- CTA (même style que la homepage) -->
+      <button id="btn-start"
+        class="w-full bg-accent hover:bg-accent-dark text-white text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 transition-colors flex items-center justify-center gap-2 btn-pulse">
+        <i data-lucide="zap" class="w-4 h-4"></i> Entrer dans l'arène
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       GAME
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-game">
+    <div id="hud">
+
+      <!-- Score -->
+      <div class="flex items-center gap-2">
+        <i data-lucide="award" class="w-5 h-5 text-neutral-500 flex-shrink-0"></i>
+        <div>
+          <div class="text-xl font-normal font-mono text-neutral-900 leading-none" id="hud-cart">0</div>
+          <div class="text-[9px] font-mono leading-[11px] min-h-[11px]" id="hud-combo"></div>
+        </div>
+      </div>
+
+      <!-- Vies -->
       <div class="hud-lives" id="hud-lives">
         <span class="life">♥</span>
         <span class="life">♥</span>
         <span class="life">♥</span>
       </div>
-      <div class="hud-timer">
-        <span class="hud-timer-val" id="hud-timer">30</span>
-        <span class="hud-timer-s">s</span>
+
+      <!-- Timer -->
+      <div class="flex items-baseline gap-1">
+        <span class="text-xl font-normal font-mono text-neutral-900 leading-none tabular-nums" id="hud-timer">30</span>
+        <span class="text-xs font-mono text-neutral-500">s</span>
       </div>
-      <div id="progress"><div id="progress-bar"></div></div>
+
     </div>
+    <div id="progress"><div id="progress-bar"></div></div>
     <div id="arena"></div>
   </div>
 
-  <!-- ── END ── -->
-  <div class="screen" id="screen-end">
+  <!-- ══════════════════════════════════════
+       END
+  ══════════════════════════════════════ -->
+  <div class="screen bg-white" id="screen-end">
     <div id="confetti"></div>
-    <div class="end-logo">Sneaker Drop Ninja</div>
-    <div class="leaderboard">
-      <div class="lb-header">
-        <span class="lb-header-title">Classement waitlist</span>
-        <span class="lb-header-count" id="lb-participant-count">… joueurs</span>
+    <div class="flex flex-col items-center px-6 py-8 w-full max-w-sm mx-auto">
+
+      <!-- Logo -->
+      <a href="./"
+         class="font-display text-2xl text-neutral-900 leading-none uppercase mb-1 hover:text-accent transition-colors">
+        Sneaker Drop Ninja
+      </a>
+      <p class="text-xs font-normal font-mono text-neutral-500 text-center mb-6" id="end-verdict"></p>
+
+      <!-- Classement (card homepage style) -->
+      <div class="w-full border border-neutral-200 mb-6 overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-3 bg-neutral-900">
+          <span class="text-xs font-semibold font-mono text-white uppercase tracking-[0.15em]">Classement waitlist</span>
+          <span class="text-xs font-normal font-mono text-neutral-500" id="lb-participant-count">… joueurs</span>
+        </div>
+        <div id="leaderboard-body" class="divide-y divide-neutral-200 bg-white"></div>
       </div>
-      <div id="leaderboard-body"></div>
+
+      <!-- Stats (même grille que homepage) -->
+      <div class="w-full grid grid-cols-3 border border-neutral-200 divide-x divide-neutral-200 mb-6">
+        <div class="text-center py-4">
+          <div class="text-xl font-normal font-mono text-neutral-900 mb-1" id="s-caught">0</div>
+          <div class="text-xs font-semibold text-neutral-500 uppercase">Bonnes</div>
+        </div>
+        <div class="text-center py-4">
+          <div class="text-xl font-normal font-mono text-neutral-900 mb-1" id="s-fakes">0</div>
+          <div class="text-xs font-semibold text-neutral-500 uppercase">Fakes</div>
+        </div>
+        <div class="text-center py-4">
+          <div class="text-xl font-normal font-mono text-neutral-900 mb-1" id="s-missed">0</div>
+          <div class="text-xs font-semibold text-neutral-500 uppercase">Ratées</div>
+        </div>
+      </div>
+
+      <!-- Prochain drop (dark card style) -->
+      <div class="w-full bg-neutral-900 flex items-stretch mb-6 overflow-hidden">
+        <div class="w-20 bg-[#111] flex-shrink-0 overflow-hidden">
+          <img src="./phantomatik.jpg" alt="Phantomatik LTD 500" class="w-full h-full object-cover">
+        </div>
+        <div class="flex-1 px-4 py-3 flex flex-col justify-center gap-0.5">
+          <div class="text-xs font-normal font-mono text-neutral-500 uppercase tracking-[0.15em]">Prochain drop</div>
+          <div class="text-sm font-semibold text-white leading-tight">Phantomatik LTD 500</div>
+          <div class="text-xl font-normal font-mono text-white tabular-nums" id="next-drop-val">00:00:00</div>
+        </div>
+      </div>
+
+      <!-- Partager -->
+      <button id="btn-share"
+        class="w-full border border-neutral-200 hover:border-neutral-500 text-neutral-900 text-xs font-semibold tracking-[0.2em] uppercase px-6 py-4 transition-colors flex items-center justify-center gap-2 mb-3">
+        <i data-lucide="share-2" class="w-4 h-4"></i> Partager mon score
+      </button>
+
+      <!-- CTA principal -->
+      <button id="btn-cta"
+        class="w-full bg-accent hover:bg-accent-dark text-white text-xs font-semibold tracking-[0.2em] uppercase px-6 py-4 transition-colors flex items-center justify-center gap-2 btn-pulse">
+        <i data-lucide="trophy" class="w-4 h-4"></i> Sécurise ta place
+      </button>
+
     </div>
-    <div class="end-verdict" id="end-verdict"></div>
-    <div class="end-model">Phantomatik LTD 500 · 500 paires</div>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-val" id="s-caught">0</div>
-        <div class="stat-lbl">Bonnes paires</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val" id="s-fakes">0</div>
-        <div class="stat-lbl">Fakes tapées</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val" id="s-missed">0</div>
-        <div class="stat-lbl">Ratées</div>
-      </div>
-    </div>
-    <div class="next-drop">
-      <div class="next-drop-img">
-        <img src="./phantomatik.jpg" alt="Phantomatik LTD 500">
-      </div>
-      <div class="next-drop-info">
-        <div class="next-drop-label">Prochain drop</div>
-        <div class="next-drop-pair">Phantomatik LTD 500</div>
-        <div class="next-drop-val" id="next-drop-val">00:00:00</div>
-      </div>
-    </div>
-    <button class="btn-share" id="btn-share">
-      <i data-lucide="share-2"></i> Partager mon score
-    </button>
-    <button class="btn btn-cta" id="btn-cta">
-      <i data-lucide="trophy"></i> Sécurise ta place dans le classement
-    </button>
   </div>
 
-</div>
+</div><!-- #app -->
+
 <script>
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 const DURATION      = 30;
@@ -624,11 +407,11 @@ const TYPES = [
 ];
 
 const VERDICTS = [
-  [1,   50, '👑 Légendaire. Top du classement'],
-  [51, 150, '🏆 Excellent. Accès prioritaire assuré'],
-  [151, 350, '🔥 Solide. Tu es bien placé'],
-  [351, 600, '😅 Milieu de classement — retente ta chance'],
-  [601, WAITLIST_SIZE, '💀 Trop de fakes. Tu perds des places'],
+  [1,   50,  '👑 Légendaire. Top du classement.'],
+  [51,  150, '🏆 Excellent. Accès prioritaire assuré.'],
+  [151, 350, '🔥 Solide. Tu es bien placé.'],
+  [351, 600, '😅 Milieu de classement — retente ta chance.'],
+  [601, WAITLIST_SIZE, '💀 Trop de fakes. Tu perds des places.'],
 ];
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
@@ -638,12 +421,10 @@ let timeLeft=DURATION, gameRunning=false;
 let items=[], lastTs=0, spawnAcc=0, rafId=null, tickId=null;
 
 // ─── PARTICIPANT COUNTER (FOMO) ────────────────────────────────────────────────
-let participantCount = 1100 + Math.floor(Math.random() * 900); // 1100–2000
+let participantCount = 1100 + Math.floor(Math.random() * 900);
 let participantClockId = null;
 
-function fmtParticipants(n) {
-  return n.toLocaleString('fr-FR');
-}
+function fmtParticipants(n) { return n.toLocaleString('fr-FR'); }
 
 function startParticipantCounter() {
   clearInterval(participantClockId);
@@ -654,23 +435,20 @@ function startParticipantCounter() {
     el.textContent = fmtParticipants(participantCount) + ' joueurs';
   }
   tick();
-  // Interval irrégulier pour paraître organique
   (function schedule() {
     participantClockId = setTimeout(() => { tick(); schedule(); }, 2500 + Math.random() * 3500);
   })();
 }
 
-function stopParticipantCounter() {
-  clearTimeout(participantClockId);
-}
+function stopParticipantCounter() { clearTimeout(participantClockId); }
 
-// ─── FOGG — DAILY DROP CLOCK ──────────────────────────────────────────────────
+// ─── DROP CLOCK ───────────────────────────────────────────────────────────────
 const DROP_HOUR = 12;
 let dropClockId = null;
 
 function nextDropTime() {
   const now = new Date();
-  const t   = new Date(now);
+  const t = new Date(now);
   t.setHours(DROP_HOUR, 0, 0, 0);
   if (now >= t) t.setDate(t.getDate() + 1);
   return t;
@@ -681,7 +459,7 @@ function fmtCountdown(ms) {
   const h   = Math.floor(s / 3600);
   const m   = Math.floor((s % 3600) / 60);
   const sec = s % 60;
-  return [h, m, sec].map(n => String(n).padStart(2,'0')).join(':');
+  return [h, m, sec].map(n => String(n).padStart(2, '0')).join(':');
 }
 
 function isLive() { return new Date().getHours() === DROP_HOUR; }
@@ -695,17 +473,17 @@ function startDropClock() {
 }
 
 function updateIntroBadge() {
-  const badge = $('intro-badge');
-  const dot   = $('badge-dot');
-  const txt   = $('badge-text');
+  const dot = $('badge-dot');
+  const txt = $('badge-text');
+  if (!dot || !txt) return;
   if (isLive()) {
-    badge.style.color    = 'var(--red)';
-    dot.style.background = 'var(--red)';
-    txt.textContent      = 'Drop en direct · Stock limité';
+    dot.style.background = '#A52A2A';
+    txt.textContent = 'Drop en direct · Stock limité';
+    txt.style.color = '#A52A2A';
   } else {
-    badge.style.color    = 'var(--sub)';
-    dot.style.background = 'var(--sub)';
-    txt.textContent      = 'Prochain drop · ' + fmtCountdown(nextDropTime() - new Date());
+    dot.style.background = '#737373';
+    txt.textContent = 'Prochain drop · ' + fmtCountdown(nextDropTime() - new Date());
+    txt.style.color = '';
   }
 }
 
@@ -729,20 +507,22 @@ function renderLeaderboard(playerRank, playerCaught) {
     if (r < 1 || r > WAITLIST_SIZE) continue;
 
     const div = document.createElement('div');
+
     if (offset === 0) {
-      div.className = 'lb-row lb-you';
+      div.className = 'flex items-center gap-3 px-4 py-2.5 bg-neutral-200';
       div.innerHTML =
-        `<span class="lb-rank">#${r}</span>` +
-        `<span class="lb-name">Toi <span class="lb-you-tag">TOI</span></span>` +
-        `<span class="lb-pairs">${playerCaught} paires</span>`;
+        `<span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:#1C1C1C;min-width:38px;">#${r}</span>` +
+        `<span style="flex:1;font-size:12px;font-weight:700;color:#1C1C1C;">Toi ` +
+          `<span style="background:#1C1C1C;color:#fff;font-size:8px;font-weight:700;padding:2px 5px;letter-spacing:.5px;margin-left:4px;font-family:'DM Mono',monospace;">TOI</span></span>` +
+        `<span style="font-family:'DM Mono',monospace;font-size:11px;color:#737373;">${playerCaught} paires</span>`;
     } else {
       const delta = Math.ceil(Math.random() * 2 + 0.5);
-      const fp = Math.max(0, playerCaught + (offset < 0 ? delta : -delta));
-      div.className = 'lb-row';
+      const fp    = Math.max(0, playerCaught + (offset < 0 ? delta : -delta));
+      div.className = 'flex items-center gap-3 px-4 py-2.5';
       div.innerHTML =
-        `<span class="lb-rank">#${r}</span>` +
-        `<span class="lb-name">${names[ni++]}</span>` +
-        `<span class="lb-pairs">${fp} paires</span>`;
+        `<span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:#737373;min-width:38px;">#${r}</span>` +
+        `<span style="flex:1;font-size:12px;font-weight:500;color:#1C1C1C;">${names[ni++]}</span>` +
+        `<span style="font-family:'DM Mono',monospace;font-size:11px;color:#737373;">${fp} paires</span>`;
     }
     body.appendChild(div);
   }
@@ -785,23 +565,18 @@ function pickType() {
   });
   const total = weights.reduce((s, w) => s + w, 0);
   let r = Math.random() * total;
-  for (let i = 0; i < TYPES.length; i++) {
-    r -= weights[i];
-    if (r <= 0) return TYPES[i];
-  }
+  for (let i = 0; i < TYPES.length; i++) { r -= weights[i]; if (r <= 0) return TYPES[i]; }
   return TYPES[1];
 }
 
 function spawnInterval() {
   const elapsed = DURATION - timeLeft;
-  // Démarre à 1 300ms, accélère à 360ms — courbe quadratique
   return Math.max(360, 1300 - elapsed * 31 - Math.pow(elapsed, 1.6) * 0.9);
 }
 
 function itemSpeed() {
   const elapsed = DURATION - timeLeft;
-  const t = elapsed / DURATION; // 0→1
-  // Accélération quadratique : lent au début, rapide à la fin
+  const t = elapsed / DURATION;
   return 85 + t * t * 260 + Math.random() * 40;
 }
 
@@ -816,30 +591,25 @@ function haptic(pattern) {
 
 // ─── VIES ─────────────────────────────────────────────────────────────────────
 function updateLivesHud() {
-  const container = $('hud-lives');
-  const spans = container.querySelectorAll('.life');
-  spans.forEach((s, i) => {
-    s.classList.toggle('lost', i >= lives);
-  });
+  const spans = $('hud-lives').querySelectorAll('.life');
+  spans.forEach((s, i) => s.classList.toggle('lost', i >= lives));
 }
 
 function loseLife() {
   lives--;
   updateLivesHud();
   haptic([30, 15, 30]);
-  // Flash rouge
   const g = $('screen-game');
   g.classList.add('flash-life');
   setTimeout(() => g.classList.remove('flash-life'), 30);
   if (lives <= 0) stopGame();
 }
 
-// ─── ITEM SPAWN ───────────────────────────────────────────────────────────────
+// ─── SPAWN ────────────────────────────────────────────────────────────────────
 function spawnItem() {
   const arena = $('arena');
   const W     = arena.clientWidth;
   const type  = pickType();
-
   const emoji = type.id === 'FAKE'
     ? FAKE_SHOES[Math.floor(Math.random() * FAKE_SHOES.length)]
     : type.emoji;
@@ -856,18 +626,16 @@ function spawnItem() {
   const item = { el, typeId: type.id, cx, top, speed: itemSpeed(), alive: true };
   items.push(item);
   arena.appendChild(el);
-
   el.addEventListener('pointerdown', ev => { ev.preventDefault(); tap(item); }, { passive: false });
 }
 
-// ─── TAP HANDLER ─────────────────────────────────────────────────────────────
+// ─── TAP ─────────────────────────────────────────────────────────────────────
 function tap(item) {
   if (!item.alive || !gameRunning) return;
   item.alive = false;
 
   if (item.typeId === 'SNEAKER') {
-    streak++;
-    caught++; cart++;
+    streak++; caught++; cart++;
     const multi = getMultiplier(streak);
     effectiveCaught += multi;
     updateCartHud();
@@ -932,7 +700,6 @@ function loop(ts) {
   if (spawnAcc >= spawnInterval()) {
     spawnAcc = 0;
     spawnItem();
-    // Double spawn en fin de partie
     const elapsed = DURATION - timeLeft;
     if (elapsed > 20 && Math.random() < 0.35) setTimeout(spawnItem, 220);
   }
@@ -948,7 +715,7 @@ function tick() {
   tEl.textContent = timeLeft;
   bar.style.width = (timeLeft / DURATION * 100) + '%';
   if (timeLeft <= 10) { bar.style.backgroundColor = '#C24E10'; tEl.style.color = '#C24E10'; }
-  if (timeLeft <= 5)  { bar.style.backgroundColor = 'var(--red)'; tEl.style.color = 'var(--red)'; }
+  if (timeLeft <= 5)  { bar.style.backgroundColor = '#A52A2A'; tEl.style.color = '#A52A2A'; }
   if (timeLeft <= 0)  stopGame();
 }
 
@@ -964,13 +731,13 @@ function startGame() {
   $('hud-cart').style.transform = '';
   $('hud-combo').textContent = '';
   $('hud-timer').textContent = DURATION;
-  $('hud-timer').style.color = 'var(--fg)';
+  $('hud-timer').style.color = '';
   updateLivesHud();
 
   const bar = $('progress-bar');
   bar.style.transition = 'none';
   bar.style.width = '100%';
-  bar.style.backgroundColor = 'var(--fg)';
+  bar.style.backgroundColor = '#1C1C1C';
   requestAnimationFrame(() => { bar.style.transition = 'width 1s linear, background-color .4s'; });
 
   $('arena').innerHTML = '';
@@ -1031,7 +798,7 @@ async function shareScore() {
     } else {
       await navigator.clipboard.writeText(text);
       const orig = btn.innerHTML;
-      btn.innerHTML = '<i data-lucide="check"></i> Copié !';
+      btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Copié !';
       lucide.createIcons();
       setTimeout(() => { btn.innerHTML = orig; lucide.createIcons(); }, 2200);
     }
@@ -1045,39 +812,41 @@ $('btn-cta').addEventListener('pointerdown', () => {
   window.open('https://sneakerdropninja.com/waitlist', '_blank');
 });
 
-document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+document.addEventListener('touchmove', e => {
+  if (gameRunning) e.preventDefault();
+}, { passive: false });
 
-// ─── Init bandeau rouge ───────────────────────────────────────────────────────
+// ─── INIT ────────────────────────────────────────────────────────────────────
+// 1. Bandeau rouge
 (function() {
   const track = document.getElementById('sdn-strip-track');
   if (!track) return;
   const segs = [
-    { t: 'SNEAKER DROP NINJA',                     o: 1.0,  sep: false },
-    { t: '✦',                                       o: 0.3,  sep: true  },
-    { t: 'ARRIVES FIRST OR NOT AT ALL',             o: 0.8,  sep: false },
-    { t: '✦',                                       o: 0.3,  sep: true  },
-    { t: 'PHANTOMATIK LTD 500',                     o: 1.0,  sep: false },
-    { t: '✦',                                       o: 0.3,  sep: true  },
-    { t: 'DROP 001 · LIVE',                         o: 0.8,  sep: false },
-    { t: '✦',                                       o: 0.3,  sep: true  },
-    { t: '€ 280 · 500 EXEMPLAIRES · WAITLIST ONLY', o: 0.6,  sep: false },
-    { t: '✦',                                       o: 0.3,  sep: true  },
+    { t: 'SNEAKER DROP NINJA',                      o: 1.0, sep: false },
+    { t: '✦',                                        o: 0.3, sep: true  },
+    { t: 'ARRIVES FIRST OR NOT AT ALL',              o: 0.8, sep: false },
+    { t: '✦',                                        o: 0.3, sep: true  },
+    { t: 'PHANTOMATIK LTD 500',                      o: 1.0, sep: false },
+    { t: '✦',                                        o: 0.3, sep: true  },
+    { t: 'DROP 001 · LIVE',                          o: 0.8, sep: false },
+    { t: '✦',                                        o: 0.3, sep: true  },
+    { t: '€ 280 · 500 EXEMPLAIRES · WAITLIST ONLY',  o: 0.6, sep: false },
+    { t: '✦',                                        o: 0.3, sep: true  },
   ];
   for (let i = 0; i < 2; i++) {
     segs.forEach(({ t, o, sep }) => {
       const s = document.createElement('span');
       s.textContent = t;
       s.style.cssText =
-        `color:rgba(255,255,255,${o});` +
-        `font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;` +
-        `text-transform:uppercase;white-space:nowrap;` +
+        `color:rgba(255,255,255,${o});font-family:'DM Mono',monospace;` +
+        `font-size:10px;letter-spacing:0.2em;text-transform:uppercase;white-space:nowrap;` +
         (sep ? 'padding:0 12px;' : 'padding:0 32px;');
       track.appendChild(s);
     });
   }
 })();
 
-// Init
+// 2. Lucide + badge
 lucide.createIcons();
 updateIntroBadge();
 setInterval(updateIntroBadge, 1000);
