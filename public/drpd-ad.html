@@ -302,10 +302,19 @@
         </div>
       </div>
 
-      <!-- CTA (même style que la homepage) -->
+      <!-- Cooldown retry block (affiché si 6h pas encore écoulées) -->
+      <div id="retry-block" class="w-full mb-5" style="display:none;">
+        <div class="border border-neutral-200 bg-neutral-50 p-4 text-center">
+          <div class="text-xs font-semibold text-neutral-500 uppercase mb-2">Prochaine tentative dans</div>
+          <div class="text-2xl font-normal font-mono text-accent tabular-nums mb-2" id="retry-countdown">06:00:00</div>
+          <div class="text-xs font-normal font-mono text-neutral-500">Tu peux retenter ta chance toutes les 6h</div>
+        </div>
+      </div>
+
+      <!-- CTA -->
       <button id="btn-start"
         class="w-full bg-accent hover:bg-accent-dark text-white text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 transition-colors flex items-center justify-center gap-2 btn-pulse">
-        <i data-lucide="zap" class="w-4 h-4"></i> Entrer dans l'arène
+        <i data-lucide="zap" class="w-4 h-4"></i> Sécurise ta place
       </button>
 
     </div>
@@ -571,7 +580,8 @@ function showScreen(id) {
     if (app) app.style.top = '0';
   } else {
     if (hdr) hdr.style.display = '';
-    if (app) app.style.top = '100px';
+    if (app) app.style.top = '136px';
+    if (id === 'screen-intro') updateIntroState();
   }
 }
 
@@ -719,7 +729,11 @@ function loop(ts) {
     it.top += it.speed * dt / 1000;
     it.el.style.top = it.top + 'px';
     if (it.top > H + 10) {
-      if (it.typeId === 'SNEAKER') { missed++; streak = 0; updateComboHud(); }
+      if (it.typeId === 'SNEAKER') {
+        missed++; streak = 0; updateComboHud();
+        pop(it.cx, H - 60, 'RATÉE 💔', 'neg');
+        loseLife();
+      }
       it.alive = false;
       if (it.el.parentNode) it.el.remove();
       items.splice(i, 1);
@@ -787,6 +801,7 @@ function stopGame() {
   $('arena').innerHTML = '';
   items = [];
 
+  localStorage.setItem('sdn_last_played', Date.now());
   currentRank = calcRank(effectiveCaught, fakeTaps, missed);
   $('end-verdict').textContent = getVerdict(currentRank);
   $('s-caught').textContent    = caught;
@@ -835,6 +850,37 @@ async function shareScore() {
   } catch(e) {}
 }
 
+// ─── RETRY SYSTEM (6h cooldown) ──────────────────────────────────────────────
+const RETRY_DELAY_MS = 6 * 60 * 60 * 1000;
+let retryCdId = null;
+
+function getRetryMs() {
+  const last = parseInt(localStorage.getItem('sdn_last_played') || '0');
+  return last ? Math.max(0, last + RETRY_DELAY_MS - Date.now()) : 0;
+}
+
+function updateIntroState() {
+  const ms    = getRetryMs();
+  const btn   = $('btn-start');
+  const block = $('retry-block');
+  const cd    = $('retry-countdown');
+  clearInterval(retryCdId);
+
+  if (ms > 0) {
+    btn.style.display   = 'none';
+    block.style.display = '';
+    cd.textContent = fmtCountdown(ms);
+    retryCdId = setInterval(() => {
+      const rem = getRetryMs();
+      if (rem <= 0) { clearInterval(retryCdId); updateIntroState(); }
+      else cd.textContent = fmtCountdown(rem);
+    }, 1000);
+  } else {
+    btn.style.display   = '';
+    block.style.display = 'none';
+  }
+}
+
 // ─── EVENTS ───────────────────────────────────────────────────────────────────
 $('btn-start').addEventListener('pointerdown', startGame);
 $('btn-share').addEventListener('pointerdown', shareScore);
@@ -876,10 +922,11 @@ document.addEventListener('touchmove', e => {
   }
 })();
 
-// 2. Lucide + badge
+// 2. Lucide + badge + retry state
 lucide.createIcons();
 updateIntroBadge();
 setInterval(updateIntroBadge, 1000);
+updateIntroState();
 </script>
 </body>
 </html>
