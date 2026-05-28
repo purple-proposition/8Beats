@@ -7,10 +7,8 @@
   <title>Sneaker Drop Ninja — Protect The Drop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Staatliches&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/style.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/style.css" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -25,8 +23,8 @@
       --sub:     #5E5A56;
       --muted:   #8C8882;
 
-      --font-ui:   'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Geist Mono', 'Geist', monospace;
+      --font-ui:   'DM Sans', system-ui, sans-serif;
+      --font-mono: 'DM Mono', monospace;
     }
 
     html, body {
@@ -40,7 +38,8 @@
       -webkit-user-select: none;
     }
 
-    #app { width: 100vw; height: 100svh; position: relative; overflow: hidden; }
+    /* Quand le header SDN est visible (intro/end) l'app part de 100px */
+    #app { position: fixed; top: 100px; left: 0; right: 0; bottom: 0; overflow: hidden; }
 
     /* ─── SCREENS ─── */
     .screen {
@@ -425,14 +424,80 @@
     /* ─── LUCIDE ICONS ─── */
     .lucide { display: inline-block; vertical-align: middle; width: 1em; height: 1em; stroke-width: 1.75; }
     .hud-icon .lucide { width: 18px; height: 18px; color: var(--sub); }
+
+    /* ─── SDN HEADER ─── */
+    #sdn-header {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200;
+    }
+    .sdn-nav {
+      height: 64px; background: #FFFFFF;
+      border-bottom: 1px solid #E5E5E5;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+    .sdn-logo {
+      font-family: 'Staatliches', sans-serif;
+      font-size: 26px; color: #1C1C1C;
+      text-decoration: none; line-height: 1;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .sdn-logo:hover { color: #A52A2A; }
+    .sdn-breadcrumb { display: flex; align-items: center; gap: 6px; }
+    .sdn-bc-link, .sdn-bc-current, .sdn-bc-sep {
+      font-family: var(--font-mono); font-size: 11px;
+      font-weight: 500; letter-spacing: 0.1em;
+      text-decoration: none;
+    }
+    .sdn-bc-link { color: var(--muted); transition: color 0.2s; }
+    .sdn-bc-link:hover { color: var(--fg); }
+    .sdn-bc-current { color: var(--fg); }
+    .sdn-bc-sep { color: var(--muted); opacity: 0.5; }
+
+    .sdn-red-strip {
+      height: 36px; background: #A52A2A; overflow: hidden;
+      display: flex; align-items: center;
+    }
+    .sdn-strip-track {
+      display: flex; width: max-content; align-items: center; height: 100%;
+      animation: sdn-marquee 28s linear infinite;
+    }
+    @keyframes sdn-marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── END SCREEN SCROLL ─── */
+    #screen-end {
+      overflow-y: auto;
+      justify-content: flex-start !important;
+      -webkit-overflow-scrolling: touch;
+    }
   </style>
 </head>
 <body>
+
+<!-- ── SDN HEADER — nav h-64px + bandeau rouge h-36px ── -->
+<div id="sdn-header">
+  <div class="sdn-nav">
+    <a href="./" class="sdn-logo">Sneaker Drop Ninja</a>
+    <nav class="sdn-breadcrumb" aria-label="Fil d'Ariane">
+      <a href="./" class="sdn-bc-link">[ Accueil ]</a>
+      <span class="sdn-bc-sep">&nbsp;/&nbsp;</span>
+      <span class="sdn-bc-current">[ L'Arène ]</span>
+    </nav>
+  </div>
+  <div class="sdn-red-strip">
+    <div class="sdn-strip-track" id="sdn-strip-track"></div>
+  </div>
+</div>
+
 <div id="app">
 
   <!-- ── INTRO ── -->
   <div class="screen active" id="screen-intro">
-    <a href="./sneakerdropninja.html" style="position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--sub);text-decoration:none;letter-spacing:0.12em;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">← SDN</a>
     <div class="logo">Sneaker Drop Ninja</div>
     <div class="tagline">Grimpe dans le classement</div>
     <div class="badge" id="intro-badge">
@@ -689,6 +754,15 @@ const $ = id => document.getElementById(id);
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   $(id).classList.add('active');
+  const hdr = document.getElementById('sdn-header');
+  const app = document.getElementById('app');
+  if (id === 'screen-game') {
+    if (hdr) hdr.style.display = 'none';
+    if (app) app.style.top = '0';
+  } else {
+    if (hdr) hdr.style.display = '';
+    if (app) app.style.top = '100px';
+  }
 }
 
 function calcRank(eff, fakes, miss) {
@@ -798,8 +872,7 @@ function tap(item) {
     effectiveCaught += multi;
     updateCartHud();
     updateComboHud();
-    if (streak >= 3) pop(item.cx, item.top, `×${multi} COMBO!`, 'combo');
-    else             pop(item.cx, item.top, '+1 🔥', 'pos');
+    pop(item.cx, item.top, `+${multi} 🔥`, 'pos');
     haptic(50);
   } else if (item.typeId === 'FAKE') {
     streak = 0;
@@ -832,10 +905,7 @@ function updateCartHud() {
 }
 
 function updateComboHud() {
-  const el = $('hud-combo');
-  if (streak >= 6)      el.textContent = '×3 COMBO';
-  else if (streak >= 3) el.textContent = '×2 COMBO';
-  else                  el.textContent = '';
+  $('hud-combo').textContent = '';
 }
 
 // ─── GAME LOOP ────────────────────────────────────────────────────────────────
@@ -976,6 +1046,36 @@ $('btn-cta').addEventListener('pointerdown', () => {
 });
 
 document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+// ─── Init bandeau rouge ───────────────────────────────────────────────────────
+(function() {
+  const track = document.getElementById('sdn-strip-track');
+  if (!track) return;
+  const segs = [
+    { t: 'SNEAKER DROP NINJA',                     o: 1.0,  sep: false },
+    { t: '✦',                                       o: 0.3,  sep: true  },
+    { t: 'ARRIVES FIRST OR NOT AT ALL',             o: 0.8,  sep: false },
+    { t: '✦',                                       o: 0.3,  sep: true  },
+    { t: 'PHANTOMATIK LTD 500',                     o: 1.0,  sep: false },
+    { t: '✦',                                       o: 0.3,  sep: true  },
+    { t: 'DROP 001 · LIVE',                         o: 0.8,  sep: false },
+    { t: '✦',                                       o: 0.3,  sep: true  },
+    { t: '€ 280 · 500 EXEMPLAIRES · WAITLIST ONLY', o: 0.6,  sep: false },
+    { t: '✦',                                       o: 0.3,  sep: true  },
+  ];
+  for (let i = 0; i < 2; i++) {
+    segs.forEach(({ t, o, sep }) => {
+      const s = document.createElement('span');
+      s.textContent = t;
+      s.style.cssText =
+        `color:rgba(255,255,255,${o});` +
+        `font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;` +
+        `text-transform:uppercase;white-space:nowrap;` +
+        (sep ? 'padding:0 12px;' : 'padding:0 32px;');
+      track.appendChild(s);
+    });
+  }
+})();
 
 // Init
 lucide.createIcons();
