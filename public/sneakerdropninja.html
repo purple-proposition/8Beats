@@ -316,15 +316,9 @@
           <p data-reveal data-d="1" class="text-base font-normal text-neutral-500 leading-relaxed mb-8 md:mb-12 max-w-sm">
             La waitlist ne s'achète pas, elle se mérite. 30 secondes, une arène, un objectif : attrape les vraies paires, ignore les fakes. Ton score détermine ton rang.
           </p>
-          <div data-reveal data-d="2" class="flex flex-wrap items-center gap-4 md:gap-6">
-            <a href="./drpd-ad.html"
-               class="bg-accent hover:bg-accent-dark text-white text-xs font-semibold tracking-[0.2em] uppercase px-6 md:px-8 py-4 transition-colors flex items-center gap-2">
-              <i data-lucide="zap" class="w-4 h-4"></i> Sécurise ta place
-            </a>
-            <div class="flex items-center gap-2">
-              <div class="w-1.5 h-1.5 rounded-full bg-accent pulse-dot"></div>
-              <span class="text-xs font-normal font-mono text-neutral-500"><span id="game-participants">—</span> en compétition</span>
-            </div>
+          <div data-reveal data-d="2" class="flex items-center gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-accent pulse-dot"></div>
+            <span class="text-xs font-normal font-mono text-neutral-500"><span id="game-participants">—</span> en compétition</span>
           </div>
           <div data-reveal data-d="3" class="mt-8 md:mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-neutral-900">
             <div>
@@ -336,8 +330,8 @@
               <div class="text-xs font-semibold text-neutral-500 uppercase">Vies</div>
             </div>
             <div>
-              <div class="text-xl font-normal font-mono text-white mb-1">1 000</div>
-              <div class="text-xs font-semibold text-neutral-500 uppercase">Places waitlist</div>
+              <div class="text-xl font-normal font-mono text-white mb-1" id="game-participants-stat">—</div>
+              <div class="text-xs font-semibold text-neutral-500 uppercase">En compétition</div>
             </div>
           </div>
         </div>
@@ -369,8 +363,8 @@
 
               <!-- Drop name -->
               <div class="text-center mb-3 mt-2">
-                <div class="font-display text-neutral-900 leading-none mb-1" style="font-size:28px;">NIKE SB DUNK LOW PARIS</div>
-                <div class="text-xs font-normal font-mono text-neutral-500">202 paires dans le monde</div>
+                <div class="font-display text-neutral-900 leading-none mb-1" style="font-size:28px;">THE VOID AETHER B1</div>
+                <div class="text-xs font-normal font-mono text-neutral-500">500 paires</div>
               </div>
 
               <!-- Bénéfice -->
@@ -479,9 +473,9 @@
     ══════════════════════════════════════ -->
     <section class="py-12 md:py-16 lg:py-24 bg-white border-t border-neutral-200">
       <div class="max-w-[1440px] mx-auto px-6 md:px-12 text-center">
-        <div data-reveal class="font-display text-3xl md:text-4xl lg:text-5xl text-neutral-900 leading-tight max-w-3xl mx-auto">
-          "Dans le monde du drop,<br>la lenteur est une défaite.<br>
-          <span class="text-accent">Sneaker Drop Ninja forme les meilleurs."</span>
+        <div data-reveal class="font-display text-3xl md:text-4xl lg:text-5xl text-neutral-900 leading-tight max-w-3xl mx-auto uppercase">
+          "DANS LE MONDE DU DROP,<br>LA LENTEUR EST UNE DÉFAITE.<br>
+          <span class="text-accent">SNEAKER DROP NINJA FORME LES MEILLEURS."</span>
         </div>
         <div data-reveal data-d="1" class="flex items-center justify-center gap-4 md:gap-6 mt-8 md:mt-12">
           <div class="flex-1 max-w-[120px] md:max-w-xs h-px bg-neutral-200"></div>
@@ -586,7 +580,7 @@
     function fmtP(n) { return n >= 1000 ? (n/1000).toFixed(1).replace('.', ',') + 'k' : String(n); }
     function syncParticipants() {
       const p = fmtP(participants);
-      ['hero-participants','game-participants','waitlist-social-count'].forEach(id => {
+      ['hero-participants','game-participants','game-participants-stat','waitlist-social-count'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.textContent = p;
       });
