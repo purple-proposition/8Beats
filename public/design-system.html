@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sneaker Drop Ninja — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=DM+Sans:wght@400;600&family=Staatliches&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent-light:   #C4403F;
+      --accent:         #A52A2A;
+      --accent-dark:    #8B1C1C;
+      --neutral-900:    #171717;
+      --neutral-500:    #737373;
+      --neutral-200:    #e5e5e5;
+      --white:          #ffffff;
+
+      --font-sans:    'DM Sans', system-ui, sans-serif;
+      --font-mono:    'DM Mono', monospace;
+      --font-display: 'Staatliches', sans-serif;
+    }
+
+    html { font-size: 14px; }
+    body {
+      font-family: var(--font-sans);
+      background: #fff;
+      color: var(--neutral-900);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      padding: 0;
+    }
+
+    /* ── Page layout ── */
+    .page {
+      width: 210mm;
+      margin: 0 auto;
+      padding: 16mm 18mm;
+    }
+
+    /* ── Section blocks ── */
+    .section {
+      margin-bottom: 12mm;
+      page-break-inside: avoid;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--neutral-500);
+      border-bottom: 1px solid var(--neutral-200);
+      padding-bottom: 4px;
+      margin-bottom: 6mm;
+    }
+
+    /* ── Grid helpers ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3mm; }
+
+    /* ═══════════════════════════════════
+       COVER
+    ═══════════════════════════════════ */
+    .cover {
+      height: 60mm;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--neutral-900);
+      padding-bottom: 5mm;
+      margin-bottom: 12mm;
+    }
+    .cover-logo {
+      font-family: var(--font-display);
+      font-size: 52px;
+      line-height: 0.9;
+      color: var(--neutral-900);
+      letter-spacing: 0.01em;
+    }
+    .cover-meta {
+      text-align: right;
+    }
+    .cover-meta .title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--neutral-900);
+      display: block;
+      margin-bottom: 3px;
+    }
+    .cover-meta .sub {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--neutral-500);
+      letter-spacing: 0.1em;
+    }
+
+    /* ═══════════════════════════════════
+       COLORS
+    ═══════════════════════════════════ */
+    .swatch-row {
+      display: flex;
+      gap: 3mm;
+      flex-wrap: wrap;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .swatch-block {
+      width: 22mm;
+      height: 14mm;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .swatch-name {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+      font-weight: 500;
+    }
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+    }
+
+    /* ═══════════════════════════════════
+       TYPOGRAPHY
+    ═══════════════════════════════════ */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 5mm;
+      padding: 3mm 0;
+      border-bottom: 1px solid var(--neutral-200);
+    }
+    .type-meta {
+      width: 38mm;
+      flex-shrink: 0;
+    }
+    .type-meta .t-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .type-meta .t-spec {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-200);
+      margin-top: 2px;
+    }
+    .type-sample { flex: 1; }
+
+    /* ═══════════════════════════════════
+       COMPONENTS
+    ═══════════════════════════════════ */
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border: none;
+      cursor: default;
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--neutral-900);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border: 1px solid var(--neutral-200);
+      cursor: default;
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--neutral-900);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border: none;
+      cursor: default;
+    }
+    .btn-row {
+      display: flex;
+      gap: 4mm;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Badges */
+    .badge-row {
+      display: flex;
+      gap: 3mm;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+    }
+    .badge-live {
+      background: var(--accent);
+      color: #fff;
+    }
+    .badge-soon {
+      background: var(--neutral-200);
+      color: var(--neutral-500);
+    }
+    .badge-dark {
+      background: var(--neutral-900);
+      color: #fff;
+    }
+    .badge-outline {
+      background: transparent;
+      color: var(--neutral-500);
+      border: 1px solid var(--neutral-200);
+    }
+    .badge-active {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight:600;
+      padding: 2px 6px;
+    }
+
+    /* Drop card */
+    .drop-card {
+      border: 1px solid var(--neutral-200);
+      background: #fff;
+    }
+    .drop-card-img {
+      background: var(--warm-beige);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .drop-card-img-placeholder {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--neutral-200);
+      text-align: center;
+      line-height: 1;
+    }
+    .drop-card-body {
+      padding: 10px 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .drop-card-drop {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 3px;
+    }
+    .drop-card-name {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--neutral-900);
+      margin-bottom: 3px;
+    }
+    .drop-card-sub {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+    }
+
+    /* Size chip */
+    .size-chip {
+      border: 1px solid var(--neutral-200);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--neutral-500);
+      padding: 6px 8px;
+      text-align: center;
+    }
+    .size-chip-active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .size-chip-disabled {
+      border-color: var(--neutral-200);
+      color: var(--neutral-200);
+      opacity: 0.5;
+    }
+
+    /* Countdown */
+    .countdown-block {
+      display: inline-flex;
+      gap: 6px;
+      align-items: baseline;
+    }
+    .cd-digit {
+      font-family: var(--font-mono);
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--neutral-900);
+      line-height: 1;
+    }
+    .cd-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .cd-sep {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      color: var(--neutral-200);
+    }
+    .cd-card {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Input */
+    .input-demo {
+      border: 1px solid var(--neutral-200);
+      padding: 10px 14px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--neutral-500);
+      width: 100%;
+      outline: none;
+      background: #fff;
+    }
+    .input-focused {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Red strip */
+    .red-strip {
+      background: var(--accent);
+      padding: 6px 0;
+      overflow: hidden;
+    }
+    .red-strip-inner {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      white-space: nowrap;
+    }
+
+    /* Header demo */
+    .header-demo {
+      border: 1px solid var(--neutral-200);
+      height: 36px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      justify-content: space-between;
+      background: #fff;
+    }
+    .header-logo {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--neutral-900);
+      line-height: 1;
+    }
+
+    /* Marquee strip (static demo) */
+    .marquee-demo {
+      background: var(--neutral-900);
+      padding: 8px 0;
+      overflow: hidden;
+    }
+    .marquee-demo-inner {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--neutral-200);
+      white-space: nowrap;
+    }
+
+    /* Motion table */
+    .motion-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .motion-table th {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: left;
+      padding: 5px 8px;
+      background: var(--neutral-200);
+      border: 1px solid var(--neutral-200);
+    }
+    .motion-table td {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--neutral-900);
+      padding: 6px 8px;
+      border: 1px solid var(--neutral-200);
+      vertical-align: top;
+    }
+    .motion-table tr:nth-child(even) td { background: var(--neutral-200); }
+
+    /* ── Spec chip ── */
+    .spec {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      background: var(--neutral-200);
+      color: var(--neutral-500);
+      padding: 2px 6px;
+      margin: 1px 2px;
+    }
+
+    /* ── Footer of doc ── */
+    .doc-footer {
+      margin-top: 10mm;
+      padding-top: 5mm;
+      border-top: 1px solid var(--neutral-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .doc-footer-left {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+    }
+    .doc-footer-right {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-200);
+    }
+
+    /* ── Icon placeholder ── */
+    .icon-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: var(--neutral-200);
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 7px;
+      color: var(--neutral-500);
+    }
+
+    /* ── Two-col layout ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8mm;
+    }
+    .col-sub-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 3mm;
+    }
+
+    /* ── Spacing ruler ── */
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: 4mm;
+      margin-bottom: 2mm;
+    }
+    .spacing-bar {
+      background: var(--warm-beige);
+      height: 8px;
+      flex-shrink: 0;
+    }
+    .spacing-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-500);
+    }
+    .spacing-value {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--neutral-200);
+      margin-left: auto;
+    }
+
+    /* ── Print ── */
+    @media print {
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      html, body { margin: 0; padding: 0; }
+      .page { margin: 0; }
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+    }
+
+    /* ── Screen only: print button ── */
+    .print-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: var(--neutral-900);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 999;
+    }
+    .print-bar span {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--neutral-500);
+      letter-spacing: 0.12em;
+    }
+    .print-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 7px 18px;
+      cursor: pointer;
+    }
+    .print-btn:hover { background: var(--accent-dark); }
+
+    @media screen {
+      body { padding-top: 44px; }
+      .page { box-shadow: 0 0 32px rgba(0,0,0,0.10); margin: 8mm auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Print bar (screen only) -->
+  <div class="print-bar no-print">
+    <span>SNEAKER DROP NINJA — DESIGN SYSTEM</span>
+    <button class="print-btn" onclick="window.print()">↓ Exporter en PDF</button>
+  </div>
+
+  <div class="page">
+
+    <!-- ═══════════ COVER ═══════════ -->
+    <div class="cover">
+      <div class="cover-logo">SNEAKER<br>DROP<br>NINJA</div>
+      <div class="cover-meta">
+        <span class="title">Design System</span>
+        <span class="sub">v1.0 · Mai 2026</span>
+      </div>
+    </div>
+
+
+    <!-- ═══════════ 1. COULEURS ═══════════ -->
+    <div class="section">
+      <div class="section-label">01 — Couleurs</div>
+
+      <div class="col-sub-label" style="margin-bottom:3mm;">Accent</div>
+      <div class="swatch-row" style="margin-bottom:6mm;">
+        <div class="swatch">
+          <div class="swatch-block" style="background:#C4403F;"></div>
+          <div class="swatch-name">accent-light</div>
+          <div class="swatch-hex">#C4403F</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#A52A2A;"></div>
+          <div class="swatch-name">accent</div>
+          <div class="swatch-hex">#A52A2A</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#8B1C1C;"></div>
+          <div class="swatch-name">accent-dark</div>
+          <div class="swatch-hex">#8B1C1C</div>
+        </div>
+      </div>
+
+      <div class="col-sub-label" style="margin-bottom:3mm;">Neutres — 3 valeurs uniquement</div>
+      <div class="swatch-row" style="margin-bottom:6mm;">
+        <div class="swatch">
+          <div class="swatch-block" style="background:#171717; width:40mm;"></div>
+          <div class="swatch-name">neutral-900</div>
+          <div class="swatch-hex">#171717 · Titres, fonds sombres, emphase</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#737373; width:40mm;"></div>
+          <div class="swatch-name">neutral-500</div>
+          <div class="swatch-hex">#737373 · Labels, métadonnées, texte secondaire</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#e5e5e5; width:40mm;"></div>
+          <div class="swatch-name">neutral-200</div>
+          <div class="swatch-hex">#E5E5E5 · Bordures, fonds images, états désactivés</div>
+        </div>
+      </div>
+
+      <div class="col-sub-label" style="margin-bottom:3mm;">Surfaces</div>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-block" style="background:#ffffff; border:1px solid #e5e5e5;"></div>
+          <div class="swatch-name">white</div>
+          <div class="swatch-hex">#FFFFFF</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#A52A2A;"></div>
+          <div class="swatch-name">red-strip</div>
+          <div class="swatch-hex">accent</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#171717;"></div>
+          <div class="swatch-name">dark-section</div>
+          <div class="swatch-hex">neutral-900</div>
+        </div>
+      </div>
+
+      <!-- WCAG note -->
+      <div style="margin-top:4mm; padding: 3mm 4mm; background: var(--neutral-200); border-left: 2px solid var(--accent);">
+        <div style="font-family:var(--font-mono); font-size:8px; color:var(--neutral-500);">
+          <strong style="color:var(--neutral-900);">Accessibilité WCAG AA</strong>&nbsp;&nbsp;
+          neutral-500 #737373 sur fond blanc = 4,6:1 ✓ &nbsp;·&nbsp;
+          accent #A52A2A sur fond blanc = 5,9:1 ✓ &nbsp;·&nbsp;
+          blanc sur accent = 5,9:1 ✓
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════ 2. TYPOGRAPHIE ═══════════ -->
+    <div class="section page-break">
+      <div class="section-label">02 — Typographie</div>
+
+      <!-- Familles -->
+      <div class="grid-3" style="margin-bottom:6mm;">
+        <div style="padding:4mm; border:1px solid var(--neutral-200);">
+          <div style="font-family:var(--font-mono); font-size:8px; color:var(--neutral-500); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:3mm;">Sans · DM Sans</div>
+          <div style="font-family:var(--font-sans); font-size:22px; font-weight:600; color:var(--neutral-900); line-height:1.1; margin-bottom:2mm;">Aa</div>
+          <div style="font-family:var(--font-sans); font-size:9px; color:var(--neutral-500);">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 €&amp;@!?</div>
+          <div style="margin-top:3mm; display:flex; gap:4px; flex-wrap:wrap;">
+            <span class="spec">400 · regular</span><span class="spec">600 · semibold</span>
+          </div>
+        </div>
+        <div style="padding:4mm; border:1px solid var(--neutral-200);">
+          <div style="font-family:var(--font-mono); font-size:8px; color:var(--neutral-500); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:3mm;">Mono · DM Mono</div>
+          <div style="font-family:var(--font-mono); font-size:22px; font-weight:400; color:var(--neutral-900); line-height:1.1; margin-bottom:2mm;">Aa</div>
+          <div style="font-family:var(--font-mono); font-size:9px; color:var(--neutral-500);">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 €&amp;@!?</div>
+          <div style="margin-top:3mm; display:flex; gap:4px; flex-wrap:wrap;">
+            <span class="spec">400 · regular</span>
+          </div>
+        </div>
+        <div style="padding:4mm; border:1px solid var(--neutral-200);">
+          <div style="font-family:var(--font-mono); font-size:8px; color:var(--neutral-500); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:3mm;">Display · Staatliches</div>
+          <div style="font-family:var(--font-display); font-size:40px; color:var(--neutral-900); line-height:0.85; margin-bottom:2mm;">Aa</div>
+          <div style="font-family:var(--font-display); font-size:11px; color:var(--neutral-500);">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>0123456789 !?</div>
+          <div style="margin-top:3mm; display:flex; gap:4px; flex-wrap:wrap;">
+            <span class="spec">400</span><span class="spec">caps only</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Échelle -->
+      <div class="type-row">
+        <div class="type-meta"><div class="t-label">Display hero</div><div class="t-spec">Staatliches · 72–96px</div></div>
+        <div class="type-sample" style="font-family:var(--font-display); font-size:42px; color:var(--neutral-900); line-height:0.9;">SNEAKER DROP NINJA</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><div class="t-label">Display section</div><div class="t-spec">Staatliches · 48–72px</div></div>
+        <div class="type-sample" style="font-family:var(--font-display); font-size:32px; color:var(--neutral-900); line-height:0.9;">PROUVE TA VALEUR</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><div class="t-label">Display product</div><div class="t-spec">Staatliches · 48–60px</div></div>
+        <div class="type-sample" style="font-family:var(--font-display); font-size:26px; color:var(--neutral-900); line-height:0.9;">KUMO HIKER</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><div class="t-label">Body · semibold</div><div class="t-spec">DM Sans 600 · 16px</div></div>
+        <div class="type-sample" style="font-family:var(--font-sans); font-size:14px; font-weight:600; color:var(--neutral-900);">The Void Aether B1</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><div class="t-label">Body · regular</div><div class="t-spec">DM Sans 400 · 16px</div></div>
+        <div class="type-sample" style="font-family:var(--font-sans); font-size:13px; font-weight:400; color:var(--neutral-500); line-height:1.6;">Membrane GORE-TEX certifiée, semelle Vibram trail, tige en nylon technique balistique. Conçu pour les terrains extrêmes.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><div class="t-label">Mono · label</div><div class="t-spec">DM Mono 400 · 12px<br>tracking +0.08–0.2em</div></div>
+        <div class="type-sample" style="font-family:var(--font-mono); font-size:10px; color:var(--neutral-500); text-transform:uppercase; letter-spacing:0.08em;">Drop 001 · Gore-Tex · Édition limitée</div>
+      </div>
+      <div class="type-row" style="border:none;">
+        <div class="type-meta"><div class="t-label">CTA · uppercase</div><div class="t-spec">DM Sans 600 · 12px<br>tracking +0.2em</div></div>
+        <div class="type-sample" style="font-family:var(--font-sans); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.2em; color:var(--neutral-900);">Rejoindre la waitlist</div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════ 3. COMPOSANTS ═══════════ -->
+    <div class="section page-break">
+      <div class="section-label">03 — Composants</div>
+
+      <div class="two-col" style="margin-bottom:6mm;">
+
+        <!-- Boutons -->
+        <div>
+          <div class="col-sub-label">Boutons</div>
+          <div style="display:flex; flex-direction:column; gap:3mm;">
+            <div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-bottom:2mm;">Primary</div>
+              <div class="btn-primary">⚡ Entrer dans l'arène</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-bottom:2mm;">Secondary</div>
+              <div class="btn-secondary">⚡ Prépare-toi dans l'arène</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-bottom:2mm;">Dark</div>
+              <div class="btn-ghost">Rejoindre la waitlist</div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-top:2mm; line-height:1.6;">
+              px-8 py-4 · tracking-[0.2em] · uppercase<br>
+              Hover: bg-accent-dark · border-neutral-900<br>
+              Focus: outline 2px accent offset 2px
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges -->
+        <div>
+          <div class="col-sub-label">Badges &amp; tags</div>
+          <div style="display:flex; flex-direction:column; gap:3mm;">
+            <div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-bottom:2mm;">Statut drop</div>
+              <div class="badge-row">
+                <span class="badge badge-live">Live</span>
+                <span class="badge badge-soon">Soon</span>
+                <span class="badge badge-dark">Prochainement</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-bottom:2mm;">Tags produit</div>
+              <div class="badge-row">
+                <span class="badge badge-soon">Drop 001</span>
+                <span class="badge badge-soon">Gore-Tex</span>
+                <span class="badge badge-soon">350 prs</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-bottom:2mm;">Countdown card (couleur accent)</div>
+              <span class="cd-card">04:17:32:08</span>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-bottom:2mm;">Identifiant leaderboard</div>
+              <span class="badge-active">TOI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drop cards -->
+      <div class="col-sub-label" style="margin-bottom:3mm;">Cards produit</div>
+      <div class="grid-3" style="margin-bottom:6mm;">
+        <!-- Card live -->
+        <div class="drop-card">
+          <div class="drop-card-img">
+            <div class="drop-card-img-placeholder">PHANTOMATIK<br>LTD 500</div>
+          </div>
+          <div class="drop-card-body">
+            <div>
+              <div class="drop-card-drop">Drop 001</div>
+              <div class="drop-card-name">Phantomatik LTD 500</div>
+              <div class="drop-card-sub">€ 280 · 500 prs</div>
+            </div>
+            <span class="badge badge-live" style="font-size:8px;padding:3px 6px;">Live</span>
+          </div>
+        </div>
+        <!-- Card soon + image -->
+        <div class="drop-card">
+          <div class="drop-card-img" style="background:var(--warm-beige);">
+            <div class="drop-card-img-placeholder">KUMO<br>HIKER</div>
+          </div>
+          <div class="drop-card-body">
+            <div>
+              <div class="drop-card-drop">Drop 002</div>
+              <div class="drop-card-name">Aruko KUMO HIKER</div>
+              <div class="drop-card-sub">€ 340 · Gore-Tex</div>
+            </div>
+            <span class="badge badge-soon" style="font-size:8px;padding:3px 6px;">Soon</span>
+          </div>
+        </div>
+        <!-- Card teaser dark -->
+        <div class="drop-card">
+          <div class="drop-card-img" style="background:var(--warm-beige);">
+            <div class="drop-card-img-placeholder">HYBRID<br>ROAMER<br>V3</div>
+          </div>
+          <div class="drop-card-body">
+            <div>
+              <div class="drop-card-drop">Drop 003</div>
+              <div class="drop-card-name">JS Hybrid Roamer V3</div>
+              <div class="drop-card-sub">€ 295 · Édition limitée</div>
+            </div>
+            <span class="badge badge-soon" style="font-size:8px;padding:3px 6px;">Soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:6mm;">
+        <!-- Tailles -->
+        <div>
+          <div class="col-sub-label" style="margin-bottom:3mm;">Taille chips</div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:3px; max-width:140px;">
+            <div class="size-chip">38</div>
+            <div class="size-chip size-chip-active">39</div>
+            <div class="size-chip">40</div>
+            <div class="size-chip">41</div>
+            <div class="size-chip size-chip-disabled">42</div>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-top:3mm; line-height:1.6;">
+            Default: border neutral-200 · text neutral-500<br>
+            Active: bg accent · text white<br>
+            Disabled: opacity-40 · pointer-events-none
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div>
+          <div class="col-sub-label" style="margin-bottom:3mm;">Input</div>
+          <div style="display:flex; flex-direction:column; gap:3mm;">
+            <input class="input-demo" placeholder="ton@email.com" readonly>
+            <input class="input-demo input-focused" placeholder="ton@email.com" readonly>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-top:3mm; line-height:1.6;">
+            Border: neutral-200 · Focus: outline 2px accent<br>
+            Font: DM Sans 400 · 12px
+          </div>
+        </div>
+      </div>
+
+      <!-- Countdown hero -->
+      <div class="col-sub-label" style="margin-bottom:3mm;">Countdown hero (page produit)</div>
+      <div style="padding:5mm 6mm; border:1px solid var(--neutral-200); display:inline-flex; flex-direction:column; gap:3mm; margin-bottom:6mm;">
+        <div class="countdown-block">
+          <div style="text-align:center;">
+            <div class="cd-digit">04</div>
+            <div class="cd-label">Jours</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div style="text-align:center;">
+            <div class="cd-digit">17</div>
+            <div class="cd-label">Heures</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div style="text-align:center;">
+            <div class="cd-digit">32</div>
+            <div class="cd-label">Min</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div style="text-align:center;">
+            <div class="cd-digit">08</div>
+            <div class="cd-label">Sec</div>
+          </div>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);">Font: DM Mono 400 · 36px (desktop) → 24px (mobile) · Digits: neutral-900</div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════ 4. LAYOUT & ESPACEMENT ═══════════ -->
+    <div class="section page-break">
+      <div class="section-label">04 — Layout &amp; Espacement</div>
+
+      <div class="two-col" style="margin-bottom:6mm;">
+        <div>
+          <div class="col-sub-label" style="margin-bottom:3mm;">Grille</div>
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--neutral-900);line-height:2;">
+            Max-width: <strong>1440px</strong><br>
+            Padding: <strong>px-6</strong> (24px) → <strong>md:px-12</strong> (48px)<br>
+            Cols desktop: <strong>2</strong> (produit) / <strong>3</strong> (drops) / <strong>4</strong> (footer)<br>
+            Gap: <strong>gap-4</strong> (16px) · <strong>gap-6</strong> (24px) · <strong>gap-12</strong> (48px) · <strong>gap-24</strong> (96px)
+          </div>
+        </div>
+        <div>
+          <div class="col-sub-label" style="margin-bottom:3mm;">Header</div>
+          <div style="margin-bottom:1px;">
+            <div class="red-strip">
+              <div class="red-strip-inner">SDN · DROP 001 · LIVE NOW · WAITLIST ONLY · SDN ·</div>
+            </div>
+          </div>
+          <div class="header-demo">
+            <div class="header-logo">SNEAKER DROP NINJA</div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div class="icon-box">👤</div>
+              <div class="icon-box">🛍</div>
+              <div class="icon-box">♡</div>
+            </div>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-top:2mm;line-height:1.6;">
+            Red strip: h-9 (36px) · bg accent · marquee 28s<br>
+            Nav: h-16 (64px) · border-b neutral-200<br>
+            Total: 100px · spacer h-[100px]
+          </div>
+        </div>
+      </div>
+
+      <!-- Spacing scale -->
+      <div class="col-sub-label" style="margin-bottom:3mm;">Échelle d'espacement (Tailwind · base 4px)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2mm 8mm;">
+        <div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:4px;"></div><div class="spacing-label">space-1</div><div class="spacing-value">4px</div></div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:8px;"></div><div class="spacing-label">space-2</div><div class="spacing-value">8px</div></div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:12px;"></div><div class="spacing-label">space-3</div><div class="spacing-value">12px</div></div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:16px;"></div><div class="spacing-label">space-4</div><div class="spacing-value">16px</div></div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:24px;"></div><div class="spacing-label">space-6</div><div class="spacing-value">24px</div></div>
+        </div>
+        <div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:32px;"></div><div class="spacing-label">space-8</div><div class="spacing-value">32px</div></div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:48px;"></div><div class="spacing-label">space-12</div><div class="spacing-value">48px</div></div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:64px;"></div><div class="spacing-label">space-16</div><div class="spacing-value">64px</div></div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:96px;"></div><div class="spacing-label">space-24</div><div class="spacing-value">96px</div></div>
+          <div class="spacing-row"><div class="spacing-bar" style="width:128px;"></div><div class="spacing-label">Section py</div><div class="spacing-value">48→64→96px</div></div>
+        </div>
+      </div>
+
+      <!-- Marquee demo -->
+      <div style="margin-top:5mm;">
+        <div class="col-sub-label" style="margin-bottom:2mm;">Marquee (dark band)</div>
+        <div class="marquee-demo">
+          <div class="marquee-demo-inner">ARUKO KUMO HIKER &nbsp;✦&nbsp; DROP 002 · BIENTÔT &nbsp;✦&nbsp; GORE-TEX · VIBRAM &nbsp;✦&nbsp; WAITLIST UNIQUEMENT &nbsp;✦&nbsp; COLORIS OLIVE SHADOW &nbsp;✦&nbsp; ARUKO KUMO HIKER &nbsp;✦&nbsp;</div>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);margin-top:2mm;">bg neutral-900 · DM Mono 400 · 10px · tracking-[0.22em] · 24s linear infinite</div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════ 5. MOTION & INTERACTIONS ═══════════ -->
+    <div class="section page-break">
+      <div class="section-label">05 — Motion &amp; Interactions</div>
+
+      <table class="motion-table">
+        <thead>
+          <tr>
+            <th style="width:24%;">Élément</th>
+            <th style="width:28%;">Propriété</th>
+            <th style="width:24%;">Valeur</th>
+            <th>Déclencheur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Scroll reveal</td>
+            <td>opacity 0→1, translateY 16px→0</td>
+            <td>0.6s ease</td>
+            <td>IntersectionObserver threshold 0.08</td>
+          </tr>
+          <tr>
+            <td>Scroll reveal delay</td>
+            <td>transition-delay</td>
+            <td>+0.12s / +0.24s / +0.36s / +0.48s</td>
+            <td>data-d="1–4" sur l'élément</td>
+          </tr>
+          <tr>
+            <td>Card border</td>
+            <td>border-color neutral-200 → neutral-500</td>
+            <td>transition-colors (150ms)</td>
+            <td>:hover</td>
+          </tr>
+          <tr>
+            <td>Card image</td>
+            <td>transform: scale(1.04)</td>
+            <td>0.5s ease</td>
+            <td>:hover sur .drop-card</td>
+          </tr>
+          <tr>
+            <td>CTA btn-pulse</td>
+            <td>box-shadow 0→14px rgba(165,42,42,.25)</td>
+            <td>2s ease-in-out infinite</td>
+            <td>Permanent (loop)</td>
+          </tr>
+          <tr>
+            <td>Bouton hover</td>
+            <td>bg accent → accent-dark</td>
+            <td>transition-colors (150ms)</td>
+            <td>:hover</td>
+          </tr>
+          <tr>
+            <td>Header shadow</td>
+            <td>box-shadow + backdrop-blur(12px)</td>
+            <td>0.3s ease</td>
+            <td>scrollY > 16px</td>
+          </tr>
+          <tr>
+            <td>Live dot</td>
+            <td>opacity 1 → 0.3 → 1</td>
+            <td>2s ease-in-out infinite</td>
+            <td>Permanent (loop)</td>
+          </tr>
+          <tr>
+            <td>Marquee produit</td>
+            <td>translateX(0 → -50%)</td>
+            <td>24s linear infinite</td>
+            <td>Pause on hover</td>
+          </tr>
+          <tr>
+            <td>Red strip</td>
+            <td>translateX(0 → -50%)</td>
+            <td>28s linear infinite</td>
+            <td>Permanent</td>
+          </tr>
+          <tr>
+            <td>Screen transition (jeu)</td>
+            <td>opacity 0 → 1</td>
+            <td>0.35s ease</td>
+            <td>showScreen(id)</td>
+          </tr>
+          <tr>
+            <td>Thumb active (galerie)</td>
+            <td>outline 2px accent offset 2px</td>
+            <td>0.15s</td>
+            <td>click</td>
+          </tr>
+          <tr>
+            <td>Size chip active</td>
+            <td>bg accent · text white · border accent</td>
+            <td>0.15s</td>
+            <td>click</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- ═══════════ 6. VOIX & TON ═══════════ -->
+    <div class="section">
+      <div class="section-label">06 — Voix &amp; Ton</div>
+
+      <div class="grid-2" style="margin-bottom:5mm;">
+        <div style="padding:4mm; border:1px solid var(--neutral-200);">
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3mm;">Ce qu'on dit</div>
+          <div style="font-family:var(--font-sans);font-size:10px;color:var(--neutral-900);line-height:2;">
+            ✓ &nbsp;"Mérite ta place. Gagne-la."<br>
+            ✓ &nbsp;"Arrivent en premier ou pas du tout."<br>
+            ✓ &nbsp;"La waitlist ne s'achète pas, elle se mérite."<br>
+            ✓ &nbsp;"Attrape les vraies paires, ignore les fakes."<br>
+            ✓ &nbsp;"30 secondes, une arène, un objectif."<br>
+            ✓ &nbsp;"Ton score détermine ton rang."
+          </div>
+        </div>
+        <div style="padding:4mm; border:1px solid var(--neutral-200);">
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3mm;">Principes</div>
+          <div style="font-family:var(--font-sans);font-size:10px;color:var(--neutral-900);line-height:2;">
+            → Capitalisation standard (pas tout caps)<br>
+            → Phrases courtes, percutantes, ellipses assumées<br>
+            → Tutoiement systématique<br>
+            → Mots clés : mérite, arène, rang, ninja, drop<br>
+            → Chiffres précis (500 paires, 30 sec, 6 min)<br>
+            → Mélange FR/EN naturel (drop, live, soon, fake)
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:4mm; border-left:3px solid var(--accent); background:var(--neutral-200);">
+        <div style="font-family:var(--font-mono);font-size:8px;color:var(--neutral-500);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2mm;">Tagline principale</div>
+        <div style="font-family:var(--font-sans);font-size:16px;font-weight:600;color:var(--neutral-900);">Mérite ta place. Gagne-la.</div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════ 7. STACK TECHNIQUE ═══════════ -->
+    <div class="section">
+      <div class="section-label">07 — Stack technique</div>
+
+      <table class="motion-table">
+        <thead>
+          <tr>
+            <th style="width:30%;">Composant</th>
+            <th>Détail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>HTML</td><td>Vanilla HTML5 · SPA fichiers statiques · pas de build</td></tr>
+          <tr><td>CSS</td><td>Tailwind CSS v3 CDN · config inline identique sur toutes les pages</td></tr>
+          <tr><td>JS</td><td>Vanilla ES6+ · pas de framework · IntersectionObserver · setInterval</td></tr>
+          <tr><td>Fonts</td><td>Google Fonts CDN · DM Sans · DM Mono · Staatliches</td></tr>
+          <tr><td>Icons</td><td>Lucide UMD via unpkg CDN · lucide.createIcons()</td></tr>
+          <tr><td>Images</td><td>PNG/JPG statiques · object-contain · bg-[#e5e5e5]</td></tr>
+          <tr><td>Hébergement</td><td>Vercel · project sneakerdropninja · prj_ZcEdZsck34hkzw9CxRE0wZ41wBhO</td></tr>
+          <tr><td>Repo</td><td>GitHub · purple-proposition/8Beats · push sur main = deploy auto</td></tr>
+          <tr><td>URL</td><td>https://sneakerdropninja.vercel.app</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- ── Doc footer ── -->
+    <div class="doc-footer">
+      <div class="doc-footer-left">Sneaker Drop Ninja · Design System v1.0 · Mai 2026</div>
+      <div class="doc-footer-right">usage interne uniquement</div>
+    </div>
+
+  </div><!-- /page -->
+
+</body>
+</html>

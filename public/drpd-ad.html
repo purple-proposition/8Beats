@@ -9,7 +9,7 @@
   <!-- Fonts — même que la homepage -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Staatliches&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=DM+Sans:wght@400;600&family=Staatliches&display=swap" rel="stylesheet">
 
   <!-- Tailwind — même config que la homepage -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -118,7 +118,7 @@
 
     /* ── Feedback pops ── */
     .pop {
-      font-family: 'DM Mono', monospace; font-weight: 700;
+      font-family: 'DM Mono', monospace; font-weight:600;
       position: absolute; pointer-events: none;
       font-size: 13px; white-space: nowrap; z-index: 20;
       animation: pop-up .7s ease forwards;
@@ -187,8 +187,8 @@
 
     /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #fafafa; }
-    ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 2px; }
+    ::-webkit-scrollbar-track { background: #ffffff; }
+    ::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 2px; }
   </style>
 </head>
 <body class="bg-white text-neutral-900 font-sans antialiased">
@@ -228,7 +228,7 @@
       <a href="./product-phantomatik.html"
          class="w-full bg-white border border-neutral-200 hover:border-neutral-500 transition-colors mb-6 block">
         <div class="flex items-stretch">
-          <div class="w-24 h-24 bg-[#eceae5] flex items-center justify-center p-3 flex-shrink-0">
+          <div class="w-24 h-24 bg-[#e5e5e5] flex items-center justify-center p-3 flex-shrink-0">
             <img src="./phantomatik.jpg" alt="Phantomatik LTD 500"
                  class="w-full h-full object-contain mix-blend-multiply">
           </div>
@@ -244,13 +244,13 @@
       <div class="w-full border border-neutral-200 divide-y divide-neutral-200 mb-8">
         <div class="flex items-center gap-4 px-4 py-3">
           <span class="text-2xl flex-shrink-0">👟</span>
-          <div class="text-sm font-normal text-neutral-600">
+          <div class="text-sm font-normal text-neutral-500">
             La vraie paire · <span class="font-semibold text-neutral-900">tape</span> pour grimper dans le classement
           </div>
         </div>
         <div class="flex items-center gap-4 px-4 py-3">
           <span class="text-2xl flex-shrink-0">👠</span>
-          <div class="text-sm font-normal text-neutral-600">
+          <div class="text-sm font-normal text-neutral-500">
             <span class="font-semibold text-neutral-900">Fake</span> · tu perds une vie — 3 erreurs et c'est terminé
           </div>
         </div>
@@ -512,8 +512,8 @@ function renderLeaderboard(playerRank, playerCaught) {
       div.className = 'flex items-center gap-3 px-4 py-2.5 bg-neutral-200';
       div.innerHTML =
         `<span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:#1C1C1C;min-width:38px;">#${r}</span>` +
-        `<span style="flex:1;font-size:12px;font-weight:700;color:#1C1C1C;">Toi ` +
-          `<span style="background:#1C1C1C;color:#fff;font-size:8px;font-weight:700;padding:2px 5px;letter-spacing:.5px;margin-left:4px;font-family:'DM Mono',monospace;">TOI</span></span>` +
+        `<span style="flex:1;font-size:12px;font-weight:600;color:#1C1C1C;">Toi ` +
+          `<span style="background:#1C1C1C;color:#fff;font-size:8px;font-weight:600;padding:2px 5px;letter-spacing:.5px;margin-left:4px;font-family:'DM Mono',monospace;">TOI</span></span>` +
         `<span style="font-family:'DM Mono',monospace;font-size:11px;color:#737373;">${playerCaught} paires</span>`;
     } else {
       const delta = Math.ceil(Math.random() * 2 + 0.5);
