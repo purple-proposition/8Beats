@@ -7469,7 +7469,6 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
             <div class="sp-show-artist">${artistName}</div>
           </div>
           <div class="sp-show-right">
-            ${slot.genres?.length ? slot.genres.map(g => `<span class="chip genre-tag">${g}</span>`).join('') : ''}
             <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
               title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
               onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${slot.title.replace(/'/g,"\\'")}')">
