@@ -193,6 +193,7 @@
   --text-xl:     24px;
   --text-2xl:    32px;
   --text-3xl:    48px;
+  --text-show:   14px;   /* nom des shows — toutes les vues */
 
   /* ── Component — Layout dimensions ── */
   --nav-h:       64px;
@@ -1012,7 +1013,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-thumb.is-playing .card-play { pointer-events: none; color: var(--text-tertiary); }
 
 .card-body { padding: var(--space-3) 0 0; display: flex; flex-direction: column; gap: var(--space-2); }
-.card-body h3 { font-size: var(--text-lg); font-weight: 400; line-height: var(--lh-d, 1); max-height: calc(var(--text-md) * 1.5 * 2); letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: color var(--dur-short) var(--ease-hover); cursor: pointer; }
+.card-body h3 { font-size: var(--text-show); font-weight: 400; line-height: var(--lh-d, 1); max-height: calc(var(--text-md) * 1.5 * 2); letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: color var(--dur-short) var(--ease-hover); cursor: pointer; }
 .card-body h3:hover { color: var(--text-primary); }
 
 .card-host { display: flex; align-items: center; gap: var(--space-2); }
@@ -1636,7 +1637,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   /* ── Cards — carousel mobile, ~3 visible on tablet portrait ── */
   .card { flex: 0 0 195px; }
   .card-body { padding: var(--space-3) 0 0; gap: var(--space-2); }
-  .card-body h3 { font-size: var(--text-base); line-height: 1.3; max-height: calc(var(--text-base) * 1.3 * 2); }
+  .card-body h3 { font-size: var(--text-show); line-height: 1.3; max-height: calc(var(--text-show) * 1.3 * 2); }
   .card-host .host-name { font-size: var(--text-base); }
   .card-meta { font-size: var(--text-base); }
   .card-tags { padding-top: var(--space-2); gap: var(--space-2); }
@@ -2241,7 +2242,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .explore-show-row:hover .explore-show-title { color: var(--text-secondary); }
 .explore-show-title { transition: color var(--dur-micro) var(--ease-hover); }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
-.explore-show-title { font-size:14px; font-weight:400; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.explore-show-title { font-size:var(--text-show); font-weight:400; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .explore-section-border {
   position: relative;
 }
@@ -2410,7 +2411,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .sp-show-row:hover { background: rgba(var(--text-primary-rgb), 0.08); }
 .sp-show-row:hover .sp-show-name { color: var(--text-secondary); }
 .sp-show-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-.sp-show-name   { font-size: var(--text-lg); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-micro) var(--ease-hover); }
+.sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-micro) var(--ease-hover); }
 .sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Right section: tags + live btn + bell */
 .sp-show-right { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
