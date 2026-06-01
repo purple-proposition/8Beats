@@ -2241,7 +2241,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .explore-show-row:hover .explore-show-title { color: var(--text-secondary); }
 .explore-show-title { transition: color var(--dur-micro) var(--ease-hover); }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
-.explore-show-title { font-size:var(--text-lg);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.explore-show-title { font-size:var(--text-base);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .explore-section-border {
   position: relative;
 }
@@ -4827,9 +4827,6 @@ function renderShows(list, q) {
         <span class="explore-show-title">${s.title}</span>
         <span style="font-size:var(--text-base);color:var(--text-secondary);"><span onclick="event.stopPropagation();closeExplore();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color=''">${s.host}</span> · ${formatDate(s.date)}</span>
         ${gameHint}
-      </div>
-      <div style="display:flex;gap:var(--space-3);flex-shrink:0;margin-left:var(--space-4);">
-        ${s.genres.slice(0,2).map(t=>`<span class="chip genre-tag">${t}</span>`).join('')}
       </div>
     </div>
   `}).join('');
