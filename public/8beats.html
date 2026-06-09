@@ -3410,6 +3410,23 @@ body { padding-top: 24px; }
 /* Search → slight tilt */
 #search-btn:hover        .nav-icon-box svg { transform: scale(1.08) rotate(-8deg); }
 
+/* ── Topbar nav buttons (About / Support us) — same draw system ── */
+.topbar-nav-btn svg [pathLength] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.topbar-nav-btn:hover svg [pathLength] {
+  animation: nav-icon-draw 380ms var(--ease-standard) both;
+}
+.topbar-nav-btn svg {
+  transform-origin: center;
+  transition: transform var(--dur-short) var(--ease-spring);
+}
+/* About info → tilt */
+.topbar-nav-btn:first-child:hover svg { transform: rotate(-12deg) scale(1.08); }
+/* Support heart → pulse */
+.topbar-nav-btn:last-child:hover svg  { transform: scale(1.22); }
+
 /* ── Labels ── */
 .nav-label {
   display: inline-block; overflow: hidden; white-space: nowrap;
@@ -3790,8 +3807,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
     </div>
   </div>
   <div id="topbar-right">
-    <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openAbout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>About</a>
-    <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openSupport()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Support us</a>
+    <a href="#" class="btn btn-secondary topbar-nav-btn" onclick="event.preventDefault();openAbout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10" pathLength="1"/><line x1="12" y1="8" x2="12" y2="12" pathLength="1"/><line x1="12" y1="16" x2="12.01" y2="16" pathLength="1"/></svg>About</a>
+    <a href="#" class="btn btn-secondary topbar-nav-btn" onclick="event.preventDefault();openSupport()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path pathLength="1" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Support us</a>
   </div>
 </div>
 
