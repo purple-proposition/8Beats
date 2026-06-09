@@ -3562,7 +3562,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
    TOPBAR (test — sidebar kept hidden for easy revert)
    ══════════════════════════════════════════════════ */
 #topbar {
-  position: fixed; top: 0; left: 0; right: 0; height: 64px;
+  position: fixed; top: 24px; left: 0; right: 0; height: 40px;
   z-index: var(--z-nav);
   display: grid; grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -8627,7 +8627,7 @@ const FWM = (() => {
     register({
       id: 'cookies', el: document.getElementById('panel-cookie'),
       handleEl:      null,
-      corner: 'bottom-right', priority: 10,  draggable: false,
+      corner: 'bottom-left',  priority: 10,  draggable: false,
     });
     // Initial placement — no transition, prevents flash
     resolveCornerStacks(true);
