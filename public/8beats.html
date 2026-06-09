@@ -4911,19 +4911,27 @@ function applyFilters() {
 function renderShows(list, q) {
   q = (q || '').toLowerCase();
   const rows = list.map(s => {
-    const matchedGames = q && s.games ? s.games.filter(g => g.toLowerCase().includes(q)) : [];
-    const gameHint = matchedGames.length
-      ? `<span style="font-size:var(--text-sm);color:var(--text-tertiary);margin-top:2px;display:block;">
-           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:3px;margin-top:-1px;"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01M6 12h.01M18 12h.01M12 8v8"/></svg>
-           ${matchedGames.slice(0,2).join(', ')}
-         </span>`
-      : '';
+    let contextHint = '';
+    if (q) {
+      // Look up matching tracks in tracklist for this show
+      const tl = TRACKLISTS[s.title] || [];
+      const matchedTracks = tl.filter(t => t.game && t.game.toLowerCase().includes(q));
+      if (matchedTracks.length) {
+        const items = matchedTracks.slice(0, 3).map(t =>
+          `<span style="display:inline-flex;align-items:center;gap:4px;background:#171717;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+            ${t.name}
+          </span>`
+        ).join('');
+        contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">${items}</div>`;
+      }
+    }
     return `
     <div class="explore-show-row" role="button" tabindex="0" onclick="closeExplore();openShow('${s.title.replace(/'/g, "\\'")}')">
       <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
         <span class="explore-show-title">${s.title}</span>
         <span style="font-size:var(--text-base);color:var(--text-secondary);"><span onclick="event.stopPropagation();closeExplore();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color=''">${s.host}</span> · ${formatDate(s.date)}</span>
-        ${gameHint}
+        ${contextHint}
       </div>
     </div>
   `}).join('');
