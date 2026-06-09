@@ -1214,7 +1214,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-shell {
   pointer-events: all;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-btn);
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(var(--glass-blur));
@@ -3636,7 +3636,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   backdrop-filter: blur(80px) saturate(180%);
   -webkit-backdrop-filter: blur(80px) saturate(180%);
   border-radius: var(--radius-btn);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
   pointer-events: none;
 }
@@ -3700,8 +3700,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 /* Body: fix 6 — 240ms fast both directions */
 #ts-body { max-height: 0; overflow: hidden; transition: max-height 240ms var(--ease-standard); }
 #topbar-search.search-open #ts-body { max-height: 440px; transition: max-height 240ms var(--ease-standard); }
-#topbar-dropdown-sep { height: 1px; background: var(--border-subtle); margin: 12px 24px 0; }
-#topbar-dropdown-shows { overflow-y: auto; max-height: 400px; overscroll-behavior: contain; padding-top: 4px; }
+#topbar-dropdown-sep { height: 1px; background: var(--border-subtle); margin: 11px 24px 0; }
+#topbar-dropdown-shows { overflow-y: auto; max-height: 400px; overscroll-behavior: contain; }
 #topbar-dropdown-shows .explore-show-title { font-size: var(--text-base); }
 
 #topbar-right { display: flex; align-items: center; gap: var(--space-3); grid-column: 3; justify-self: end; padding-left: 12px; }
