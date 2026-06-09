@@ -1528,14 +1528,14 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .vol-btn-face {
   width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: transparent; border: none; cursor: pointer;
+  background: #171717; border: none; border-radius: var(--radius-control); cursor: pointer;
   color: var(--icon-tertiary); padding: 0;
   position: relative; z-index: 1; /* above .vol-popup-glass */
-  transition: color var(--dur-micro) var(--ease-out);
+  transition: background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out);
 }
-.vol-btn-face:hover { color: var(--text-primary); }
-.vol-popup.vol-open .vol-btn-face { color: var(--text-primary); }
-.vol-popup.vol-open .vol-btn-face:hover { color: var(--text-primary); }
+.vol-btn-face:hover { background: #242424; color: var(--text-primary); }
+.vol-popup.vol-open .vol-btn-face { background: #242424; color: var(--text-primary); }
+.vol-popup.vol-open .vol-btn-face:hover { background: #242424; color: var(--text-primary); }
 /* SVGs/icons stacked via JS initVolIcons — position:absolute, opacity crossfade.
  * Size is controlled here (not inline) so a single edit propagates everywhere. */
 .vol-btn-face svg,
