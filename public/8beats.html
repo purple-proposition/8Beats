@@ -1484,10 +1484,10 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 }
 /* vol-popup-glass kept as empty element for backwards compat — glass applied directly */
 .vol-popup-glass { display: none; }
-/* Open state: opaque dark */
+/* Open state: same bg as button surfaces */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: #242424;
+  background: #171717;
   border-color: transparent;
   /* Open: ease-out (decelerate — organic enter) */
   transition: height var(--dur-short) var(--ease-out),
