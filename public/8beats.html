@@ -818,7 +818,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: var(--space-4);
-  padding: var(--space-8) var(--space-5);
+  padding: 88px var(--space-5) var(--space-8);
   overflow: hidden;
   background: var(--surface-page);
 }
@@ -1214,9 +1214,9 @@ html.light .newsletter-card { background: var(--surface-subtle); }
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-shell {
   pointer-events: all;
-  border: 1px solid var(--glass-border);
+  border: none;
   border-radius: var(--radius-btn);
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   display: flex;
@@ -3616,8 +3616,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   font-size: var(--text-base); color: var(--text-tertiary);
   transition: opacity 0.3s var(--ease-hover), transform 0.3s var(--ease-hover);
 }
-#topbar-search-cycle.cycle-out { opacity: 0; transform: translateY(-4px); }
-#topbar-search-cycle.cycle-in  { opacity: 1; transform: translateY(0); }
+#topbar-search-cycle.cycle-out { opacity: 0; transform: translateY(-4px); filter: blur(4px); }
+#topbar-search-cycle.cycle-in  { opacity: 1; transform: translateY(0);   filter: blur(0px); }
 #topbar-right { display: flex; align-items: center; gap: var(--space-3); justify-self: end; }
 
 /* ── Topbar inline search dropdown ── */
@@ -3784,8 +3784,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
     </div>
   </div>
   <div id="topbar-right">
-    <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openAbout()">About</a>
-    <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openSupport()">Support us</a>
+    <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openAbout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>About</a>
+    <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openSupport()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Support us</a>
   </div>
 </div>
 
