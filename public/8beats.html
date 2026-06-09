@@ -3408,22 +3408,62 @@ body { padding-top: 24px; }
 /* Search → slight tilt */
 #search-btn:hover        .nav-icon-box svg { transform: scale(1.08) rotate(-8deg); }
 
-/* ── Topbar nav buttons (About / Support us) — same draw system ── */
-.topbar-nav-btn svg [pathLength] {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
+/* ── Topbar hamburger menu ── */
+#ham-wrap { position: relative; }
+#ham-btn {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color var(--dur-micro) var(--ease-hover),
+              background var(--dur-micro) var(--ease-hover);
 }
-.topbar-nav-btn:hover svg [pathLength] {
-  animation: nav-icon-draw 380ms var(--ease-standard) both;
+#ham-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+#ham-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+#ham-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 192px;
+  background: #090909;
+  border: 1px solid #191919;
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  z-index: var(--z-nav);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.96) translateY(-6px);
+  transform-origin: top right;
+  transition: opacity 120ms var(--ease-hover), transform 120ms var(--ease-hover);
 }
-.topbar-nav-btn svg {
-  transform-origin: center;
-  transition: transform var(--dur-short) var(--ease-spring);
+#ham-menu.open {
+  pointer-events: all;
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity 200ms var(--ease-spring), transform 240ms var(--ease-spring);
 }
-/* About info → tilt */
-.topbar-nav-btn:first-child:hover svg { transform: rotate(-12deg) scale(1.08); }
-/* Support heart → pulse */
-.topbar-nav-btn:last-child:hover svg  { transform: scale(1.22); }
+.ham-item {
+  display: flex; align-items: center; gap: 12px;
+  height: 40px; padding: 0 var(--space-4);
+  font-size: var(--text-base); font-family: var(--font); font-weight: 400;
+  color: var(--text-secondary);
+  cursor: pointer; border: none; background: none;
+  width: 100%; text-align: left; text-decoration: none;
+  white-space: nowrap; letter-spacing: -.1px;
+  transition: color var(--dur-micro) var(--ease-hover),
+              background var(--dur-micro) var(--ease-hover);
+}
+.ham-item:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+.ham-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+.ham-sep { height: 1px; background: #191919; margin: 4px 0; }
+.ham-theme-row {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 44px; padding: 0 var(--space-4);
+}
+.ham-theme-label {
+  font-size: var(--text-base); font-family: var(--font);
+  color: var(--text-secondary); letter-spacing: -.1px;
+}
 
 /* ── Labels ── */
 .nav-label {
@@ -3855,8 +3895,36 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
     </div>
   </div>
   <div id="topbar-right">
-    <a href="#" class="btn btn-secondary topbar-nav-btn" onclick="event.preventDefault();openAbout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10" pathLength="1"/><line x1="12" y1="8" x2="12" y2="12" pathLength="1"/><line x1="12" y1="16" x2="12.01" y2="16" pathLength="1"/></svg>About</a>
-    <a href="#" class="btn btn-secondary topbar-nav-btn" onclick="event.preventDefault();openSupport()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path pathLength="1" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Support us</a>
+    <div id="ham-wrap">
+      <button id="ham-btn" onclick="toggleHamMenu()" aria-label="Menu" aria-expanded="false" aria-controls="ham-menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <div id="ham-menu" role="menu">
+        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openSchedule()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Schedule
+        </button>
+        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openAbout()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          About
+        </button>
+        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openSupport()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Support us
+        </button>
+        <div class="ham-sep"></div>
+        <div class="ham-theme-row">
+          <span class="ham-theme-label" id="ham-theme-label">Dark mode</span>
+          <button class="theme-toggle" id="ham-theme-toggle" aria-label="Toggle theme">
+            <span class="theme-knob" id="ham-theme-knob"></span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -4805,6 +4873,59 @@ function toggleTheme() {
 }
 // theme-toggle span is purely visual — outer nav-item button handles click via onclick="toggleTheme()"
 if (ddThemeToggle) ddThemeToggle.addEventListener('click', e => { e.stopPropagation(); toggleTheme(); });
+
+/* ── Topbar hamburger menu ── */
+const hamMenu      = document.getElementById('ham-menu');
+const hamBtn       = document.getElementById('ham-btn');
+const hamThemeKnob = document.getElementById('ham-theme-knob');
+const hamThemeToggle = document.getElementById('ham-theme-toggle');
+
+// Init icon in knob
+if (hamThemeKnob) setThemeIcon(hamThemeKnob, 'sun');
+
+// Sync label on theme change
+function _syncHamThemeLabel() {
+  const label = document.getElementById('ham-theme-label');
+  if (label) label.textContent = light ? 'Light mode' : 'Dark mode';
+}
+
+// Patch toggleTheme to also sync ham
+const _origToggleTheme = toggleTheme;
+toggleTheme = function() {
+  _origToggleTheme();
+  if (hamThemeKnob) setThemeIcon(hamThemeKnob, light ? 'moon' : 'sun');
+  _syncHamThemeLabel();
+};
+
+if (hamThemeToggle) {
+  hamThemeToggle.addEventListener('click', e => { e.stopPropagation(); toggleTheme(); });
+}
+
+function toggleHamMenu() {
+  if (hamMenu.classList.contains('open')) {
+    closeHamMenu();
+  } else {
+    hamMenu.classList.add('open');
+    hamBtn.setAttribute('aria-expanded', 'true');
+    // Close on outside click (defer one frame so this click doesn't immediately close)
+    setTimeout(() => {
+      document.addEventListener('pointerdown', _hamOutside, { once: true });
+    }, 0);
+  }
+}
+function closeHamMenu() {
+  hamMenu.classList.remove('open');
+  hamBtn.setAttribute('aria-expanded', 'false');
+}
+function _hamOutside(e) {
+  if (!document.getElementById('ham-wrap').contains(e.target)) {
+    closeHamMenu();
+  } else {
+    setTimeout(() => {
+      document.addEventListener('pointerdown', _hamOutside, { once: true });
+    }, 0);
+  }
+}
 
 /* ── Drawer ── */
 const hamburger     = document.getElementById('hamburger');
