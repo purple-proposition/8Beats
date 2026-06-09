@@ -66,8 +66,8 @@
      ══════════════════════════════════════════ */
 
   /* ── Semantic — Surfaces ── */
-  --surface-page:           #050505;   /* fond global */
-  --surface-page-rgb:       5,5,5;
+  --surface-page:           #000000;   /* fond global */
+  --surface-page-rgb:       0,0,0;
   --surface-subtle:         #2A2A2A;
   --surface-elevated:       #424242;
   --surface-elevated-rgb:   29,29,29;  /* base RGB pour glass effects */
@@ -1216,9 +1216,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   pointer-events: all;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-btn);
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: #090909;
   display: flex;
   flex-direction: column;
   overflow: hidden; /* clippe le contenu de la playlist pendant l'animation */
@@ -3632,9 +3630,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #ts-panel {
   position: absolute; top: 0; left: 0; right: 0; z-index: 1;
   display: flex; flex-direction: column;
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(80px) saturate(180%);
-  -webkit-backdrop-filter: blur(80px) saturate(180%);
+  background: #090909;
   border-radius: var(--radius-btn);
   border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
