@@ -1179,19 +1179,18 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .panel-cookie {
   pointer-events: all;
   border: none !important;
-  background: rgba(0, 0, 0, 0.56) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
   backdrop-filter: blur(48px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(48px) saturate(180%) !important;
 }
 
-/* Cookie accept animation: bubble pop + blur dissolve */
-@keyframes cookie-accept {
-  0%   { transform: scale(1);    opacity: 1; filter: blur(0px); }
-  28%  { transform: scale(1.08); opacity: 1; filter: blur(0px); }
-  100% { transform: scale(1.16); opacity: 0; filter: blur(20px); }
+/* Cookie dismiss: fade + blur out */
+@keyframes cookie-dismiss {
+  0%   { opacity: 1; filter: blur(0px); }
+  100% { opacity: 0; filter: blur(24px); }
 }
 .panel-cookie.accepting {
-  animation: cookie-accept 480ms var(--ease-out) forwards;
+  animation: cookie-dismiss 320ms var(--ease-out) forwards;
   pointer-events: none;
 }
 
@@ -5948,7 +5947,7 @@ function acceptCookies() {
   const el = document.getElementById('panel-cookie');
   if (!el) return;
   el.classList.add('accepting');
-  setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); }, 500);
+  setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); }, 360);
 }
 
 /* ── Playlist ── */
