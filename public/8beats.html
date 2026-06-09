@@ -1130,32 +1130,20 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   line-height: 1.6; margin: 0; max-width: 420px;
 }
 .newsletter-form {
-  display: flex; width: 100%; max-width: 480px;
-  border: 1px solid var(--border-btn); border-radius: var(--radius-btn);
-  overflow: hidden;
-  transition: opacity 0.2s ease, border-color var(--dur-micro) var(--ease-hover);
+  display: flex; gap: var(--space-3); width: 100%; max-width: 480px;
+  transition: opacity 0.2s ease;
 }
-.newsletter-form:focus-within { border-color: var(--border-hover); }
 .newsletter-input {
   flex: 1; min-width: 0;
-  height: 48px; padding: 0 var(--space-4);
-  background: transparent; border: none;
+  height: 40px; padding: 0 var(--space-4);
+  background: transparent;
+  border: 1px solid var(--border-btn); border-radius: var(--radius-btn);
   font-family: var(--font); font-size: var(--text-base);
   color: var(--text-primary); outline: none;
+  transition: border-color var(--dur-micro) var(--ease-hover);
 }
 .newsletter-input::placeholder { color: var(--text-tertiary); }
-.newsletter-submit-wrap { display: flex; align-items: center; padding: 4px; flex-shrink: 0; }
-.newsletter-submit-btn {
-  height: 40px; padding: 0 var(--space-5);
-  background: var(--action-primary-bg); color: var(--action-primary-fg);
-  border: none; border-radius: calc(var(--radius-btn) - 4px);
-  font-family: var(--font); font-size: var(--text-base); font-weight: 500;
-  cursor: pointer; white-space: nowrap;
-  display: flex; align-items: center; gap: var(--space-2);
-  transition: opacity var(--dur-micro) var(--ease-hover); flex-shrink: 0;
-}
-.newsletter-submit-btn:hover { opacity: .88; }
-.newsletter-submit-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; }
+.newsletter-input:focus { border-color: var(--border-hover); }
 .newsletter-socials {
   display: flex; align-items: center; gap: var(--space-5);
 }
@@ -3644,10 +3632,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.14); background: rgba(0,0
 
     <!-- ── Nav items body ── -->
     <div class="sidebar-body">
-      <button class="nav-item" id="latest-btn" onclick="openLatestShows()" aria-label="Latest shows">
-        <span class="nav-icon-box"><i data-lucide="clock" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
-        <span class="nav-label">Latest</span>
-      </button>
       <button class="nav-item" id="search-btn" onclick="openExplore()" aria-label="Explore">
         <span class="nav-icon-box"><i data-lucide="search" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Explore</span>
@@ -6397,12 +6381,10 @@ const HOME_INTERSTITIALS = {
         <p class="newsletter-desc">New shows every week. Stay in the loop — get the latest from the radio straight to your inbox.</p>
         <form class="newsletter-form" onsubmit="newsletterSubmit(event)">
           <input class="newsletter-input" type="email" placeholder="Your e-mail address" required id="newsletter-input">
-          <div class="newsletter-submit-wrap">
-            <button class="newsletter-submit-btn" type="submit">
-              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              Subscribe
-            </button>
-          </div>
+          <button class="btn btn-secondary" type="submit">
+            <i data-lucide="mail" style="fill:none;display:block"></i>
+            Subscribe
+          </button>
         </form>
         <p class="newsletter-confirm" id="newsletter-confirm">
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
