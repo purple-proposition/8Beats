@@ -2947,14 +2947,14 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   display: block; flex-shrink: 0;
   font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
   font-family: var(--font);
-  min-width: 20px; text-align: left;
+  min-width: 24px; text-align: left;
 }
 
 /* Tracklist rows — no separator, 24px top spacing before each row */
 .show-tracklist-inline { padding-bottom: 0; }
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-5); padding: var(--space-5) 0 0 0; border-radius: 0; cursor: default;
+  gap: var(--space-4); padding: var(--space-5) 0 0 0; border-radius: 0; cursor: default;
 }
 .show-tracklist-inline .track:last-child {
   padding-bottom: var(--space-5);
@@ -2962,21 +2962,26 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-tracklist-inline .track + .track { border-top: none; }
 .show-tracklist-inline .track-info {
-  display: flex; flex-direction: column; flex: 1; min-width: 0;
-}
-/* Track name first (primary), game name below (tertiary) */
-.show-tracklist-inline .track-name {
-  font-size: var(--text-base); color: var(--text-primary); order: 0;
-}
-.show-tracklist-inline .track-game {
-  display: block; font-size: var(--text-base); color: var(--text-tertiary);
+  display: flex; align-items: baseline; flex: 1; min-width: 0;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  order: 1; /* push below track-name */
-  margin-top: 2px;
+}
+.show-tracklist-inline .track-label {
+  font-size: var(--text-base); color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .show-tracklist-inline .track-right {
-  display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; margin-left: var(--space-4);
+  display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0;
 }
+/* Icon-only timestamp button */
+.ts-btn-icon {
+  width: 32px; height: 32px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #171717; border: none; border-radius: var(--radius-control);
+  cursor: pointer; color: #A1A1A1;
+  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
+}
+.ts-btn-icon:hover { color: var(--text-primary); background: #242424; }
+.ts-btn-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 
 /* ── Hero gradient overlays (Keakie method — artist page only) ── */
 .hero-grad {
@@ -5455,14 +5460,13 @@ function switchToTracklist(showTitle) {
     </div>
     ${tracks.map((t, i) => `
       <div class="track" style="${i===0?'padding-top:0;':''}">
-        <span class="track-num">${i + 1}</span>
+        <span class="track-num">#${i + 1}</span>
         <div class="track-info">
-          <span class="track-name">${t.name}</span>
-          <span class="track-game">${t.game}</span>
+          <span class="track-label">${t.game ? `${t.game} — ${t.name}` : t.name}</span>
         </div>
         <div class="track-right">
           ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-          <button class="ts-btn" onclick="seekTo('${t.ts}')">${t.ts}</button>
+          <button class="ts-btn-icon" onclick="seekTo('${t.ts}')" title="${t.ts}" aria-label="Seek to ${t.ts}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></button>
         </div>
       </div>
     `).join('')}
@@ -6554,14 +6558,13 @@ function openShow(key) {
   const tl = TRACKLISTS[key] || [];
   document.getElementById('show-tracklist-inline').innerHTML = tl.map((t, i) => `
     <div class="track">
-      <span class="track-num">${i + 1}</span>
+      <span class="track-num">#${i + 1}</span>
       <div class="track-info">
-        ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
-        <span class="track-name">${t.name}</span>
+        <span class="track-label">${t.game ? `${t.game} — ${t.name}` : t.name}</span>
       </div>
       <div class="track-right">
         ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-        <button class="ts-btn" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</button>
+        <button class="ts-btn-icon" onclick="seekToShow('${t.ts}', '${key}')" title="${t.ts}" aria-label="Seek to ${t.ts}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></button>
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
