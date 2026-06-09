@@ -1178,6 +1178,21 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 .panel-cookie {
   pointer-events: all;
+  border: none !important;
+  background: rgba(0, 0, 0, 0.56) !important;
+  backdrop-filter: blur(48px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(48px) saturate(180%) !important;
+}
+
+/* Cookie accept animation: bubble pop + blur dissolve */
+@keyframes cookie-accept {
+  0%   { transform: scale(1);    opacity: 1; filter: blur(0px); }
+  28%  { transform: scale(1.08); opacity: 1; filter: blur(0px); }
+  100% { transform: scale(1.16); opacity: 0; filter: blur(20px); }
+}
+.panel-cookie.accepting {
+  animation: cookie-accept 480ms var(--ease-out) forwards;
+  pointer-events: none;
 }
 
 /* ── Player ── */
@@ -4222,7 +4237,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
     <span class="label">Cookies</span>
   </div>
   <p>We use cookies to keep the stream running and understand how you listen. No tracking, no third parties.</p>
-  <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="closePanel(document.getElementById('panel-cookie'))">Accept</button>
+  <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="acceptCookies()">Accept</button>
 </aside>
 
 <!-- SCHEDULE MODAL (Explorer pattern — centered, no title, click-outside closes) -->
@@ -5929,6 +5944,12 @@ playBtn.addEventListener('click', e => {
 
 /* ── Panels ── */
 function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.display='none',180); }
+function acceptCookies() {
+  const el = document.getElementById('panel-cookie');
+  if (!el) return;
+  el.classList.add('accepting');
+  setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); }, 500);
+}
 
 /* ── Playlist ── */
 let plOpen = false;
