@@ -961,9 +961,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .section-header-text h3 { font-size: var(--text-md); font-weight: 400; color: var(--text-secondary); }
 
 /* section title with inline chevron */
-.section-link { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-primary); text-decoration: none; transition: color var(--dur-short) var(--ease-hover); }
-.section-link:hover { color: var(--text-primary); }
-.section-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; }
+.section-link { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-primary); text-decoration: none; border-radius: var(--radius-control); padding: 4px 10px 4px 8px; margin-left: -8px; transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
+.section-link:hover { background: #171717; color: var(--text-primary); }
+.section-link:hover svg { transform: translateX(2px); }
+.section-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; transition: transform var(--dur-short) var(--ease-spring); }
 
 /* ── Cards ── */
 .cards { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--space-5); align-items: start; }
@@ -3638,6 +3639,10 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 
     <!-- ── Nav items body ── -->
     <div class="sidebar-body">
+      <button class="nav-item" id="latest-btn" onclick="openLatestShows()" aria-label="Latest shows">
+        <span class="nav-icon-box"><i data-lucide="radio" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
+        <span class="nav-label">Latest shows</span>
+      </button>
       <button class="nav-item" id="search-btn" onclick="openExplore()" aria-label="Explore">
         <span class="nav-icon-box"><i data-lucide="search" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Explore</span>
@@ -8168,6 +8173,7 @@ function openLatestShows() {
     requestAnimationFrame(() => { el.classList.add('visible'); });
   }, 280);
 
+  document.getElementById('latest-btn')?.classList.add('active');
   const wordmark = document.querySelector('.nav-wordmark');
   wordmark.onclick = (e) => { e.preventDefault(); closeLatestShows(); };
   wordmark.title = 'Back';
@@ -8185,6 +8191,7 @@ function closeLatestShows() {
     requestAnimationFrame(() => { homeEl.style.opacity = '1'; });
     window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
+    document.getElementById('latest-btn')?.classList.remove('active');
     const wordmark = document.querySelector('.nav-wordmark');
     wordmark.onclick = null; wordmark.title = '';
   }, 280);
