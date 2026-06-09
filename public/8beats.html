@@ -3627,9 +3627,10 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #topbar-search.search-open #topbar-search-btn { opacity: 0; pointer-events: none; }
 
-/* ONE glass panel — button and dropdown are the same surface */
+/* ONE glass panel — fix 2: display:flex so children stack correctly */
 #ts-panel {
   position: absolute; top: 0; left: 0; right: 0; z-index: 1;
+  display: flex; flex-direction: column;
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(80px) saturate(180%);
   -webkit-backdrop-filter: blur(80px) saturate(180%);
@@ -3647,14 +3648,15 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #ts-search-icon { width: 15px; height: 15px; stroke: var(--text-tertiary); fill: none; display: block; flex-shrink: 0; }
 
-/* Text area: cycling label crossfades with input */
+/* Text area: cycling label stays visible until user types — fix 1 */
 #ts-text { flex: 1; min-width: 0; position: relative; height: 100%; display: flex; align-items: center; overflow: hidden; }
 #topbar-search-label {
   font-family: var(--font); font-size: var(--text-base); color: var(--text-tertiary);
   white-space: nowrap;
-  transition: opacity 240ms var(--ease-hover), filter 240ms var(--ease-hover);
+  transition: opacity 200ms var(--ease-hover), filter 200ms var(--ease-hover);
 }
-#topbar-search.search-open #topbar-search-label { opacity: 0; filter: blur(6px); pointer-events: none; }
+/* hide label only when user has typed something */
+#topbar-search.has-query #topbar-search-label { opacity: 0; filter: blur(6px); pointer-events: none; }
 #topbar-search-cycle {
   font-size: var(--text-base); color: var(--text-tertiary);
   transition: opacity 0.3s var(--ease-hover), transform 0.3s var(--ease-hover), filter 0.3s var(--ease-hover);
@@ -3668,17 +3670,18 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   font-family: var(--font); font-size: var(--text-base);
   color: var(--text-primary); caret-color: var(--text-primary);
   opacity: 0; pointer-events: none;
-  transition: opacity 240ms var(--ease-hover);
+  transition: opacity 200ms var(--ease-hover);
 }
 #topbar-search.search-open #topbar-search-input { opacity: 1; pointer-events: all; }
 #topbar-search-input::placeholder { color: var(--text-tertiary); }
 
-/* Badge area: ⌘K crossfades with Esc */
-#ts-badges { flex-shrink: 0; position: relative; height: 24px; display: flex; align-items: center; }
+/* Badge area: fix 4 — both absolutely positioned in fixed-width container */
+#ts-badges { flex-shrink: 0; position: relative; width: 48px; height: 24px; }
 #topbar-search-kbd {
+  position: absolute; top: 50%; right: 0; transform: translateY(-50%);
   background: rgba(255,255,255,0.08); border-radius: var(--radius-control);
   color: #A1A1A1; font-size: var(--text-xs); font-family: var(--font);
-  padding: 3px 7px; display: block;
+  padding: 3px 7px; white-space: nowrap;
   transition: opacity 160ms var(--ease-hover);
 }
 #topbar-search-esc {
@@ -3693,9 +3696,9 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-search.search-open #topbar-search-kbd { opacity: 0; pointer-events: none; }
 #topbar-search.search-open #topbar-search-esc { opacity: 1; pointer-events: all; }
 
-/* Body: expands with spring ease */
-#ts-body { max-height: 0; overflow: hidden; transition: max-height 480ms var(--ease-standard); }
-#topbar-search.search-open #ts-body { max-height: 440px; }
+/* Body: fix 6 — 240ms fast both directions */
+#ts-body { max-height: 0; overflow: hidden; transition: max-height 240ms var(--ease-standard); }
+#topbar-search.search-open #ts-body { max-height: 440px; transition: max-height 240ms var(--ease-standard); }
 #topbar-dropdown-sep { height: 1px; background: var(--border-subtle); }
 #topbar-dropdown-shows { overflow-y: auto; max-height: 400px; overscroll-behavior: contain; }
 #topbar-dropdown-shows::-webkit-scrollbar { display: none; }
@@ -8498,6 +8501,11 @@ function openTopbarSearch() {
   _topbarSearchOpen = true;
   document.getElementById('topbar-search').classList.add('search-open');
   _renderTopbarShows('');
+  // fix 3: initScrollFade after #ts-body expansion (240ms) completes
+  setTimeout(() => {
+    const c = document.getElementById('topbar-dropdown-shows');
+    if (c) initScrollFade(c, 48);
+  }, 280);
   setTimeout(() => { document.getElementById('topbar-search-input')?.focus(); }, 80);
   setTimeout(() => document.addEventListener('click', _topbarSearchOutside), 120);
 }
@@ -8505,7 +8513,9 @@ function openTopbarSearch() {
 function closeTopbarSearch() {
   if (!_topbarSearchOpen) return;
   _topbarSearchOpen = false;
-  document.getElementById('topbar-search').classList.remove('search-open');
+  const s = document.getElementById('topbar-search');
+  s.classList.remove('search-open');
+  s.classList.remove('has-query'); // fix 1: reset query state
   document.removeEventListener('click', _topbarSearchOutside);
   const inp = document.getElementById('topbar-search-input');
   if (inp) { inp.value = ''; inp.blur(); }
@@ -8515,7 +8525,11 @@ function _topbarSearchOutside(e) {
   if (!document.getElementById('topbar-search').contains(e.target)) closeTopbarSearch();
 }
 
-function handleTopbarSearch(q) { _renderTopbarShows(q); }
+function handleTopbarSearch(q) {
+  // fix 1: toggle has-query so label hides only when typing
+  document.getElementById('topbar-search').classList.toggle('has-query', q.length > 0);
+  _renderTopbarShows(q);
+}
 
 function _renderTopbarShows(q) {
   const container = document.getElementById('topbar-dropdown-shows');
@@ -8584,7 +8598,7 @@ document.addEventListener('keydown', e => {
       el.classList.remove('cycle-out');
       el.classList.add('cycle-in');
     }, 300);
-  }, 2200);
+  }, 1900); // fix 5: 1900 + 300ms fade = 2200ms effective, no drift
 })();
 
 /* ── Nav icon draw animation — add pathLength="1" to stroke elements ──
