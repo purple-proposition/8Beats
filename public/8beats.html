@@ -5484,7 +5484,7 @@ function switchToTracklist(showTitle) {
     </div>
     <div class="tracklist-header">
       <span class="tracklist-header-num">#</span>
-      <span class="tracklist-header-name">Artist — Title</span>
+      <span class="tracklist-header-name"></span>
       <span class="tracklist-header-ts"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></span>
     </div>
     ${tracks.map((t, i) => `
@@ -5496,7 +5496,7 @@ function switchToTracklist(showTitle) {
         </div>
         <div class="track-right">
           ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-          <button class="ts-btn-icon" onclick="seekTo('${t.ts}')" title="${t.ts}" aria-label="Seek to ${t.ts}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></button>
+          <button class="ts-btn" onclick="seekTo('${t.ts}')">${t.ts}</button>
         </div>
       </div>
     `).join('')}
@@ -6589,7 +6589,7 @@ function openShow(key) {
   document.getElementById('show-tracklist-inline').innerHTML = `
     <div class="tracklist-header">
       <span class="tracklist-header-num">#</span>
-      <span class="tracklist-header-name">Artist — Title</span>
+      <span class="tracklist-header-name"></span>
       <span class="tracklist-header-ts"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></span>
     </div>
   ` + tl.map((t, i) => `
@@ -6601,7 +6601,7 @@ function openShow(key) {
       </div>
       <div class="track-right">
         ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-        <button class="ts-btn-icon" onclick="seekToShow('${t.ts}', '${key}')" title="${t.ts}" aria-label="Seek to ${t.ts}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></button>
+        <button class="ts-btn" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</button>
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
