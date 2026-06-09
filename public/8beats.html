@@ -877,7 +877,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 /* ── Family 1: ActionButton (.btn) ── */
 .btn {
   display: inline-flex; align-items: center; gap: var(--space-2);
-  height: 40px; padding: 0 var(--space-4);
+  height: 40px; padding: 0 var(--space-5);
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   letter-spacing: -.1px;
   border-radius: var(--radius-sm); cursor: pointer;
@@ -3640,7 +3640,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 
 /* Head: always 40px, icon + text + badge */
 #ts-head {
-  height: 40px; flex-shrink: 0;
+  height: 40px; flex-shrink: 0; position: relative;
   display: flex; align-items: center; gap: var(--space-3);
   padding: 0 var(--space-4);
 }
@@ -3672,17 +3672,17 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #topbar-search.search-open #topbar-search-input { opacity: 1; pointer-events: all; }
 
-/* Badge area: fix 4 — both absolutely positioned in fixed-width container */
-#ts-badges { flex-shrink: 0; position: relative; width: 48px; height: 24px; }
+/* Badge area: absolute in #ts-head → 12px top, right, bottom */
+#ts-badges { position: absolute; top: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; }
 #topbar-search-kbd {
-  position: absolute; top: 50%; right: 0; transform: translateY(-50%);
+  position: static; transform: none;
   background: rgba(255,255,255,0.08); border-radius: var(--radius-control);
   color: #A1A1A1; font-size: var(--text-sm); font-family: var(--font);
   padding: 3px 7px; white-space: nowrap;
   transition: opacity 160ms var(--ease-hover);
 }
 #topbar-search-esc {
-  position: absolute; top: 50%; right: 0; transform: translateY(-50%);
+  position: static; transform: none;
   background: rgba(255,255,255,0.08); border: none; border-radius: var(--radius-control);
   color: #A1A1A1; font-size: var(--text-sm); font-family: var(--font);
   padding: 3px 8px; cursor: pointer; white-space: nowrap;
