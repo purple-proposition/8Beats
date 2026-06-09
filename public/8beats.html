@@ -933,12 +933,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .btn-primary [data-lucide="play"] { fill: var(--action-primary-fg) !important; stroke: none !important; }
 .btn-primary:hover { opacity: .88; }
 .btn:disabled, .btn[disabled] { opacity: 0.4 !important; cursor: not-allowed !important; pointer-events: none; }
-/* ── Secondary: subtle border + muted text → brighter on hover (never competes with primary) ── */
-.btn-secondary { background: transparent; color: var(--action-secondary-fg); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
+/* ── Secondary: dark-filled bg + primary text ── */
+.btn-secondary { background: rgba(255,255,255,0.10); color: var(--text-primary); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
 .btn-secondary svg { stroke: currentColor; fill: none; }
-.btn-secondary:hover, .btn-secondary:active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
-/* ── Tertiary: same as secondary, 32px height ── */
-.btn-tertiary { height: 32px; background: transparent; color: #A1A1A1; border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
+.btn-secondary:hover, .btn-secondary:active { border-color: var(--border-hover); background: rgba(255,255,255,0.16); color: var(--text-primary); }
+/* ── Tertiary: ghost — transparent, border only, muted text, 32px ── */
+.btn-tertiary { height: 32px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
 .btn-tertiary svg { stroke: currentColor; fill: none; }
 .btn-tertiary:hover, .btn-tertiary:active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 
