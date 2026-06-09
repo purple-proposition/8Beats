@@ -3704,6 +3704,29 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 
 #topbar-right { display: flex; align-items: center; gap: var(--space-3); grid-column: 3; justify-self: end; padding-left: 12px; }
 
+/* ── NEW badge in search dropdown ── */
+@keyframes shimmer-new {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.badge-new {
+  flex-shrink: 0;
+  background: #171717;
+  border-radius: var(--radius-control);
+  padding: 2px 8px;
+  font-size: var(--text-sm);
+  font-family: var(--font);
+  white-space: nowrap;
+}
+.badge-new span {
+  background: linear-gradient(90deg, #A1A1A1 30%, #ffffff 50%, #A1A1A1 70%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-new 2.4s linear infinite;
+}
+
 /* ── Show page: top spacing = horizontal spacing (2 cols + gaps) ── */
 .show-hero { margin-top: calc(-1 * var(--space-9)); } /* cancel body padding-top */
 .show-hero-content { padding-top: calc(var(--space) + var(--sidebar-full)); }
@@ -8532,6 +8555,9 @@ function handleTopbarSearch(q) {
 
 function _renderTopbarShows(q) {
   const container = document.getElementById('topbar-dropdown-shows');
+  const recentTitles = new Set(
+    shows.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4).map(s => s.title)
+  );
   q = (q || '').toLowerCase();
   let list = shows.slice();
   if (q) list = list.filter(s =>
@@ -8563,6 +8589,9 @@ function _renderTopbarShows(q) {
     const coverEl = cover
       ? `<img src="${cover}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;display:block;" alt="">`
       : `<div style="width:36px;height:36px;border-radius:6px;background:#191919;flex-shrink:0;"></div>`;
+    const newBadge = recentTitles.has(s.title)
+      ? `<span class="badge-new"><span>NEW</span></span>`
+      : '';
     return `<div class="explore-show-row" role="button" tabindex="0" onclick="closeTopbarSearch();openShow('${s.title.replace(/'/g, "\\'")}')">
       ${coverEl}
       <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
@@ -8573,6 +8602,7 @@ function _renderTopbarShows(q) {
         </span>
         ${contextHint}
       </div>
+      ${newBadge}
     </div>`;
   }).join('');
   container.innerHTML = `<div style="display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-5) 0;">${rows}</div>`;
