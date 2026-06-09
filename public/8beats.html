@@ -3639,10 +3639,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 
     <!-- ── Nav items body ── -->
     <div class="sidebar-body">
-      <button class="nav-item" id="latest-btn" onclick="openLatestShows()" aria-label="Latest shows">
-        <span class="nav-icon-box"><i data-lucide="radio" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
-        <span class="nav-label">Latest shows</span>
-      </button>
       <button class="nav-item" id="search-btn" onclick="openExplore()" aria-label="Explore">
         <span class="nav-icon-box"><i data-lucide="search" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Explore</span>
@@ -8173,7 +8169,6 @@ function openLatestShows() {
     requestAnimationFrame(() => { el.classList.add('visible'); });
   }, 280);
 
-  document.getElementById('latest-btn')?.classList.add('active');
   const wordmark = document.querySelector('.nav-wordmark');
   wordmark.onclick = (e) => { e.preventDefault(); closeLatestShows(); };
   wordmark.title = 'Back';
@@ -8191,7 +8186,6 @@ function closeLatestShows() {
     requestAnimationFrame(() => { homeEl.style.opacity = '1'; });
     window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
-    document.getElementById('latest-btn')?.classList.remove('active');
     const wordmark = document.querySelector('.nav-wordmark');
     wordmark.onclick = null; wordmark.title = '';
   }, 280);
