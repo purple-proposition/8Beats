@@ -3672,20 +3672,20 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #topbar-search.search-open #topbar-search-input { opacity: 1; pointer-events: all; }
 
-/* Badge area: centered vertically, 12px from right */
-#ts-badges { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); display: flex; align-items: center; }
+/* Badge area: exactly 12px top, bottom, right */
+#ts-badges { position: absolute; top: 12px; bottom: 12px; right: 12px; display: flex; align-items: stretch; }
 #topbar-search-kbd {
   position: static; transform: none;
   background: rgba(255,255,255,0.08); border-radius: var(--radius-control);
   color: #A1A1A1; font-size: var(--text-sm); font-family: var(--font);
-  padding: 3px 7px; white-space: nowrap;
+  padding: 0 7px; white-space: nowrap; display: flex; align-items: center;
   transition: opacity 160ms var(--ease-hover);
 }
 #topbar-search-esc {
   position: static; transform: none;
   background: rgba(255,255,255,0.08); border: none; border-radius: var(--radius-control);
   color: #A1A1A1; font-size: var(--text-sm); font-family: var(--font);
-  padding: 3px 8px; cursor: pointer; white-space: nowrap;
+  padding: 0 8px; cursor: pointer; white-space: nowrap; display: flex; align-items: center;
   opacity: 0; pointer-events: none;
   transition: opacity 160ms var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
