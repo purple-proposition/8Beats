@@ -3684,7 +3684,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   display: flex; align-items: center; gap: var(--space-3);
   padding: 0 var(--space-4);
 }
-#ts-search-icon { width: 15px; height: 15px; stroke: var(--text-tertiary); fill: none; display: block; flex-shrink: 0; }
+#ts-search-icon { width: 15px; height: 15px; stroke: var(--text-tertiary); fill: none; display: block; flex-shrink: 0; will-change: auto; transform: translateZ(0); }
 
 /* Text area: cycling label stays visible until user types — fix 1 */
 #ts-text { flex: 1; min-width: 0; position: relative; height: 100%; display: flex; align-items: center; overflow: hidden; }
@@ -3696,11 +3696,13 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 /* hide label only when user has typed something */
 #topbar-search.has-query #topbar-search-label { opacity: 0; filter: blur(6px); pointer-events: none; }
 #topbar-search-cycle {
+  display: inline-block; vertical-align: baseline;
+  will-change: opacity, filter;
   font-size: var(--text-base); color: var(--text-tertiary);
-  transition: opacity 0.3s var(--ease-hover), transform 0.3s var(--ease-hover), filter 0.3s var(--ease-hover);
+  transition: opacity 0.3s var(--ease-hover), filter 0.3s var(--ease-hover);
 }
-#topbar-search-cycle.cycle-out { opacity: 0; transform: translateY(-4px); filter: blur(4px); }
-#topbar-search-cycle.cycle-in  { opacity: 1; transform: translateY(0);    filter: blur(0px); }
+#topbar-search-cycle.cycle-out { opacity: 0; filter: blur(4px); }
+#topbar-search-cycle.cycle-in  { opacity: 1; filter: blur(0px); }
 
 #topbar-search-input {
   position: absolute; inset: 0;
