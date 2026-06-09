@@ -1025,7 +1025,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-thumb.is-playing .card-play { pointer-events: none; color: var(--text-tertiary); }
 
 .card-body { padding: var(--space-3) 0 0; display: flex; flex-direction: column; gap: var(--space-2); }
-.card-body h3 { font-size: var(--text-show); font-weight: 400; line-height: var(--lh-d, 1); max-height: calc(var(--text-md) * 1.5 * 2); letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: var(--text-primary); transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; }
+.card-body h3 { font-size: var(--text-show); font-weight: 400; line-height: 1.2; max-height: calc(var(--text-show) * 1.2 * 2); letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: var(--text-primary); transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; }
 .card-body h3:hover { opacity: 0.64; }
 
 .card-host { display: flex; align-items: center; gap: var(--space-2); }
@@ -2467,24 +2467,26 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 /* ══════════════════════════════════════
    VIEW SYSTEM — home ↔ show
 ══════════════════════════════════════ */
-#view-home, #view-show {
-  transition: opacity var(--dur-large) var(--ease-hover);
+/* ── View transitions — all fade with matching blur ── */
+#view-home, #view-show, #view-artist, #view-support,
+#view-about, #view-proposal, #view-latest {
+  transition: opacity var(--dur-large) var(--ease-hover),
+              filter  var(--dur-large) var(--ease-hover);
 }
 #view-home > .content { margin-top: 96px; }
 #view-show {
-  display: none; opacity: 0;
+  display: none; opacity: 0; filter: blur(6px);
   position: relative; z-index: var(--z-base);
 }
 #view-show.active { display: block; }
-#view-show.visible { opacity: 1; }
+#view-show.visible { opacity: 1; filter: blur(0px); }
 
 #view-artist {
-  display: none; opacity: 0;
+  display: none; opacity: 0; filter: blur(6px);
   position: relative; z-index: var(--z-base);
-  transition: opacity var(--dur-large) var(--ease-hover);
 }
 #view-artist.active { display: block; }
-#view-artist.visible { opacity: 1; }
+#view-artist.visible { opacity: 1; filter: blur(0px); }
 
 /* ── Schedule view ── */
 
@@ -2571,12 +2573,11 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 /* ── Support / Pricing view ── */
 #view-support {
-  display: none; opacity: 0;
+  display: none; opacity: 0; filter: blur(6px);
   position: relative; z-index: var(--z-base);
-  transition: opacity var(--dur-large) var(--ease-hover);
 }
 #view-support.active { display: block; }
-#view-support.visible { opacity: 1; }
+#view-support.visible { opacity: 1; filter: blur(0px); }
 
 .support-wrap { padding-top: 0; padding-bottom: 0; row-gap: var(--space-8); align-items: start; }
 
@@ -2712,12 +2713,11 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 /* ── About view ── */
 #view-about {
-  display: none; opacity: 0;
+  display: none; opacity: 0; filter: blur(6px);
   position: relative; z-index: var(--z-base);
-  transition: opacity var(--dur-large) var(--ease-hover);
 }
 #view-about.active { display: block; }
-#view-about.visible { opacity: 1; }
+#view-about.visible { opacity: 1; filter: blur(0px); }
 
 .about-wrap { padding-top: 0; padding-bottom: 0; row-gap: var(--space-8); align-items: start; }
 
@@ -2779,21 +2779,19 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 /* ── Proposal view ── */
 #view-proposal {
-  display: none; opacity: 0;
+  display: none; opacity: 0; filter: blur(6px);
   position: relative; z-index: var(--z-base);
-  transition: opacity var(--dur-large) var(--ease-hover);
 }
 #view-proposal.active  { display: block; }
-#view-proposal.visible { opacity: 1; }
+#view-proposal.visible { opacity: 1; filter: blur(0px); }
 
 /* ── Latest Shows view ── */
 #view-latest {
-  display: none; opacity: 0;
+  display: none; opacity: 0; filter: blur(6px);
   position: relative; z-index: var(--z-base);
-  transition: opacity var(--dur-large) var(--ease-hover);
 }
 #view-latest.active  { display: block; }
-#view-latest.visible { opacity: 1; }
+#view-latest.visible { opacity: 1; filter: blur(0px); }
 .latest-wrap { padding-top: 0; padding-bottom: var(--space-9); row-gap: var(--space-6); align-items: start; }
 .latest-hero p { font-size: var(--text-base); color: var(--text-secondary); margin: 0; }
 .latest-sentinel { height: 80px; pointer-events: none; }
@@ -3047,7 +3045,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-title {
   font-size: clamp(24px, 2.4vw, 40px);
-  font-weight: 400; letter-spacing: -0.03em; line-height: 1.06;
+  font-weight: 400; letter-spacing: -0.03em; line-height: 1.2;
   color: var(--text-primary); margin: 0;
 }
 .show-host { display: flex; align-items: center; gap: var(--space-2); margin: 0; cursor: pointer; width: fit-content; }
@@ -3690,8 +3688,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #ts-search-icon { width: 15px; height: 15px; stroke: var(--text-tertiary); fill: none; display: block; flex-shrink: 0; will-change: auto; transform: translateZ(0); }
 
-/* Text area: cycling label stays visible until user types — fix 1 */
-#ts-text { flex: 1; min-width: 0; position: relative; height: 100%; display: flex; align-items: center; overflow: hidden; }
+/* Text area: flex:1 + right padding clears the absolutely-positioned badge */
+#ts-text { flex: 1; min-width: 0; position: relative; height: 100%; display: flex; align-items: center; overflow: hidden; padding-right: 52px; }
 #topbar-search-label {
   font-family: var(--font); font-size: var(--text-base); color: var(--text-tertiary);
   white-space: nowrap;
@@ -3718,8 +3716,13 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #topbar-search.search-open #topbar-search-input { opacity: 1; pointer-events: all; }
 
-/* Badge area: exactly 12px top, bottom, right */
-#ts-badges { flex-shrink: 0; display: flex; align-items: center; gap: 4px; }
+/* Badge area: always pinned 12px from right edge, vertically centred */
+#ts-badges {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center; gap: 4px;
+  pointer-events: none; /* restored per-child below */
+}
+#ts-badges > * { pointer-events: all; }
 #topbar-search-kbd {
   height: 16px;
   background: rgba(255,255,255,0.08); border-radius: 6px;
