@@ -3597,6 +3597,13 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #topbar-search-btn:hover { color: var(--text-secondary); }
 #topbar-search-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; }
+#topbar-search-label { color: var(--text-tertiary); }
+#topbar-search-cycle {
+  font-size: var(--text-base); color: var(--text-disabled);
+  transition: opacity 0.3s var(--ease-hover), transform 0.3s var(--ease-hover);
+}
+#topbar-search-cycle.cycle-out { opacity: 0; transform: translateY(-4px); }
+#topbar-search-cycle.cycle-in  { opacity: 1; transform: translateY(0); }
 #topbar-right { display: flex; align-items: center; gap: var(--space-3); justify-self: end; }
 
 /* ── Show page: top spacing = horizontal spacing (2 cols + gaps) ── */
@@ -3702,7 +3709,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   <div id="topbar-search">
     <button id="topbar-search-btn" onclick="openExplore()">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Search shows, games, residents…
+      <span id="topbar-search-label">Search</span>
+      <span id="topbar-search-cycle" style="margin-left:auto;padding-left:var(--space-3);"></span>
     </button>
   </div>
   <div id="topbar-right">
@@ -8364,6 +8372,26 @@ buildNavMenus();
 
 /* ── Init Lucide icons ── */
 lucide.createIcons();
+
+/* ── Topbar search cycling words ── */
+(function _initSearchCycle() {
+  const el = document.getElementById('topbar-search-cycle');
+  if (!el) return;
+  const words = ['shows', 'games', 'residents', 'genres'];
+  let i = 0;
+  el.textContent = words[0];
+  el.classList.add('cycle-in');
+  setInterval(() => {
+    el.classList.remove('cycle-in');
+    el.classList.add('cycle-out');
+    setTimeout(() => {
+      i = (i + 1) % words.length;
+      el.textContent = words[i];
+      el.classList.remove('cycle-out');
+      el.classList.add('cycle-in');
+    }, 300);
+  }, 2200);
+})();
 
 /* ── Nav icon draw animation — add pathLength="1" to stroke elements ──
    pathLength normalises each path to 1 unit so stroke-dasharray/dashoffset
