@@ -3672,8 +3672,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #topbar-search.search-open #topbar-search-input { opacity: 1; pointer-events: all; }
 
-/* Badge area: absolute in #ts-head → 12px top, right, bottom */
-#ts-badges { position: absolute; top: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; }
+/* Badge area: centered vertically, 12px from right */
+#ts-badges { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); display: flex; align-items: center; }
 #topbar-search-kbd {
   position: static; transform: none;
   background: rgba(255,255,255,0.08); border-radius: var(--radius-control);
@@ -3698,7 +3698,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-search.search-open #ts-body { max-height: 440px; transition: max-height 240ms var(--ease-spring); }
 #topbar-dropdown-sep { height: 1px; background: #191919; margin: 12px 24px 0; opacity: 0; filter: blur(8px); transition: opacity 120ms var(--ease-hover), filter 120ms var(--ease-hover); }
 #topbar-search.search-open #topbar-dropdown-sep { opacity: 1; filter: blur(0px); transition: opacity 200ms var(--ease-hover) 80ms, filter 200ms var(--ease-hover) 80ms; }
-#topbar-dropdown-shows { overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; opacity: 0; filter: blur(8px); transition: opacity 120ms var(--ease-hover), filter 120ms var(--ease-hover); }
+#topbar-dropdown-shows { overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; opacity: 0; filter: blur(8px); transition: opacity 120ms var(--ease-hover), filter 120ms var(--ease-hover); margin-right: 8px; }
+#topbar-dropdown-shows .explore-show-row { gap: 24px; }
 #topbar-dropdown-shows::-webkit-scrollbar { width: 4px; }
 #topbar-dropdown-shows::-webkit-scrollbar-track { background: transparent; }
 #topbar-dropdown-shows::-webkit-scrollbar-thumb { background: #333333; border-radius: 2px; }
@@ -3728,7 +3729,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shimmer-new 2.4s linear infinite;
+  animation: shimmer-new 4s linear infinite;
 }
 
 /* ── Show page: top spacing = horizontal spacing (2 cols + gaps) ── */
