@@ -3609,11 +3609,15 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-search {
   position: relative;
   width: calc(2 * var(--grid-col) + var(--space-5));
-  transition: width 400ms var(--ease-standard);
+  /* Expand easing — expo-out: démarre vite, settle doux */
+  transition: width 360ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+#topbar-search:hover,
 #topbar-search.search-open,
 #topbar-search:focus-within {
   width: calc(4 * var(--grid-col) + 3 * var(--space-5));
+  /* Collapse easing — décélération pure: sortie gracieuse */
+  transition: width 480ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 /* Invisible click trigger — sits on top, passes through when open */
