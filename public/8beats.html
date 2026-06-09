@@ -3609,15 +3609,13 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-search {
   position: relative;
   width: calc(2 * var(--grid-col) + var(--space-5));
-  /* Expand easing — expo-out: démarre vite, settle doux */
   transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 #topbar-search:hover,
 #topbar-search.search-open,
 #topbar-search:focus-within {
   width: calc(4 * var(--grid-col) + 3 * var(--space-5));
-  /* Collapse easing — décélération pure: sortie gracieuse */
-  transition: width 480ms cubic-bezier(0, 0, 0.2, 1);
+  transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Invisible click trigger — sits on top, passes through when open */
@@ -3702,7 +3700,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-dropdown-shows { overflow-y: auto; max-height: 400px; overscroll-behavior: contain; }
 #topbar-dropdown-shows::-webkit-scrollbar { display: none; }
 
-#topbar-right { display: flex; align-items: center; gap: var(--space-3); justify-self: end; padding-left: 12px; }
+#topbar-right { display: flex; align-items: center; gap: var(--space-3); grid-column: 3; justify-self: end; padding-left: 12px; }
 
 /* ── Show page: top spacing = horizontal spacing (2 cols + gaps) ── */
 .show-hero { margin-top: calc(-1 * var(--space-9)); } /* cancel body padding-top */
