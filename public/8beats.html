@@ -3661,6 +3661,12 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
 #topbar-search-esc:hover { background: #242424; color: var(--text-primary); }
+#topbar-search-kbd {
+  margin-left: auto; flex-shrink: 0;
+  background: #171717; border-radius: var(--radius-control);
+  color: #A1A1A1; font-size: var(--text-xs); font-family: var(--font);
+  padding: 3px 7px; pointer-events: none;
+}
 #topbar-dropdown-sep { height: 1px; background: var(--border-subtle); flex-shrink: 0; }
 #topbar-dropdown-shows {
   overflow-y: auto; max-height: 400px; overscroll-behavior: contain;
@@ -3771,6 +3777,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
     <button id="topbar-search-btn" onclick="openTopbarSearch()">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span id="topbar-search-label">Search <span id="topbar-search-cycle"></span></span>
+      <span id="topbar-search-kbd">⌘K</span>
     </button>
     <div id="topbar-dropdown">
       <div id="topbar-dropdown-header">
@@ -8527,8 +8534,11 @@ function _renderTopbarShows(q) {
   initScrollFade(container, 48);
 }
 
-/* Escape closes topbar dropdown */
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && _topbarSearchOpen) closeTopbarSearch(); });
+/* Escape closes / ⌘K opens topbar dropdown */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && _topbarSearchOpen) { closeTopbarSearch(); return; }
+  if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); _topbarSearchOpen ? closeTopbarSearch() : openTopbarSearch(); }
+});
 
 /* ── Topbar search cycling words ── */
 (function _initSearchCycle() {
