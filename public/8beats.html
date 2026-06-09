@@ -2238,8 +2238,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   transition: background var(--dur-micro) var(--ease-hover);
 }
 .explore-show-row:hover { background: rgba(var(--text-primary-rgb), 0.08); }
-.explore-show-row:hover .explore-show-title { color: var(--text-secondary); }
-.explore-show-title { transition: color var(--dur-micro) var(--ease-hover); }
+.explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
 .explore-show-title { font-size:var(--text-show); font-weight:400; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .explore-section-border {
@@ -2408,7 +2407,6 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   transition: background var(--dur-micro) var(--ease-hover);
 }
 .sp-show-row:hover { background: rgba(var(--text-primary-rgb), 0.08); }
-.sp-show-row:hover .sp-show-name { color: var(--text-secondary); }
 .sp-show-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-micro) var(--ease-hover); }
 .sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
