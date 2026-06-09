@@ -77,7 +77,7 @@
      Même valeur sur sidebar, player, modals, cards, tooltips, popups. */
   --glass-bg:               rgba(0, 0, 0, 0.72);
   --glass-blur:             48px;
-  --glass-border:           #171717;
+  --glass-border:           #191919;
   --surface-glass:          var(--glass-bg);
 
   /* ── Semantic — Text (3 rôles) ── */
@@ -88,10 +88,10 @@
   --text-disabled:      #505050;
 
   /* ── Semantic — Borders & strokes ── */
-  --border-subtle:      #171717;
-  --border-default:     #171717;
+  --border-subtle:      #191919;
+  --border-default:     #191919;
   --border-hover:       #484848;
-  --border-btn:         #171717;
+  --border-btn:         #191919;
   --surface-btn-hover:  rgba(var(--text-primary-rgb), 0.08);
 
   /* ── Semantic — Interactive surfaces ── */
@@ -2581,8 +2581,8 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .support-wrap { padding-top: 0; padding-bottom: 0; row-gap: var(--space-8); align-items: start; }
 
 /* ── Canonical page hero — all secondary pages must use this
-   padding-top: 136px = body-padding(24) + topbar(40) + gap(96) - body-padding(24)
-   → hero h1 is exactly 96px below the bottom of the search bar ── */
+   padding-top: 184px = topbar-bottom(64) + gap-spec(144) - body-padding(24)
+   → hero h1 is exactly 144px below the bottom of the search bar ── */
 .page-hero,
 .support-hero,
 .about-hero,
@@ -2590,7 +2590,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .proposal-hero {
   display: flex; flex-direction: column; gap: var(--space-3);
   align-items: center; text-align: center;
-  padding: 136px 0 var(--space-8);
+  padding: 184px 0 var(--space-8);
 }
 .page-hero h1,
 .support-hero h1,
@@ -2951,23 +2951,9 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   display: flex; flex-direction: column;
   margin-top: var(--space-5); gap: 0;
 }
-.show-tl-left {
-  flex-shrink: 0; padding-bottom: var(--space-3);
-}
-.show-tl-label {
-  font-size: var(--text-sm); color: var(--text-tertiary); font-weight: 400; white-space: nowrap;
-  text-transform: uppercase; letter-spacing: 1px;
-}
-/* Horizontal separator between label and track list */
-.show-tl-vdivider {
-  width: 100%; height: 1px; flex-shrink: 0;
-  background: var(--border-subtle);
-}
-.show-tl-body {
-  flex: 1; min-width: 0;
-}
-
-/* Header row hidden — replaced by label in show-tl-left */
+.show-tl-left { display: none; }
+.show-tl-vdivider { display: none; }
+.show-tl-body { flex: 1; min-width: 0; }
 .show-tl-header { display: none; }
 .show-hero-divider { display: none; }
 
@@ -2978,15 +2964,15 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   min-width: 24px; text-align: left;
 }
 
-/* Tracklist column header */
+/* Tracklist column header — single line: # | TRACKLIST | clock */
 .tracklist-header {
-  display: flex; align-items: center; gap: var(--space-4);
-  padding-bottom: var(--space-3);
+  display: flex; align-items: center; gap: var(--space-3);
+  height: 32px;
   border-bottom: 1px solid var(--border-subtle);
   margin-bottom: 0;
 }
 .tracklist-header-num  { font-size: var(--text-xs); color: var(--text-disabled); min-width: 24px; flex-shrink: 0; letter-spacing: .04em; }
-.tracklist-header-name { font-size: var(--text-xs); color: var(--text-disabled); flex: 1; min-width: 0; letter-spacing: .04em; }
+.tracklist-header-name { font-size: var(--text-xs); color: var(--text-disabled); flex: 1; min-width: 0; letter-spacing: 1px; text-transform: uppercase; font-weight: 400; }
 .tracklist-header-ts   { width: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-disabled); }
 .tracklist-header-ts svg { width: 13px; height: 13px; stroke: currentColor; fill: none; display: block; }
 
@@ -3686,7 +3672,9 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #ts-panel {
   position: absolute; top: 0; left: 0; right: 0; z-index: 1;
   display: flex; flex-direction: column;
-  background: #090909;
+  background: rgba(9,9,9,0.72);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
   border-radius: var(--radius-btn);
   border: 1px solid #191919;
   overflow: hidden;
@@ -5831,7 +5819,7 @@ function switchToTracklist(showTitle) {
     </div>
     <div class="tracklist-header">
       <span class="tracklist-header-num">#</span>
-      <span class="tracklist-header-name"></span>
+      <span class="tracklist-header-name">Tracklist</span>
       <span class="tracklist-header-ts"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></span>
     </div>
     ${tracks.map((t, i) => `
@@ -6942,7 +6930,7 @@ function openShow(key) {
   document.getElementById('show-tracklist-inline').innerHTML = `
     <div class="tracklist-header">
       <span class="tracklist-header-num">#</span>
-      <span class="tracklist-header-name"></span>
+      <span class="tracklist-header-name">Tracklist</span>
       <span class="tracklist-header-ts"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></span>
     </div>
   ` + tl.map((t, i) => `
