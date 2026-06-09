@@ -961,8 +961,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .section-header-text h3 { font-size: var(--text-md); font-weight: 400; color: var(--text-secondary); }
 
 /* section title with inline chevron */
-.section-link { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-primary); text-decoration: none; border-radius: var(--radius-control); padding: 4px 10px 4px 8px; margin-left: -8px; transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
-.section-link:hover { background: #171717; color: var(--text-primary); }
+.section-link { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-primary); text-decoration: none; transition: opacity var(--dur-short) var(--ease-hover); }
+.section-link:hover { opacity: 0.64; }
 .section-link:hover svg { transform: translateX(2px); }
 .section-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; transition: transform var(--dur-short) var(--ease-spring); }
 
