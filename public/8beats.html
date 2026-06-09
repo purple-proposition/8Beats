@@ -3620,6 +3620,54 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-search-cycle.cycle-in  { opacity: 1; transform: translateY(0); }
 #topbar-right { display: flex; align-items: center; gap: var(--space-3); justify-self: end; }
 
+/* ── Topbar inline search dropdown ── */
+#topbar-search { position: relative; }
+#topbar-search.search-open { width: calc(4 * var(--grid-col) + 3 * var(--space-5)); }
+#topbar-dropdown {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: rgba(0, 0, 0, 0.56);
+  backdrop-filter: blur(80px) saturate(180%);
+  -webkit-backdrop-filter: blur(80px) saturate(180%);
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 160ms var(--ease-hover), transform 160ms var(--ease-spring);
+  z-index: 2;
+}
+#topbar-dropdown.td-open { opacity: 1; transform: translateY(0); }
+#topbar-dropdown-header {
+  height: 40px; flex-shrink: 0;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: 0 var(--space-4);
+}
+#topbar-dropdown-header > svg {
+  width: 15px; height: 15px; stroke: var(--text-tertiary);
+  fill: none; display: block; flex-shrink: 0;
+}
+#topbar-search-input {
+  flex: 1; min-width: 0;
+  background: none; border: none; outline: none;
+  font-family: var(--font); font-size: var(--text-base);
+  color: var(--text-primary); caret-color: var(--text-primary);
+}
+#topbar-search-input::placeholder { color: var(--text-tertiary); }
+#topbar-search-esc {
+  background: #171717; border: none; border-radius: var(--radius-control);
+  color: #A1A1A1; font-size: var(--text-sm); font-family: var(--font);
+  padding: 3px 8px; cursor: pointer; flex-shrink: 0;
+  transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+#topbar-search-esc:hover { background: #242424; color: var(--text-primary); }
+#topbar-dropdown-sep { height: 1px; background: var(--border-subtle); flex-shrink: 0; }
+#topbar-dropdown-shows {
+  overflow-y: auto; max-height: 400px; overscroll-behavior: contain;
+}
+#topbar-dropdown-shows::-webkit-scrollbar { display: none; }
+
 /* ── Show page: top spacing = horizontal spacing (2 cols + gaps) ── */
 .show-hero { margin-top: calc(-1 * var(--space-9)); } /* cancel body padding-top */
 .show-hero-content { padding-top: calc(var(--space) + var(--sidebar-full)); }
@@ -3721,10 +3769,19 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 <div id="topbar">
   <a href="#" id="topbar-wordmark" onclick="event.preventDefault();closeShow();">8Beats</a>
   <div id="topbar-search">
-    <button id="topbar-search-btn" onclick="openExplore()">
+    <button id="topbar-search-btn" onclick="openTopbarSearch()">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span id="topbar-search-label">Search <span id="topbar-search-cycle"></span></span>
     </button>
+    <div id="topbar-dropdown">
+      <div id="topbar-dropdown-header">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="topbar-search-input" placeholder="Search shows, games, residents…" oninput="handleTopbarSearch(this.value)" autocomplete="off" spellcheck="false">
+        <button id="topbar-search-esc" onclick="closeTopbarSearch()">Esc</button>
+      </div>
+      <div id="topbar-dropdown-sep"></div>
+      <div id="topbar-dropdown-shows"></div>
+    </div>
   </div>
   <div id="topbar-right">
     <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openAbout()">About</a>
@@ -8391,6 +8448,88 @@ buildNavMenus();
 
 /* ── Init Lucide icons ── */
 lucide.createIcons();
+
+/* ── Topbar inline search dropdown ── */
+let _topbarSearchOpen = false;
+
+function openTopbarSearch() {
+  if (_topbarSearchOpen) return;
+  _topbarSearchOpen = true;
+  const search   = document.getElementById('topbar-search');
+  const dropdown = document.getElementById('topbar-dropdown');
+  search.classList.add('search-open');
+  _renderTopbarShows('');
+  dropdown.style.display = 'flex';
+  requestAnimationFrame(() => requestAnimationFrame(() => dropdown.classList.add('td-open')));
+  setTimeout(() => { const inp = document.getElementById('topbar-search-input'); if (inp) inp.focus(); }, 80);
+  setTimeout(() => document.addEventListener('click', _topbarSearchOutside), 120);
+}
+
+function closeTopbarSearch() {
+  if (!_topbarSearchOpen) return;
+  _topbarSearchOpen = false;
+  const search   = document.getElementById('topbar-search');
+  const dropdown = document.getElementById('topbar-dropdown');
+  search.classList.remove('search-open');
+  dropdown.classList.remove('td-open');
+  document.removeEventListener('click', _topbarSearchOutside);
+  const inp = document.getElementById('topbar-search-input');
+  if (inp) inp.value = '';
+  setTimeout(() => { dropdown.style.display = 'none'; }, 180);
+}
+
+function _topbarSearchOutside(e) {
+  if (!document.getElementById('topbar-search').contains(e.target)) closeTopbarSearch();
+}
+
+function handleTopbarSearch(q) { _renderTopbarShows(q); }
+
+function _renderTopbarShows(q) {
+  const container = document.getElementById('topbar-dropdown-shows');
+  q = (q || '').toLowerCase();
+  let list = shows.slice();
+  if (q) list = list.filter(s =>
+    s.title.toLowerCase().includes(q) ||
+    s.host.toLowerCase().includes(q) ||
+    s.genres.some(g => g.toLowerCase().includes(q)) ||
+    (s.games && s.games.some(ga => ga.toLowerCase().includes(q)))
+  );
+  if (!list.length) {
+    container.innerHTML = '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No shows found.</p>';
+    initScrollFade(container, 48);
+    return;
+  }
+  const rows = list.map(s => {
+    let contextHint = '';
+    if (q) {
+      const tl = TRACKLISTS[s.title] || [];
+      const matched = tl.filter(t => t.game && t.game.toLowerCase().includes(q));
+      if (matched.length) {
+        const items = matched.slice(0, 3).map(t =>
+          `<span style="display:inline-flex;align-items:center;gap:4px;background:#171717;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+            ${t.name}
+          </span>`).join('');
+        contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">${items}</div>`;
+      }
+    }
+    return `<div class="explore-show-row" role="button" tabindex="0" onclick="closeTopbarSearch();openShow('${s.title.replace(/'/g, "\\'")}')">
+      <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
+        <span class="explore-show-title">${s.title}</span>
+        <span style="font-size:var(--text-base);color:var(--text-secondary);">
+          <span onclick="event.stopPropagation();closeTopbarSearch();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color='';">${s.host}</span>
+          · ${formatDate(s.date)}
+        </span>
+        ${contextHint}
+      </div>
+    </div>`;
+  }).join('');
+  container.innerHTML = `<div style="display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-5) 0;">${rows}</div>`;
+  initScrollFade(container, 48);
+}
+
+/* Escape closes topbar dropdown */
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && _topbarSearchOpen) closeTopbarSearch(); });
 
 /* ── Topbar search cycling words ── */
 (function _initSearchCycle() {
