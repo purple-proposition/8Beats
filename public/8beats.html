@@ -1484,13 +1484,11 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 }
 /* vol-popup-glass kept as empty element for backwards compat — glass applied directly */
 .vol-popup-glass { display: none; }
-/* Open state: same glass as other windows */
+/* Open state: opaque dark */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-color: var(--glass-border);
+  background: #242424;
+  border-color: transparent;
   /* Open: ease-out (decelerate — organic enter) */
   transition: height var(--dur-short) var(--ease-out),
               border-color var(--dur-short) var(--ease-out),
