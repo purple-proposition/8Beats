@@ -3593,9 +3593,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   width: calc(2 * var(--grid-col) + var(--space-5));
   transition: width var(--dur-large) var(--ease-spring);
 }
-#topbar-search:focus-within,
-#topbar-search:hover {
-  /* 4 grid cols on hover/focus */
+#topbar-search:focus-within {
+  /* 4 grid cols when dropdown input is focused */
   width: calc(4 * var(--grid-col) + 3 * var(--space-5));
 }
 #topbar-search-btn {
