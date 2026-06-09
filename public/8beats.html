@@ -3674,7 +3674,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   transition: opacity 200ms var(--ease-hover);
 }
 #topbar-search.search-open #topbar-search-input { opacity: 1; pointer-events: all; }
-#topbar-search-input::placeholder { color: var(--text-tertiary); }
 
 /* Badge area: fix 4 — both absolutely positioned in fixed-width container */
 #ts-badges { flex-shrink: 0; position: relative; width: 48px; height: 24px; }
@@ -3815,7 +3814,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
         <svg id="ts-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <div id="ts-text">
           <span id="topbar-search-label">Search <span id="topbar-search-cycle"></span></span>
-          <input id="topbar-search-input" placeholder="Search shows, games, residents…" oninput="handleTopbarSearch(this.value)" autocomplete="off" spellcheck="false">
+          <input id="topbar-search-input" oninput="handleTopbarSearch(this.value)" autocomplete="off" spellcheck="false">
         </div>
         <div id="ts-badges">
           <span id="topbar-search-kbd">⌘K</span>
