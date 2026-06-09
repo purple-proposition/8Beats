@@ -1446,18 +1446,20 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 /* ── Tracklist icon color ── */
 .playlist-inner .icon-btn,
 .playlist-inner .icon-btn--stream,
-.show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; color: var(--icon-tertiary); }
-.ts-btn { color: var(--icon-tertiary); }
+.show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; color: #A1A1A1; background: #171717; border-color: transparent; }
+.playlist-inner .icon-btn:hover,
+.playlist-inner .icon-btn--stream:hover,
+.show-tracklist-inline .icon-btn--stream:hover { color: var(--text-primary); background: #242424; border-color: transparent; }
 /* ── Family 4: TimestampButton (.ts-btn) ── */
 .ts-btn {
   width: 64px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: transparent; border: 1px solid var(--border-btn); border-radius: var(--radius-control);
+  background: #171717; border: none; border-radius: var(--radius-control);
   cursor: pointer; font-size: var(--text-xs); letter-spacing: .04em;
-  color: var(--icon-secondary); font-family: var(--font);
-  transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
+  color: #A1A1A1; font-family: var(--font);
+  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
-.ts-btn:hover { border-color: var(--border-hover); color: var(--text-primary); background: var(--surface-btn-hover); }
+.ts-btn:hover { color: var(--text-primary); background: #242424; }
 .show-tracklist-inline .ts-btn { font-size: var(--text-sm); }
 
 .divider { width: 1px; height: 16px; background: var(--border-default); flex-shrink: 0; }
