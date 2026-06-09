@@ -3308,12 +3308,13 @@ body { padding-top: var(--space-9); }
 /* ── Nav items: row-style (explorer grammar) ── */
 .nav-item {
   position: relative;  /* for ::after inset separator */
-  width: 100%;
+  width: calc(100% - 2 * var(--space-2)); /* account for margin */
   display: flex; align-items: center; gap: var(--menu-label-gap);
-  padding: var(--menu-item-pad-y) var(--menu-padding-inline);
-  border-radius: 0;
+  /* Padding compensates for margin so icon/text stay visually aligned */
+  padding: var(--menu-item-pad-y) calc(var(--menu-padding-inline) - var(--space-2));
+  border-radius: var(--radius-control); /* inset rounded hover */
   border: none;
-  margin: 0;
+  margin: 1px var(--space-2); /* 1px 8px — creates visible inset from sidebar edges */
   color: var(--text-secondary);
   background: none; cursor: pointer;
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
@@ -3323,11 +3324,12 @@ body { padding-top: var(--space-9); }
               padding-inline-start 240ms cubic-bezier(0, 0, 0.58, 1),
               padding-inline-end   240ms cubic-bezier(0, 0, 0.58, 1);
 }
-/* Inset separator — centered in the 24px gap between items */
+/* Inset separator — compensate for item margin */
 .nav-item::after {
   content: '';
   position: absolute; bottom: calc(-0.5 * var(--space-5));
-  left: var(--menu-separator-inset); right: var(--menu-separator-inset);
+  left: calc(var(--menu-separator-inset) - var(--space-2));
+  right: calc(var(--menu-separator-inset) - var(--space-2));
   height: 1px; background: var(--menu-sep-color);
 }
 .sidebar-body > .nav-item:last-child::after { display: none; }
@@ -3340,6 +3342,37 @@ body { padding-top: var(--space-9); }
   background: var(--surface-btn-hover);
   color: var(--text-primary);
 }
+
+/* ── Nav icon animations — lucide-motion inspired ────────────────────────
+   Draw-on-hover via stroke-dashoffset (requires pathLength="1" on SVG paths,
+   set by JS after lucide.createIcons()). Signature per-icon transforms layered on top.
+   ──────────────────────────────────────────────────────────────────────── */
+@keyframes nav-icon-draw {
+  0%   { stroke-dashoffset: 1; }
+  100% { stroke-dashoffset: 0; }
+}
+/* Base: visible (dashoffset=0), ready to animate */
+.nav-item .nav-icon-box svg [pathLength] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+/* Hover: re-draw the stroke from scratch */
+.nav-item:hover .nav-icon-box svg [pathLength] {
+  animation: nav-icon-draw 380ms var(--ease-standard) both;
+}
+/* SVG transform base — signature animations */
+.nav-item .nav-icon-box svg {
+  transform-origin: center;
+  transition: transform var(--dur-short) var(--ease-spring);
+}
+/* Settings gear → rotate */
+#settings-btn:hover      .nav-icon-box svg { transform: rotate(60deg); }
+/* Heart → pulse scale */
+.nav-item[aria-label="Support us"]:hover .nav-icon-box svg { transform: scale(1.22); }
+/* Clock (Latest) → tick backward */
+#latest-btn:hover        .nav-icon-box svg { transform: rotate(-22deg); }
+/* Search → slight tilt */
+#search-btn:hover        .nav-icon-box svg { transform: scale(1.08) rotate(-8deg); }
 
 /* ── Labels ── */
 .nav-label {
@@ -3380,7 +3413,8 @@ body { padding-top: var(--space-9); }
 .nav-panel.sb-icons .sidebar-header-btns  { margin-left: 0; }
 /* Items: icon centered via padding (animatable), no justify-content snap */
 .nav-panel.sb-icons .nav-item {
-  padding-inline-start: calc((var(--sidebar-icon) - var(--sidebar-icon-size)) / 2);
+  /* Subtract margin (space-2) so icon still centers visually */
+  padding-inline-start: calc((var(--sidebar-icon) - var(--sidebar-icon-size)) / 2 - var(--space-2));
   padding-inline-end: 0;
   gap: 0;
   /* Collapse: ease-in — miroir expand */
@@ -8239,6 +8273,19 @@ buildNavMenus();
 
 /* ── Init Lucide icons ── */
 lucide.createIcons();
+
+/* ── Nav icon draw animation — add pathLength="1" to stroke elements ──
+   pathLength normalises each path to 1 unit so stroke-dasharray/dashoffset
+   can animate a full draw with a single CSS value (no getComputedStyle needed).
+   Only applied to stroke-based elements (fill:none or no fill). ── */
+(function _applyNavIconPathLength() {
+  document.querySelectorAll('.sidebar-body .nav-item .nav-icon-box svg').forEach(svg => {
+    svg.querySelectorAll('circle, path, line, polyline, rect, ellipse').forEach(el => {
+      const f = el.getAttribute('fill');
+      if (!f || f === 'none') el.setAttribute('pathLength', '1');
+    });
+  });
+})();
 
 /* ============================================================
    FWM v2 — Floating Window Manager
