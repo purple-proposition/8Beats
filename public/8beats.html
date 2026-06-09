@@ -3614,7 +3614,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-search-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; }
 #topbar-search-label { color: var(--text-tertiary); }
 #topbar-search-cycle {
-  font-size: var(--text-base); color: var(--text-disabled);
+  font-size: var(--text-base); color: var(--text-tertiary);
   transition: opacity 0.3s var(--ease-hover), transform 0.3s var(--ease-hover);
 }
 #topbar-search-cycle.cycle-out { opacity: 0; transform: translateY(-4px); }
@@ -3724,8 +3724,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   <div id="topbar-search">
     <button id="topbar-search-btn" onclick="openExplore()">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span id="topbar-search-label">Search</span>
-      <span id="topbar-search-cycle" style="padding-left:5px;"></span>
+      <span id="topbar-search-label">Search </span>
+      <span id="topbar-search-cycle"></span>
     </button>
   </div>
   <div id="topbar-right">
