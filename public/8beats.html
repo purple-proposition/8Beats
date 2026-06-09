@@ -3696,7 +3696,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 /* Body: fix 6 — 240ms fast both directions */
 #ts-body { max-height: 0; overflow: hidden; transition: max-height 240ms var(--ease-spring); }
 #topbar-search.search-open #ts-body { max-height: 440px; transition: max-height 240ms var(--ease-spring); }
-#topbar-dropdown-sep { height: 1px; background: #191919; margin: 11px 24px 0; opacity: 0; filter: blur(8px); transition: opacity 120ms var(--ease-hover), filter 120ms var(--ease-hover); }
+#topbar-dropdown-sep { height: 1px; background: #191919; margin: 12px 24px 0; opacity: 0; filter: blur(8px); transition: opacity 120ms var(--ease-hover), filter 120ms var(--ease-hover); }
 #topbar-search.search-open #topbar-dropdown-sep { opacity: 1; filter: blur(0px); transition: opacity 200ms var(--ease-hover) 80ms, filter 200ms var(--ease-hover) 80ms; }
 #topbar-dropdown-shows { overflow-y: auto; max-height: 400px; overscroll-behavior: contain; opacity: 0; filter: blur(8px); transition: opacity 120ms var(--ease-hover), filter 120ms var(--ease-hover); }
 #topbar-search.search-open #topbar-dropdown-shows { opacity: 1; filter: blur(0px); transition: opacity 200ms var(--ease-hover) 120ms, filter 200ms var(--ease-hover) 120ms; }
@@ -8559,7 +8559,12 @@ function _renderTopbarShows(q) {
         contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">${items}</div>`;
       }
     }
+    const cover = (SHOW_DATA[s.title] || {}).artImage || '';
+    const coverEl = cover
+      ? `<img src="${cover}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;display:block;" alt="">`
+      : `<div style="width:36px;height:36px;border-radius:6px;background:#191919;flex-shrink:0;"></div>`;
     return `<div class="explore-show-row" role="button" tabindex="0" onclick="closeTopbarSearch();openShow('${s.title.replace(/'/g, "\\'")}')">
+      ${coverEl}
       <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
         <span class="explore-show-title">${s.title}</span>
         <span style="font-size:var(--text-base);color:var(--text-secondary);">
