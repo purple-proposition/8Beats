@@ -3212,8 +3212,11 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   --draggable-gap:      24px;
 }
 
-/* Body: 96px top breathing room only — sidebar floats over grid like the player */
-body { padding-top: var(--space-9); }
+/* Body: topbar = 64px + breathing room */
+body { padding-top: calc(64px + var(--space-7)); }
+/* Sidebar hidden during topbar test */
+.nav-wrap { display: none !important; }
+.sidebar-reopen { display: none !important; }
 
 /* ── Nav-wrap: anchored top-left, height wraps content ── */
 .nav-wrap {
@@ -3555,6 +3558,39 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 .sidebar-reopen.visible { display: flex; animation: sectionReveal var(--dur-short) var(--ease-standard) both; }
 .sidebar-reopen svg { display: block; }
 
+/* ══════════════════════════════════════════════════
+   TOPBAR (test — sidebar kept hidden for easy revert)
+   ══════════════════════════════════════════════════ */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 64px;
+  z-index: var(--z-nav);
+  display: flex; align-items: center;
+  padding: 0 var(--space-6);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--glass-border);
+}
+#topbar-wordmark {
+  font-family: 'Alpha Lyrae', var(--font); font-size: 18px; letter-spacing: -.01em;
+  color: var(--text-primary); text-decoration: none; flex-shrink: 0;
+}
+#topbar-search {
+  flex: 1; max-width: 480px; margin: 0 auto;
+}
+#topbar-search-btn {
+  width: 100%; height: 40px;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: 0 var(--space-4);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-btn); cursor: pointer;
+  font-family: var(--font); font-size: var(--text-base); color: var(--text-tertiary);
+  transition: background var(--dur-short) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+#topbar-search-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); color: var(--text-secondary); }
+#topbar-search-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; }
+#topbar-right { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
+
 /* ── Show page: top spacing = horizontal spacing (2 cols + gaps) ── */
 .show-hero { margin-top: calc(-1 * var(--space-9)); } /* cancel body padding-top */
 .show-hero-content { padding-top: calc(var(--space) + var(--sidebar-full)); }
@@ -3652,6 +3688,21 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 
 <!-- NAV -->
 <div id="nav-backdrop"></div>
+<!-- ══ TOPBAR (test) — sidebar below kept for easy revert ══ -->
+<div id="topbar">
+  <a href="#" id="topbar-wordmark" onclick="event.preventDefault();">8Beats</a>
+  <div id="topbar-search">
+    <button id="topbar-search-btn" onclick="openExplore()">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search shows, games, residents…
+    </button>
+  </div>
+  <div id="topbar-right">
+    <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openAbout()">About</a>
+    <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openSupport()">Support us</a>
+  </div>
+</div>
+
 <div class="nav-wrap">
   <div class="nav-panel" id="nav-panel">
 
