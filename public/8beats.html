@@ -3472,7 +3472,8 @@ body { padding-top: 24px; }
 }
 .ham-item {
   display: flex; align-items: center; gap: 12px;
-  height: 40px; padding: 0 var(--space-4);
+  /* same vertical breathing as .btn text: (40px btn - 14px text) / 2 = 13px */
+  padding: 13px var(--space-4);
   font-size: var(--text-base); font-family: var(--font); font-weight: 400;
   color: var(--text-secondary);
   cursor: pointer; border: none; background: none;
@@ -3486,7 +3487,7 @@ body { padding-top: 24px; }
 .ham-sep { height: 1px; background: #191919; margin: 0 16px; }
 .ham-theme-row {
   display: flex; align-items: center; justify-content: space-between;
-  height: 44px; padding: 0 var(--space-4);
+  padding: 13px var(--space-4);
 }
 .ham-theme-label {
   font-size: var(--text-base); font-family: var(--font);
