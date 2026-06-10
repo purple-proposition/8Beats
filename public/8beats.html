@@ -3742,7 +3742,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-search {
   position: relative;
   width: calc(2 * var(--grid-col) + var(--space-5));
-  height: 40px;
+  height: 48px;
   transition: width 240ms var(--ease-spring);
 }
 #topbar-search:hover,
@@ -3754,7 +3754,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 
 /* Invisible click trigger — sits on top, passes through when open */
 #topbar-search-btn {
-  position: absolute; top: 0; left: 0; right: 0; height: 40px; z-index: 2;
+  position: absolute; top: 0; left: 0; right: 0; height: 48px; z-index: 2;
   background: none; border: none; cursor: pointer;
   border-radius: var(--radius-btn);
   transition: opacity 120ms var(--ease-hover);
@@ -3775,11 +3775,11 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #topbar-search.search-open #ts-panel { pointer-events: all; }
 
-/* Head: always 40px, icon + text + badge */
+/* Head: 48px = icon (16px) + 16px padding top/bottom. Sides: 24px (--space-5). */
 #ts-head {
-  height: 40px; flex-shrink: 0; position: relative;
+  height: 48px; flex-shrink: 0; position: relative;
   display: flex; align-items: center; gap: var(--space-3);
-  padding: 0 12px 0 var(--space-4);
+  padding: 0 var(--space-5);
 }
 #ts-search-icon { width: 15px; height: 15px; stroke: var(--text-tertiary); fill: none; display: block; flex-shrink: 0; will-change: auto; transform: translateZ(0); }
 
