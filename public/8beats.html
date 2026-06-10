@@ -834,7 +834,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: var(--space-4);
-  padding: 136px var(--space-5) var(--space-8);
+  padding: 184px var(--space-5) var(--space-8); /* 184 = topbar-bottom(64) + gap(144) - body-padding(24) */
   overflow: hidden;
   background: var(--surface-page);
 }
@@ -1295,6 +1295,24 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   gap: var(--space-5);
   opacity: 0;
   transition: opacity 120ms var(--ease-playlist-close);
+}
+
+/* Player separator — same technique as search bar bottom border.
+   Sits between playlist section and player bar.
+   Closed: invisible at full-width (aligns with player shell top border).
+   Open: flash at full-width → contracts to 16px inset separator. */
+#player-sep {
+  height: 1px; background: #191919;
+  margin: 0 0; opacity: 0;
+  /* EXIT */
+  transition: opacity 120ms var(--ease-hover) 0ms,
+              margin  200ms cubic-bezier(0.4, 0, 1, 1) 0ms;
+}
+.player-wrap.pl-open #player-sep {
+  margin: 0 16px; opacity: 1;
+  /* ENTER: flash at full-width, then contract */
+  transition: opacity 80ms var(--ease-hover) 0ms,
+              margin  300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms;
 }
 
 .player-wrap.pl-open .playlist-inner {
@@ -2294,9 +2312,9 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   margin: -12px 12px;
   cursor:pointer;
   border-radius: var(--radius-control);
-  transition: opacity var(--dur-micro) var(--ease-hover);
+  transition: background var(--dur-micro) var(--ease-hover);
 }
-.explore-show-row:hover { opacity: 0.64; }
+.explore-show-row:hover { background: rgba(255,255,255,0.04); }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
 .explore-show-title { font-size:var(--text-show); font-weight:400; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
@@ -4819,6 +4837,9 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
       </div><!-- /.playlist-inner -->
       </div><!-- /.playlist-clip -->
     </div><!-- /.playlist-section -->
+
+    <!-- Separator: top border of player bar → inset separator when playlist opens -->
+    <div id="player-sep"></div>
 
     <!-- Barre du player : toujours visible, ancrée en bas du shell -->
     <div class="player-inner">
