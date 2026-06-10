@@ -1049,9 +1049,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
 .panel.glass { background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); }
 .panel.closing {
-  opacity: 0; transform: translateY(8px) scale(0.97); pointer-events: none;
-  transition: opacity 180ms var(--ease-collapse),
-              transform 180ms var(--ease-collapse);
+  opacity: 0; filter: blur(8px); transform: translateY(8px) scale(0.97); pointer-events: none;
+  transition: opacity   140ms var(--ease-hover),
+              filter    140ms var(--ease-hover),
+              transform 140ms var(--ease-hover);
 }
 
 .panel-header { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: var(--z-base); cursor: grab; }
@@ -2300,11 +2301,17 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   overflow: hidden;
   pointer-events: none;
   z-index: var(--z-nav);
-  /* Entrance animation — same pattern as Explorer card */
-  opacity: 0; transform: translateY(8px);
-  transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard);
+  opacity: 0; filter: blur(8px); transform: translateY(10px) scale(0.97);
+  transition: opacity 140ms var(--ease-hover),
+              filter  140ms var(--ease-hover),
+              transform 140ms var(--ease-hover);
 }
-.tool-panel.open { opacity: 1; transform: translateY(0); pointer-events: all; }
+.tool-panel.open {
+  opacity: 1; filter: blur(0px); transform: translateY(0) scale(1); pointer-events: all;
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring);
+}
 
 /* ── Tool panel header ── */
 .tool-panel-hdr {
@@ -2460,36 +2467,43 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   font-family: var(--font); font-size: var(--text-base); line-height: 1.5;
   color: var(--text-tertiary);
   pointer-events: none;
-  opacity: 0;
-  transform: scale(0.82) translateY(4px);
+  opacity: 0; filter: blur(6px);
+  transform: scale(0.92) translateY(4px);
   transform-origin: bottom center;
-  transition: opacity 180ms cubic-bezier(0.34, 1.56, 0.64, 1),
-              transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 140ms var(--ease-hover),
+              filter  140ms var(--ease-hover),
+              transform 140ms var(--ease-hover);
 }
-#genre-tooltip.visible { opacity: 1; transform: scale(1) translateY(0); }
+#genre-tooltip.visible {
+  opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
+  transition: opacity   180ms var(--ease-spring),
+              filter    200ms var(--ease-spring),
+              transform 220ms var(--ease-spring);
+}
 /* ══════════════════════════════════════
    VIEW SYSTEM — home ↔ show
 ══════════════════════════════════════ */
-/* ── View transitions — all fade with matching blur ── */
+/* ── View transitions — fade + blur + subtle lift (no bounce on full pages) ── */
 #view-home, #view-show, #view-artist, #view-support,
 #view-about, #view-proposal, #view-latest {
-  transition: opacity var(--dur-large) var(--ease-hover),
-              filter  var(--dur-large) var(--ease-hover);
+  transition: opacity 280ms var(--ease-standard),
+              filter  280ms var(--ease-standard),
+              transform 280ms var(--ease-standard);
 }
 #view-home > .content { margin-top: 96px; }
 #view-show {
-  display: none; opacity: 0; filter: blur(6px);
+  display: none; opacity: 0; filter: blur(8px); transform: translateY(12px);
   position: relative; z-index: var(--z-base);
 }
 #view-show.active { display: block; }
-#view-show.visible { opacity: 1; filter: blur(0px); }
+#view-show.visible { opacity: 1; filter: blur(0px); transform: translateY(0); }
 
 #view-artist {
-  display: none; opacity: 0; filter: blur(6px);
+  display: none; opacity: 0; filter: blur(8px); transform: translateY(12px);
   position: relative; z-index: var(--z-base);
 }
 #view-artist.active { display: block; }
-#view-artist.visible { opacity: 1; filter: blur(0px); }
+#view-artist.visible { opacity: 1; filter: blur(0px); transform: translateY(0); }
 
 /* ── Schedule view ── */
 
@@ -2576,11 +2590,11 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 /* ── Support / Pricing view ── */
 #view-support {
-  display: none; opacity: 0; filter: blur(6px);
+  display: none; opacity: 0; filter: blur(8px); transform: translateY(12px);
   position: relative; z-index: var(--z-base);
 }
 #view-support.active { display: block; }
-#view-support.visible { opacity: 1; filter: blur(0px); }
+#view-support.visible { opacity: 1; filter: blur(0px); transform: translateY(0); }
 
 .support-wrap { padding-top: 0; padding-bottom: 0; row-gap: var(--space-8); align-items: start; }
 
@@ -2716,11 +2730,11 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 /* ── About view ── */
 #view-about {
-  display: none; opacity: 0; filter: blur(6px);
+  display: none; opacity: 0; filter: blur(8px); transform: translateY(12px);
   position: relative; z-index: var(--z-base);
 }
 #view-about.active { display: block; }
-#view-about.visible { opacity: 1; filter: blur(0px); }
+#view-about.visible { opacity: 1; filter: blur(0px); transform: translateY(0); }
 
 .about-wrap { padding-top: 0; padding-bottom: 0; row-gap: var(--space-8); align-items: start; }
 
@@ -2782,19 +2796,19 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 
 /* ── Proposal view ── */
 #view-proposal {
-  display: none; opacity: 0; filter: blur(6px);
+  display: none; opacity: 0; filter: blur(8px); transform: translateY(12px);
   position: relative; z-index: var(--z-base);
 }
 #view-proposal.active  { display: block; }
-#view-proposal.visible { opacity: 1; filter: blur(0px); }
+#view-proposal.visible { opacity: 1; filter: blur(0px); transform: translateY(0); }
 
 /* ── Latest Shows view ── */
 #view-latest {
-  display: none; opacity: 0; filter: blur(6px);
+  display: none; opacity: 0; filter: blur(8px); transform: translateY(12px);
   position: relative; z-index: var(--z-base);
 }
 #view-latest.active  { display: block; }
-#view-latest.visible { opacity: 1; filter: blur(0px); }
+#view-latest.visible { opacity: 1; filter: blur(0px); transform: translateY(0); }
 .latest-wrap { padding-top: 0; padding-bottom: var(--space-9); row-gap: var(--space-6); align-items: start; }
 .latest-hero p { font-size: var(--text-base); color: var(--text-secondary); margin: 0; }
 .latest-sentinel { height: 80px; pointer-events: none; }
@@ -3434,15 +3448,23 @@ body { padding-top: 24px; }
   z-index: var(--z-nav);
   pointer-events: none;
   opacity: 0;
-  transform: scale(0.96) translateY(-6px);
+  filter: blur(8px);
+  transform: scale(0.95) translateY(-8px);
   transform-origin: top right;
-  transition: opacity 120ms var(--ease-hover), transform 120ms var(--ease-hover);
+  /* exit */
+  transition: opacity 140ms var(--ease-hover),
+              filter  140ms var(--ease-hover),
+              transform 140ms var(--ease-hover);
 }
 #ham-menu.open {
   pointer-events: all;
   opacity: 1;
+  filter: blur(0px);
   transform: scale(1) translateY(0);
-  transition: opacity 200ms var(--ease-spring), transform 240ms var(--ease-spring);
+  /* enter — spring bounce */
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring);
 }
 .ham-item {
   display: flex; align-items: center; gap: 12px;
@@ -3744,11 +3766,11 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-search.search-open #topbar-search-kbd { opacity: 0; pointer-events: none; }
 #topbar-search.search-open #topbar-search-esc { opacity: 1; pointer-events: all; }
 
-/* Body: fix 6 — 240ms fast both directions */
+/* Body: separator flush with closed-state bottom border (no extra top spacing) */
 #ts-body { max-height: 0; overflow: hidden; transition: max-height 240ms var(--ease-spring); }
 #topbar-search.search-open #ts-body { max-height: 440px; transition: max-height 240ms var(--ease-spring); }
-#topbar-dropdown-sep { height: 1px; background: #191919; margin: 0 16px; opacity: 0; filter: blur(8px); transition: opacity 120ms var(--ease-hover), filter 120ms var(--ease-hover); }
-#topbar-search.search-open #topbar-dropdown-sep { opacity: 1; filter: blur(0px); transition: opacity 200ms var(--ease-hover) 80ms, filter 200ms var(--ease-hover) 80ms; }
+#topbar-dropdown-sep { height: 1px; background: #191919; margin: 0 16px; opacity: 0; filter: blur(8px); transition: opacity var(--dur-short) var(--ease-hover), filter var(--dur-short) var(--ease-hover); }
+#topbar-search.search-open #topbar-dropdown-sep { opacity: 1; filter: blur(0px); transition: opacity var(--dur-medium) var(--ease-standard) 60ms, filter var(--dur-medium) var(--ease-standard) 60ms; }
 #topbar-dropdown-shows { overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; opacity: 0; filter: blur(8px); transition: opacity 120ms var(--ease-hover), filter 120ms var(--ease-hover); margin-right: 8px; }
 #topbar-dropdown-shows .explore-show-row { gap: 16px; margin-left: 4px; margin-right: 0; padding-left: 12px; padding-right: 8px; }
 #topbar-dropdown-shows::-webkit-scrollbar { width: 4px; }
