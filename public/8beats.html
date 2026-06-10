@@ -3912,6 +3912,25 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-dropdown-shows::-webkit-scrollbar-thumb:hover { background: #555555; }
 #topbar-dropdown-shows .explore-show-title { font-size: var(--text-base); }
 
+/* Genre card inside search dropdown */
+.ts-genre-card {
+  padding: var(--space-4);
+  border-bottom: 1px solid #191919;
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.ts-genre-card-name {
+  font-size: var(--text-base); font-weight: 500;
+  color: var(--text-primary); letter-spacing: -0.1px;
+}
+.ts-genre-card-desc {
+  font-size: var(--text-base); color: var(--text-tertiary);
+  line-height: 1.55; letter-spacing: -0.1px;
+}
+.ts-no-results {
+  font-size: var(--text-base); color: var(--text-tertiary);
+  padding: var(--space-4);
+}
+
 /* Category tabs — same enter/exit phasing as the shows list */
 #ts-tabs {
   display: flex; gap: var(--space-2);
@@ -5445,7 +5464,7 @@ function applyFilters() {
   if (activeTime !== null) list = list.filter(s => TIME_RANGES[activeTime].fn(s.date));
 
   const content = document.getElementById('explore-content');
-  content.innerHTML = list.length ? renderShows(list, q) : '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No shows found.</p>';
+  content.innerHTML = list.length ? renderShows(list, q) : '<p class="ts-no-results">No results</p>';
   initScrollFade(content, 48);
 }
 
@@ -8895,6 +8914,16 @@ function _renderTopbarShows(q) {
     shows.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4).map(s => s.title)
   );
   q = (q || '').toLowerCase();
+
+  // Genre card: exact match against GENRES list (case-insensitive)
+  const matchedGenre = q ? GENRES.find(g => g.toLowerCase() === q) : null;
+  const genreCardHtml = matchedGenre && GENRE_DESCRIPTIONS[matchedGenre]
+    ? `<div class="ts-genre-card">
+        <span class="ts-genre-card-name">${matchedGenre}</span>
+        <span class="ts-genre-card-desc">${GENRE_DESCRIPTIONS[matchedGenre]}</span>
+       </div>`
+    : '';
+
   let list = shows.slice();
   if (q) list = list.filter(s =>
     s.title.toLowerCase().includes(q) ||
@@ -8903,7 +8932,7 @@ function _renderTopbarShows(q) {
     (s.games && s.games.some(ga => ga.toLowerCase().includes(q)))
   );
   if (!list.length) {
-    container.innerHTML = '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No shows found.</p>';
+    container.innerHTML = genreCardHtml + '<p class="ts-no-results">No results</p>';
     initScrollFade(container, 48);
     return;
   }
@@ -8941,7 +8970,7 @@ function _renderTopbarShows(q) {
       ${newBadge}
     </div>`;
   }).join('');
-  container.innerHTML = `<div style="display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-5) 0;">${rows}</div>`;
+  container.innerHTML = genreCardHtml + `<div style="display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-4) 0;">${rows}</div>`;
   initScrollFade(container, 48);
 }
 
