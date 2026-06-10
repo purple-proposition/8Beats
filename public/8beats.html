@@ -557,7 +557,7 @@ h1,
 
 /* ── Theme toggle ── */
 .theme-toggle {
-  width: 44px; height: 24px; border-radius: 99px;
+  width: 44px; height: 24px; border-radius: var(--radius-control);
   border: 1px solid var(--border-default); background: transparent;
   cursor: pointer; padding: 0; position: relative; flex-shrink: 0;
   margin-right: 0;
@@ -573,12 +573,12 @@ html.light .theme-toggle { background: transparent; border-color: var(--border-d
 }
 .theme-knob {
   position: absolute; top: 5px; left: 5px;
-  width: 14px; height: 14px; border-radius: 50%; background: var(--text-primary);
+  width: 14px; height: 14px; border-radius: 5px; background: #4A4A4A;
   display: flex; align-items: center; justify-content: center;
   transition: transform var(--dur-large) var(--ease-spring), background var(--dur-large) var(--ease-hover);
 }
-html.light .theme-knob { transform: translateX(20px); }
-.theme-toggle:hover .theme-knob { background: var(--text-secondary); }
+html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
+.theme-toggle:hover .theme-knob { background: #6A6A6A; }
 
 /* ── Icônes sociales ── */
 .nav-soc {
