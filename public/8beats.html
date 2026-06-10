@@ -3440,6 +3440,8 @@ body { padding-top: 24px; }
 }
 #ham-btn:hover { color: var(--text-primary); }
 #ham-btn svg { width: 24px; height: 24px; flex-shrink: 0; }
+/* ham-menu: animated shell — NO overflow:hidden so filter:blur() spreads freely.
+   overflow:hidden on the shell clips the blur diffusion and makes it invisible. */
 #ham-menu {
   position: absolute; top: calc(100% + 8px); right: 0;
   min-width: 192px;
@@ -3448,11 +3450,10 @@ body { padding-top: 24px; }
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   border: 1px solid #191919;
   border-radius: var(--radius-btn);
-  overflow: hidden;
   z-index: var(--z-nav);
   pointer-events: none;
   opacity: 0;
-  filter: blur(8px);
+  filter: blur(10px);
   transform: scale(0.95) translateY(-8px);
   transform-origin: top right;
   /* exit */
@@ -3469,6 +3470,11 @@ body { padding-top: 24px; }
   transition: opacity   200ms var(--ease-spring),
               filter    240ms var(--ease-spring),
               transform 260ms var(--ease-spring);
+}
+/* Inner wrapper handles content clipping for border-radius — separate from animation shell */
+#ham-menu-inner {
+  overflow: hidden;
+  border-radius: calc(var(--radius-btn) - 1px);
 }
 .ham-item {
   display: flex; align-items: center; gap: 12px;
@@ -3747,14 +3753,19 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #topbar-search.search-open #topbar-search-input { opacity: 1; pointer-events: all; }
 
-/* Badge area: always pinned 12px from right edge, vertically centred */
+/* Badge area: always pinned 12px from right edge, vertically centred.
+   display:grid stacks kbd and esc in the same cell so the hidden one
+   never contributes to layout width — no phantom space pushing kbd left. */
 #ts-badges {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  display: flex; align-items: center; gap: 4px;
+  display: grid;
   pointer-events: none;
 }
+/* Both children share the same grid cell — they overlay each other */
+#topbar-search-kbd,
+#topbar-search-esc { grid-area: 1 / 1; }
 #ts-badges > * { pointer-events: all; }
-/* ⌘K / Esc badge — 12px text, 4px v-padding, 8px h-padding, no forced height */
+/* ⌘K / Esc badge — 12px text, 4px v-padding, 8px h-padding */
 #topbar-search-kbd {
   background: rgba(255,255,255,0.08); border-radius: 6px;
   color: #A1A1A1; font-size: 12px; line-height: 1; font-family: var(--font);
@@ -3794,19 +3805,24 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   transition: grid-template-rows 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Separator: asymmetric transitions
-   ENTER — starts 80ms after panel opens, follows the expansion with a smooth standard curve
-   EXIT  — immediate, accelerated back to full-width (matches the panel close) */
+/* Separator: invisible when closed (panel border handles the bottom edge).
+   ENTER — appears at full-width (T+0 → matches panel border position),
+           then contracts to 16px inset (T+40ms, 300ms).
+           The brief full-width visible flash creates the "border becomes
+           separator" illusion without any double-line overlap.
+   EXIT  — fades out immediately, margin resets. */
 #topbar-dropdown-sep {
   height: 1px; background: #191919;
-  margin: 0 0; /* closed: full-width = merges visually with panel's bottom border */
+  margin: 0 0; opacity: 0;
   /* EXIT */
-  transition: margin 200ms cubic-bezier(0.4, 0, 1, 1) 0ms;
+  transition: opacity 120ms var(--ease-hover) 0ms,
+              margin  200ms cubic-bezier(0.4, 0, 1, 1) 0ms;
 }
 #topbar-search.search-open #topbar-dropdown-sep {
-  margin: 0 16px;
-  /* ENTER: delayed so space is visibly forming before the line contracts */
-  transition: margin 300ms cubic-bezier(0.4, 0, 0.2, 1) 80ms;
+  margin: 0 16px; opacity: 1;
+  /* ENTER: flash visible at full-width, then contract */
+  transition: opacity 80ms var(--ease-hover) 0ms,
+              margin  300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms;
 }
 
 /* Content reveal: three-property animation (opacity + blur + translateY) for sense of depth.
@@ -3995,6 +4011,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
         </svg>
       </button>
       <div id="ham-menu" role="menu">
+        <div id="ham-menu-inner">
         <button class="ham-item" role="menuitem" onclick="closeHamMenu();openSchedule()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Schedule
@@ -4014,6 +4031,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
             <span class="theme-knob" id="ham-theme-knob"></span>
           </button>
         </div>
+        </div><!-- /#ham-menu-inner -->
       </div>
     </div>
   </div>
