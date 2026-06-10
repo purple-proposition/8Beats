@@ -2456,14 +2456,14 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 }
 #filter-count { font-size: 10px; font-weight: 700; letter-spacing: .3px; line-height: 1; background: var(--text-secondary); color: var(--surface-page); border-radius: 99px; padding: 2px 5px; vertical-align: middle; }
 
-/* Genre tooltip */
+/* Genre tooltip — même dark glass que la search bar */
 #genre-tooltip {
   position: fixed; z-index: var(--z-top);
   max-width: 220px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
+  background: rgba(0,0,0,0.40);
+  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  border: 1px solid #191919;
   border-radius: var(--radius-sm);
   padding: var(--space-3) var(--space-4);
   font-family: var(--font); font-size: var(--text-base); line-height: 1.5;
@@ -3486,10 +3486,12 @@ body { padding-top: 24px; }
 .ham-item svg { width: 14px; height: 14px; flex-shrink: 0; }
 .ham-sep { height: 1px; background: #191919; margin: 0 16px; }
 .ham-theme-row {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; gap: 12px;
   padding: 13px var(--space-4);
 }
+.ham-theme-row svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-secondary); }
 .ham-theme-label {
+  flex: 1;
   font-size: var(--text-base); font-family: var(--font);
   color: var(--text-secondary); letter-spacing: -.1px;
 }
@@ -4003,9 +4005,9 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           Support us
         </button>
-        <div class="ham-sep"></div>
         <div class="ham-theme-row">
-          <span class="ham-theme-label" id="ham-theme-label">Dark mode</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span class="ham-theme-label" id="ham-theme-label">Theme</span>
           <button class="theme-toggle" id="ham-theme-toggle" aria-label="Toggle theme">
             <span class="theme-knob" id="ham-theme-knob"></span>
           </button>
@@ -4970,11 +4972,8 @@ const hamThemeToggle = document.getElementById('ham-theme-toggle');
 // Init icon in knob
 if (hamThemeKnob) setThemeIcon(hamThemeKnob, 'sun');
 
-// Sync label on theme change
-function _syncHamThemeLabel() {
-  const label = document.getElementById('ham-theme-label');
-  if (label) label.textContent = light ? 'Light mode' : 'Dark mode';
-}
+// Label is static "Theme" — no sync needed
+function _syncHamThemeLabel() {}
 
 // Patch toggleTheme to also sync ham
 const _origToggleTheme = toggleTheme;
