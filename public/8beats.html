@@ -73,10 +73,11 @@
   --surface-elevated-rgb:   29,29,29;  /* base RGB pour glass effects */
   --surface-overlay:        rgba(11,11,11,0.92);
   /* ── Glass system — surface unique pour tous les contenants ──
-     Une seule base : noir 72%, blur 48px, border blanc 10%.
-     Même valeur sur sidebar, player, modals, cards, tooltips, popups. */
-  --glass-bg:               rgba(0, 0, 0, 0.72);
-  --glass-blur:             48px;
+     Formule dark glass : rgba(0,0,0,0.40) + blur(24px) saturate(160%) brightness(0.56)
+     Même valeur sur sidebar, player, modals, cards, tooltips, popups, menus. */
+  --glass-bg:               rgba(0, 0, 0, 0.40);
+  --glass-blur:             24px;
+  --glass-backdrop:         blur(24px) saturate(160%) brightness(0.56);
   --glass-border:           #191919;
   --surface-glass:          var(--glass-bg);
 
@@ -335,9 +336,10 @@ html.light {
   --color-debug:            #707070;
 
   /* ── Glass overrides for light mode ── */
-  --glass-bg:               rgba(247, 247, 247,0.88);
-  --glass-border:           rgba(0, 0, 0,0.08);
-  --surface-glass:          rgba(247, 247, 247,0.88);
+  --glass-bg:               rgba(248, 248, 248, 0.40);
+  --glass-backdrop:         blur(24px) saturate(160%) brightness(1.20);
+  --glass-border:           rgba(0, 0, 0, 0.08);
+  --surface-glass:          rgba(248, 248, 248, 0.40);
 }
 
 /* ============================================================
@@ -422,8 +424,8 @@ h1,
 /* ── Glass surface ── */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
 }
@@ -454,8 +456,8 @@ h1,
   transform: translateX(100%);
   transition: transform var(--dur-large) var(--ease-standard);
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
 }
 .drawer.open { transform: translateX(0); }
 
@@ -488,8 +490,8 @@ h1,
 
 .nav-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   height: var(--nav-h);
@@ -634,17 +636,23 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   z-index: var(--z-top);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  opacity: 0;
-  transform: translateY(5px);
-  transition: opacity var(--dur-short) var(--ease-standard), transform var(--dur-short) var(--ease-standard);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  opacity: 0; filter: blur(8px);
+  transform: scale(0.95) translateY(-6px);
+  transform-origin: top center;
+  /* exit */
+  transition: opacity 140ms var(--ease-hover), filter 140ms var(--ease-hover), transform 140ms var(--ease-hover);
   pointer-events: none;
 }
 #nav-dropdown.open {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1; filter: blur(0px);
+  transform: scale(1) translateY(0);
   pointer-events: all;
+  /* enter — spring bounce */
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring);
 }
 .nav-dropdown-links { padding: 0; }
 .nav-dd-item {
@@ -708,17 +716,25 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   display: none; position: fixed; z-index: var(--z-mno);
   top: 50%; left: 50%;
   width: min(300px, calc(100vw - 32px));
-  transform: translate(-50%, calc(-50% + 12px));
+  transform: translate(-50%, calc(-50% + 8px)) scale(0.95);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   overflow: hidden;
-  opacity: 0;
-  transition: opacity var(--dur-short) var(--ease-standard), transform var(--dur-short) var(--ease-standard);
+  opacity: 0; filter: blur(8px);
+  /* exit */
+  transition: opacity 140ms var(--ease-hover), filter 140ms var(--ease-hover), transform 140ms var(--ease-hover);
 }
-#mobile-nav-overlay.open { opacity: 1; transform: translate(-50%, -50%); }
+#mobile-nav-overlay.open {
+  opacity: 1; filter: blur(0px);
+  transform: translate(-50%, -50%) scale(1);
+  /* enter — spring bounce */
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring);
+}
 .mno-body { display: flex; flex-direction: column; }
 .mno-links { display: flex; flex-direction: column; }
 .mno-sep { height: 1px; background: var(--border-default); }
@@ -1047,7 +1063,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Panels ── */
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
-.panel.glass { background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); }
+.panel.glass { background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); }
 .panel.closing {
   opacity: 0; filter: blur(8px); transform: translateY(8px) scale(0.97); pointer-events: none;
   transition: opacity   140ms var(--ease-hover),
@@ -1380,12 +1396,20 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .progress-tooltip {
   position: fixed; z-index: var(--z-top);
   background: var(--glass-bg); border: 1px solid var(--glass-border);
-  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-btn); padding: var(--space-2) var(--space-4);
   font-family: var(--font);
   pointer-events: none; white-space: nowrap;
-  opacity: 0; transform: translateY(4px);
-  transition: opacity var(--dur-tooltip) var(--ease-standard), transform var(--dur-tooltip) var(--ease-standard);
+  opacity: 0; filter: blur(6px); transform: translateY(6px);
+  /* exit */
+  transition: opacity 140ms var(--ease-hover), filter 140ms var(--ease-hover), transform 140ms var(--ease-hover);
+}
+.progress-tooltip.visible {
+  opacity: 1; filter: blur(0px); transform: translateY(0);
+  /* enter — spring */
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring);
 }
 
 .player-bar {
@@ -1497,20 +1521,27 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   flex-direction: column; /* override icon-btn row → column for track+face stack */
   overflow: hidden;
   will-change: height;
+  filter: blur(6px);
   /* Close: ease-in (accelerate — snappy exit). Open: see .vol-open below */
   transition: height var(--dur-short) var(--ease-in),
+              filter var(--dur-short) var(--ease-in),
               border-color var(--dur-short) var(--ease-out),
               transform var(--dur-micro) var(--ease-out);
 }
-/* vol-popup-glass kept as empty element for backwards compat — glass applied directly */
+/* vol-popup-glass kept as empty element for backwards compat */
 .vol-popup-glass { display: none; }
-/* Open state: same bg as button surfaces */
+/* Open state: dark glass */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: #242424;
-  border-color: transparent;
-  /* Open: ease-out (decelerate — organic enter) */
-  transition: height var(--dur-short) var(--ease-out),
+  background: rgba(0,0,0,0.40);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid #191919;
+  border-color: #191919;
+  filter: blur(0px);
+  /* Open: spring bounce */
+  transition: height 200ms var(--ease-spring),
+              filter 240ms var(--ease-spring),
               border-color var(--dur-short) var(--ease-out),
               transform var(--dur-micro) var(--ease-out);
 }
@@ -2227,8 +2258,8 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
 }
 
 /* Tabs */
@@ -2298,8 +2329,8 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   overflow: hidden;
   pointer-events: none;
   z-index: var(--z-nav);
@@ -2396,7 +2427,7 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
   text-transform: uppercase; letter-spacing: 1px;
   position: sticky; top: 0;
-  background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
   z-index: 1; border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -3106,14 +3137,21 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 #show-tracklist-popup {
   display: none; position: fixed;
   top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(0.96);
+  transform: translate(-50%, -50%) scale(0.95);
   width: 480px; max-width: calc(100vw - 32px); z-index: var(--z-tracklist);
   border-radius: var(--radius); border: 1px solid var(--glass-border); overflow: hidden;
-  background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
-  box-shadow: var(--shadow-lg);
-  opacity: 0; transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard);
+  background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
+  opacity: 0; filter: blur(8px);
+  /* exit */
+  transition: opacity 140ms var(--ease-hover), filter 140ms var(--ease-hover), transform 140ms var(--ease-hover);
 }
-#show-tracklist-popup.open { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+#show-tracklist-popup.open {
+  opacity: 1; filter: blur(0px); transform: translate(-50%, -50%) scale(1);
+  /* enter — spring bounce */
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring);
+}
 #show-tracklist-body { max-height: 292px; }
 
 /* ══════════════════════════════════════
@@ -3269,8 +3307,8 @@ body { padding-top: 24px; }
   border-radius: var(--radius-sm);
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   overflow: hidden;
   pointer-events: all;
   will-change: width;
@@ -3654,8 +3692,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-control);
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   cursor: pointer; color: var(--text-secondary);
   z-index: var(--z-nav);
   transition: border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
@@ -5795,8 +5833,7 @@ progressTrack.addEventListener('mousemove', e => {
       <div style="color:var(--text-primary);font-size:var(--text-base);font-weight:400;line-height:1.4;">${current.name}</div>
       ${current.game ? `<div style="color:var(--text-tertiary);font-size:var(--text-sm);margin-top:3px;">${current.game}</div>` : ''}
     `;
-    progressTooltipEl.style.opacity = '1';
-    progressTooltipEl.style.transform = 'translateY(0)';
+    progressTooltipEl.classList.add('visible');
     progressTooltipVisible = true;
     requestAnimationFrame(() => {
       const tooltipW = progressTooltipEl.offsetWidth;
@@ -5808,8 +5845,7 @@ progressTrack.addEventListener('mousemove', e => {
 });
 
 progressTrack.addEventListener('mouseleave', () => {
-  progressTooltipEl.style.opacity = '0';
-  progressTooltipEl.style.transform = 'translateY(4px)';
+  progressTooltipEl.classList.remove('visible');
   progressTooltipVisible = false;
 });
 
