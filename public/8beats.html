@@ -227,7 +227,7 @@
   /* Easing — 4 courbes sémantiques */
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);   /* expo-out — enters : pente initiale ≈6, settle doux */
   --ease-enter:    cubic-bezier(0.16, 1, 0.3, 1);   /* alias de standard */
-  --ease-exit:     var(--ease-hover);                /* sortie = même pente instantanée que hover */
+  --ease-exit:     var(--ease-in);                   /* sortie = accélère (mirror du spring qui décélère) */
   --ease-hover:    cubic-bezier(0, 0, 0.2, 1);       /* décelération pure — réponse instantanée (pente ≈5 à t=0) */
   --ease-collapse: cubic-bezier(0.4, 0, 0.15, 1);   /* sidebar collapse/expand */
 
@@ -641,8 +641,8 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   opacity: 0; filter: blur(8px);
   transform: scale(0.95) translateY(-6px);
   transform-origin: top center;
-  /* exit */
-  transition: opacity 140ms var(--ease-hover), filter 140ms var(--ease-hover), transform 140ms var(--ease-hover);
+  /* exit — symétrique : mêmes durées que l'entrée, ease-in (accélère) */
+  transition: opacity 200ms var(--ease-in), filter 240ms var(--ease-in), transform 260ms var(--ease-in);
   pointer-events: none;
 }
 #nav-dropdown.open {
@@ -724,8 +724,8 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   -webkit-backdrop-filter: var(--glass-backdrop);
   overflow: hidden;
   opacity: 0; filter: blur(8px);
-  /* exit */
-  transition: opacity 140ms var(--ease-hover), filter 140ms var(--ease-hover), transform 140ms var(--ease-hover);
+  /* exit — symétrique : mêmes durées que l'entrée, ease-in (accélère) */
+  transition: opacity 200ms var(--ease-in), filter 240ms var(--ease-in), transform 260ms var(--ease-in);
 }
 #mobile-nav-overlay.open {
   opacity: 1; filter: blur(0px);
@@ -1066,9 +1066,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel.glass { background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); }
 .panel.closing {
   opacity: 0; filter: blur(8px); transform: translateY(8px) scale(0.97); pointer-events: none;
-  transition: opacity   140ms var(--ease-hover),
-              filter    140ms var(--ease-hover),
-              transform 140ms var(--ease-hover);
+  transition: opacity   200ms var(--ease-in),
+              filter    240ms var(--ease-in),
+              transform 260ms var(--ease-in);
 }
 
 .panel-header { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: var(--z-base); cursor: grab; }
@@ -1401,8 +1401,8 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   font-family: var(--font);
   pointer-events: none; white-space: nowrap;
   opacity: 0; filter: blur(6px); transform: translateY(6px);
-  /* exit */
-  transition: opacity 140ms var(--ease-hover), filter 140ms var(--ease-hover), transform 140ms var(--ease-hover);
+  /* exit — symétrique : mêmes durées que l'entrée, ease-in (accélère) */
+  transition: opacity 200ms var(--ease-in), filter 240ms var(--ease-in), transform 260ms var(--ease-in);
 }
 .progress-tooltip.visible {
   opacity: 1; filter: blur(0px); transform: translateY(0);
@@ -2335,9 +2335,9 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   pointer-events: none;
   z-index: var(--z-nav);
   opacity: 0; filter: blur(8px); transform: translateY(10px) scale(0.97);
-  transition: opacity 140ms var(--ease-hover),
-              filter  140ms var(--ease-hover),
-              transform 140ms var(--ease-hover);
+  transition: opacity   200ms var(--ease-in),
+              filter    240ms var(--ease-in),
+              transform 260ms var(--ease-in);
 }
 .tool-panel.open {
   opacity: 1; filter: blur(0px); transform: translateY(0) scale(1); pointer-events: all;
@@ -2503,9 +2503,10 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   opacity: 0; filter: blur(6px);
   transform: scale(0.92) translateY(4px);
   transform-origin: bottom center;
-  transition: opacity 140ms var(--ease-hover),
-              filter  140ms var(--ease-hover),
-              transform 140ms var(--ease-hover);
+  /* exit — symétrique : mêmes durées que l'entrée, ease-in */
+  transition: opacity   180ms var(--ease-in),
+              filter    200ms var(--ease-in),
+              transform 220ms var(--ease-in);
 }
 #genre-tooltip.visible {
   opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
@@ -3142,8 +3143,8 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   border-radius: var(--radius); border: 1px solid var(--glass-border); overflow: hidden;
   background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
   opacity: 0; filter: blur(8px);
-  /* exit */
-  transition: opacity 140ms var(--ease-hover), filter 140ms var(--ease-hover), transform 140ms var(--ease-hover);
+  /* exit — symétrique : mêmes durées que l'entrée, ease-in (accélère) */
+  transition: opacity 200ms var(--ease-in), filter 240ms var(--ease-in), transform 260ms var(--ease-in);
 }
 #show-tracklist-popup.open {
   opacity: 1; filter: blur(0px); transform: translate(-50%, -50%) scale(1);
@@ -3494,10 +3495,10 @@ body { padding-top: 24px; }
   filter: blur(10px);
   transform: scale(0.95) translateY(-8px);
   transform-origin: top right;
-  /* exit */
-  transition: opacity 140ms var(--ease-hover),
-              filter  140ms var(--ease-hover),
-              transform 140ms var(--ease-hover);
+  /* exit — symétrique : mêmes durées que l'entrée, ease-in */
+  transition: opacity   200ms var(--ease-in),
+              filter    240ms var(--ease-in),
+              transform 260ms var(--ease-in);
 }
 #ham-menu.open {
   pointer-events: all;
