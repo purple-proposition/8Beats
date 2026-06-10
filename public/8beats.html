@@ -3870,15 +3870,17 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
    EXIT  — fades out immediately, margin resets. */
 #topbar-dropdown-sep {
   height: 1px; background: #191919;
-  margin: 0 0; opacity: 0;
-  /* EXIT */
-  transition: opacity 120ms var(--ease-hover) 0ms,
+  margin: 0 0; opacity: 0; filter: blur(4px);
+  /* EXIT: fade+blur out */
+  transition: opacity 200ms var(--ease-in) 0ms,
+              filter  240ms var(--ease-in) 0ms,
               margin  200ms cubic-bezier(0.4, 0, 1, 1) 0ms;
 }
 #topbar-search.search-open #topbar-dropdown-sep {
-  margin: 0 16px; opacity: 1;
+  margin: 0 16px; opacity: 1; filter: blur(0px);
   /* ENTER: flash visible at full-width, then contract */
   transition: opacity 80ms var(--ease-hover) 0ms,
+              filter  80ms var(--ease-hover) 0ms,
               margin  300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms;
 }
 
