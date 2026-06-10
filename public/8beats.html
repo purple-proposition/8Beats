@@ -1440,10 +1440,13 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 .icon-btn:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 .icon-btn:active { transform: scale(0.92); }
 .icon-btn svg { width: 16px; height: 16px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; transition: stroke var(--dur-micro) var(--ease-out); }
-/* Ghost variant — no border, fill SVG (mno-social, nav drawer social) */
-.icon-btn--ghost { border-color: transparent; background: transparent; }
-.icon-btn--ghost:hover { border-color: transparent; background: transparent; }
-.icon-btn--ghost svg { fill: currentColor; stroke: none; }
+/* Ghost variant — no border, no background ever; hover = icon colour only */
+.icon-btn--ghost {
+  border-color: transparent; background: transparent;
+  /* icon fills the space — no border means the SVG IS the visual element */
+}
+.icon-btn--ghost:hover { border-color: transparent; background: transparent; color: var(--text-primary); }
+.icon-btn--ghost svg { fill: currentColor; stroke: none; width: 24px; height: 24px; }
 /* Social variant — has border, fill SVG (about page social links) */
 .icon-btn--social svg { fill: currentColor; stroke: none; }
 /* Spotify variant — has border, fill SVG using icon-secondary token */
@@ -3414,14 +3417,13 @@ body { padding-top: 24px; }
   width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
   background: transparent; border: none;
-  border-radius: var(--radius-sm);
   cursor: pointer;
   color: var(--text-secondary);
-  transition: color var(--dur-micro) var(--ease-hover),
-              background var(--dur-micro) var(--ease-hover);
+  /* no background on hover — bare icon, colour only */
+  transition: color var(--dur-micro) var(--ease-hover);
 }
-#ham-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
-#ham-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+#ham-btn:hover { color: var(--text-primary); }
+#ham-btn svg { width: 24px; height: 24px; flex-shrink: 0; }
 #ham-menu {
   position: absolute; top: calc(100% + 8px); right: 0;
   min-width: 192px;
