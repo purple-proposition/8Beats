@@ -3748,21 +3748,20 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #ts-badges {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   display: flex; align-items: center; gap: 4px;
-  pointer-events: none; /* restored per-child below */
+  pointer-events: none;
 }
 #ts-badges > * { pointer-events: all; }
+/* ⌘K / Esc badge — 12px text, 4px v-padding, 8px h-padding, no forced height */
 #topbar-search-kbd {
-  height: 16px;
   background: rgba(255,255,255,0.08); border-radius: 6px;
-  color: #A1A1A1; font-size: var(--text-sm); font-family: var(--font);
-  padding: 0 7px; white-space: nowrap; display: flex; align-items: center;
+  color: #A1A1A1; font-size: 12px; line-height: 1; font-family: var(--font);
+  padding: 4px 8px; white-space: nowrap; display: flex; align-items: center;
   transition: opacity 160ms var(--ease-hover);
 }
 #topbar-search-esc {
-  height: 16px;
   background: rgba(255,255,255,0.08); border: none; border-radius: 6px;
-  color: #A1A1A1; font-size: var(--text-sm); font-family: var(--font);
-  padding: 0 8px; cursor: pointer; white-space: nowrap; display: flex; align-items: center;
+  color: #A1A1A1; font-size: 12px; line-height: 1; font-family: var(--font);
+  padding: 4px 8px; cursor: pointer; white-space: nowrap; display: flex; align-items: center;
   opacity: 0; pointer-events: none;
   transition: opacity 160ms var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
