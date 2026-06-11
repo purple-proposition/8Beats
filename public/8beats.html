@@ -9213,7 +9213,7 @@ function _renderTopbarShows(q) {
       : '';
     return `<div class="explore-show-row" role="button" tabindex="0" onclick="closeTopbarSearch();openShow('${s.title.replace(/'/g, "\\'")}')">
       ${coverEl}
-      <div style="display:flex;flex-direction:column;gap:var(--space-3);min-width:0;flex:1;">
+      <div style="display:flex;flex-direction:column;gap:var(--space-2);min-width:0;flex:1;">
         <span class="explore-show-title" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1;">${s.title}</span>
         <span onclick="event.stopPropagation();closeTopbarSearch();openArtist('${s.host.replace(/'/g,"\\'")}');" style="font-size:var(--text-base);line-height:1;color:var(--text-secondary);cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color='';">${s.host}</span>
         ${contextHint}
