@@ -3940,11 +3940,6 @@ html.light #topbar-search-esc:hover { background: rgba(0,0,0,0.12); }
 html.light .badge-new { background: rgba(0,0,0,0.06); }
 
 /* ── Day tabs ── */
-html.light .ts-sched-daytabs {
-  background: rgba(248,248,248,0.88);
-  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
-}
 html.light .ts-sched-daytab:hover { background: rgba(0,0,0,0.04); }
 html.light .ts-sched-daytab.active { background: rgba(0,0,0,0.08); }
 
@@ -4169,7 +4164,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
               margin  200ms cubic-bezier(0.4, 0, 1, 1) 0ms;
 }
 #topbar-search.search-open #topbar-dropdown-sep {
-  margin: 0 16px var(--space-4); opacity: 1; filter: blur(0px);
+  margin: 0 16px 4px; opacity: 1; filter: blur(0px);
   /* ENTER: flash visible at full-width, then contract */
   transition: opacity 80ms var(--ease-hover) 0ms,
               filter  80ms var(--ease-hover) 0ms,
@@ -4373,12 +4368,8 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
 /* ── Schedule tab in search dropdown ── */
 .ts-sched-daytabs {
   display: flex; gap: var(--space-1);
-  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4) var(--space-4);
   overflow-x: auto; scrollbar-width: none;
-  position: sticky; top: 0; z-index: 1;
-  background: rgba(0,0,0,0.40);
-  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
 }
 .ts-sched-daytabs::-webkit-scrollbar { display: none; }
 .ts-sched-sep { margin: 0 var(--space-4); }
@@ -4403,7 +4394,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
 .ts-sched-row::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -8px;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
@@ -4609,6 +4600,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
           <div id="ts-filter-row"></div>
           <div id="topbar-dropdown-shows"></div>
           <div id="topbar-dropdown-residents" style="display:none;"></div>
+          <div id="ts-sched-header" style="display:none;"></div>
           <div id="topbar-dropdown-schedule" style="display:none;"></div>
         </div>
       </div>
@@ -6024,12 +6016,12 @@ function renderShows(list, q) {
             &ldquo;${trackTitle}&rdquo; from ${t.game}
           </span>`;
         }).join('');
-        contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">${items}</div>`;
+        contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:0;">${items}</div>`;
       }
     }
     return `
     <div class="explore-show-row" role="button" tabindex="0" onclick="closeExplore();openShow('${s.title.replace(/'/g, "\\'")}')">
-      <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
+      <div style="display:flex;flex-direction:column;gap:12px;min-width:0;flex:1;">
         <span class="explore-show-title">${s.title}</span>
         <span style="font-size:var(--text-base);color:var(--text-secondary);"><span onclick="event.stopPropagation();closeExplore();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color=''">${s.host}</span> · ${formatDate(s.date)}</span>
         ${contextHint}
@@ -9781,16 +9773,17 @@ function _renderTopbarSchedule() {
       }).join('')
     : '<p class="ts-no-results">No shows scheduled</p>';
 
+  const headerEl = document.getElementById('ts-sched-header');
+  if (headerEl) headerEl.innerHTML = `<div class="ts-sched-daytabs">${tabs}</div>`;
+
   container.innerHTML =
-    `<div class="ts-sched-daytabs">${tabs}</div>` +
     `<div class="ts-sched-sep"></div>` +
     `<div class="ts-sched-slots">${slotsHtml}</div>`;
 
   requestAnimationFrame(() => {
-    const tabsEl = container.querySelector('.ts-sched-daytabs');
-    const topSafe = tabsEl ? tabsEl.offsetHeight : 44;
-    initScrollFade(container, 48, topSafe);
-    if (tabsEl) initHScrollFade(tabsEl, 24);
+    initScrollFade(container, 48);
+    const tabsEl = headerEl && headerEl.querySelector('.ts-sched-daytabs');
+    if (tabsEl) initHScrollFade(tabsEl, 16);
   });
 }
 
@@ -9805,13 +9798,15 @@ function _selectTopbarSchedDay(dow) {
   const showsEl     = document.getElementById('topbar-dropdown-shows');
   const residentsEl = document.getElementById('topbar-dropdown-residents');
   const scheduleEl  = document.getElementById('topbar-dropdown-schedule');
+  const schedHeaderEl = document.getElementById('ts-sched-header');
 
   const filterBtn = document.getElementById('ts-filter-btn');
 
   function showPane(name) {
-    if (showsEl)     showsEl.style.display     = name === 'shows'     ? '' : 'none';
-    if (residentsEl) residentsEl.style.display = name === 'residents' ? '' : 'none';
-    if (scheduleEl)  scheduleEl.style.display  = name === 'schedule'  ? '' : 'none';
+    if (showsEl)       showsEl.style.display       = name === 'shows'     ? '' : 'none';
+    if (residentsEl)   residentsEl.style.display   = name === 'residents' ? '' : 'none';
+    if (scheduleEl)    scheduleEl.style.display     = name === 'schedule'  ? '' : 'none';
+    if (schedHeaderEl) schedHeaderEl.style.display = name === 'schedule'  ? '' : 'none';
     if (filterBtn)   filterBtn.style.display   = name === 'shows'     ? 'flex' : 'none';
     if (name !== 'shows') _resetTopbarFilters();
     if (name === 'residents') {
