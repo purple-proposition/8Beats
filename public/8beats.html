@@ -1063,7 +1063,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-tags   { display: none; gap: 12px; }
 
 /* ── Family 3: Chip (.chip) + Genre tag (.genre-tag) ── */
-.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: 1px solid #191919; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover); }
+.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; color: var(--text-secondary); background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: 1px solid #191919; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover); }
 .chip:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); border-color: #363636; }
 .chip--active { border-color: var(--text-primary); background: var(--accent-soft); color: var(--text-primary); }
 .chip--active:hover { border-color: var(--text-primary); background: var(--accent-soft); opacity: 0.85; }
@@ -1471,19 +1471,17 @@ html.light .newsletter-card { background: transparent; }
 .back-to-live {
   display: none; align-items: center; gap: var(--space-2);
   height: 32px; padding: 0 var(--space-3);
-  background: rgba(0,0,0,0.40);
-  backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid #191919;
+  background: rgba(255,255,255,0.08);
+  border: none;
   border-radius: var(--radius-control);
   cursor: pointer; white-space: nowrap;
   font-family: var(--font); font-size: var(--text-sm); font-weight: 400;
   text-transform: uppercase; letter-spacing: .06em;
   color: var(--text-secondary);
-  transition: border-color var(--dur-micro) var(--ease-hover),
-              background var(--dur-short) var(--ease-hover),
+  transition: background var(--dur-short) var(--ease-hover),
               color var(--dur-micro) var(--ease-hover);
 }
-.back-to-live:hover { border-color: #363636; background: rgba(255,255,255,0.08); color: var(--text-primary); }
+.back-to-live:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .back-to-live:hover .back-live-dot { opacity: 1; }
 .back-live-dot {
   width: 8px; height: 8px; border-radius: 50%;
@@ -1503,7 +1501,10 @@ html.light .newsletter-card { background: transparent; }
 .progress-time { font-size: var(--text-sm); font-weight: 400; line-height: 1; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: var(--font); }
 .progress-time.end { text-align: right; }
 .progress-track {
-  flex: 1; height: 4px; background: var(--border-default);
+  flex: 1; height: 4px;
+  background: rgba(0,0,0,0.40);
+  backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid #191919;
   border-radius: 99px; position: relative; cursor: pointer; user-select: none;
 }
 .progress-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--text-secondary); border-radius: 99px; width: 5%; transition: width .1s linear; }
@@ -1574,7 +1575,16 @@ html.light .newsletter-card { background: transparent; }
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
-.player-title-wrap { overflow: hidden; mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); }
+.player-title-row { display: flex; align-items: center; gap: var(--space-1); overflow: hidden; }
+.player-title-wrap { flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 40px),transparent); }
+.player-title-link {
+  flex-shrink: 0; display: none; align-items: center; justify-content: center;
+  width: 20px; height: 20px; background: transparent; border: none;
+  cursor: pointer; color: var(--text-tertiary); padding: 0;
+  transition: color var(--dur-micro) var(--ease-hover);
+}
+.player-title-link:hover { color: var(--text-primary); }
+.player-title-link svg { width: 12px; height: 12px; stroke: currentColor; fill: none; }
 .player-title { font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; color: var(--text-primary); }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
@@ -3716,6 +3726,7 @@ body { padding-top: 24px; }
   gap: var(--space-1);
 }
 .ham-social-row .icon-btn--ghost {
+  width: 40px; height: 40px;
   background: rgba(255,255,255,0.08); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
   border-color: transparent; color: var(--text-secondary);
 }
@@ -4135,8 +4146,18 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #ts-filter-btn svg, #ts-filter-btn i { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 /* ── Topbar inline genre filter row ── */
 #ts-filter-row {
-  display: none; flex-direction: column; gap: var(--space-2);
-  padding: 0 var(--space-4) var(--space-3);
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: 0 var(--space-4) 0;
+  overflow: hidden;
+  max-height: 0; opacity: 0; transform: translateY(-6px); pointer-events: none;
+  transition: max-height 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 220ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              padding 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+#ts-filter-row.open {
+  max-height: 200px; opacity: 1; transform: translateY(0);
+  pointer-events: all; padding: 0 var(--space-4) var(--space-3);
 }
 .ts-filter-section {
   display: flex; align-items: center; gap: var(--space-3); min-width: 0;
@@ -4298,7 +4319,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   background: rgba(255,255,255,0.08);
   border-radius: var(--radius-control);
   padding: 2px 8px;
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-family: var(--font);
   white-space: nowrap;
 }
@@ -4328,6 +4349,10 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   .hamburger { display: flex !important; }
   .nav-wordmark { opacity: 1 !important; pointer-events: auto !important; }
   .player-inner { grid-column: unset; }
+  #topbar-search,
+  #topbar-search:hover,
+  #topbar-search.search-open,
+  #topbar-search:focus-within { width: 50vw; }
 }
 
 /* ── Accessibilité : prefers-reduced-motion ──────────────────────────────── */
@@ -5298,8 +5323,13 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
             <div class="player-info-top">
               <span class="live-status"><span class="live-dot"></span><span class="label" id="player-program-label">Evening Program</span></span>
             </div>
-            <div class="player-title-wrap">
-              <span class="player-title" id="player-title">Mark Mothersbaugh & Josh Mancell – Tiny Tiger</span>
+            <div class="player-title-row">
+              <div class="player-title-wrap">
+                <span class="player-title" id="player-title">Mark Mothersbaugh & Josh Mancell – Tiny Tiger</span>
+              </div>
+              <button class="player-title-link" id="player-title-link" onclick="openShow(document.getElementById('player-title').dataset.showKey)" aria-label="Voir le show">
+                <i data-lucide="arrow-up-right"></i>
+              </button>
             </div>
             <span class="player-game" id="player-game">Crash Bandicoot 2: Cortex Strikes Back</span>
           </div>
@@ -6225,6 +6255,11 @@ function playShow(showTitle, hostName, seriesName) {
   document.getElementById('spotify-btn').style.display = 'none';
   document.getElementById('back-to-live-btn').style.display = 'flex';
 
+  // Show link to show page
+  titleEl.dataset.showKey = showTitle;
+  const linkBtn = document.getElementById('player-title-link');
+  if (linkBtn) { linkBtn.style.display = 'flex'; lucide.createIcons({ nodes: [linkBtn] }); }
+
   // Auto-play
   setPlaying(true);
 
@@ -6471,6 +6506,11 @@ function backToLive() {
   // Swap back-to-live for spotify
   document.getElementById('back-to-live-btn').style.display = 'none';
   document.getElementById('spotify-btn').style.display = '';
+
+  // Hide link to show page
+  delete titleEl.dataset.showKey;
+  const linkBtn = document.getElementById('player-title-link');
+  if (linkBtn) linkBtn.style.display = 'none';
   plPanel.classList.remove('tracklist');
   progressWrap.classList.remove('visible');
   progressTrack.style.background = '';
@@ -9331,9 +9371,9 @@ let tsActiveTime = null;
 
 function toggleTopbarFilters() {
   const row = document.getElementById('ts-filter-row');
-  const open = row.style.display !== 'flex';
-  row.style.display = open ? 'flex' : 'none';
+  const open = !row.classList.contains('open');
   if (open) _buildTopbarFilters();
+  row.classList.toggle('open', open);
   const btn = document.getElementById('ts-filter-btn');
   if (btn) btn.style.color = open ? 'var(--text-primary)' : '';
 }
@@ -9379,7 +9419,7 @@ function _toggleTsTime(i) {
 function _resetTopbarFilters() {
   tsActiveGenres.clear(); tsActiveTime = null;
   const row = document.getElementById('ts-filter-row');
-  if (row) row.style.display = 'none';
+  if (row) row.classList.remove('open');
   const btn = document.getElementById('ts-filter-btn');
   if (btn) btn.style.color = '';
 }
