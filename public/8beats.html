@@ -955,12 +955,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   background: rgba(0,0,0,0.40);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid #191919;
+  border: none;
   color: var(--text-secondary);
-  transition: background var(--dur-short) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+  transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
 .btn-secondary svg { stroke: currentColor; fill: none; }
-.btn-secondary:hover, .btn-secondary:active { background: rgba(255,255,255,0.08); border-color: #363636; color: var(--text-primary); }
+.btn-secondary:hover, .btn-secondary:active { background: rgba(255,255,255,0.08); color: var(--text-primary); }
 /* ── Tertiary: ghost — transparent, border only, muted text, 32px ── */
 .btn-tertiary { height: 32px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
 .btn-tertiary svg { stroke: currentColor; fill: none; }
@@ -1051,7 +1051,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Keep play icon dimmed on the currently-playing card */
 .card-thumb.is-playing .card-play { pointer-events: none; color: var(--text-tertiary); }
 
-.card-body { padding: var(--space-3) 0 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.card-body { padding: var(--space-3) 0 0; display: flex; flex-direction: column; gap: var(--space-3); }
 .card-body h3 { font-size: var(--text-show); font-weight: 400; line-height: 1.4; max-height: calc(var(--text-show) * 1.4 * 2); letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: var(--text-primary); transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; }
 .card-body h3:hover { opacity: 0.64; }
 
@@ -1064,8 +1064,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-tags   { display: none; gap: 12px; }
 
 /* ── Family 3: Chip (.chip) + Genre tag (.genre-tag) ── */
-.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; color: var(--text-secondary); background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: 1px solid #191919; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover); }
-.chip:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); border-color: #363636; }
+.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; color: var(--text-secondary); background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: none; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
+.chip:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); }
 .chip--active { border-color: var(--text-primary); background: var(--accent-soft); color: var(--text-primary); }
 .chip--active:hover { border-color: var(--text-primary); background: var(--accent-soft); opacity: 0.85; }
 /* .genre-tag is a semantic marker — all genre buttons carry this class.
@@ -1218,7 +1218,8 @@ html.light .newsletter-card { background: transparent; }
   0%   { opacity: 1; filter: blur(0px); }
   100% { opacity: 0; filter: blur(24px); }
 }
-.panel-cookie.accepting {
+.panel-cookie.accepting,
+.panel-support.accepting {
   animation: cookie-dismiss 320ms var(--ease-out) forwards;
   pointer-events: none;
 }
@@ -1299,14 +1300,13 @@ html.light .newsletter-card { background: transparent; }
 .donate-amt {
   flex: 1; height: 52px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid #191919;
+  background: rgba(255,255,255,0.08); border: none;
   border-radius: var(--radius-control); cursor: pointer;
   font-family: var(--font); font-size: var(--text-md); font-weight: 500;
   color: var(--text-primary);
-  transition: background var(--dur-short) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover);
+  transition: background var(--dur-short) var(--ease-hover);
 }
-.donate-amt:hover { background: rgba(255,255,255,0.08); border-color: #363636; }
+.donate-amt:hover { background: rgba(255,255,255,0.16); }
 #donate-popup-note {
   font-size: 12px; color: var(--text-disabled);
   text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px;
@@ -1656,12 +1656,12 @@ html.light .newsletter-card { background: transparent; }
 }
 /* vol-popup-glass kept as empty element for backwards compat */
 .vol-popup-glass { display: none; }
-/* Open state: dark glass */
+/* Open state: same glass as player-shell */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: rgba(0,0,0,0.40);
-  backdrop-filter: var(--glass-backdrop);
-  -webkit-backdrop-filter: var(--glass-backdrop);
+  background: rgba(0,0,0,0.48);
+  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   border: 1px solid #191919;
   border-color: #191919;
   /* Open: spring bounce */
@@ -1701,9 +1701,9 @@ html.light .newsletter-card { background: transparent; }
 .vol-btn-face {
   width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: transparent; border: none; border-radius: var(--radius-control); cursor: pointer;
-  color: var(--icon-tertiary); padding: 0;
-  position: relative; z-index: 1; /* above .vol-popup-glass */
+  background: rgba(255,255,255,0.08); border: none; border-radius: var(--radius-control); cursor: pointer;
+  color: var(--icon-secondary); padding: 0;
+  position: relative; z-index: 1;
   transition: background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out);
 }
 .vol-btn-face:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
@@ -2434,13 +2434,13 @@ html.light .newsletter-card { background: transparent; }
 .explore-show-row::before {
   content: '';
   position: absolute;
-  inset: 2px 0;
+  inset: -8px 0;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
-.explore-show-row:hover::before { background: rgba(255,255,255,0.04); }
+.explore-show-row:hover::before { background: rgba(255,255,255,0.08); }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
 .explore-show-title { font-size:var(--text-show); font-weight:400; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
@@ -3196,12 +3196,11 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .ts-btn-icon {
   width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid #191919; border-radius: var(--radius-control);
-  cursor: pointer; color: #A1A1A1;
-  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover);
+  background: rgba(255,255,255,0.08); border: none; border-radius: var(--radius-control);
+  cursor: pointer; color: var(--icon-secondary);
+  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
-.ts-btn-icon:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); border-color: #363636; }
+.ts-btn-icon:hover { color: var(--text-primary); background: rgba(255,255,255,0.16); }
 .ts-btn-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 
 /* ── Hero gradient overlays (Keakie method — artist page only) ── */
@@ -3673,14 +3672,14 @@ body { padding-top: 24px; }
 .ham-item::before {
   content: '';
   position: absolute;
-  inset: 8px 8px;
+  inset: -8px;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
 .ham-item:hover { color: var(--text-primary); }
-.ham-item:hover::before { background: rgba(255,255,255,0.04); }
+.ham-item:hover::before { background: rgba(255,255,255,0.08); }
 .ham-item svg { width: 14px; height: 14px; flex-shrink: 0; }
 .ham-sep {}
 .ham-theme-row {
@@ -3692,13 +3691,13 @@ body { padding-top: 24px; }
 .ham-theme-row::before {
   content: '';
   position: absolute;
-  inset: 2px 8px;
+  inset: -8px;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
-.ham-theme-row:hover::before { background: rgba(255,255,255,0.04); }
+.ham-theme-row:hover::before { background: rgba(255,255,255,0.08); }
 .ham-theme-row svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-secondary); }
 .ham-theme-label {
   flex: 1;
@@ -3824,6 +3823,132 @@ html.fwm-is-dragging { cursor: grabbing !important; }
 }
 html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0,0,0.04); }
 .fwm-snap-hint--active { opacity: 1 !important; transform: scale(1) !important; }
+
+/* ============================================================
+   LIGHT MODE — comprehensive interactive + surface overrides
+   ============================================================ */
+
+/* ── Separators ── */
+html.light .ham-sep,
+html.light .nav-dropdown-sep,
+html.light .mno-sep,
+html.light .ts-sched-sep { background: var(--border-subtle); }
+html.light #player-sep { background: var(--border-subtle); }
+html.light #ts-tabs-sep { background: var(--border-subtle); }
+
+/* ── Glass panels (dark → light glass) ── */
+html.light .player-shell {
+  background: rgba(248,248,248,0.88);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: var(--border-default);
+}
+html.light .vol-popup.vol-open {
+  background: rgba(248,248,248,0.88);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: var(--border-default);
+}
+html.light .panel-cookie {
+  background: rgba(248,248,248,0.88) !important;
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.04) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04) !important;
+  border-color: var(--border-default) !important;
+}
+html.light .panel-support {
+  background: rgba(248,248,248,0.88) !important;
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.04) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04) !important;
+  border-color: var(--border-default) !important;
+}
+html.light #donate-popup-card {
+  background: rgba(248,248,248,0.88);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: var(--border-default);
+}
+html.light #ham-menu {
+  background: rgba(248,248,248,0.88);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: var(--border-default);
+}
+html.light #ts-panel {
+  background: rgba(248,248,248,0.88);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: var(--border-default);
+}
+html.light #genre-tooltip {
+  background: rgba(248,248,248,0.88);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: var(--border-default);
+}
+
+/* ── Chips & glass-dark buttons ── */
+html.light .chip { background: rgba(0,0,0,0.06); border-color: var(--border-default); }
+html.light .chip:hover { background: rgba(0,0,0,0.10); border-color: var(--border-hover); }
+html.light .ts-filter-chips .chip { background: rgba(0,0,0,0.06); border: none; }
+html.light .ts-filter-chips .chip:hover { background: rgba(0,0,0,0.12); border: none; }
+html.light .btn-secondary { background: rgba(0,0,0,0.06); border-color: var(--border-default); }
+html.light .btn-secondary:hover, html.light .btn-secondary:active { background: rgba(0,0,0,0.12); border-color: var(--border-hover); }
+html.light .ts-btn-icon { background: rgba(0,0,0,0.06); border-color: var(--border-default); }
+html.light .ts-btn-icon:hover { background: rgba(0,0,0,0.12); border-color: var(--border-hover); }
+html.light .donate-amt { background: rgba(0,0,0,0.06); border-color: var(--border-default); }
+html.light .donate-amt:hover { background: rgba(0,0,0,0.12); border-color: var(--border-hover); }
+
+/* ── Player-ctrl interactive buttons ── */
+html.light .progress-track { background: rgba(0,0,0,0.08); }
+html.light .vol-track { background: rgba(0,0,0,0.08); }
+html.light .vol-fill { background: rgba(0,0,0,0.40); }
+html.light .play-btn { background: rgba(0,0,0,0.06); }
+html.light .play-btn:hover { background: rgba(0,0,0,0.12); }
+html.light .player-ctrl { background: rgba(0,0,0,0.06); }
+html.light .player-ctrl:hover { background: rgba(0,0,0,0.12); }
+html.light #playlist-btn.active { background: rgba(0,0,0,0.12); }
+html.light .icon-btn { background: rgba(0,0,0,0.06); }
+html.light .icon-btn:hover { background: rgba(0,0,0,0.12); }
+html.light .icon-btn--action { background: rgba(0,0,0,0.06); }
+html.light .icon-btn--action:hover, html.light .icon-btn--action.active { background: rgba(0,0,0,0.12); }
+html.light .ts-btn { background: rgba(0,0,0,0.06); }
+html.light .ts-btn:hover { background: rgba(0,0,0,0.12); }
+html.light .back-to-live { background: rgba(0,0,0,0.06); }
+html.light .back-to-live:hover { background: rgba(0,0,0,0.12); }
+html.light .ts-sched-alert { background: rgba(0,0,0,0.06); }
+html.light .ts-sched-alert:hover { background: rgba(0,0,0,0.12); }
+html.light .schedule-slot-alert { background: rgba(0,0,0,0.06); }
+html.light .schedule-slot-alert:hover { background: rgba(0,0,0,0.12); }
+html.light .card-play { background: rgba(0,0,0,0.06); }
+html.light .card-play:hover { background: rgba(0,0,0,0.12); }
+html.light .vol-btn-face:hover { background: rgba(0,0,0,0.12); }
+html.light .vol-popup.vol-open .vol-btn-face { background: rgba(0,0,0,0.06); }
+html.light .vol-popup.vol-open .vol-btn-face:hover { background: rgba(0,0,0,0.12); }
+html.light .panel-support-amt { background: rgba(0,0,0,0.06); }
+html.light .panel-support-amt:hover { background: rgba(0,0,0,0.12); }
+html.light .show-tracklist-inline .icon-btn--stream { background: rgba(0,0,0,0.06); }
+html.light .show-tracklist-inline .icon-btn--stream:hover { background: rgba(0,0,0,0.12); }
+html.light .ham-social-row .icon-btn--ghost { background: rgba(0,0,0,0.06); }
+html.light .ham-social-row .icon-btn--ghost:hover { background: rgba(0,0,0,0.12); }
+html.light #topbar-search-kbd { background: rgba(0,0,0,0.06); }
+html.light #topbar-search-esc { background: rgba(0,0,0,0.06); }
+html.light #topbar-search-esc:hover { background: rgba(0,0,0,0.12); }
+html.light .badge-new { background: rgba(0,0,0,0.06); }
+
+/* ── Day tabs ── */
+html.light .ts-sched-daytab:hover { background: rgba(0,0,0,0.04); }
+html.light .ts-sched-daytab.active { background: rgba(0,0,0,0.08); }
+
+/* ── Row hover tints ── */
+html.light .explore-show-row:hover::before { background: rgba(0,0,0,0.08); }
+html.light .ham-item:hover::before { background: rgba(0,0,0,0.08); }
+html.light .ham-theme-row:hover::before { background: rgba(0,0,0,0.08); }
+html.light .ts-tab:hover::before { background: rgba(0,0,0,0.08); }
+html.light .ts-resident-row:hover::before { background: rgba(0,0,0,0.08); }
+html.light .ts-sched-row:hover::before { background: rgba(0,0,0,0.08); }
+html.light #ts-filter-btn:hover::before { background: rgba(0,0,0,0.08); }
+html.light .ts-sched-daytab:hover { background: rgba(0,0,0,0.08); }
+html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
 
 /* ── FWM: drag grip icon ── */
 .fwm-grip {
@@ -4035,7 +4160,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
               margin  200ms cubic-bezier(0.4, 0, 1, 1) 0ms;
 }
 #topbar-search.search-open #topbar-dropdown-sep {
-  margin: var(--space-4) 16px; opacity: 1; filter: blur(0px);
+  margin: var(--space-4) 16px 4px; opacity: 1; filter: blur(0px);
   /* ENTER: flash visible at full-width, then contract */
   transition: opacity 80ms var(--ease-hover) 0ms,
               filter  80ms var(--ease-hover) 0ms,
@@ -4108,7 +4233,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #ts-tabs-sep {
   height: 1px; background: transparent;
-  margin: var(--space-4) var(--space-4) 0;
+  margin: 4px var(--space-4) 0;
   transition: background 100ms ease-in 0ms;
 }
 #topbar-search.search-open #ts-tabs-sep {
@@ -4125,12 +4250,12 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   white-space: nowrap; position: relative;
 }
 #ts-filter-btn::before {
-  content: ''; position: absolute; inset: 4px 2px;
+  content: ''; position: absolute; inset: -8px;
   border-radius: var(--radius-control); background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
-#ts-filter-btn:hover::before { background: rgba(255,255,255,0.04); }
+#ts-filter-btn:hover::before { background: rgba(255,255,255,0.08); }
 #ts-filter-btn:hover { color: var(--text-primary); }
 #ts-filter-btn svg, #ts-filter-btn i { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 /* ── Topbar inline genre filter row ── */
@@ -4177,12 +4302,12 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   transition: color var(--dur-micro) var(--ease-hover);
 }
 .ts-tab::before {
-  content: ''; position: absolute; inset: 2px 8px;
+  content: ''; position: absolute; inset: -8px;
   border-radius: var(--radius-control); background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
-.ts-tab:hover::before { background: rgba(255,255,255,0.04); }
+.ts-tab:hover::before { background: rgba(255,255,255,0.08); }
 .ts-tab:hover { background: transparent; color: var(--text-primary); }
 .ts-tab.active { background: transparent; color: var(--text-primary); cursor: default; }
 .ts-tab svg { width: 14px; height: 14px; stroke: currentColor; fill: none;
@@ -4218,13 +4343,13 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 .ts-resident-row::before {
   content: '';
   position: absolute;
-  inset: 2px 8px;
+  inset: -8px 0;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
-.ts-resident-row:hover::before { background: rgba(255,255,255,0.04); }
+.ts-resident-row:hover::before { background: rgba(255,255,255,0.08); }
 .ts-resident-avatar {
   width: 44px; height: 44px; border-radius: 50%;
   background: var(--surface-elevated); border: 1px solid var(--border-default);
@@ -4253,7 +4378,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
   white-space: nowrap;
 }
-.ts-sched-daytab:hover { background: rgba(255,255,255,0.04); color: var(--text-secondary); }
+.ts-sched-daytab:hover { background: rgba(255,255,255,0.08); color: var(--text-secondary); }
 .ts-sched-daytab.active { background: rgba(255,255,255,0.08); color: var(--text-primary); }
 .ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
 .ts-sched-row {
@@ -4266,13 +4391,13 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 .ts-sched-row::before {
   content: '';
   position: absolute;
-  inset: 2px 8px;
+  inset: -8px 0;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
-.ts-sched-row:hover::before { background: rgba(255,255,255,0.04); }
+.ts-sched-row:hover::before { background: rgba(255,255,255,0.08); }
 .ts-sched-time {
   font-size: var(--text-sm); color: var(--text-tertiary);
   flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font);
@@ -5882,7 +6007,7 @@ function renderShows(list, q) {
       if (matchedTracks.length) {
         const items = matchedTracks.slice(0, 3).map(t => {
           const trackTitle = t.name && t.name.includes(' – ') ? t.name.split(' – ').slice(1).join(' – ') : (t.name || '');
-          return `<span style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
+          return `<span onclick="seekTo('${t.ts}')" style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.08);border:none;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;cursor:pointer;">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             &ldquo;${trackTitle}&rdquo; from ${t.game}
           </span>`;
@@ -9491,7 +9616,7 @@ function _renderTopbarShows(q) {
       if (matched.length) {
         const items = matched.slice(0, 3).map(t => {
           const trackTitle = t.name && t.name.includes(' – ') ? t.name.split(' – ').slice(1).join(' – ') : (t.name || '');
-          return `<span style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:none;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
+          return `<span onclick="seekTo('${t.ts}')" style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.08);border:none;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;cursor:pointer;">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             &ldquo;${trackTitle}&rdquo; from ${t.game}
           </span>`;
