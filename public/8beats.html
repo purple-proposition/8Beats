@@ -1225,6 +1225,7 @@ html.light .newsletter-card { background: transparent; }
 .panel-support {
   pointer-events: all;
   border: 1px solid #191919 !important;
+  border-radius: var(--radius) !important;
   background: rgba(0,0,0,0.40) !important;
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
@@ -1234,7 +1235,7 @@ html.light .newsletter-card { background: transparent; }
   font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px;
   text-transform: uppercase; color: var(--text-tertiary);
 }
-.panel-support-header svg { width: 12px; height: 12px; fill: white; stroke: white; stroke-width: 1.5; flex-shrink: 0; }
+.panel-support-header svg { width: 13px; height: 13px; fill: none; stroke: var(--text-secondary); stroke-width: 2; flex-shrink: 0; }
 .panel-support-amounts {
   display: flex; gap: var(--space-2);
   max-height: 0; overflow: hidden; opacity: 0;
@@ -1247,13 +1248,14 @@ html.light .newsletter-card { background: transparent; }
 .panel-support-amt {
   flex: 1; height: 44px;
   display: flex; align-items: center; justify-content: center;
-  background: #fff; border: 1px solid #fff;
+  background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid #191919;
   border-radius: var(--radius-control); cursor: pointer;
-  font-family: var(--font); font-size: var(--text-base); font-weight: 600;
-  color: #000;
+  font-family: var(--font); font-size: var(--text-base); font-weight: 500;
+  color: var(--text-primary);
   transition: background var(--dur-short) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover);
 }
-.panel-support-amt:hover { background: rgba(255,255,255,0.88); border-color: rgba(255,255,255,0.88); }
+.panel-support-amt:hover { background: rgba(255,255,255,0.08); border-color: #363636; }
 .panel-support-note {
   font-size: 12px; color: var(--text-disabled);
   text-align: center; letter-spacing: .02em;
@@ -1289,20 +1291,21 @@ html.light .newsletter-card { background: transparent; }
   display: flex; align-items: center; gap: var(--space-2);
   font-size: var(--text-base); font-weight: 500; color: var(--text-primary);
 }
-#donate-popup-title svg { width: 14px; height: 14px; fill: white; stroke: white; stroke-width: 1.5; }
+#donate-popup-title svg { width: 14px; height: 14px; fill: none; stroke: var(--text-secondary); stroke-width: 2; }
 #donate-popup-amounts {
   display: flex; gap: var(--space-2);
 }
 .donate-amt {
   flex: 1; height: 52px;
   display: flex; align-items: center; justify-content: center;
-  background: #fff; border: 1px solid #fff;
+  background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid #191919;
   border-radius: var(--radius-control); cursor: pointer;
-  font-family: var(--font); font-size: var(--text-md); font-weight: 600;
-  color: #000;
+  font-family: var(--font); font-size: var(--text-md); font-weight: 500;
+  color: var(--text-primary);
   transition: background var(--dur-short) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover);
 }
-.donate-amt:hover { background: rgba(255,255,255,0.88); border-color: rgba(255,255,255,0.88); }
+.donate-amt:hover { background: rgba(255,255,255,0.08); border-color: #363636; }
 #donate-popup-note {
   font-size: 12px; color: var(--text-disabled);
   text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px;
@@ -4085,7 +4088,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 /* Category tabs — same enter/exit phasing as the shows list */
 #ts-tabs {
   display: flex; align-items: stretch; gap: 0;
-  padding: 0;
+  padding: 0 0 0 4px;
   opacity: 0; filter: blur(6px); transform: translateY(6px);
   transition: opacity   100ms ease-in 0ms,
               filter    100ms ease-in 0ms,
@@ -4174,7 +4177,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 /* ── Schedule tab in search dropdown ── */
 .ts-sched-daytabs {
   display: flex; gap: var(--space-1);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-2);
   overflow-x: auto; scrollbar-width: none;
 }
 .ts-sched-daytabs::-webkit-scrollbar { display: none; }
@@ -4191,7 +4194,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 .ts-sched-daytab.active { background: rgba(255,255,255,0.08); color: var(--text-primary); }
 .ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
 .ts-sched-row {
-  display: flex; align-items: center; gap: var(--space-2);
+  display: flex; align-items: center; gap: var(--space-4);
   padding: var(--space-2) var(--space-4);
   cursor: pointer;
   position: relative;
@@ -4213,7 +4216,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 .ts-sched-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .ts-sched-name { font-size: var(--text-base); color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ts-sched-host { font-size: var(--text-sm); color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ts-sched-host { font-size: var(--text-base); color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ts-sched-right { display: flex; align-items: center; flex-shrink: 0; }
 .ts-sched-live-badge {
   flex-shrink: 0;
@@ -4952,7 +4955,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 <aside class="panel panel-support" id="panel-support">
   <div class="panel-header">
     <div class="panel-support-header">
-      <svg viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       Keep the beat going
     </div>
     <button class="panel-close" onclick="closeSupportPanel()" aria-label="Close">
@@ -4965,7 +4968,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
     <button class="panel-support-amt" onclick="donatePayPal(5)">€5</button>
     <button class="panel-support-amt" onclick="donatePayPal(10)">€10</button>
   </div>
-  <p class="panel-support-note">Secure payment via <svg class="paypal-logo-svg" viewBox="0 0 80 21" xmlns="http://www.w3.org/2000/svg" aria-label="PayPal"><path d="M9.5 2h7c3.3 0 5.6 1.7 5.6 5.1 0 3.7-2.7 6-6.3 6H13l-1.1 7H8.2L9.5 2zm2.2 2.5L10.5 11h2.3c2 0 3.3-1.1 3.3-3.1 0-1.8-1.1-2.4-2.7-2.4h-1.7zM24 8h3.3l-.3 1.6c.7-1.1 1.8-1.9 3.2-1.9 2.4 0 3.7 1.6 3.7 4 0 3-1.9 5.4-4.8 5.4-1.1 0-2-.5-2.5-1.3l-.9 5.7h-3.1L24 8zm2.7 2.5l-.8 4c.2.7.8 1.2 1.6 1.2 1.4 0 2.2-1.4 2.2-2.9 0-1.1-.5-1.9-1.6-1.9-.6 0-1.1.3-1.4 1.6zM36.5 8h3.3l-.3 1.4c.5-.9 1.4-1.7 2.7-1.7.4 0 .7.1 1 .2l-.7 3c-.3-.1-.6-.2-1-.2-1.2 0-2 .8-2.3 2.4l-.8 4h-3.1L36.5 8zM44.6 2h7c3.3 0 5.6 1.7 5.6 5.1 0 3.7-2.7 6-6.3 6h-2.8l-1.1 7h-3.7L44.6 2zm2.2 2.5L45.6 11h2.3c2 0 3.3-1.1 3.3-3.1 0-1.8-1.1-2.4-2.7-2.4h-1.7zM59.1 8h3.3l-.3 1.6c.7-1.1 1.8-1.9 3.2-1.9 2.4 0 3.7 1.6 3.7 4 0 3-1.9 5.4-4.8 5.4-1.1 0-2-.5-2.5-1.3l-.9 5.7H57.7L59.1 8zm2.7 2.5l-.8 4c.2.7.8 1.2 1.6 1.2 1.4 0 2.2-1.4 2.2-2.9 0-1.1-.5-1.9-1.6-1.9-.6 0-1.1.3-1.4 1.6zM71.5 2h3.1l-1.9 12h-3.1L71.5 2z"/></svg></p>
+  <p class="panel-support-note">Secure payment via <svg class="paypal-logo-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="PayPal"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.217A.859.859 0 0 1 5.79 2.624h7.925c2.124 0 3.864.489 5.175 1.454a6.159 6.159 0 0 1 1.455 1.453c.388.601.65 1.255.785 1.959.135.703.135 1.474 0 2.312C20.896 11.062 20.076 12.55 18.88 13.607a9.875 9.875 0 0 1-3.316 1.791 12.966 12.966 0 0 1-4.048.592H9.898a.858.858 0 0 0-.848.726L8.357 20.997a.641.641 0 0 1-.633.541H7.076z"/></svg></p>
 </aside>
 
 <!-- DONATE POPUP -->
@@ -4974,7 +4977,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   <div id="donate-popup-card">
     <div id="donate-popup-header">
       <div id="donate-popup-title">
-        <svg viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         One-time support
       </div>
       <button class="panel-close" onclick="closeDonatePopup()" aria-label="Close">
@@ -4986,7 +4989,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
       <button class="donate-amt" onclick="donatePayPal(5)">€5</button>
       <button class="donate-amt" onclick="donatePayPal(10)">€10</button>
     </div>
-    <p id="donate-popup-note">Secure payment via <svg class="paypal-logo-svg" viewBox="0 0 80 21" xmlns="http://www.w3.org/2000/svg" aria-label="PayPal"><path d="M9.5 2h7c3.3 0 5.6 1.7 5.6 5.1 0 3.7-2.7 6-6.3 6H13l-1.1 7H8.2L9.5 2zm2.2 2.5L10.5 11h2.3c2 0 3.3-1.1 3.3-3.1 0-1.8-1.1-2.4-2.7-2.4h-1.7zM24 8h3.3l-.3 1.6c.7-1.1 1.8-1.9 3.2-1.9 2.4 0 3.7 1.6 3.7 4 0 3-1.9 5.4-4.8 5.4-1.1 0-2-.5-2.5-1.3l-.9 5.7h-3.1L24 8zm2.7 2.5l-.8 4c.2.7.8 1.2 1.6 1.2 1.4 0 2.2-1.4 2.2-2.9 0-1.1-.5-1.9-1.6-1.9-.6 0-1.1.3-1.4 1.6zM36.5 8h3.3l-.3 1.4c.5-.9 1.4-1.7 2.7-1.7.4 0 .7.1 1 .2l-.7 3c-.3-.1-.6-.2-1-.2-1.2 0-2 .8-2.3 2.4l-.8 4h-3.1L36.5 8zM44.6 2h7c3.3 0 5.6 1.7 5.6 5.1 0 3.7-2.7 6-6.3 6h-2.8l-1.1 7h-3.7L44.6 2zm2.2 2.5L45.6 11h2.3c2 0 3.3-1.1 3.3-3.1 0-1.8-1.1-2.4-2.7-2.4h-1.7zM59.1 8h3.3l-.3 1.6c.7-1.1 1.8-1.9 3.2-1.9 2.4 0 3.7 1.6 3.7 4 0 3-1.9 5.4-4.8 5.4-1.1 0-2-.5-2.5-1.3l-.9 5.7H57.7L59.1 8zm2.7 2.5l-.8 4c.2.7.8 1.2 1.6 1.2 1.4 0 2.2-1.4 2.2-2.9 0-1.1-.5-1.9-1.6-1.9-.6 0-1.1.3-1.4 1.6zM71.5 2h3.1l-1.9 12h-3.1L71.5 2z"/></svg></p>
+    <p id="donate-popup-note">Secure payment via <svg class="paypal-logo-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="PayPal"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.217A.859.859 0 0 1 5.79 2.624h7.925c2.124 0 3.864.489 5.175 1.454a6.159 6.159 0 0 1 1.455 1.453c.388.601.65 1.255.785 1.959.135.703.135 1.474 0 2.312C20.896 11.062 20.076 12.55 18.88 13.607a9.875 9.875 0 0 1-3.316 1.791 12.966 12.966 0 0 1-4.048.592H9.898a.858.858 0 0 0-.848.726L8.357 20.997a.641.641 0 0 1-.633.541H7.076z"/></svg></p>
   </div>
 </div>
 
@@ -7311,7 +7314,6 @@ const HOME_INTERSTITIALS = {
   'pitch-card': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="pitch-card">
       <div class="pitch-inner">
-        <span class="label">Open to creators</span>
         <h2 class="pitch-title">Join the party</h2>
         <a href="#" onclick="event.preventDefault();openProposal()" class="btn btn-secondary">
           <i data-lucide="clipboard-list" style="fill:none;display:block"></i>
@@ -7342,7 +7344,6 @@ const HOME_INTERSTITIALS = {
   'keep-beat': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="keepbeat-card">
       <div class="pitch-inner">
-        <span class="label">Support independent radio</span>
         <h2 class="keepbeat-title">Keep the beat going</h2>
         <a href="#" onclick="event.preventDefault();openDonatePopup()" class="btn btn-secondary">
           <i data-lucide="heart" style="fill:none;display:block"></i>
@@ -9314,8 +9315,8 @@ function _renderTopbarShows(q) {
       if (matched.length) {
         const items = matched.slice(0, 3).map(t =>
           `<span style="display:inline-flex;align-items:center;gap:4px;background:#171717;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
-            ${t.name}
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            from &ldquo;${t.game}&rdquo;
           </span>`).join('');
         contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">${items}</div>`;
       }
