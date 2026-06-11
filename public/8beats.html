@@ -1624,21 +1624,20 @@ html.light .newsletter-card { background: transparent; }
 /* ── Tracklist icon color ── */
 .playlist-inner .icon-btn,
 .playlist-inner .icon-btn--stream,
-.show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; color: #A1A1A1; background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border-color: #191919; }
+.show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; color: #A1A1A1; background: rgba(255,255,255,0.08); border: none; }
 .playlist-inner .icon-btn:hover,
 .playlist-inner .icon-btn--stream:hover,
-.show-tracklist-inline .icon-btn--stream:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); border-color: #363636; }
+.show-tracklist-inline .icon-btn--stream:hover { color: var(--text-primary); background: rgba(255,255,255,0.16); border: none; }
 /* ── Family 4: TimestampButton (.ts-btn) ── */
 .ts-btn {
   width: 64px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid #191919; border-radius: var(--radius-control);
+  background: rgba(255,255,255,0.08); border: none; border-radius: var(--radius-control);
   cursor: pointer; font-size: var(--text-xs); letter-spacing: .04em;
   color: #A1A1A1; font-family: var(--font);
-  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover);
+  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
-.ts-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); border-color: #363636; }
+.ts-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.16); }
 .show-tracklist-inline .ts-btn { font-size: var(--text-sm); }
 
 .divider { width: 1px; height: 16px; background: var(--border-default); flex-shrink: 0; }
@@ -2644,7 +2643,7 @@ html.light .newsletter-card { background: transparent; }
 #genre-tooltip {
   position: fixed; z-index: var(--z-top);
   max-width: 220px;
-  background: rgba(0,0,0,0.40);
+  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   border: 1px solid #191919;
@@ -4109,18 +4108,23 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #ts-tabs {
   display: flex; align-items: stretch; gap: 0;
   padding: var(--space-2) 0 0 4px;
-  border-bottom: 1px solid transparent;
   opacity: 0; transform: translateY(6px);
   transition: opacity   100ms ease-in 0ms,
-              transform 100ms ease-in 0ms,
-              border-color 100ms ease-in 0ms;
+              transform 100ms ease-in 0ms;
 }
 #topbar-search.search-open #ts-tabs {
   opacity: 1; transform: translateY(0);
-  border-bottom: 1px solid #191919;
-  transition: opacity      300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms,
-              transform    300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms,
-              border-color 200ms ease-out 280ms;
+  transition: opacity   300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms,
+              transform 300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms;
+}
+#ts-tabs-sep {
+  height: 1px; background: transparent;
+  margin: 0 var(--space-4);
+  transition: background 100ms ease-in 0ms;
+}
+#topbar-search.search-open #ts-tabs-sep {
+  background: #191919;
+  transition: background 200ms ease-out 280ms;
 }
 #ts-filter-btn {
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
@@ -4143,7 +4147,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 /* ── Topbar inline genre filter row ── */
 #ts-filter-row {
   display: flex; flex-direction: column; gap: var(--space-2);
-  padding: 0 var(--space-4) 0;
+  padding: var(--space-4) var(--space-4) 0;
   overflow: hidden;
   max-height: 0; opacity: 0; transform: translateY(-6px); pointer-events: none;
   transition: max-height 300ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -4153,7 +4157,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 #ts-filter-row.open {
   max-height: 200px; opacity: 1; transform: translateY(0);
-  pointer-events: all; padding: 0 var(--space-4) var(--space-3);
+  pointer-events: all; padding: var(--space-4) var(--space-4) var(--space-4);
 }
 .ts-filter-section {
   display: flex; align-items: center; gap: var(--space-3); min-width: 0;
@@ -4477,6 +4481,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
               Filters
             </button>
           </div>
+          <div id="ts-tabs-sep"></div>
           <div id="ts-filter-row"></div>
           <div id="topbar-dropdown-shows"></div>
           <div id="topbar-dropdown-residents" style="display:none;"></div>
@@ -4638,7 +4643,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
     <p>Weekly shows, live mixes, and curated sets celebrating the finest video game soundtracks — 4,000 listeners and counting.</p>
     <div class="hero-actions">
       <a href="#" class="btn btn-primary" id="hero-listen-btn" onclick="event.preventDefault();setPlaying(!playing)"><i data-lucide="play" style="display:block"></i>Listen now</a>
-      <a href="#" class="btn btn-secondary" onclick="event.preventDefault();openExplore()"><i data-lucide="search" style="stroke:currentColor;fill:none;display:block"></i>Browse shows</a>
     </div>
   </div>
 </section>
@@ -5894,12 +5898,13 @@ function renderShows(list, q) {
       const tl = TRACKLISTS[s.title] || [];
       const matchedTracks = tl.filter(t => t.game && t.game.toLowerCase().includes(q));
       if (matchedTracks.length) {
-        const items = matchedTracks.slice(0, 3).map(t =>
-          `<span style="display:inline-flex;align-items:center;gap:4px;background:#171717;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
-            ${t.name}
-          </span>`
-        ).join('');
+        const items = matchedTracks.slice(0, 3).map(t => {
+          const trackTitle = t.name && t.name.includes(' – ') ? t.name.split(' – ').slice(1).join(' – ') : (t.name || '');
+          return `<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.08);border:none;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            ${trackTitle} · from ${t.game}
+          </span>`;
+        }).join('');
         contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">${items}</div>`;
       }
     }
@@ -6854,7 +6859,6 @@ function closeSupportPanel() {
   if (!el) return;
   el.classList.add('accepting');
   setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); FWM.scheduleResolve(); }, 360);
-  try { localStorage.setItem('8beats-support-dismissed', '1'); } catch {}
 }
 
 function openDonatePopup() {
@@ -9473,11 +9477,13 @@ function _renderTopbarShows(q) {
       const tl = TRACKLISTS[s.title] || [];
       const matched = tl.filter(t => t.game && t.game.toLowerCase().includes(q));
       if (matched.length) {
-        const items = matched.slice(0, 3).map(t =>
-          `<span style="display:inline-flex;align-items:center;gap:4px;background:#171717;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
+        const items = matched.slice(0, 3).map(t => {
+          const trackTitle = t.name && t.name.includes(' – ') ? t.name.split(' – ').slice(1).join(' – ') : (t.name || '');
+          return `<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.08);border:none;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-            from &ldquo;${t.game}&rdquo;
-          </span>`).join('');
+            ${trackTitle} · from ${t.game}
+          </span>`;
+        }).join('');
         contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">${items}</div>`;
       }
     }
@@ -10014,13 +10020,6 @@ function syncSettingsShortcuts() {
 
 FWM.init();
 
-/* Hide support panel if user already dismissed it */
-try {
-  if (localStorage.getItem('8beats-support-dismissed')) {
-    const sp = document.getElementById('panel-support');
-    if (sp) sp.style.display = 'none';
-  }
-} catch {}
 lucide.createIcons({ nodes: [document.getElementById('panel-support'), document.getElementById('panel-cookie')].filter(Boolean) });
 
 /* ── Layout preferences — persist player + menu corner across page loads ── */
