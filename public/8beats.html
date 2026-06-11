@@ -666,7 +666,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 .nav-dd-item:first-child { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
 .nav-dd-item + .nav-dd-item::before {
   content: ''; position: absolute; top: 0; left: var(--space-5); right: var(--space-5);
-  height: 1px; background: var(--border-subtle);
+  height: 1px; background: rgba(255,255,255,0.08);
 }
 .nav-dd-item:hover { color: var(--text-primary); background: var(--surface-hover); }
 .nav-dd-item svg {
@@ -676,7 +676,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 }
 /* ── Horizontal separators — unified style ── */
 .ham-sep, .nav-dropdown-sep, .mno-sep, .ts-sched-sep {
-  height: 1px; background: #191919; margin: var(--space-4) var(--space-4);
+  height: 1px; background: rgba(255,255,255,0.08); margin: var(--space-4) var(--space-4);
 }
 .nav-dd-theme-row {
   display: flex; align-items: center; gap: var(--space-3);
@@ -685,7 +685,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 }
 .nav-dd-theme-row::before {
   content: ''; position: absolute; top: 0; left: var(--space-5); right: var(--space-5);
-  height: 1px; background: var(--border-default);
+  height: 1px; background: rgba(255,255,255,0.08);
 }
 .nav-dd-theme-label { font-size: var(--text-base); color: var(--text-secondary); flex: 1; }
 .nav-dropdown-social {
@@ -695,7 +695,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 }
 .nav-dropdown-social::before {
   content: ''; position: absolute; top: 0; left: var(--space-5); right: var(--space-5);
-  height: 1px; background: var(--border-default);
+  height: 1px; background: rgba(255,255,255,0.08);
 }
 .nav-dropdown-social button {
   width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
@@ -1207,7 +1207,7 @@ html.light .newsletter-card { background: transparent; }
 
 .panel-cookie {
   pointer-events: all;
-  border: none !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
   background: rgba(0,0,0,0.40) !important;
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
@@ -1227,7 +1227,7 @@ html.light .newsletter-card { background: transparent; }
 /* ── Support / Donate panel ── */
 .panel-support {
   pointer-events: all;
-  border: none !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
   border-radius: var(--radius) !important;
   background: rgba(0,0,0,0.40) !important;
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
@@ -1283,7 +1283,7 @@ html.light .newsletter-card { background: transparent; }
   background: rgba(0,0,0,0.40);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  border: none; border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm);
   padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4);
 }
 #donate-popup-header {
@@ -1332,7 +1332,7 @@ html.light .newsletter-card { background: transparent; }
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-shell {
   pointer-events: all;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--radius-btn);
   background: rgba(0,0,0,0.48);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
@@ -1403,7 +1403,7 @@ html.light .newsletter-card { background: transparent; }
    Closed: invisible at full-width (aligns with player shell top border).
    Open: flash at full-width → contracts to 16px inset separator. */
 #player-sep {
-  height: 1px; background: #191919;
+  height: 1px; background: rgba(255,255,255,0.08);
   margin: 0 0; opacity: 0;
   /* EXIT */
   transition: opacity 120ms var(--ease-hover) 0ms,
@@ -1662,7 +1662,7 @@ html.light .newsletter-card { background: transparent; }
   background: rgba(0,0,0,0.48);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  border: none;
+  border: 1px solid rgba(255,255,255,0.08);
   /* Open: spring bounce */
   transition: height 200ms var(--ease-spring),
               transform var(--dur-micro) var(--ease-out);
@@ -2638,7 +2638,7 @@ html.light .newsletter-card { background: transparent; }
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  border: none;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--radius-sm);
   padding: var(--space-3) var(--space-4);
   font-family: var(--font); font-size: var(--text-base); line-height: 1.5;
@@ -3628,7 +3628,7 @@ body { padding-top: 24px; }
   background: rgba(0,0,0,0.40);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  border: none;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--radius-btn);
   z-index: var(--z-nav);
   pointer-events: none;
@@ -3830,50 +3830,63 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 html.light .ham-sep,
 html.light .nav-dropdown-sep,
 html.light .mno-sep,
-html.light .ts-sched-sep { background: var(--border-subtle); }
-html.light #player-sep { background: var(--border-subtle); }
-html.light #ts-tabs-sep { background: var(--border-subtle); }
+html.light .ts-sched-sep { background: rgba(0,0,0,0.08); }
+html.light #player-sep { background: rgba(0,0,0,0.08); }
+html.light #ts-tabs-sep { background: rgba(0,0,0,0.08); }
+html.light #topbar-dropdown-sep { background: rgba(0,0,0,0.08); }
+html.light .nav-dd-item + .nav-dd-item::before { background: rgba(0,0,0,0.08); }
+html.light .nav-dd-theme-row::before { background: rgba(0,0,0,0.08); }
+html.light .nav-dropdown-social::before { background: rgba(0,0,0,0.08); }
+html.light .ts-genre-card::after { background: rgba(0,0,0,0.08); }
 
 /* ── Glass panels (dark → light glass) ── */
 html.light .player-shell {
   background: rgba(248,248,248,0.88);
   backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: rgba(0,0,0,0.08);
 }
 html.light .vol-popup.vol-open {
   background: rgba(248,248,248,0.88);
   backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: rgba(0,0,0,0.08);
 }
 html.light .panel-cookie {
   background: rgba(248,248,248,0.88) !important;
   backdrop-filter: blur(24px) saturate(160%) brightness(1.04) !important;
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
 }
 html.light .panel-support {
   background: rgba(248,248,248,0.88) !important;
   backdrop-filter: blur(24px) saturate(160%) brightness(1.04) !important;
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
 }
 html.light #donate-popup-card {
   background: rgba(248,248,248,0.88);
   backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: rgba(0,0,0,0.08);
 }
 html.light #ham-menu {
   background: rgba(248,248,248,0.88);
   backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: rgba(0,0,0,0.08);
 }
 html.light #ts-panel {
   background: rgba(248,248,248,0.88);
   backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: rgba(0,0,0,0.08);
 }
 html.light #genre-tooltip {
   background: rgba(248,248,248,0.88);
   backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  border-color: rgba(0,0,0,0.08);
 }
 
 /* ── Chips & glass-dark buttons ── */
@@ -4041,7 +4054,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   border-radius: var(--radius-btn);
-  border: none;
+  border: 1px solid rgba(255,255,255,0.08);
   overflow: hidden;
   pointer-events: none;
 }
@@ -4142,7 +4155,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
            separator" illusion without any double-line overlap.
    EXIT  — fades out immediately, margin resets. */
 #topbar-dropdown-sep {
-  height: 1px; background: #191919;
+  height: 1px; background: rgba(255,255,255,0.08);
   margin: 0 0; opacity: 0; filter: blur(4px);
   /* EXIT: fade+blur out */
   transition: opacity 200ms var(--ease-in) 0ms,
@@ -4193,7 +4206,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
   content: '';
   position: absolute;
   bottom: 0; left: var(--space-4); right: var(--space-4);
-  height: 1px; background: #191919;
+  height: 1px; background: rgba(255,255,255,0.08);
 }
 .ts-genre-card-name {
   font-size: var(--text-base); font-weight: 500;
@@ -4227,7 +4240,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
   transition: background 100ms ease-in 0ms;
 }
 #topbar-search.search-open #ts-tabs-sep {
-  background: #191919;
+  background: rgba(255,255,255,0.08);
   transition: background 200ms ease-out 280ms;
 }
 #ts-filter-btn {
