@@ -1215,8 +1215,6 @@ html.light .newsletter-card { background: transparent; }
   0%   { opacity: 1; filter: blur(0px); }
   100% { opacity: 0; filter: blur(24px); }
 }
-.panel-cookie.accepting,
-.panel-support.accepting,
 #view-support.accepting {
   animation: cookie-dismiss 320ms var(--ease-out) forwards;
   pointer-events: none;
@@ -2412,7 +2410,7 @@ html.light .newsletter-card { background: transparent; }
 .explore-show-row:hover::before { background: rgba(255,255,255,0.08); }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
-.explore-show-title { font-size:var(--text-show); font-weight:400; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.explore-show-title { font-size:var(--text-show); font-weight:400; line-height:1; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 
 /* ============================================================
    TOOL PANEL — base class for floating utility windows
@@ -4338,7 +4336,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
 }
 .ts-sched-daytab:hover { background: rgba(255,255,255,0.08); color: var(--text-secondary); }
 .ts-sched-daytab.active { background: rgba(255,255,255,0.08); color: var(--text-primary); }
-.ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-4) 0; }
+.ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
 .ts-sched-row {
   display: flex; align-items: center; gap: var(--space-4);
   padding: var(--space-2) var(--space-4);
@@ -6542,15 +6540,15 @@ function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.d
 function acceptCookies() {
   const el = document.getElementById('panel-cookie');
   if (!el) return;
-  el.classList.add('accepting');
-  setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); FWM.scheduleResolve(); }, 360);
+  el.classList.add('closing');
+  setTimeout(() => { el.style.display = 'none'; el.classList.remove('closing'); FWM.scheduleResolve(); }, 300);
 }
 
 function closeSupportPanel() {
   const el = document.getElementById('panel-support');
   if (!el) return;
-  el.classList.add('accepting');
-  setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); FWM.scheduleResolve(); }, 360);
+  el.classList.add('closing');
+  setTimeout(() => { el.style.display = 'none'; el.classList.remove('closing'); FWM.scheduleResolve(); }, 300);
 }
 
 function openDonatePopup() {
@@ -7559,17 +7557,19 @@ function initScrollFade(el, fadeSize, topSafe = 0) {
   check();
 }
 
-function initHScrollFade(el, fadeSize) {
+function initHScrollFade(el, fadeSize, offset) {
+  const off = offset || 0;
   const apply = () => {
     const atL = el.scrollLeft <= 2;
     const atR = el.scrollWidth - el.scrollLeft <= el.clientWidth + 2;
+    const fEnd = off + fadeSize;
     let mask = '';
     if (!atL && !atR) {
-      mask = `linear-gradient(to right,transparent 0%,black ${fadeSize}px,black calc(100% - ${fadeSize}px),transparent 100%)`;
+      mask = `linear-gradient(to right,transparent ${off}px,black ${fEnd}px,black calc(100% - ${fEnd}px),transparent calc(100% - ${off}px))`;
     } else if (!atL) {
-      mask = `linear-gradient(to right,transparent 0%,black ${fadeSize}px,black 100%)`;
+      mask = `linear-gradient(to right,transparent ${off}px,black ${fEnd}px,black 100%)`;
     } else if (!atR) {
-      mask = `linear-gradient(to right,black calc(100% - ${fadeSize}px),transparent 100%)`;
+      mask = `linear-gradient(to right,black calc(100% - ${fEnd}px),transparent calc(100% - ${off}px))`;
     }
     el.style.maskImage = mask;
     el.style.webkitMaskImage = mask;
@@ -9215,7 +9215,7 @@ function _renderTopbarShows(q) {
       ${coverEl}
       <div style="display:flex;flex-direction:column;gap:var(--space-3);min-width:0;flex:1;">
         <span class="explore-show-title" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.title}</span>
-        <span style="font-size:var(--text-base);color:var(--text-secondary);">
+        <span style="font-size:var(--text-base);line-height:1;color:var(--text-secondary);">
           <span onclick="event.stopPropagation();closeTopbarSearch();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color='';">${s.host}</span>
         </span>
         ${contextHint}
@@ -9356,7 +9356,7 @@ function _renderTopbarSchedule() {
   requestAnimationFrame(() => {
     initScrollFade(container, 48);
     const tabsEl = headerEl && headerEl.querySelector('.ts-sched-daytabs');
-    if (tabsEl) initHScrollFade(tabsEl, 16);
+    if (tabsEl) initHScrollFade(tabsEl, 16, 16);
   });
 }
 
