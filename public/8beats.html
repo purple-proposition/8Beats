@@ -1221,6 +1221,85 @@ html.light .newsletter-card { background: transparent; }
   pointer-events: none;
 }
 
+/* ── Support / Donate panel ── */
+.panel-support {
+  pointer-events: all;
+  border: 1px solid #191919 !important;
+  background: rgba(0,0,0,0.40) !important;
+  backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
+}
+.panel-support-header {
+  display: flex; align-items: center; gap: var(--space-2);
+  font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.panel-support-header svg { width: 14px; height: 14px; stroke: var(--color-live); fill: none; flex-shrink: 0; }
+.panel-support-amounts {
+  display: flex; gap: var(--space-2);
+}
+.panel-support-amt {
+  flex: 1; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.08); border: 1px solid #191919;
+  border-radius: var(--radius-control); cursor: pointer;
+  font-family: var(--font); font-size: var(--text-base); font-weight: 500;
+  color: var(--text-primary);
+  transition: background var(--dur-short) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover);
+}
+.panel-support-amt:hover { background: rgba(255,255,255,0.16); border-color: #363636; }
+.panel-support-note {
+  font-size: var(--text-sm); color: var(--text-disabled);
+  text-align: center; letter-spacing: .02em;
+}
+
+/* ── Donate popup overlay ── */
+#donate-popup {
+  position: fixed; inset: 0; z-index: var(--z-top);
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-4);
+}
+#donate-popup-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.60);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+#donate-popup-card {
+  position: relative; z-index: 1;
+  width: 320px;
+  background: rgba(0,0,0,0.40);
+  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  border: 1px solid #191919; border-radius: var(--radius-sm);
+  padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4);
+}
+#donate-popup-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+#donate-popup-title {
+  display: flex; align-items: center; gap: var(--space-2);
+  font-size: var(--text-base); font-weight: 500; color: var(--text-primary);
+}
+#donate-popup-title svg { width: 16px; height: 16px; stroke: var(--color-live); fill: none; }
+#donate-popup-amounts {
+  display: flex; gap: var(--space-2);
+}
+.donate-amt {
+  flex: 1; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.08); border: 1px solid #191919;
+  border-radius: var(--radius-control); cursor: pointer;
+  font-family: var(--font); font-size: var(--text-md); font-weight: 500;
+  color: var(--text-primary);
+  transition: background var(--dur-short) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover);
+}
+.donate-amt:hover { background: rgba(255,255,255,0.16); border-color: #363636; }
+#donate-popup-note {
+  font-size: var(--text-sm); color: var(--text-disabled);
+  text-align: center;
+}
+
 /* ── Player ── */
 /* ── player-wrap: positioning context ─────────────────────────────────────────
  * position:fixed ancre le composant en bas à droite. pointer-events:none laisse
@@ -1608,12 +1687,12 @@ html.light .newsletter-card { background: transparent; }
 .vol-btn-face {
   width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.08); border: none; border-radius: var(--radius-control); cursor: pointer;
+  background: transparent; border: none; border-radius: var(--radius-control); cursor: pointer;
   color: var(--icon-tertiary); padding: 0;
   position: relative; z-index: 1; /* above .vol-popup-glass */
   transition: background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out);
 }
-.vol-btn-face:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
+.vol-btn-face:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 /* SVGs/icons stacked via JS initVolIcons — position:absolute, opacity crossfade.
@@ -3061,8 +3140,8 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   border-bottom: 1px solid var(--border-subtle);
   margin-bottom: 0;
 }
-.tracklist-header-num  { font-size: var(--text-xs); color: var(--text-disabled); min-width: 24px; flex-shrink: 0; letter-spacing: .04em; }
-.tracklist-header-name { font-size: var(--text-xs); color: var(--text-disabled); flex: 1; min-width: 0; letter-spacing: 1px; text-transform: uppercase; font-weight: 400; }
+.tracklist-header-num  { font-size: var(--text-sm); color: var(--text-disabled); min-width: 24px; flex-shrink: 0; letter-spacing: .04em; }
+.tracklist-header-name { font-size: var(--text-sm); color: var(--text-disabled); flex: 1; min-width: 0; letter-spacing: 1px; text-transform: uppercase; font-weight: 400; }
 .tracklist-header-ts   { width: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-disabled); }
 .tracklist-header-ts svg { width: 13px; height: 13px; stroke: currentColor; fill: none; display: block; }
 
@@ -3970,8 +4049,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 
 /* Category tabs — same enter/exit phasing as the shows list */
 #ts-tabs {
-  display: flex; gap: var(--space-2);
-  padding: var(--space-3) var(--space-4) var(--space-2);
+  display: flex; align-items: stretch; gap: 0;
+  padding: 0;
   opacity: 0; filter: blur(6px); transform: translateY(6px);
   transition: opacity   100ms ease-in 0ms,
               filter    100ms ease-in 0ms,
@@ -3983,16 +4062,28 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
               filter    300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms,
               transform 300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms;
 }
+#ts-filter-btn {
+  font-family: var(--font); font-size: var(--text-base); font-weight: 400;
+  color: var(--text-tertiary); background: none; border: none;
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer; margin-left: auto;
+  display: none; align-items: center; gap: var(--space-2);
+  transition: color var(--dur-micro) var(--ease-hover);
+  white-space: nowrap;
+}
+#ts-filter-btn:hover { color: var(--text-secondary); }
+#ts-filter-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 .ts-tab {
-  flex: 1; height: 36px; border: none; border-radius: var(--radius-control);
-  display: flex; align-items: center; justify-content: center; gap: 7px;
+  flex: none; height: auto; border: none; border-radius: 0;
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-3);
   background: transparent; color: var(--text-tertiary);
   font-family: var(--font); font-size: var(--text-base); cursor: pointer;
-  transition: background var(--dur-short) var(--ease-hover),
-              color var(--dur-micro) var(--ease-hover);
+  white-space: nowrap;
+  transition: color var(--dur-micro) var(--ease-hover);
 }
-.ts-tab:hover { background: rgba(255,255,255,0.04); color: var(--text-secondary); }
-.ts-tab.active { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+.ts-tab:hover { background: transparent; color: var(--text-secondary); }
+.ts-tab.active { background: transparent; color: var(--text-primary); cursor: default; }
 .ts-tab svg { width: 14px; height: 14px; stroke: currentColor; fill: none;
               stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
               flex-shrink: 0; display: block; }
@@ -4267,6 +4358,10 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
               <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
               Schedule
             </button>
+            <button id="ts-filter-btn" onclick="closeTopbarSearch();openExplore()">
+              <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+              Filters
+            </button>
           </div>
           <div id="topbar-dropdown-shows"></div>
           <div id="topbar-dropdown-residents" style="display:none;"></div>
@@ -4286,10 +4381,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
       </button>
       <div id="ham-menu" role="menu">
         <div id="ham-menu-inner">
-        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openSchedule()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Schedule
-        </button>
         <button class="ham-item" role="menuitem" onclick="closeHamMenu();openAbout()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           About
@@ -4816,6 +4907,47 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   <p>We use cookies to keep the stream running and understand how you listen. No tracking, no third parties.</p>
   <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="acceptCookies()">Accept</button>
 </aside>
+
+<aside class="panel panel-support" id="panel-support">
+  <div class="panel-header">
+    <div class="panel-support-header">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Keep the beat going
+    </div>
+    <button class="panel-close" onclick="closeSupportPanel()" aria-label="Close">
+      <i data-lucide="x" style="stroke:currentColor;fill:none;display:block"></i>
+    </button>
+  </div>
+  <p>Support 8Beats Radio — completely independent.</p>
+  <div class="panel-support-amounts">
+    <button class="panel-support-amt" onclick="donatePayPal(3)">€3</button>
+    <button class="panel-support-amt" onclick="donatePayPal(5)">€5</button>
+    <button class="panel-support-amt" onclick="donatePayPal(10)">€10</button>
+  </div>
+  <p class="panel-support-note">Secure payment via PayPal</p>
+</aside>
+
+<!-- DONATE POPUP -->
+<div id="donate-popup" style="display:none;">
+  <div id="donate-popup-backdrop" onclick="closeDonatePopup()"></div>
+  <div id="donate-popup-card">
+    <div id="donate-popup-header">
+      <div id="donate-popup-title">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        One-time support
+      </div>
+      <button class="panel-close" onclick="closeDonatePopup()" aria-label="Close">
+        <i data-lucide="x" style="stroke:currentColor;fill:none;display:block"></i>
+      </button>
+    </div>
+    <div id="donate-popup-amounts">
+      <button class="donate-amt" onclick="donatePayPal(3)">€3</button>
+      <button class="donate-amt" onclick="donatePayPal(5)">€5</button>
+      <button class="donate-amt" onclick="donatePayPal(10)">€10</button>
+    </div>
+    <p id="donate-popup-note">Secure payment via PayPal</p>
+  </div>
+</div>
 
 <!-- SCHEDULE MODAL (Explorer pattern — centered, no title, click-outside closes) -->
 <div id="schedule" role="dialog" aria-label="Schedule" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;">
@@ -6576,7 +6708,33 @@ function acceptCookies() {
   const el = document.getElementById('panel-cookie');
   if (!el) return;
   el.classList.add('accepting');
-  setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); }, 360);
+  setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); FWM.scheduleResolve(); }, 360);
+}
+
+function closeSupportPanel() {
+  const el = document.getElementById('panel-support');
+  if (!el) return;
+  el.classList.add('accepting');
+  setTimeout(() => { el.style.display = 'none'; el.classList.remove('accepting'); FWM.scheduleResolve(); }, 360);
+  try { localStorage.setItem('8beats-support-dismissed', '1'); } catch {}
+}
+
+function openDonatePopup() {
+  const popup = document.getElementById('donate-popup');
+  if (!popup) return;
+  popup.style.display = 'flex';
+  lucide.createIcons({ nodes: [popup] });
+}
+
+function closeDonatePopup() {
+  const popup = document.getElementById('donate-popup');
+  if (popup) popup.style.display = 'none';
+}
+
+const PAYPAL_URL = 'https://paypal.me/8beatsradio/';
+function donatePayPal(amount) {
+  closeDonatePopup();
+  window.open(PAYPAL_URL + amount + 'EUR', '_blank', 'noopener');
 }
 
 /* ── Playlist ── */
@@ -7111,21 +7269,9 @@ const HOME_SECTIONS = [
 const HOME_INTERSTITIALS = {
   'pitch-card': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="pitch-card">
-      <svg class="pitch-deco pitch-deco-left" width="72" height="90" viewBox="0 0 9 11" fill="var(--text-secondary)" shape-rendering="crispEdges">
-        <rect x="3" y="0" width="3" height="3"/><rect x="4" y="3" width="1" height="1"/>
-        <rect x="2" y="4" width="5" height="3"/><rect x="0" y="4" width="2" height="2"/>
-        <rect x="7" y="4" width="2" height="2"/><rect x="2" y="7" width="2" height="4"/>
-        <rect x="5" y="7" width="2" height="4"/>
-      </svg>
-      <svg class="pitch-deco pitch-deco-right" width="72" height="90" viewBox="0 0 9 11" fill="var(--text-secondary)" shape-rendering="crispEdges">
-        <rect x="3" y="0" width="2" height="7"/><rect x="5" y="0" width="4" height="2"/>
-        <rect x="5" y="2" width="2" height="3"/><rect x="1" y="6" width="4" height="3"/>
-        <rect x="5" y="5" width="4" height="3"/>
-      </svg>
       <div class="pitch-inner">
         <span class="label">Open to creators</span>
         <h2 class="pitch-title">Join the party</h2>
-        <p class="pitch-body">Have an idea for a new show or podcast that you'd like to share with a global audience? We're all ears!</p>
         <a href="#" onclick="event.preventDefault();openProposal()" class="btn btn-secondary">
           <i data-lucide="clipboard-list" style="fill:none;display:block"></i>
           Show proposal
@@ -7138,7 +7284,6 @@ const HOME_INTERSTITIALS = {
     <div class="newsletter-card">
       <div class="newsletter-inner">
         <h2 class="newsletter-title">Don't sleep on it</h2>
-        <p class="newsletter-desc">New shows every week. Stay in the loop — get the latest from the radio straight to your inbox.</p>
         <form class="newsletter-form" onsubmit="newsletterSubmit(event)">
           <input class="newsletter-input" type="email" placeholder="Your e-mail address" required id="newsletter-input">
           <button class="btn btn-secondary" type="submit">
@@ -7155,27 +7300,10 @@ const HOME_INTERSTITIALS = {
   </div>`,
   'keep-beat': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="keepbeat-card">
-      <svg class="keepbeat-deco keepbeat-deco-left" width="110" height="96" viewBox="0 0 9 8" fill="var(--text-primary)" shape-rendering="crispEdges">
-        <rect x="1" y="0" width="3" height="1"/><rect x="5" y="0" width="3" height="1"/>
-        <rect x="0" y="1" width="9" height="3"/>
-        <rect x="1" y="4" width="7" height="1"/>
-        <rect x="2" y="5" width="5" height="1"/>
-        <rect x="3" y="6" width="3" height="1"/>
-        <rect x="4" y="7" width="1" height="1"/>
-      </svg>
-      <svg class="keepbeat-deco keepbeat-deco-right" width="130" height="90" viewBox="0 0 13 9" fill="var(--text-primary)" shape-rendering="crispEdges">
-        <rect x="2" y="0" width="9" height="1"/>
-        <rect x="0" y="1" width="13" height="2"/>
-        <rect x="0" y="3" width="4" height="2"/><rect x="9" y="3" width="4" height="2"/>
-        <rect x="0" y="5" width="13" height="2"/>
-        <rect x="2" y="7" width="2" height="2"/><rect x="5" y="7" width="3" height="1"/>
-        <rect x="9" y="7" width="2" height="2"/>
-      </svg>
       <div class="pitch-inner">
         <span class="label">Support independent radio</span>
         <h2 class="keepbeat-title">Keep the beat going</h2>
-        <p class="pitch-body">Completely independent, we need you to help us build the ultimate destination for both gamers and music enthusiasts.</p>
-        <a href="#" onclick="document.querySelector('[data-nav=\\'support\\']')?.click();return false;" class="btn btn-secondary">
+        <a href="#" onclick="event.preventDefault();openDonatePopup()" class="btn btn-secondary">
           <i data-lucide="heart" style="fill:none;display:block"></i>
           Support us
         </a>
@@ -7385,16 +7513,21 @@ function openShow(key) {
   const home     = document.getElementById('view-home');
   const show     = document.getElementById('view-show');
   const artistEl = document.getElementById('view-artist');
+  const latestEl = document.getElementById('view-latest');
   const fromArtist = artistEl.classList.contains('active');
-  showPreviousView = fromArtist ? 'artist' : 'home';
+  const fromLatest = !fromArtist && latestEl && latestEl.classList.contains('active');
+  showPreviousView = fromArtist ? 'artist' : fromLatest ? 'latest' : 'home';
 
-  const fromEl = fromArtist ? artistEl : home;
+  const fromEl = fromArtist ? artistEl : fromLatest ? latestEl : home;
   fromEl.style.opacity = '0';
   fromEl.style.pointerEvents = 'none';
   setTimeout(() => {
     if (fromArtist) {
       artistEl.classList.remove('visible');
       artistEl.classList.remove('active');
+    } else if (fromLatest) {
+      latestEl.classList.remove('visible');
+      latestEl.classList.remove('active');
     } else {
       home.style.display = 'none';
     }
@@ -7452,8 +7585,10 @@ function closeShow() {
   const home     = document.getElementById('view-home');
   const show     = document.getElementById('view-show');
   const artistEl = document.getElementById('view-artist');
+  const latestEl = document.getElementById('view-latest');
   show.classList.remove('visible');
   const goToArtist = showPreviousView === 'artist';
+  const goToLatest = showPreviousView === 'latest';
   setTimeout(() => {
     show.classList.remove('active');
     if (goToArtist) {
@@ -7468,6 +7603,17 @@ function closeShow() {
       wordmark.onclick = (e) => { e.preventDefault(); closeArtist(); };
       wordmark.title = 'Back';
       if (currentArtistName) history.replaceState({ artist: currentArtistName }, '', '#artist/' + encodeURIComponent(currentArtistName));
+    } else if (goToLatest) {
+      latestEl.classList.add('active');
+      latestEl.style.opacity = '0';
+      latestEl.style.pointerEvents = '';
+      requestAnimationFrame(() => {
+        latestEl.style.opacity = '';
+        latestEl.classList.add('visible');
+      });
+      const wordmark = document.querySelector('.nav-wordmark');
+      wordmark.onclick = (e) => { e.preventDefault(); closeLatestShows(); };
+      wordmark.title = 'Back';
     } else {
       home.style.display = '';
       home.style.pointerEvents = '';
@@ -9053,9 +9199,11 @@ function openTopbarSearch() {
   const residentsEl = document.getElementById('topbar-dropdown-residents');
   const scheduleEl  = document.getElementById('topbar-dropdown-schedule');
   const showsEl     = document.getElementById('topbar-dropdown-shows');
+  const filterBtn   = document.getElementById('ts-filter-btn');
   if (residentsEl) residentsEl.style.display = 'none';
   if (scheduleEl)  scheduleEl.style.display  = 'none';
   if (showsEl)     showsEl.style.display     = '';
+  if (filterBtn)   filterBtn.style.display   = 'flex';
   _renderTopbarShows('');
   // initScrollFade after grid expansion settles (420ms) + small buffer
   setTimeout(() => {
@@ -9300,10 +9448,13 @@ function _selectTopbarSchedDay(dow) {
   const residentsEl = document.getElementById('topbar-dropdown-residents');
   const scheduleEl  = document.getElementById('topbar-dropdown-schedule');
 
+  const filterBtn = document.getElementById('ts-filter-btn');
+
   function showPane(name) {
     if (showsEl)     showsEl.style.display     = name === 'shows'     ? '' : 'none';
     if (residentsEl) residentsEl.style.display = name === 'residents' ? '' : 'none';
     if (scheduleEl)  scheduleEl.style.display  = name === 'schedule'  ? '' : 'none';
+    if (filterBtn)   filterBtn.style.display   = name === 'shows'     ? 'flex' : 'none';
     if (name === 'residents') {
       _renderTopbarResidents(document.getElementById('topbar-search-input')?.value || '');
     }
@@ -9559,6 +9710,11 @@ const FWM = (() => {
     register({
       id: 'cookies', el: document.getElementById('panel-cookie'),
       handleEl:      null,
+      corner: 'bottom-right', priority: 10,  draggable: false,
+    });
+    register({
+      id: 'support', el: document.getElementById('panel-support'),
+      handleEl:      null,
       corner: 'bottom-left',  priority: 10,  draggable: false,
     });
     // Initial placement — no transition, prevents flash
@@ -9653,6 +9809,15 @@ function syncSettingsShortcuts() {
 }
 
 FWM.init();
+
+/* Hide support panel if user already dismissed it */
+try {
+  if (localStorage.getItem('8beats-support-dismissed')) {
+    const sp = document.getElementById('panel-support');
+    if (sp) sp.style.display = 'none';
+  }
+} catch {}
+lucide.createIcons({ nodes: [document.getElementById('panel-support'), document.getElementById('panel-cookie')].filter(Boolean) });
 
 /* ── Layout preferences — persist player + menu corner across page loads ── */
 const _LAYOUT_KEY = '8beats-layout';
