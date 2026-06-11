@@ -2433,7 +2433,7 @@ html.light .newsletter-card { background: transparent; }
 .explore-show-row::before {
   content: '';
   position: absolute;
-  inset: -8px 0;
+  inset: -8px;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
@@ -4190,7 +4190,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
     transform 300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms;
 }
 #topbar-dropdown-shows .explore-show-row { gap: 16px; margin-left: 4px; margin-right: 0; padding-left: 12px; padding-right: 8px; }
-#topbar-dropdown-shows .explore-show-row::before { inset: 2px 4px; }
+#topbar-dropdown-shows .explore-show-row::before { inset: 0; }
 #topbar-dropdown-shows::-webkit-scrollbar { width: 4px; }
 #topbar-dropdown-shows::-webkit-scrollbar-track { background: transparent; }
 #topbar-dropdown-shows::-webkit-scrollbar-thumb { background: #333333; border-radius: 2px; }
@@ -6021,14 +6021,14 @@ function renderShows(list, q) {
     }
     return `
     <div class="explore-show-row" role="button" tabindex="0" onclick="closeExplore();openShow('${s.title.replace(/'/g, "\\'")}')">
-      <div style="display:flex;flex-direction:column;gap:12px;min-width:0;flex:1;">
+      <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
         <span class="explore-show-title">${s.title}</span>
         <span style="font-size:var(--text-base);color:var(--text-secondary);"><span onclick="event.stopPropagation();closeExplore();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color=''">${s.host}</span> · ${formatDate(s.date)}</span>
         ${contextHint}
       </div>
     </div>
   `}).join('');
-  return `<div style="display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-5) 0;">${rows}</div>`;
+  return `<div style="display:flex;flex-direction:column;gap:12px;padding:var(--space-5) 0;">${rows}</div>`;
 }
 function renderResidents(list) {
   return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-5);padding:var(--space-5);">` + list.map(r => `
@@ -9638,7 +9638,7 @@ function _renderTopbarShows(q) {
       : '';
     return `<div class="explore-show-row" role="button" tabindex="0" onclick="closeTopbarSearch();openShow('${s.title.replace(/'/g, "\\'")}')">
       ${coverEl}
-      <div style="display:flex;flex-direction:column;gap:12px;min-width:0;flex:1;">
+      <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
         <span class="explore-show-title" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.title}</span>
         <span style="font-size:var(--text-base);color:var(--text-secondary);">
           <span onclick="event.stopPropagation();closeTopbarSearch();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color='';">${s.host}</span>
@@ -9648,7 +9648,7 @@ function _renderTopbarShows(q) {
       ${newBadge}
     </div>`;
   }).join('');
-  container.innerHTML = genreCardHtml + `<div style="display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-4) 0;">${rows}</div>`;
+  container.innerHTML = genreCardHtml + `<div style="display:flex;flex-direction:column;gap:12px;padding:var(--space-4) 0;">${rows}</div>`;
   initScrollFade(container, 48);
 }
 
