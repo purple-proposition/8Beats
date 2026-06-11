@@ -1112,7 +1112,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   line-height: 1.1;
 }
 .pitch-body {
-  font-size: var(--text-base); color: var(--text-secondary); line-height: 1.4; letter-spacing: -0.2px;
+  font-size: var(--text-md); color: var(--text-secondary); line-height: 1.4; letter-spacing: -0.2px;
   max-width: 500px;
 }
 .pitch-deco {
@@ -1133,9 +1133,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 html.light .keepbeat-card { background: transparent; }
 .keepbeat-title {
-  font-size: clamp(28px, 3.5vw, 44px); font-weight: 700;
-  letter-spacing: 3px; text-transform: uppercase; color: var(--text-primary);
-  line-height: 1.1;
+  font-family: 'Alpha Lyrae', var(--font);
+  font-size: 32px; font-weight: 400;
+  letter-spacing: normal; text-transform: none; color: var(--text-primary);
+  line-height: 1.2;
 }
 .keepbeat-deco {
   position: absolute; top: 50%; transform: translateY(-50%);
@@ -1476,6 +1477,7 @@ html.light .newsletter-card { background: transparent; }
   border-radius: var(--radius-control);
   cursor: pointer; white-space: nowrap;
   font-family: var(--font); font-size: var(--text-sm); font-weight: 400;
+  text-transform: uppercase; letter-spacing: .06em;
   color: var(--text-secondary);
   transition: border-color var(--dur-micro) var(--ease-hover),
               background var(--dur-short) var(--ease-hover),
@@ -2720,7 +2722,7 @@ html.light .newsletter-card { background: transparent; }
 .schedule-slot.is-live .schedule-slot-time { color: var(--text-primary); }
 .schedule-slot-body { flex: 1; min-width: 0; }
 .schedule-slot-title {
-  display: flex; align-items: center; gap: var(--space-2); min-width: 0;
+  display: flex; align-items: center; gap: 16px; min-width: 0;
   font-size: var(--text-md); font-weight: 400; color: var(--text-primary);
 }
 .schedule-slot-title .slot-title-text {
@@ -3718,7 +3720,7 @@ body { padding-top: 24px; }
   border-color: transparent; color: var(--text-secondary);
 }
 .ham-social-row .icon-btn--ghost:hover { background: rgba(255,255,255,0.16); border-color: transparent; color: var(--text-primary); }
-.ham-social-row .icon-btn--ghost svg { width: 16px; height: 16px; }
+.ham-social-row .icon-btn--ghost svg { width: 14px; height: 14px; }
 
 /* ── Labels ── */
 .nav-label {
@@ -4133,26 +4135,22 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #ts-filter-btn svg, #ts-filter-btn i { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 /* ── Topbar inline genre filter row ── */
 #ts-filter-row {
-  display: none; gap: var(--space-2);
+  display: none; flex-direction: column; gap: var(--space-2);
   padding: 0 var(--space-4) var(--space-3);
+}
+.ts-filter-section {
+  display: flex; align-items: center; gap: var(--space-3); min-width: 0;
+}
+.ts-filter-section-label {
+  font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-tertiary); font-weight: 500; flex-shrink: 0; width: 44px;
+}
+.ts-filter-chips {
+  display: flex; gap: var(--space-2);
   overflow-x: auto; overflow-y: hidden;
-  scrollbar-width: none;
+  scrollbar-width: none; flex: 1;
 }
-#ts-filter-row::-webkit-scrollbar { display: none; }
-.ts-filter-chip {
-  flex-shrink: 0;
-  padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-btn);
-  background: transparent;
-  font-family: var(--font); font-size: var(--text-sm);
-  color: var(--text-secondary); cursor: pointer;
-  transition: background var(--dur-micro) var(--ease-hover),
-              color var(--dur-micro) var(--ease-hover),
-              border-color var(--dur-micro) var(--ease-hover);
-}
-.ts-filter-chip:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
-.ts-filter-chip.active { background: rgba(255,255,255,0.08); color: var(--text-primary); border-color: var(--border-hover); }
+.ts-filter-chips::-webkit-scrollbar { display: none; }
 .ts-tab {
   flex: none; height: auto; border: none; border-radius: 0;
   display: flex; align-items: center; gap: var(--space-2);
@@ -4163,7 +4161,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   transition: color var(--dur-micro) var(--ease-hover);
 }
 .ts-tab::before {
-  content: ''; position: absolute; inset: 4px 2px;
+  content: ''; position: absolute; inset: 2px 8px;
   border-radius: var(--radius-control); background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
@@ -4300,7 +4298,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   background: rgba(255,255,255,0.08);
   border-radius: var(--radius-control);
   padding: 2px 8px;
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-family: var(--font);
   white-space: nowrap;
 }
@@ -5000,8 +4998,10 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 <aside class="panel panel-cookie glass" id="panel-cookie">
   <div class="orb orb-3"></div>
   <div class="panel-header">
-    <i data-lucide="cookie" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
-    <span class="label">Cookies</span>
+    <div style="display:flex;align-items:center;gap:var(--space-2);">
+      <i data-lucide="cookie" style="width:14px;height:14px;stroke:currentColor;fill:none;display:block;flex-shrink:0;"></i>
+      <span class="label">Cookies</span>
+    </div>
   </div>
   <p>We use cookies to keep the stream running and understand how you listen. No tracking, no third parties.</p>
   <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="acceptCookies()">Accept</button>
@@ -9319,12 +9319,7 @@ function closeTopbarSearch() {
   document.removeEventListener('click', _topbarSearchOutside);
   const inp = document.getElementById('topbar-search-input');
   if (inp) { inp.value = ''; inp.blur(); }
-  // reset filters
-  tsActiveGenres.clear();
-  const filterRow = document.getElementById('ts-filter-row');
-  if (filterRow) filterRow.style.display = 'none';
-  const filterBtn = document.getElementById('ts-filter-btn');
-  if (filterBtn) filterBtn.style.color = '';
+  _resetTopbarFilters();
 }
 
 function _topbarSearchOutside(e) {
@@ -9332,26 +9327,40 @@ function _topbarSearchOutside(e) {
 }
 
 const tsActiveGenres = new Set();
+let tsActiveTime = null;
 
 function toggleTopbarFilters() {
   const row = document.getElementById('ts-filter-row');
   const open = row.style.display !== 'flex';
   row.style.display = open ? 'flex' : 'none';
-  if (open) {
-    _buildTopbarFilters();
-    initHScrollFade(row, 32);
-  }
+  if (open) _buildTopbarFilters();
   const btn = document.getElementById('ts-filter-btn');
   if (btn) btn.style.color = open ? 'var(--text-primary)' : '';
 }
 
 function _buildTopbarFilters() {
   const row = document.getElementById('ts-filter-row');
-  row.innerHTML = GENRES.map(g => {
+  const genreChips = GENRES.map(g => {
     const active = tsActiveGenres.has(g.toLowerCase());
-    return `<button class="ts-filter-chip${active ? ' active' : ''}" onclick="event.stopPropagation();_toggleTsGenre('${g.replace(/'/g,"\\'")}')">${g}</button>`;
+    return `<button class="chip${active ? ' chip--active' : ''}" onclick="event.stopPropagation();_toggleTsGenre('${g.replace(/'/g,"\\'")}')">${g}</button>`;
   }).join('');
-  initHScrollFade(row, 32);
+  const timeChips = TIME_RANGES.map((tr, i) => {
+    const active = tsActiveTime === i;
+    return `<button class="chip${active ? ' chip--active' : ''}" onclick="event.stopPropagation();_toggleTsTime(${i})">${tr.label}</button>`;
+  }).join('');
+  row.innerHTML = `
+    <div class="ts-filter-section">
+      <span class="ts-filter-section-label">Genre</span>
+      <div class="ts-filter-chips" id="ts-fg">${genreChips}</div>
+    </div>
+    <div class="ts-filter-section">
+      <span class="ts-filter-section-label">Time</span>
+      <div class="ts-filter-chips" id="ts-ft">${timeChips}</div>
+    </div>`;
+  requestAnimationFrame(() => {
+    initHScrollFade(document.getElementById('ts-fg'), 32);
+    initHScrollFade(document.getElementById('ts-ft'), 32);
+  });
 }
 
 function _toggleTsGenre(g) {
@@ -9359,6 +9368,20 @@ function _toggleTsGenre(g) {
   if (tsActiveGenres.has(key)) tsActiveGenres.delete(key); else tsActiveGenres.add(key);
   _buildTopbarFilters();
   handleTopbarSearch(document.getElementById('topbar-search-input')?.value || '');
+}
+
+function _toggleTsTime(i) {
+  tsActiveTime = tsActiveTime === i ? null : i;
+  _buildTopbarFilters();
+  handleTopbarSearch(document.getElementById('topbar-search-input')?.value || '');
+}
+
+function _resetTopbarFilters() {
+  tsActiveGenres.clear(); tsActiveTime = null;
+  const row = document.getElementById('ts-filter-row');
+  if (row) row.style.display = 'none';
+  const btn = document.getElementById('ts-filter-btn');
+  if (btn) btn.style.color = '';
 }
 
 function handleTopbarSearch(q) {
@@ -9394,6 +9417,7 @@ function _renderTopbarShows(q) {
     (s.games && s.games.some(ga => ga.toLowerCase().includes(q)))
   );
   if (tsActiveGenres.size) list = list.filter(s => s.genres.some(g => tsActiveGenres.has(g.toLowerCase())));
+  if (tsActiveTime !== null) list = list.filter(s => TIME_RANGES[tsActiveTime].fn(s.date));
   if (!list.length) {
     container.innerHTML = genreCardHtml + '<p class="ts-no-results">No results</p>';
     initScrollFade(container, 48);
@@ -9590,6 +9614,7 @@ function _selectTopbarSchedDay(dow) {
     if (residentsEl) residentsEl.style.display = name === 'residents' ? '' : 'none';
     if (scheduleEl)  scheduleEl.style.display  = name === 'schedule'  ? '' : 'none';
     if (filterBtn)   filterBtn.style.display   = name === 'shows'     ? 'flex' : 'none';
+    if (name !== 'shows') _resetTopbarFilters();
     if (name === 'residents') {
       _renderTopbarResidents(document.getElementById('topbar-search-input')?.value || '');
     }
