@@ -877,7 +877,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 .hero-inner h1 { font-size: clamp(32px,5.5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; color: var(--text-primary); }
 .hero-inner p  { font-size: var(--text-md); color: var(--text-secondary); line-height: 1.6; }
 
-.hero-actions  { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-top: 0; }
+.hero-actions  { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-top: 0; }
 .hero-actions > :first-child { justify-self: end; }
 .hero-actions > :last-child  { justify-self: start; }
 
@@ -949,10 +949,17 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .btn-primary [data-lucide="play"] { fill: var(--action-primary-fg) !important; stroke: none !important; }
 .btn-primary:hover { opacity: .88; }
 .btn:disabled, .btn[disabled] { opacity: 0.4 !important; cursor: not-allowed !important; pointer-events: none; }
-/* ── Secondary: dark-filled bg + primary text ── */
-.btn-secondary { background: #171717; color: #A1A1A1; border: none; transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
+/* ── Secondary: glass dark — same surface as search bar ── */
+.btn-secondary {
+  background: rgba(0,0,0,0.40);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid #191919;
+  color: var(--text-secondary);
+  transition: background var(--dur-short) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
 .btn-secondary svg { stroke: currentColor; fill: none; }
-.btn-secondary:hover, .btn-secondary:active { background: #242424; color: var(--text-primary); }
+.btn-secondary:hover, .btn-secondary:active { background: rgba(255,255,255,0.08); border-color: #363636; color: var(--text-primary); }
 /* ── Tertiary: ghost — transparent, border only, muted text, 32px ── */
 .btn-tertiary { height: 32px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
 .btn-tertiary svg { stroke: currentColor; fill: none; }
@@ -1035,7 +1042,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-play {
   width: 68px; height: 68px;
   pointer-events: all;
+  background: rgba(255,255,255,0.08);
+  color: var(--text-primary);
 }
+.card-play:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .card-play svg { width: 20px; height: 20px; }
 /* Keep play icon dimmed on the currently-playing card */
 .card-thumb.is-playing .card-play { pointer-events: none; color: var(--text-tertiary); }
@@ -1086,10 +1096,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Pitch / Join the party ── */
 .pitch-card {
   position: relative; overflow: hidden;
-  border: 1px solid var(--border-default); border-radius: var(--radius);
+  border: 1px solid var(--border-btn); border-radius: var(--radius);
   padding: var(--space-6) var(--space-7);
   text-align: center;
-  background: var(--surface-page);
+  background: transparent;
   display: flex; align-items: center; justify-content: center;
 }
 .pitch-inner {
@@ -1115,13 +1125,13 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Keep the Beat Going ── */
 .keepbeat-card {
   position: relative; overflow: hidden;
-  border: 1px solid var(--border-default); border-radius: var(--radius);
+  border: 1px solid var(--border-btn); border-radius: var(--radius);
   padding: var(--space-8) var(--space-7);
   text-align: center;
-  background: radial-gradient(ellipse at 50% 45%, #0d1030 0%, #06060a 65%);
+  background: transparent;
   display: flex; align-items: center; justify-content: center;
 }
-html.light .keepbeat-card { background: radial-gradient(ellipse at 50% 40%, #dde0f0 0%, #ececf4 65%); }
+html.light .keepbeat-card { background: transparent; }
 .keepbeat-title {
   font-size: clamp(28px, 3.5vw, 44px); font-weight: 700;
   letter-spacing: 3px; text-transform: uppercase; color: var(--text-primary);
@@ -1137,13 +1147,13 @@ html.light .keepbeat-card { background: radial-gradient(ellipse at 50% 40%, #dde
 /* ── Newsletter card ── */
 .newsletter-card {
   position: relative; overflow: hidden;
-  border: 1px solid var(--glass-border); border-radius: var(--radius);
+  border: 1px solid var(--border-btn); border-radius: var(--radius);
   padding: var(--space-7);
   text-align: center;
-  background: var(--surface-page);
+  background: transparent;
   display: flex; align-items: center; justify-content: center;
 }
-html.light .newsletter-card { background: var(--surface-subtle); }
+html.light .newsletter-card { background: transparent; }
 .newsletter-inner {
   display: flex; flex-direction: column; align-items: center;
   gap: var(--space-5); position: relative; z-index: 1; width: 100%;
@@ -1369,11 +1379,17 @@ html.light .newsletter-card { background: var(--surface-subtle); }
 }
 .back-to-live {
   display: none; align-items: center; gap: var(--space-2);
-  background: none; border: none; cursor: pointer; padding: 0;
-  white-space: nowrap;
-  transition: color var(--dur-micro) var(--ease-hover);
+  height: 32px; padding: 0 var(--space-3);
+  background: transparent; border: 1px solid var(--border-btn);
+  border-radius: var(--radius-sm);
+  cursor: pointer; white-space: nowrap;
+  font-family: var(--font); font-size: var(--text-base); font-weight: 400;
+  color: var(--text-secondary);
+  transition: border-color var(--dur-micro) var(--ease-hover),
+              background var(--dur-short) var(--ease-hover),
+              color var(--dur-micro) var(--ease-hover);
 }
-.back-to-live:hover { color: var(--text-primary); }
+.back-to-live:hover { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 .back-to-live:hover .back-live-dot { opacity: 1; }
 .back-live-dot {
   width: 8px; height: 8px; border-radius: 50%;
@@ -1540,10 +1556,8 @@ html.light .newsletter-card { background: var(--surface-subtle); }
   flex-direction: column; /* override icon-btn row → column for track+face stack */
   overflow: hidden;
   will-change: height;
-  filter: blur(6px);
-  /* Close: ease-in (accelerate — snappy exit). Open: see .vol-open below */
+  /* No filter:blur on closed state — it propagates to .vol-btn-face child */
   transition: height var(--dur-short) var(--ease-in),
-              filter var(--dur-short) var(--ease-in),
               border-color var(--dur-short) var(--ease-out),
               transform var(--dur-micro) var(--ease-out);
 }
@@ -3536,17 +3550,26 @@ body { padding-top: 24px; }
 }
 .ham-item {
   display: flex; align-items: center; gap: 12px;
-  /* same vertical breathing as .btn text: (40px btn - 14px text) / 2 = 13px */
   padding: 13px var(--space-4);
   font-size: var(--text-base); font-family: var(--font); font-weight: 400;
   color: var(--text-secondary);
   cursor: pointer; border: none; background: none;
   width: 100%; text-align: left; text-decoration: none;
   white-space: nowrap; letter-spacing: -.1px;
-  transition: color var(--dur-micro) var(--ease-hover),
-              background var(--dur-micro) var(--ease-hover);
+  position: relative;
+  transition: color var(--dur-micro) var(--ease-hover);
 }
-.ham-item:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+.ham-item::before {
+  content: '';
+  position: absolute;
+  inset: 2px var(--space-4);
+  border-radius: var(--radius-control);
+  background: transparent;
+  transition: background var(--dur-micro) var(--ease-hover);
+  pointer-events: none;
+}
+.ham-item:hover { color: var(--text-primary); }
+.ham-item:hover::before { background: rgba(255,255,255,0.04); }
 .ham-item svg { width: 14px; height: 14px; flex-shrink: 0; }
 .ham-sep { height: 1px; background: #191919; margin: 0 16px; }
 .ham-theme-row {
@@ -3915,8 +3938,14 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 /* Genre card inside search dropdown */
 .ts-genre-card {
   padding: var(--space-4);
-  border-bottom: 1px solid #191919;
   display: flex; flex-direction: column; gap: var(--space-2);
+  position: relative;
+}
+.ts-genre-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: var(--space-4); right: var(--space-4);
+  height: 1px; background: #191919;
 }
 .ts-genre-card-name {
   font-size: var(--text-base); font-weight: 500;
@@ -3959,6 +3988,77 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 .ts-tab svg { width: 14px; height: 14px; stroke: currentColor; fill: none;
               stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
               flex-shrink: 0; display: block; }
+
+/* ── Residents tab in search dropdown ── */
+#topbar-dropdown-residents,
+#topbar-dropdown-schedule {
+  overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; margin-right: 8px;
+  opacity: 0; filter: blur(6px); transform: translateY(6px);
+  transition: opacity 100ms ease-in 0ms, filter 100ms ease-in 0ms, transform 100ms ease-in 0ms;
+}
+#topbar-dropdown-residents::-webkit-scrollbar,
+#topbar-dropdown-schedule::-webkit-scrollbar { width: 4px; }
+#topbar-dropdown-residents::-webkit-scrollbar-track,
+#topbar-dropdown-schedule::-webkit-scrollbar-track { background: transparent; }
+#topbar-dropdown-residents::-webkit-scrollbar-thumb,
+#topbar-dropdown-schedule::-webkit-scrollbar-thumb { background: #333333; border-radius: 2px; }
+#topbar-search.search-open #topbar-dropdown-residents,
+#topbar-search.search-open #topbar-dropdown-schedule {
+  opacity: 1; filter: blur(0px); transform: translateY(0);
+  transition: opacity 300ms cubic-bezier(0.0,0,0.2,1) 180ms,
+              filter  300ms cubic-bezier(0.0,0,0.2,1) 180ms,
+              transform 300ms cubic-bezier(0.0,0,0.2,1) 180ms;
+}
+.ts-resident-row {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  transition: background var(--dur-micro) var(--ease-hover);
+}
+.ts-resident-row:hover { background: rgba(255,255,255,0.04); }
+.ts-resident-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--surface-elevated); border: 1px solid var(--border-default);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-sm); font-weight: 600; color: var(--text-tertiary);
+  flex-shrink: 0; overflow: hidden;
+}
+.ts-resident-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ts-resident-name { font-size: var(--text-base); color: var(--text-primary); line-height: 1.2; }
+.ts-resident-freq { font-size: var(--text-base); color: var(--text-tertiary); }
+
+/* ── Schedule tab in search dropdown ── */
+.ts-sched-daytabs {
+  display: flex; gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  overflow-x: auto; scrollbar-width: none;
+  border-bottom: 1px solid #191919;
+}
+.ts-sched-daytabs::-webkit-scrollbar { display: none; }
+.ts-sched-daytab {
+  flex-shrink: 0; height: 28px; padding: 0 var(--space-2);
+  border: none; border-radius: var(--radius-control);
+  font-size: var(--text-sm); font-family: var(--font);
+  color: var(--text-tertiary); background: transparent; cursor: pointer;
+  transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+  white-space: nowrap;
+}
+.ts-sched-daytab:hover { background: rgba(255,255,255,0.04); color: var(--text-secondary); }
+.ts-sched-daytab.active { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+.ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
+.ts-sched-row {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  transition: background var(--dur-micro) var(--ease-hover);
+}
+.ts-sched-row:hover { background: rgba(255,255,255,0.04); }
+.ts-sched-time {
+  font-size: var(--text-sm); color: var(--text-tertiary);
+  flex-shrink: 0; width: 40px; letter-spacing: .04em; font-family: var(--font);
+}
+.ts-sched-name { font-size: var(--text-base); color: var(--text-primary); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ts-sched-host { font-size: var(--text-base); color: var(--text-tertiary); flex-shrink: 0; }
 
 #topbar-right { display: flex; align-items: center; gap: var(--space-3); grid-column: 3; justify-self: end; padding-left: 12px; }
 
@@ -4119,6 +4219,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
             </button>
           </div>
           <div id="topbar-dropdown-shows"></div>
+          <div id="topbar-dropdown-residents" style="display:none;"></div>
+          <div id="topbar-dropdown-schedule" style="display:none;"></div>
         </div>
       </div>
     </div>
@@ -8877,6 +8979,14 @@ function openTopbarSearch() {
   if (_topbarSearchOpen) return;
   _topbarSearchOpen = true;
   document.getElementById('topbar-search').classList.add('search-open');
+  // Reset to shows tab
+  document.querySelectorAll('.ts-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'shows'));
+  const residentsEl = document.getElementById('topbar-dropdown-residents');
+  const scheduleEl  = document.getElementById('topbar-dropdown-schedule');
+  const showsEl     = document.getElementById('topbar-dropdown-shows');
+  if (residentsEl) residentsEl.style.display = 'none';
+  if (scheduleEl)  scheduleEl.style.display  = 'none';
+  if (showsEl)     showsEl.style.display     = '';
   _renderTopbarShows('');
   // initScrollFade after grid expansion settles (420ms) + small buffer
   setTimeout(() => {
@@ -8903,9 +9013,11 @@ function _topbarSearchOutside(e) {
 }
 
 function handleTopbarSearch(q) {
-  // fix 1: toggle has-query so label hides only when typing
   document.getElementById('topbar-search').classList.toggle('has-query', q.length > 0);
-  _renderTopbarShows(q);
+  const activeTab = document.querySelector('.ts-tab.active')?.dataset.tab || 'shows';
+  if (activeTab === 'shows')     _renderTopbarShows(q);
+  else if (activeTab === 'residents') _renderTopbarResidents(q);
+  // schedule tab doesn't filter by text input
 }
 
 function _renderTopbarShows(q) {
@@ -9000,16 +9112,98 @@ document.addEventListener('keydown', e => {
   }, 1900); // fix 5: 1900 + 300ms fade = 2200ms effective, no drift
 })();
 
+/* ── Topbar: render residents list ── */
+function _renderTopbarResidents(q) {
+  const container = document.getElementById('topbar-dropdown-residents');
+  if (!container) return;
+  const list = q
+    ? residents.filter(r => r.name.toLowerCase().includes(q.toLowerCase()))
+    : residents;
+  if (!list.length) {
+    container.innerHTML = '<p class="ts-no-results">No results</p>';
+    return;
+  }
+  container.innerHTML = '<div style="display:flex;flex-direction:column;padding:var(--space-2) 0;">' +
+    list.map(r => `
+      <div class="ts-resident-row" onclick="closeTopbarSearch();openArtist('${r.name.replace(/'/g,"\\'")}')">
+        <div class="ts-resident-avatar">${r.initials}</div>
+        <div style="display:flex;flex-direction:column;gap:4px;min-width:0;">
+          <span class="ts-resident-name">${r.name}</span>
+          <span class="ts-resident-freq">${r.frequency}</span>
+        </div>
+      </div>`).join('') + '</div>';
+}
+
+/* ── Topbar: render compact schedule ── */
+let _topbarSchedDow = null;
+
+function _renderTopbarSchedule() {
+  const container = document.getElementById('topbar-dropdown-schedule');
+  if (!container) return;
+  const today = new Date();
+  const todayDow = (today.getDay() + 6) % 7;
+  if (_topbarSchedDow === null) _topbarSchedDow = todayDow;
+  const nowMin = today.getHours() * 60 + today.getMinutes();
+
+  const tabs = Array.from({length: 7}, (_, i) => {
+    const label = i === todayDow ? 'Today' : SP_DAY_SHORT[i];
+    return `<button class="ts-sched-daytab${i === _topbarSchedDow ? ' active' : ''}" onclick="_selectTopbarSchedDay(${i})">${label}</button>`;
+  }).join('');
+
+  const allSlots = (SCHEDULE_SHOWS || [])
+    .filter(s => s.day === _topbarSchedDow && s.host === 'Resident')
+    .sort((a, b) => a.time.localeCompare(b.time));
+
+  const isToday = _topbarSchedDow === todayDow;
+  const slotsHtml = allSlots.length
+    ? allSlots.map(slot => {
+        const showEntry = SHOW_DATA && Object.entries(SHOW_DATA).find(([, d]) => d.host === slot.title);
+        const showTitle = showEntry ? showEntry[0] : slot.title;
+        const safeTitle = showTitle.replace(/'/g, "\\'");
+        const [h, m] = slot.time.split(':').map(Number);
+        const slotMin = h * 60 + m;
+        const isLive = isToday && slotMin <= nowMin && nowMin < slotMin + 60;
+        const liveDot = isLive ? `<span class="live-dot" style="flex-shrink:0;width:6px;height:6px;"></span>` : '';
+        const onclick = showEntry ? `closeTopbarSearch();openShow('${safeTitle}')` : '';
+        return `<div class="ts-sched-row" onclick="${onclick}">
+          ${liveDot}
+          <span class="ts-sched-time">${slot.time}</span>
+          <span class="ts-sched-name">${showTitle}</span>
+          <span class="ts-sched-host">${slot.title}</span>
+        </div>`;
+      }).join('')
+    : '<p class="ts-no-results">No shows scheduled</p>';
+
+  container.innerHTML =
+    `<div class="ts-sched-daytabs">${tabs}</div>` +
+    `<div class="ts-sched-slots">${slotsHtml}</div>`;
+}
+
+function _selectTopbarSchedDay(dow) {
+  _topbarSchedDow = dow;
+  _renderTopbarSchedule();
+}
+
 /* ── Search category tabs ── */
 (function _initSearchTabs() {
   const tabs = document.querySelectorAll('.ts-tab');
-  const showsEl = document.getElementById('topbar-dropdown-shows');
+  const showsEl     = document.getElementById('topbar-dropdown-shows');
+  const residentsEl = document.getElementById('topbar-dropdown-residents');
+  const scheduleEl  = document.getElementById('topbar-dropdown-schedule');
+
+  function showPane(name) {
+    if (showsEl)     showsEl.style.display     = name === 'shows'     ? '' : 'none';
+    if (residentsEl) residentsEl.style.display = name === 'residents' ? '' : 'none';
+    if (scheduleEl)  scheduleEl.style.display  = name === 'schedule'  ? '' : 'none';
+    if (name === 'residents') _renderTopbarResidents(document.getElementById('topbar-search-input')?.value || '');
+    if (name === 'schedule')  { _topbarSchedDow = null; _renderTopbarSchedule(); }
+  }
+
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      // Only 'shows' has content for now — others show empty state
-      if (showsEl) showsEl.style.display = tab.dataset.tab === 'shows' ? '' : 'none';
+      showPane(tab.dataset.tab);
     });
   });
 })();
