@@ -1063,8 +1063,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-tags   { display: none; gap: 12px; }
 
 /* ── Family 3: Chip (.chip) + Genre tag (.genre-tag) ── */
-.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; color: #A1A1A1; background: #171717; border: none; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
-.chip:hover { color: var(--text-primary); background: #242424; }
+.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: 1px solid #191919; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover); }
+.chip:hover { color: var(--text-primary); background: rgba(255,255,255,0.08); border-color: #363636; }
 .chip--active { border-color: var(--text-primary); background: var(--accent-soft); color: var(--text-primary); }
 .chip--active:hover { border-color: var(--text-primary); background: var(--accent-soft); opacity: 0.85; }
 /* .genre-tag is a semantic marker — all genre buttons carry this class.
@@ -1302,7 +1302,7 @@ html.light .newsletter-card { background: transparent; }
   max-height: 320px;
   padding: var(--space-4);
   display: flex; flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
   opacity: 0;
   transition: opacity 120ms var(--ease-playlist-close);
 }
@@ -1571,10 +1571,8 @@ html.light .newsletter-card { background: transparent; }
   -webkit-backdrop-filter: var(--glass-backdrop);
   border: 1px solid #191919;
   border-color: #191919;
-  filter: blur(0px);
   /* Open: spring bounce */
   transition: height 200ms var(--ease-spring),
-              filter 240ms var(--ease-spring),
               border-color var(--dur-short) var(--ease-out),
               transform var(--dur-micro) var(--ease-out);
 }
@@ -1854,7 +1852,7 @@ html.light .newsletter-card { background: transparent; }
 
   /* ── Playlist ── */
   .player-wrap.pl-open .playlist-clip { max-height: 260px; } /* matches .playlist-inner on mobile */
-  .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; gap: var(--space-5); }
+  .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; gap: var(--space-4); }
   .playlist-header { margin-bottom: var(--space); }
   /* No vertical padding on track — gap alone handles the 24px spacing */
   .track { padding: 0; border-radius: 0; }
@@ -2326,10 +2324,20 @@ html.light .newsletter-card { background: transparent; }
   padding: 12px 12px;
   margin: -12px 12px;
   cursor:pointer;
-  border-radius: var(--radius-control);
-  transition: background var(--dur-micro) var(--ease-hover);
+  border-radius: 0;
+  position: relative;
+  transition: color var(--dur-micro) var(--ease-hover);
 }
-.explore-show-row:hover { background: rgba(255,255,255,0.04); }
+.explore-show-row::before {
+  content: '';
+  position: absolute;
+  inset: 2px 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  transition: background var(--dur-micro) var(--ease-hover);
+  pointer-events: none;
+}
+.explore-show-row:hover::before { background: rgba(255,255,255,0.04); }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
 .explore-show-title { font-size:var(--text-show); font-weight:400; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
@@ -2489,15 +2497,15 @@ html.light .newsletter-card { background: transparent; }
 /* ── Block header row (e.g. "06:00  Morning program") ── */
 .sp-block-hdr {
   display: flex; align-items: center;
-  gap: var(--space-5);
-  padding: 0 var(--space-5);
+  gap: var(--space-4);
+  padding: 0 var(--space-4);
   font-size: var(--text-base); font-weight: 400; color: var(--text-secondary);
 }
 
 /* ── Show row ── */
 .sp-show-row {
   display: flex; align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-4);
   padding: 12px 12px;
   margin: -12px 12px;
   cursor: pointer;
@@ -3156,9 +3164,9 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 /* Show page — secondary ghost btn */
 .show-btn-ghost { padding-left: var(--space-4); padding-right: var(--space-4); }
 /* Show page — secondary icon-only btn → uses .icon-btn.icon-btn--action */
-.icon-btn--action { background: #171717; border-color: transparent; color: #A1A1A1; }
-.icon-btn--action:hover { background: #242424; border-color: transparent; color: var(--text-primary); }
-.icon-btn--action.active { background: #242424; border-color: transparent; color: var(--text-primary); }
+.icon-btn--action { background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border-color: #191919; color: var(--text-secondary); }
+.icon-btn--action:hover { background: rgba(255,255,255,0.08); border-color: #363636; color: var(--text-primary); }
+.icon-btn--action.active { background: rgba(255,255,255,0.08); border-color: #363636; color: var(--text-primary); }
 
 /* ── Show sections — uses .content / .section from homepage ── */
 
@@ -4013,9 +4021,19 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-2) var(--space-4);
   cursor: pointer;
-  transition: background var(--dur-micro) var(--ease-hover);
+  position: relative;
+  transition: color var(--dur-micro) var(--ease-hover);
 }
-.ts-resident-row:hover { background: rgba(255,255,255,0.04); }
+.ts-resident-row::before {
+  content: '';
+  position: absolute;
+  inset: 2px 8px;
+  border-radius: var(--radius-control);
+  background: transparent;
+  transition: background var(--dur-micro) var(--ease-hover);
+  pointer-events: none;
+}
+.ts-resident-row:hover::before { background: rgba(255,255,255,0.04); }
 .ts-resident-avatar {
   width: 36px; height: 36px; border-radius: 50%;
   background: var(--surface-elevated); border: 1px solid var(--border-default);
@@ -4032,9 +4050,9 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   display: flex; gap: var(--space-1);
   padding: var(--space-2) var(--space-4);
   overflow-x: auto; scrollbar-width: none;
-  border-bottom: 1px solid #191919;
 }
 .ts-sched-daytabs::-webkit-scrollbar { display: none; }
+.ts-sched-sep { height: 1px; background: #191919; margin: 0 var(--space-4); }
 .ts-sched-daytab {
   flex-shrink: 0; height: 28px; padding: 0 var(--space-2);
   border: none; border-radius: var(--radius-control);
@@ -4047,18 +4065,50 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 .ts-sched-daytab.active { background: rgba(255,255,255,0.08); color: var(--text-primary); }
 .ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
 .ts-sched-row {
-  display: flex; align-items: center; gap: var(--space-3);
+  display: flex; align-items: center; gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
   cursor: pointer;
-  transition: background var(--dur-micro) var(--ease-hover);
+  position: relative;
+  transition: color var(--dur-micro) var(--ease-hover);
 }
-.ts-sched-row:hover { background: rgba(255,255,255,0.04); }
+.ts-sched-row::before {
+  content: '';
+  position: absolute;
+  inset: 2px 8px;
+  border-radius: var(--radius-control);
+  background: transparent;
+  transition: background var(--dur-micro) var(--ease-hover);
+  pointer-events: none;
+}
+.ts-sched-row:hover::before { background: rgba(255,255,255,0.04); }
 .ts-sched-time {
   font-size: var(--text-sm); color: var(--text-tertiary);
-  flex-shrink: 0; width: 40px; letter-spacing: .04em; font-family: var(--font);
+  flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font);
 }
-.ts-sched-name { font-size: var(--text-base); color: var(--text-primary); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ts-sched-host { font-size: var(--text-base); color: var(--text-tertiary); flex-shrink: 0; }
+.ts-sched-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.ts-sched-name { font-size: var(--text-base); color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ts-sched-host { font-size: var(--text-sm); color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ts-sched-right { display: flex; align-items: center; flex-shrink: 0; }
+.ts-sched-live-badge {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(var(--color-live-rgb),0.12);
+  border-radius: var(--radius-control);
+  padding: 2px 8px;
+  font-size: var(--text-sm); font-family: var(--font);
+  color: var(--color-live); white-space: nowrap;
+}
+.ts-sched-alert {
+  width: 28px; height: 28px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border-btn);
+  border-radius: var(--radius-control); cursor: pointer;
+  color: var(--icon-secondary);
+  transition: background var(--dur-micro) var(--ease-hover), border-color var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+.ts-sched-alert:hover { background: var(--surface-btn-hover); border-color: var(--border-hover); color: var(--text-primary); }
+.ts-sched-alert.alerted { background: rgba(var(--color-live-rgb),.12); border-color: rgba(var(--color-live-rgb),.4); color: var(--color-live); }
+.ts-sched-alert svg { width: 12px; height: 12px; pointer-events: none; }
 
 #topbar-right { display: flex; align-items: center; gap: var(--space-3); grid-column: 3; justify-self: end; padding-left: 12px; }
 
@@ -7525,6 +7575,25 @@ function initScrollFade(el, fadeSize) {
   check();
 }
 
+function initHScrollFade(el, fadeSize) {
+  const apply = () => {
+    const atL = el.scrollLeft <= 2;
+    const atR = el.scrollWidth - el.scrollLeft <= el.clientWidth + 2;
+    let mask = '';
+    if (!atL && !atR) {
+      mask = `linear-gradient(to right,transparent 0%,black ${fadeSize}px,black calc(100% - ${fadeSize}px),transparent 100%)`;
+    } else if (!atL) {
+      mask = `linear-gradient(to right,transparent 0%,black ${fadeSize}px,black 100%)`;
+    } else if (!atR) {
+      mask = `linear-gradient(to right,black calc(100% - ${fadeSize}px),transparent 100%)`;
+    }
+    el.style.maskImage = mask;
+    el.style.webkitMaskImage = mask;
+  };
+  el.addEventListener('scroll', apply, { passive: true });
+  apply();
+}
+
 /* Wire scroll fades */
 const exploreContent = document.getElementById('explore-content');
 if (exploreContent) initScrollFade(exploreContent, 48);
@@ -8260,7 +8329,7 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
     });
   });
 
-  return `<div style="display:flex;flex-direction:column;gap:var(--space-5);">${html}</div>`;
+  return `<div style="display:flex;flex-direction:column;gap:var(--space-4);">${html}</div>`;
 }
 
 function _renderSchedulePanelDaySlots(ri) {
@@ -9132,6 +9201,7 @@ function _renderTopbarResidents(q) {
           <span class="ts-resident-freq">${r.frequency}</span>
         </div>
       </div>`).join('') + '</div>';
+  requestAnimationFrame(() => initScrollFade(container, 48));
 }
 
 /* ── Topbar: render compact schedule ── */
@@ -9145,10 +9215,23 @@ function _renderTopbarSchedule() {
   if (_topbarSchedDow === null) _topbarSchedDow = todayDow;
   const nowMin = today.getHours() * 60 + today.getMinutes();
 
+  /* Day tabs with full date labels */
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - todayDow);
+  monday.setHours(0,0,0,0);
   const tabs = Array.from({length: 7}, (_, i) => {
-    const label = i === todayDow ? 'Today' : SP_DAY_SHORT[i];
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const label = i === todayDow
+      ? `Today, ${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`
+      : `${SP_DAY_SHORT[i]}, ${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`;
     return `<button class="ts-sched-daytab${i === _topbarSchedDow ? ' active' : ''}" onclick="_selectTopbarSchedDay(${i})">${label}</button>`;
   }).join('');
+
+  /* Recent shows for NEW badge */
+  const recentTitles = new Set(
+    shows.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4).map(s => s.title)
+  );
 
   const allSlots = (SCHEDULE_SHOWS || [])
     .filter(s => s.day === _topbarSchedDow && s.host === 'Resident')
@@ -9160,23 +9243,49 @@ function _renderTopbarSchedule() {
         const showEntry = SHOW_DATA && Object.entries(SHOW_DATA).find(([, d]) => d.host === slot.title);
         const showTitle = showEntry ? showEntry[0] : slot.title;
         const safeTitle = showTitle.replace(/'/g, "\\'");
-        const [h, m] = slot.time.split(':').map(Number);
-        const slotMin = h * 60 + m;
-        const isLive = isToday && slotMin <= nowMin && nowMin < slotMin + 60;
-        const liveDot = isLive ? `<span class="live-dot" style="flex-shrink:0;width:6px;height:6px;"></span>` : '';
-        const onclick = showEntry ? `closeTopbarSearch();openShow('${safeTitle}')` : '';
+        const safeHost  = slot.title.replace(/'/g, "\\'");
+        const [h, m]    = slot.time.split(':').map(Number);
+        const slotMin   = h * 60 + m;
+        const isLive    = isToday && slotMin <= nowMin && nowMin < slotMin + 60;
+        const isNew     = recentTitles.has(showTitle);
+        const alertKey  = `${slot.day}|${slot.time}|${slot.title}`;
+        const isAlerted = getAlerts().has(alertKey);
+        const dayIdx    = _dowToIdx(_topbarSchedDow);
+        const onclick   = showEntry ? `closeTopbarSearch();openShow('${safeTitle}')` : '';
+        const badge = isLive
+          ? `<span class="ts-sched-live-badge"><span class="live-dot" style="width:6px;height:6px;"></span>Live</span>`
+          : isNew
+            ? `<span class="badge-new"><span>NEW</span></span>`
+            : '';
         return `<div class="ts-sched-row" onclick="${onclick}">
-          ${liveDot}
           <span class="ts-sched-time">${slot.time}</span>
-          <span class="ts-sched-name">${showTitle}</span>
-          <span class="ts-sched-host">${slot.title}</span>
+          <div class="ts-sched-info">
+            <span class="ts-sched-name">${showTitle}</span>
+            <span class="ts-sched-host">${slot.title}</span>
+          </div>
+          <div class="ts-sched-right">${badge}</div>
+          <button class="ts-sched-alert${isAlerted ? ' alerted' : ''}"
+            onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeHost}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              ${isAlerted
+                ? '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M2 8c0-2.2.7-4.3 2-6"/><path d="M22 8a10 10 0 0 0-2-6"/>'
+                : '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'}
+            </svg>
+          </button>
         </div>`;
       }).join('')
     : '<p class="ts-no-results">No shows scheduled</p>';
 
   container.innerHTML =
     `<div class="ts-sched-daytabs">${tabs}</div>` +
+    `<div class="ts-sched-sep"></div>` +
     `<div class="ts-sched-slots">${slotsHtml}</div>`;
+
+  requestAnimationFrame(() => {
+    initScrollFade(container, 48);
+    const tabsEl = container.querySelector('.ts-sched-daytabs');
+    if (tabsEl) initHScrollFade(tabsEl, 24);
+  });
 }
 
 function _selectTopbarSchedDay(dow) {
@@ -9195,8 +9304,16 @@ function _selectTopbarSchedDay(dow) {
     if (showsEl)     showsEl.style.display     = name === 'shows'     ? '' : 'none';
     if (residentsEl) residentsEl.style.display = name === 'residents' ? '' : 'none';
     if (scheduleEl)  scheduleEl.style.display  = name === 'schedule'  ? '' : 'none';
-    if (name === 'residents') _renderTopbarResidents(document.getElementById('topbar-search-input')?.value || '');
-    if (name === 'schedule')  { _topbarSchedDow = null; _renderTopbarSchedule(); }
+    if (name === 'residents') {
+      _renderTopbarResidents(document.getElementById('topbar-search-input')?.value || '');
+    }
+    if (name === 'schedule') {
+      _topbarSchedDow = null;
+      _renderTopbarSchedule();
+    }
+    if (name === 'shows' && showsEl) {
+      requestAnimationFrame(() => initScrollFade(showsEl, 48));
+    }
   }
 
   tabs.forEach(tab => {
