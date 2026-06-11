@@ -924,9 +924,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Mobile overlay */
 .mno-link-left svg               { width: 16px; height: 16px; }
 .mno-links a > svg               { width: 14px; height: 14px; }
-/* Explorer */
-.explore-search-icon             { width: 14px; height: 14px; }
-.explore-tab svg                 { width: 14px; height: 14px; }
 #filter-toggle-btn svg           { width: 14px; height: 14px; }
 /* Section headers */
 .section-link svg                { width: 18px; height: 18px; }
@@ -1943,14 +1940,9 @@ html.light .newsletter-card { background: transparent; }
     padding: calc(var(--nav-h) + var(--space)) var(--space) calc(var(--player-h) + var(--space)) !important;
     align-items: stretch !important;
   }
-  #explore-card, #schedule-card, #settings-card { max-width: 100% !important; }
-  .explore-section-border::after { left: var(--space); right: var(--space); }
-  #explore-filter-bar { padding: 0 var(--space) !important; }
+  #schedule-card, #settings-card { max-width: 100% !important; }
   .explore-show-row { padding: 0 var(--space) !important; flex-direction: column !important; align-items: flex-start !important; gap: var(--space-2) !important; }
   .explore-show-row > div:last-child { margin-left: 0 !important; flex-shrink: unset !important; }
-  /* Tabs: tighter on mobile so all 3 fit */
-  .explore-tab { padding: var(--space-4) var(--space-2) !important; font-size: var(--text-sm) !important; }
-  .explore-tab:first-child { padding-left: var(--space) !important; }
 
   /* ── Playlist ── */
   .player-wrap.pl-open .playlist-clip { max-height: 260px; } /* matches .playlist-inner on mobile */
@@ -2201,7 +2193,6 @@ html.light .newsletter-card { background: transparent; }
 }
 
 /* ── Backdrops plein écran — couleur uniforme, pas de blur (coût GPU trop élevé) ── */
-#explore-backdrop.open,
 #schedule-backdrop.open,
 #settings-backdrop.open {
   background: var(--glass-bg);
@@ -2356,22 +2347,15 @@ html.light .newsletter-card { background: transparent; }
   from { opacity: 1; filter: blur(0px); }
   to   { opacity: 0; filter: blur(3px); }
 }
-#explore-content.text-reveal,
 #schedule-panel-body.text-reveal,
 #settings-body.text-reveal {
   animation: textReveal var(--dur-fade) var(--ease-hover) 40ms both;
-}
-/* Tab-switch exit: quick blur+fade out before new content renders */
-#explore-content.text-hide {
-  animation: textHide 60ms var(--ease-collapse) both;
-  pointer-events: none;
 }
 
 /* ── Modal cards ──
    Open  : opacity instant (no transition) — barre de recherche + onglets
            apparaissent avec le panel. Le corps se révèle via .text-reveal.
    Close : opacity + transform synchro (--dur-panel, ease-collapse). */
-#explore-card,
 #schedule-card,
 #settings-card {
   transition: opacity 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -2379,7 +2363,6 @@ html.light .newsletter-card { background: transparent; }
   transform-origin: top center;
   will-change: transform, opacity;
 }
-#explore-card.is-closing,
 #schedule-card.is-closing,
 #settings-card.is-closing {
   transition: opacity 180ms var(--ease-collapse),
@@ -2395,19 +2378,6 @@ html.light .newsletter-card { background: transparent; }
   -webkit-backdrop-filter: var(--glass-backdrop);
 }
 
-/* Tabs */
-.explore-tab {
-  font-family: var(--font); font-size: var(--text-base); font-weight: 400;
-  color: var(--text-tertiary); background: none; border: none;
-  padding: var(--space-5) var(--space-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-hover);
-  display: flex; align-items: center; gap: var(--space-2);
-}
-.explore-tab:hover { color: var(--text-primary); }
-.explore-tab-active { color: var(--text-primary); cursor: default; }
-
-/* Filter toggle hover */
-#filter-toggle-btn:hover { color: var(--text-secondary) !important; }
-#filter-toggle-btn:hover #filter-toggle-icon { stroke: var(--text-secondary) !important; }
 
 /* ── Show row reveal — transform seul (la carte gère l'opacité globale) ── */
 @keyframes rowReveal {
@@ -2443,21 +2413,6 @@ html.light .newsletter-card { background: transparent; }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
 .explore-show-title { font-size:var(--text-show); font-weight:400; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-.explore-section-border {
-  position: relative;
-}
-.explore-section-border::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: var(--space-5);
-  right: var(--space-5);
-  height: 1px;
-  background: var(--border-default);
-}
-.explore-close-btn svg { transition: stroke var(--dur-micro) var(--ease-hover); }
-.explore-close-btn:hover svg { stroke: var(--text-secondary) !important; }
-#explore-input::placeholder { color: var(--text-tertiary); }
 
 /* ============================================================
    TOOL PANEL — base class for floating utility windows
@@ -4656,7 +4611,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
 
     <!-- ── Nav items body ── -->
     <div class="sidebar-body">
-      <button class="nav-item" id="search-btn" onclick="openExplore()" aria-label="Explore">
+      <button class="nav-item" id="search-btn" onclick="openTopbarSearch()" aria-label="Search">
         <span class="nav-icon-box"><i data-lucide="search" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Explore</span>
       </button>
@@ -4697,57 +4652,6 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
 <button class="sidebar-reopen" id="sidebar-reopen" onclick="openSidebar()" aria-label="Ouvrir le menu">
   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
 </button>
-
-<!-- EXPLORE MODAL -->
-<div id="explore" style="display:none;position:fixed;inset:0;z-index:var(--z-explore);padding:calc(var(--player-h) + 48px) var(--space-4);flex-direction:column;align-items:center;justify-content:flex-start;">
-  <!-- Backdrop -->
-  <div id="explore-backdrop" style="position:fixed;inset:0;background:transparent;z-index:-1;transition:background var(--dur-panel) var(--ease-hover);"></div>
-  <!-- Card -->
-  <div id="explore-card" class="explore-card" style="max-width:var(--modal-6col);width:100%;flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;transform:scale(0.94) translateY(6px);opacity:0;">
-
-    <!-- Search bar -->
-    <div class="explore-section-border" style="padding:var(--space-5);display:flex;align-items:center;gap:var(--space-4);">
-      <i data-lucide="search" class="explore-search-icon" style="stroke:var(--text-tertiary);fill:none"></i>
-      <input id="explore-input" placeholder="Search shows, residents, games, genres…" oninput="handleSearch(this.value)" class="explore-input" style="flex:1;background:none;border:none;outline:none;font-family:var(--font);font-size:var(--text-base);color:var(--text-secondary);"/>
-      <kbd style="flex-shrink:0;font-family:var(--font);font-size:11px;color:#A1A1A1;background:#171717;border:none;border-radius:5px;padding:2px 6px;line-height:1.5;letter-spacing:.02em;pointer-events:none;">Esc</kbd>
-    </div>
-
-    <!-- Tabs + Filter on one row -->
-    <div class="explore-section-border" style="display:flex;align-items:stretch;gap:0;padding:0;">
-      <button id="tab-shows" onclick="setTab('shows')" class="explore-tab explore-tab-active" style="padding-left:var(--space-5);"><i data-lucide="music-2" style="stroke:currentColor;fill:none;display:block"></i>Shows</button>
-      <button id="tab-residents" onclick="setTab('residents')" class="explore-tab"><i data-lucide="users" style="stroke:currentColor;fill:none;display:block"></i>Residents</button>
-      <button id="tab-schedule" onclick="setTab('schedule')" class="explore-tab"><i data-lucide="calendar" style="stroke:currentColor;fill:none;display:block"></i>Schedule</button>
-      <div id="explore-filter-bar" style="margin-left:auto;display:flex;align-items:stretch;padding-right:var(--space-5);">
-        <button id="filter-toggle-btn" onclick="toggleFilters()" style="display:flex;align-items:center;gap:var(--space-2);background:none;border:none;cursor:pointer;padding:0;font-family:var(--font);font-size:var(--text-base);font-weight:400;color:var(--text-tertiary);transition:color var(--dur-micro) var(--ease-hover);align-self:center;">
-          <i data-lucide="sliders-horizontal" id="filter-toggle-icon" style="stroke:var(--text-tertiary);fill:none;display:block;transition:stroke var(--dur-micro) var(--ease-hover)"></i>
-          Filters
-          <span id="filter-count" style="display:none;"></span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Filters panel (shows only) -->
-    <div id="explore-filters" style="max-height:0;overflow:hidden;transition:max-height var(--dur-medium) var(--ease-standard);">
-      <div class="explore-section-border" style="padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-4);">
-        <div style="display:flex;align-items:flex-start;gap:var(--space-4);">
-          <span class="label" style="padding-top:var(--space-1);white-space:nowrap;flex-shrink:0;min-width:48px;">Genre</span>
-          <div id="filter-genre" style="display:flex;flex-wrap:wrap;gap:var(--space-2);"></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:var(--space-4);">
-          <span class="label" style="white-space:nowrap;flex-shrink:0;min-width:48px;">Time</span>
-          <div id="filter-time" style="display:flex;flex-wrap:wrap;gap:var(--space-2);"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Day bar (schedule tab only — outside scroll container) -->
-    <div id="es-day-bar-host"></div>
-
-    <!-- Results -->
-    <div id="explore-content" style="flex:1;overflow-y:auto;transition:opacity 160ms ease-in-out;"></div>
-
-  </div>
-</div>
 
 <div id="view-home">
 <!-- HERO -->
@@ -5851,34 +5755,7 @@ const TIME_RANGES = [
   {label:'2021', fn: d => { const dt=new Date(d); return dt.getFullYear()===2021 && dt.getMonth()<=8; }},
 ];
 
-let filtersOpen = false;
-let exploreTab = 'shows';
 
-function toggleFilters() {
-  filtersOpen = !filtersOpen;
-  const panel = document.getElementById('explore-filters');
-  const btn   = document.getElementById('filter-toggle-btn');
-  const icon  = document.getElementById('filter-toggle-icon');
-  if (filtersOpen) {
-    panel.style.maxHeight = panel.scrollHeight + 'px';
-    btn.style.color = 'var(--text-secondary)';
-    icon.style.stroke = 'var(--text-secondary)';
-  } else {
-    panel.style.maxHeight = '0';
-    btn.style.color = 'var(--text-tertiary)';
-    icon.style.stroke = 'var(--text-tertiary)';
-  }
-}
-
-function updateFilterCount() {
-  const total = activeGenres.size + activeThemes.size + (activeTime !== null ? 1 : 0);
-  const badge = document.getElementById('filter-count');
-  if (total > 0) { badge.style.display = 'inline'; badge.textContent = total; }
-  else badge.style.display = 'none';
-}
-let activeGenres = new Set();
-let activeThemes = new Set();
-let activeTime   = null; // index into TIME_RANGES
 
 const GENRE_DESCRIPTIONS = {
   'Acid': 'Originating from Chicago and Detroit in the late 1980s, this electronic subgenre features the distinctive Roland TB-303 bass synthesizer, squelchy sounds, and fast-paced rhythm.',
@@ -5941,218 +5818,7 @@ function hideGenreTooltip() {
   genreTooltipEl.classList.remove('visible');
 }
 
-function makeFilterChip(label, isActive, onClick, isGenre) {
-  const btn = document.createElement('button');
-  btn.textContent = label;
-  btn.classList.add('chip');
-  if (isGenre) btn.classList.add('genre-tag'); // tooltip via event delegation
-  if (isActive) btn.classList.add('chip--active');
-  btn.addEventListener('click', onClick);
-  return btn;
-}
 
-function buildFilters() {
-  // Genre chips
-  const gEl = document.getElementById('filter-genre');
-  gEl.innerHTML = '';
-  GENRES.forEach(g => {
-    const key = g.toLowerCase();
-    const active = activeGenres.has(key);
-    gEl.appendChild(makeFilterChip(g, active, () => {
-      if (activeGenres.has(key)) activeGenres.delete(key); else activeGenres.add(key);
-      buildFilters(); applyFilters();
-    }, true));
-  });
-  // Theme chips supprimés
-  // Time chips
-  const timeEl = document.getElementById('filter-time');
-  timeEl.innerHTML = '';
-  TIME_RANGES.forEach((tr, i) => {
-    const active = activeTime === i;
-    timeEl.appendChild(makeFilterChip(tr.label, active, () => {
-      activeTime = activeTime === i ? null : i;
-      buildFilters(); applyFilters();
-    }));
-  });
-  // badge + recalc open panel height
-  updateFilterCount();
-  if (filtersOpen) {
-    const panel = document.getElementById('explore-filters');
-    panel.style.maxHeight = panel.scrollHeight + 'px';
-  }
-}
-
-function applyFilters() {
-  const q = (document.getElementById('explore-input').value || '').toLowerCase();
-  let list = shows.slice();
-  if (q) list = list.filter(s =>
-    s.title.toLowerCase().includes(q) ||
-    s.host.toLowerCase().includes(q) ||
-    s.genres.some(g => g.toLowerCase().includes(q)) ||
-    (s.games && s.games.some(g => g.toLowerCase().includes(q)))
-  );
-  if (activeGenres.size) list = list.filter(s => s.genres.some(g => activeGenres.has(g.toLowerCase())));
-  if (activeThemes.size) list = list.filter(s => s.themes.some(t => activeThemes.has(t.toLowerCase())));
-  if (activeTime !== null) list = list.filter(s => TIME_RANGES[activeTime].fn(s.date));
-
-  const content = document.getElementById('explore-content');
-  content.innerHTML = list.length ? renderShows(list, q) : '<p class="ts-no-results">No results</p>';
-  initScrollFade(content, 48);
-}
-
-function renderShows(list, q) {
-  q = (q || '').toLowerCase();
-  const rows = list.map(s => {
-    let contextHint = '';
-    if (q) {
-      // Look up matching tracks in tracklist for this show
-      const tl = TRACKLISTS[s.title] || [];
-      const matchedTracks = tl.filter(t => t.game && t.game.toLowerCase().includes(q));
-      if (matchedTracks.length) {
-        const items = matchedTracks.slice(0, 3).map(t => {
-          const trackTitle = t.name && t.name.includes(' – ') ? t.name.split(' – ').slice(1).join(' – ') : (t.name || '');
-          return `<span onclick="seekTo('${t.ts}')" style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.08);border:none;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;cursor:pointer;">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-            &ldquo;${trackTitle}&rdquo; from ${t.game}
-          </span>`;
-        }).join('');
-        contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:0;">${items}</div>`;
-      }
-    }
-    return `
-    <div class="explore-show-row" role="button" tabindex="0" onclick="closeExplore();openShow('${s.title.replace(/'/g, "\\'")}')">
-      <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
-        <span class="explore-show-title">${s.title}</span>
-        <span style="font-size:var(--text-base);color:var(--text-secondary);"><span onclick="event.stopPropagation();closeExplore();openArtist('${s.host.replace(/'/g,"\\'")}');" style="cursor:pointer;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color=''">${s.host}</span> · ${formatDate(s.date)}</span>
-        ${contextHint}
-      </div>
-    </div>
-  `}).join('');
-  return `<div style="display:flex;flex-direction:column;gap:12px;padding:var(--space-5) 0;">${rows}</div>`;
-}
-function renderResidents(list) {
-  return `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-5);padding:var(--space-5);">` + list.map(r => `
-    <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);border:1px solid var(--border-default);border-radius:var(--radius-control);cursor:pointer;transition:background var(--dur-short) var(--ease-hover);" onmouseenter="this.style.background='rgba(128,128,128,0.04)'" onmouseleave="this.style.background='transparent'" onclick="closeExplore();openArtist('${r.name.replace(/'/g,"\\'")}')">
-      <div style="width:48px;height:48px;border-radius:50%;background:var(--surface-elevated);border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font-size:var(--text-base);font-weight:600;color:var(--text-tertiary);flex-shrink:0;">${r.initials}</div>
-      <div style="display:flex;flex-direction:column;gap:6px;min-width:0;">
-        <div style="font-size:var(--text-md);color:var(--text-primary);font-weight:400;line-height:1.2;">${r.name}</div>
-        <div style="font-size:var(--text-sm);color:var(--text-tertiary);line-height:1;">${r.frequency}</div>
-      </div>
-    </div>
-  `).join('') + `</div>`;
-}
-
-function setTab(t, instant) {
-  exploreTab = t;
-  const inp = document.getElementById('explore-input');
-  inp.value = '';
-  document.getElementById('tab-shows').className    = 'explore-tab' + (t==='shows'     ? ' explore-tab-active' : '');
-  document.getElementById('tab-residents').className = 'explore-tab' + (t==='residents' ? ' explore-tab-active' : '');
-  document.getElementById('tab-schedule').className  = 'explore-tab' + (t==='schedule'  ? ' explore-tab-active' : '');
-  const bar     = document.getElementById('explore-filter-bar');
-  const panel   = document.getElementById('explore-filters');
-  const content = document.getElementById('explore-content');
-
-  function _renderTab() {
-    if (filtersOpen) {
-      panel.style.maxHeight = '0';
-      filtersOpen = false;
-      const btn  = document.getElementById('filter-toggle-btn');
-      const icon = document.getElementById('filter-toggle-icon');
-      if (btn)  btn.style.color = 'var(--text-tertiary)';
-      if (icon) icon.style.stroke = 'var(--text-tertiary)';
-    }
-    bar.style.display = (t === 'shows') ? 'flex' : 'none';
-    // Clear day bar host when leaving schedule tab
-    const dayBarHost = document.getElementById('es-day-bar-host');
-    if (dayBarHost && t !== 'schedule') dayBarHost.innerHTML = '';
-    if (t === 'shows') {
-      content.style.paddingTop = 'var(--space-3)';
-      applyFilters();
-    } else if (t === 'residents') {
-      content.style.paddingTop = '0';
-      const q = (inp.value || '').toLowerCase();
-      const f = q ? residents.filter(r => r.name.toLowerCase().includes(q)) : residents;
-      content.innerHTML = f.length ? renderResidents(f) : '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No residents found.</p>';
-      initScrollFade(content, 48);
-  
-    } else {
-      renderExploreSchedule(content);
-    }
-  }
-
-  if (instant) {
-    /* Initial open path: render synchronously, no timeout, no opacity
-       manipulation — opacity is managed by the textReveal animation. */
-    _renderTab();
-    return;
-  }
-
-  /* Tab-switch path: blur+fade out (60ms) → render → blur+fade reveal.
-     Même motion que l'ouverture du panel : sortie rapide ease-in,
-     entrée douce ease-out. Aucune mutation DOM pendant la sortie. */
-  content.style.opacity = '';           // efface toute opacité inline résiduelle
-  content.classList.remove('text-reveal');
-  void content.offsetWidth;            // reset animation state
-  content.classList.add('text-hide');
-  setTimeout(() => {
-    _renderTab();
-    content.classList.remove('text-hide');
-    void content.offsetWidth;          // force reflow pour que text-reveal reparte de from
-    content.classList.add('text-reveal');
-  }, 60);
-}
-
-/* ── Schedule sub-tab inside Explore ── */
-function _renderExploreScheduleDaySlots(ri) {
-  const slotsEl = document.getElementById('es-slots');
-  if (!slotsEl) return;
-  const today    = new Date();
-  const todayDow = (today.getDay() + 6) % 7;
-  const nowMin   = today.getHours() * 60 + today.getMinutes();
-  // ri is now the weekday index (0=Mon … 6=Sun) — matches SCHEDULE_SHOWS .day directly
-  const isToday  = ri === todayDow;
-  slotsEl.innerHTML = _buildScheduleHTML(ri, isToday, nowMin, 'closeExplore()');
-  lucide.createIcons({ nodes: [slotsEl] });
-  const content = document.getElementById('explore-content');
-  if (content) content.scrollTop = 0;
-}
-
-function selectExploreScheduleDay(ri) {
-  const bar = document.getElementById('es-day-bar');
-  if (bar) bar.querySelectorAll('.sp-cal-tab').forEach((t, idx) => t.classList.toggle('active', idx === ri));
-  _renderExploreScheduleDaySlots(ri);
-  const content = document.getElementById('explore-content');
-  if (content) content.scrollTop = 0;
-}
-
-function renderExploreSchedule(container) {
-  const today    = new Date();
-  const todayDow = (today.getDay() + 6) % 7;
-
-  // Day bar lives outside the scroll container
-  const host = document.getElementById('es-day-bar-host');
-  if (host) host.innerHTML = `<div id="es-day-bar">${_buildCalHeader('es', 'selectExploreScheduleDay', today)}</div>`;
-
-  container.style.paddingTop = '0';
-  container.innerHTML = `<div id="es-slots" style="padding-top:var(--space-5);padding-bottom:var(--space-5);"></div>`;
-  _renderExploreScheduleDaySlots(todayDow);
-  requestAnimationFrame(() => {
-    container.scrollTop = 0;
-    initScrollFade(container, 48);
-  });
-}
-
-function handleSearch(q) {
-  if (exploreTab === 'shows') applyFilters();
-  else if (exploreTab === 'schedule') { /* no search in schedule tab */ }
-  else {
-    const ql = q.toLowerCase();
-    const f = ql ? residents.filter(r=>r.name.toLowerCase().includes(ql)||r.desc.toLowerCase().includes(ql)) : residents;
-    document.getElementById('explore-content').innerHTML = f.length ? renderResidents(f) : '<p style="font-size:var(--text-base);color:var(--text-tertiary);padding:var(--space-5);">No residents found.</p>';
-    initScrollFade(document.getElementById('explore-content'), 48);
-  }
-}
 
 /* ══════════════════════════════════════
    OVERLAY MANAGER (OM) — single active overlay at a time.
@@ -6181,92 +5847,6 @@ const OM = (() => {
   return { open, clear, isOpen };
 })();
 
-let exploreClosing = false;
-let _explorePrewarmed = false;
-const exploreEl = document.getElementById('explore');
-const exploreCard = document.getElementById('explore-card');
-
-// Pre-warm: build Explorer DOM during idle time so first open is instant.
-function _prewarmExplore() {
-  if (_explorePrewarmed) return;
-  buildFilters();
-  setTab('shows', true);
-  const ec = document.getElementById('explore-content');
-  if (ec) ec.style.paddingTop = 'var(--space-3)';
-  _explorePrewarmed = true;
-}
-if ('requestIdleCallback' in window) {
-  requestIdleCallback(_prewarmExplore, { timeout: 2000 });
-} else {
-  setTimeout(_prewarmExplore, 800);
-}
-
-function openExplore() {
-  if (exploreClosing) return;
-  OM.open('explore', closeExplore);
-  activeGenres.clear(); activeThemes.clear(); activeTime = null;
-  filtersOpen = false;
-  _exploreSchedDay = -1;  // reset schedule day to today on each open
-  const panel = document.getElementById('explore-filters');
-  if (panel) panel.style.maxHeight = '0';
-  const btn = document.getElementById('filter-toggle-btn');
-  const icon = document.getElementById('filter-toggle-icon');
-  if (btn) btn.style.color = 'var(--text-tertiary)';
-  if (icon) icon.style.stroke = 'var(--text-tertiary)';
-  const backdrop = document.getElementById('explore-backdrop');
-  exploreCard.classList.remove('is-closing');
-
-  // Réinitialise l'animation de révélation pour qu'elle rejoue à chaque ouverture.
-  // Fait avant display:flex : l'élément est à opacity:1 naturel pendant le build.
-  const ec = document.getElementById('explore-content');
-  if (ec) ec.classList.remove('text-reveal');
-
-  exploreEl.style.display = 'flex';
-
-  // Contenu construit pendant que la carte est invisible (opacity:0.01 → rAF).
-  // Zéro mutation DOM pendant la transition.
-  // Pre-warmed: filters & tab already built — just reset to "shows" tab state.
-  if (!_explorePrewarmed) buildFilters();
-  setTab('shows', true);
-  if (ec) { ec.style.opacity = ''; ec.style.paddingTop = 'var(--space-3)'; initScrollFade(ec, 48); }
-
-  // rAF 1 : opacity → 0.01 force la rasterisation (valeur non-nulle = le
-  //          navigateur peint le contenu, évite le décalage GPU/CPU).
-  // rAF 2 : opacity → 1 (panel établi) + démarre la révélation du corps
-  //          via .text-reveal (fade+blur délibéré, 160ms, 40ms de délai).
-  requestAnimationFrame(() => {
-    exploreCard.style.opacity = '0.01';
-    requestAnimationFrame(() => {
-      exploreCard.style.opacity = '1';
-      exploreCard.style.transform = 'scale(1) translateY(0)';
-      if (backdrop) backdrop.classList.add('open');
-      if (ec) { void ec.offsetWidth; ec.classList.add('text-reveal'); }
-    });
-  });
-
-  // Focus after transform lands (--dur-panel = 260ms)
-  setTimeout(() => {
-    const inp = document.getElementById('explore-input');
-    if (inp) inp.focus();
-  }, 260);
-}
-
-function closeExplore() {
-  exploreClosing = true;
-  const backdrop = document.getElementById('explore-backdrop');
-  exploreCard.classList.add('is-closing');
-  exploreCard.style.opacity = '0';
-  exploreCard.style.transform = 'scale(0.94) translateY(6px)';
-  if (backdrop) backdrop.classList.remove('open');
-  setTimeout(() => {
-    exploreEl.style.display = 'none';
-    document.getElementById('explore-input').value = '';
-    exploreClosing = false;
-    OM.clear('explore');
-  }, 260);
-}
-
-document.getElementById('explore-backdrop').addEventListener('click', closeExplore);
 document.getElementById('schedule-backdrop').addEventListener('click', closeSchedulePanel);
 
 /* ── Spotify SVG path helper ── */
@@ -7998,10 +7578,6 @@ function initHScrollFade(el, fadeSize) {
   apply();
 }
 
-/* Wire scroll fades */
-const exploreContent = document.getElementById('explore-content');
-if (exploreContent) initScrollFade(exploreContent, 48);
-
 function toggleShowFollow(btn) {
   const following = btn.classList.toggle('active');
   const svg = btn.querySelector('svg');
@@ -8831,7 +8407,6 @@ function iosNavTo(tab) {
   switch (tab) {
     case 'home':
       /* Close any open secondary views and modals */
-      closeExplore();
       closeSchedulePanel();
       if (document.getElementById('view-support').classList.contains('active'))   closeSupport();
       else if (document.getElementById('view-about').classList.contains('active'))    closeAbout();
@@ -8840,7 +8415,7 @@ function iosNavTo(tab) {
       else if (document.getElementById('view-proposal').classList.contains('active')) closeProposal();
       break;
     case 'browse':
-      openExplore();
+      openTopbarSearch();
       break;
     case 'schedule':
       openSchedulePanel();
@@ -9403,7 +8978,7 @@ function newsletterSubmit(e) {
 
 /* ── Nav items — single source of truth for desktop + mobile menus ── */
 const NAV_ITEMS = [
-  { label: 'Explorer',   icon: 'search',   action: () => { closeNavMenu(); openExplore();  } },
+  { label: 'Explorer',   icon: 'search',   action: () => { closeNavMenu(); openTopbarSearch(); } },
   { label: 'About',      icon: 'info',     action: () => { closeNavMenu(); openAbout();    } },
   { label: 'Support us', icon: 'heart',    action: () => { closeNavMenu(); openSupport();  } },
   { label: 'Settings',   icon: 'settings', action: () => { closeNavMenu(); openSettings(); } },
@@ -9774,11 +9349,9 @@ function _renderTopbarSchedule() {
     : '<p class="ts-no-results">No shows scheduled</p>';
 
   const headerEl = document.getElementById('ts-sched-header');
-  if (headerEl) headerEl.innerHTML = `<div class="ts-sched-daytabs">${tabs}</div>`;
+  if (headerEl) headerEl.innerHTML = `<div class="ts-sched-daytabs">${tabs}</div><div class="ts-sched-sep"></div>`;
 
-  container.innerHTML =
-    `<div class="ts-sched-sep"></div>` +
-    `<div class="ts-sched-slots">${slotsHtml}</div>`;
+  container.innerHTML = `<div class="ts-sched-slots">${slotsHtml}</div>`;
 
   requestAnimationFrame(() => {
     initScrollFade(container, 48);
@@ -10205,7 +9778,7 @@ document.addEventListener('keydown', e => {
   if (e.key.toLowerCase() === sc.explore.key.toLowerCase()) {
     e.preventDefault();
     if (_sidebarTransitioning) return;
-    if (OM.isOpen('explore')) closeExplore(); else openExplore();
+    if (document.getElementById('topbar-search').classList.contains('search-open')) closeTopbarSearch(); else openTopbarSearch();
   }
   if (e.key.toLowerCase() === sc.playlist.key.toLowerCase()) {
     e.preventDefault();
