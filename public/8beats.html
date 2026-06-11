@@ -2595,7 +2595,9 @@ html.light .newsletter-card { background: transparent; }
   display: inline-flex; align-items: center; gap: var(--space-2);
   font-size: var(--text-sm); font-weight: 400; font-family: var(--font);
   letter-spacing: 1px; text-transform: uppercase;
-  color: var(--text-tertiary); flex-shrink: 0;
+  color: var(--text-primary); flex-shrink: 0;
+  background: rgba(255,255,255,0.08); border: none;
+  border-radius: var(--radius-control); padding: var(--space-1) var(--space-2);
 }
 /* live-dot inside sp-live-badge keeps its red color */
 
@@ -2728,7 +2730,7 @@ html.light .newsletter-card { background: transparent; }
 .schedule-slot.is-live .schedule-slot-time { color: var(--text-primary); }
 .schedule-slot-body { flex: 1; min-width: 0; }
 .schedule-slot-title {
-  display: flex; align-items: center; gap: 16px; min-width: 0;
+  display: flex; align-items: center; gap: 12px; min-width: 0;
   font-size: var(--text-md); font-weight: 400; color: var(--text-primary);
 }
 .schedule-slot-title .slot-title-text {
@@ -2758,15 +2760,15 @@ html.light .newsletter-card { background: transparent; }
   display: none; align-items: center; gap: var(--space-1);
   font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-primary); padding: var(--space-1) var(--space-2);
-  border: 1px solid var(--border-btn);
-  border-radius: 100px;
+  background: rgba(255,255,255,0.08); border: none;
+  border-radius: var(--radius-control);
 }
 .schedule-slot.is-live .schedule-slot-live-badge { display: flex; }
 .schedule-slot-new {
   font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-  color: var(--text-secondary); background: var(--surface-subtle);
-  border: 1px solid var(--border-default);
-  border-radius: 100px; padding: var(--space-1) var(--space-2); flex-shrink: 0;
+  color: var(--text-secondary); background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: var(--radius-control); padding: var(--space-1) var(--space-2); flex-shrink: 0;
 }
 .schedule-empty {
   padding: var(--space-2) var(--space-3);
@@ -3684,7 +3686,7 @@ body { padding-top: 24px; }
 .ham-item::before {
   content: '';
   position: absolute;
-  inset: 2px 8px;
+  inset: 8px 8px;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
@@ -3719,7 +3721,7 @@ body { padding-top: 24px; }
 .ham-social-row {
   display: flex; align-items: center;
   padding: var(--space-4);
-  gap: var(--space-1);
+  gap: var(--space-4);
 }
 .ham-social-row .icon-btn--ghost {
   width: 32px; height: 32px;
@@ -4204,8 +4206,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-dropdown-residents,
 #topbar-dropdown-schedule {
   overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; margin-right: 8px;
-  opacity: 0; filter: blur(6px); transform: translateY(6px);
-  transition: opacity 100ms ease-in 0ms, filter 100ms ease-in 0ms, transform 100ms ease-in 0ms;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 100ms ease-in 0ms, transform 100ms ease-in 0ms;
 }
 #topbar-dropdown-residents::-webkit-scrollbar,
 #topbar-dropdown-schedule::-webkit-scrollbar { width: 4px; }
@@ -4215,9 +4217,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 #topbar-dropdown-schedule::-webkit-scrollbar-thumb { background: #333333; border-radius: 2px; }
 #topbar-search.search-open #topbar-dropdown-residents,
 #topbar-search.search-open #topbar-dropdown-schedule {
-  opacity: 1; filter: blur(0px); transform: translateY(0);
+  opacity: 1; transform: translateY(0);
   transition: opacity 300ms cubic-bezier(0.0,0,0.2,1) 180ms,
-              filter  300ms cubic-bezier(0.0,0,0.2,1) 180ms,
               transform 300ms cubic-bezier(0.0,0,0.2,1) 180ms;
 }
 .ts-resident-row {
@@ -4238,7 +4239,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 }
 .ts-resident-row:hover::before { background: rgba(255,255,255,0.04); }
 .ts-resident-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;
   background: var(--surface-elevated); border: 1px solid var(--border-default);
   display: flex; align-items: center; justify-content: center;
   font-size: var(--text-sm); font-weight: 600; color: var(--text-tertiary);
@@ -4253,6 +4254,8 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   display: flex; gap: var(--space-1);
   padding: var(--space-2) var(--space-4) var(--space-2) var(--space-2);
   overflow-x: auto; scrollbar-width: none;
+  position: sticky; top: 0; z-index: 1;
+  background: rgba(8,8,8,0.92);
 }
 .ts-sched-daytabs::-webkit-scrollbar { display: none; }
 .ts-sched-sep { height: 1px; background: #191919; margin: 0 var(--space-4); }
@@ -4295,11 +4298,11 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 .ts-sched-live-badge {
   flex-shrink: 0;
   display: inline-flex; align-items: center; gap: 4px;
-  background: rgba(var(--color-live-rgb),0.12);
+  background: rgba(255,255,255,0.08); border: none;
   border-radius: var(--radius-control);
   padding: 2px 8px;
   font-size: var(--text-sm); font-family: var(--font);
-  color: var(--color-live); white-space: nowrap;
+  color: var(--text-primary); white-space: nowrap;
 }
 .ts-sched-alert {
   width: 28px; height: 28px; flex-shrink: 0;
@@ -4410,7 +4413,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
   <div class="drawer-footer">
     <div class="drawer-social">
       <button class="icon-btn icon-btn--ghost" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></button>
-      <button class="icon-btn icon-btn--ghost" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
       <button class="icon-btn icon-btn--ghost" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></button>
       <button class="icon-btn icon-btn--ghost" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></button>
     </div>
@@ -4433,7 +4435,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
         </div>
         <div class="mno-social">
           <button class="icon-btn icon-btn--ghost" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></button>
-          <button class="icon-btn icon-btn--ghost" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
           <button class="icon-btn icon-btn--ghost" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></button>
           <button class="icon-btn icon-btn--ghost" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></button>
         </div>
@@ -4520,7 +4521,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
         <div class="ham-social-row">
           <button class="icon-btn icon-btn--ghost" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></button>
           <button class="icon-btn icon-btn--ghost" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.7a8.18 8.18 0 0 0 4.79 1.52V6.76a4.85 4.85 0 0 1-1.02-.07z"/></svg></button>
-          <button class="icon-btn icon-btn--ghost" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
           <button class="icon-btn icon-btn--ghost" aria-label="Bluesky"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.958 3.919 3.526 6.614 3.06.068-.004 1.55-.201 1.57-.201-.01.04-.016.08-.024.12-.766 3.716-3.268 5.91-6.1 7.126-1.028.44-.726 1.762.51 1.7 3.056-.152 6.037-2.038 7.754-5.148.1-.178.207-.364.302-.555.094.191.201.377.302.555 1.717 3.11 4.698 4.996 7.754 5.148 1.236.062 1.538-1.26.51-1.7-2.832-1.216-5.334-3.41-6.1-7.126-.008-.04-.014-.08-.024-.12.02 0 1.502.197 1.57.201 2.695.466 5.799-.102 6.614-3.06.246-.828.624-5.79.624-6.479 0-.688-.139-1.86-.902-2.203-.659-.299-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></button>
           <button class="icon-btn icon-btn--ghost" aria-label="Discord"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></button>
         </div>
@@ -4639,7 +4639,7 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
 <section class="hero" aria-label="8Beats Video Game Music Webradio">
   <canvas id="hero-waveform" aria-hidden="true"></canvas>
   <div class="hero-inner">
-    <h1>The webradio for video game music</h1>
+    <h1>Gaming like you've never heard</h1>
     <p>Weekly shows, live mixes, and curated sets celebrating the finest video game soundtracks — 4,000 listeners and counting.</p>
     <div class="hero-actions">
       <a href="#" class="btn btn-primary" id="hero-listen-btn" onclick="event.preventDefault();setPlaying(!playing)"><i data-lucide="play" style="display:block"></i>Listen now</a>
@@ -4931,7 +4931,6 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
         <p>Stay up to date with new shows, resident news, and everything happening at 8Beats.</p>
         <div style="display:flex;gap:var(--space-5);flex-wrap:wrap;margin-top:var(--space-1);">
           <a href="https://instagram.com/8beats" target="_blank" rel="noopener" class="icon-btn icon-btn--social" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-          <a href="#" target="_blank" rel="noopener" class="icon-btn icon-btn--social" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
           <a href="#" target="_blank" rel="noopener" class="icon-btn icon-btn--social" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></a>
           <a href="#" target="_blank" rel="noopener" class="icon-btn icon-btn--social" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></a>
         </div>
@@ -6520,6 +6519,7 @@ function backToLive() {
   delete titleEl.dataset.showKey;
   const linkBtn = document.getElementById('player-title-link');
   if (linkBtn) linkBtn.style.display = 'none';
+  if (typeof plOpen !== 'undefined' && plOpen) _closePl();
   plPanel.classList.remove('tracklist');
   progressWrap.classList.remove('visible');
   progressTrack.style.background = '';
@@ -8417,10 +8417,11 @@ function scheduleOneNotif(dayOffset, time, title) {
   const delay = show.getTime() - Date.now() - 5 * 60 * 1000; // 5 min avant
   if (delay <= 0) return;
   setTimeout(() => {
-    new Notification('8Beats · Dans 5 minutes', {
+    const notif = new Notification('8Beats · Dans 5 minutes', {
       body: title,
       icon: '/favicon.ico'
     });
+    notif.addEventListener('click', () => { window.open('https://8beats.vercel.app', '_blank'); });
   }, delay);
 }
 
@@ -9434,6 +9435,32 @@ function _resetTopbarFilters() {
 
 function handleTopbarSearch(q) {
   document.getElementById('topbar-search').classList.toggle('has-query', q.length > 0);
+
+  if (q.length >= 3) {
+    const lower = q.toLowerCase().trim();
+    const DAY_KEYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday','today','tomorrow'];
+    const matchesDay = DAY_KEYS.some(d => d.startsWith(lower) || lower.startsWith(d.slice(0, lower.length)));
+    if (matchesDay) {
+      const schedTab = document.querySelector('.ts-tab[data-tab="schedule"]');
+      if (schedTab && !schedTab.classList.contains('active')) schedTab.click();
+      const today = new Date();
+      const todayDow = (today.getDay() + 6) % 7;
+      const DAY_MAP = {monday:0,tuesday:1,wednesday:2,thursday:3,friday:4,saturday:5,sunday:6};
+      let targetDow = null;
+      if ('today'.startsWith(lower))    targetDow = todayDow;
+      else if ('tomorrow'.startsWith(lower)) targetDow = (todayDow + 1) % 7;
+      else { for (const [d, i] of Object.entries(DAY_MAP)) { if (d.startsWith(lower)) { targetDow = i; break; } } }
+      if (targetDow !== null && targetDow !== _topbarSchedDow) _selectTopbarSchedDay(targetDow);
+      return;
+    }
+    if (residents && residents.some(r => r.name.toLowerCase().includes(lower))) {
+      const resTab = document.querySelector('.ts-tab[data-tab="residents"]');
+      if (resTab && !resTab.classList.contains('active')) resTab.click();
+      _renderTopbarResidents(q);
+      return;
+    }
+  }
+
   const activeTab = document.querySelector('.ts-tab.active')?.dataset.tab || 'shows';
   const query = q.length >= 3 ? q : '';
   if (activeTab === 'shows')     _renderTopbarShows(query);
@@ -9497,7 +9524,7 @@ function _renderTopbarShows(q) {
     return `<div class="explore-show-row" role="button" tabindex="0" onclick="closeTopbarSearch();openShow('${s.title.replace(/'/g, "\\'")}')">
       ${coverEl}
       <div style="display:flex;flex-direction:column;gap:var(--space-1);min-width:0;flex:1;">
-        <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+        <div style="display:flex;align-items:center;gap:12px;min-width:0;">
           <span class="explore-show-title" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.title}</span>
           ${newBadge}
         </div>
@@ -9553,7 +9580,7 @@ function _renderTopbarResidents(q) {
     list.map(r => `
       <div class="ts-resident-row" onclick="closeTopbarSearch();openArtist('${r.name.replace(/'/g,"\\'")}')">
         <div class="ts-resident-avatar">${r.initials}</div>
-        <div style="display:flex;flex-direction:column;gap:4px;min-width:0;">
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:0;">
           <span class="ts-resident-name">${r.name}</span>
           <span class="ts-resident-freq">${r.frequency}</span>
         </div>
