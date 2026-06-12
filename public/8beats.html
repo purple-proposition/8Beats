@@ -4243,8 +4243,12 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 .ts-filter-chips .chip {
   background: rgba(255,255,255,0.08); border: none;
   backdrop-filter: none; -webkit-backdrop-filter: none;
+  transition: background var(--dur-short) var(--ease-out),
+              color var(--dur-micro) var(--ease-out),
+              transform var(--dur-micro) var(--ease-out);
 }
 .ts-filter-chips .chip:hover { background: rgba(255,255,255,0.16); }
+.ts-filter-chips .chip:active { transform: scale(0.92); }
 .ts-filter-chips .chip--active { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .ts-tab {
   flex: none; height: auto; border: none; align-self: center;
