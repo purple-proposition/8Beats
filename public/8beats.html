@@ -6280,13 +6280,13 @@ document.addEventListener('click', e => {
 // Un seul listener sur document couvre tous les chips présents et futurs.
 let _gtTimer = null;
 document.addEventListener('mouseover', e => {
-  const el = e.target.closest('.genre-tag');
+  const el = e.target.closest('.genre-tag') || e.target.closest('.ts-filter-chips .chip');
   if (!el) return;
   clearTimeout(_gtTimer);
-  _gtTimer = setTimeout(() => showGenreTooltip(el.textContent.trim(), el), 400);
+  _gtTimer = setTimeout(() => showGenreTooltip(el.textContent.trim(), el), 600);
 });
 document.addEventListener('mouseout', e => {
-  const el = e.target.closest('.genre-tag');
+  const el = e.target.closest('.genre-tag') || e.target.closest('.ts-filter-chips .chip');
   if (!el) return;
   clearTimeout(_gtTimer);
   hideGenreTooltip();
