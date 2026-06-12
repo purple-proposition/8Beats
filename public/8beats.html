@@ -4368,14 +4368,14 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 .badge-new {
   flex-shrink: 0;
   align-self: center;
-  background: rgba(255,255,255,0.08);
+  background: none;
   border: none;
-  border-radius: var(--radius-control);
-  padding: 1px 6px;
-  font-size: var(--text-xs);
+  padding: 0;
+  font-size: var(--text-sm);
   line-height: 1;
   font-family: var(--font);
   white-space: nowrap;
+  letter-spacing: .04em;
 }
 .badge-new span {
   background: linear-gradient(90deg, #A1A1A1 30%, #ffffff 50%, #A1A1A1 70%);
@@ -9195,7 +9195,7 @@ function _renderTopbarShows(q) {
     return `<div class="explore-show-row" role="button" tabindex="0" onclick="closeTopbarSearch();openShow('${s.title.replace(/'/g, "\\'")}')">
       ${coverEl}
       <div style="display:flex;flex-direction:column;gap:var(--space-2);min-width:0;flex:1;">
-        <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+        <div style="display:flex;align-items:center;gap:12px;min-width:0;">
           <span class="explore-show-title" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1;">${s.title}</span>
           ${newBadge}
         </div>
