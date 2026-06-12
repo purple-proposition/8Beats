@@ -9032,13 +9032,15 @@ function openTopbarSearch() {
   document.getElementById('topbar-search').classList.add('search-open');
   // Reset to shows tab
   document.querySelectorAll('.ts-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'shows'));
-  const residentsEl = document.getElementById('topbar-dropdown-residents');
-  const scheduleEl  = document.getElementById('topbar-dropdown-schedule');
-  const showsEl     = document.getElementById('topbar-dropdown-shows');
-  const filterBtn   = document.getElementById('ts-filter-btn');
-  if (residentsEl) residentsEl.style.display = 'none';
-  if (scheduleEl)  scheduleEl.style.display  = 'none';
-  if (showsEl)     showsEl.style.display     = '';
+  const residentsEl  = document.getElementById('topbar-dropdown-residents');
+  const scheduleEl   = document.getElementById('topbar-dropdown-schedule');
+  const schedHeaderEl = document.getElementById('ts-sched-header');
+  const showsEl      = document.getElementById('topbar-dropdown-shows');
+  const filterBtn    = document.getElementById('ts-filter-btn');
+  if (residentsEl)   residentsEl.style.display   = 'none';
+  if (scheduleEl)    scheduleEl.style.display     = 'none';
+  if (schedHeaderEl) schedHeaderEl.style.display  = 'none';
+  if (showsEl)       showsEl.style.display        = '';
   if (filterBtn)   filterBtn.style.display   = 'flex';
   _renderTopbarShows('');
   // initScrollFade after grid expansion settles (420ms) + small buffer
