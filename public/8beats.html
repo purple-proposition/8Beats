@@ -5772,18 +5772,19 @@ function showGenreTooltip(label, chipEl) {
   const desc = GENRE_DESCRIPTIONS[label];
   if (!desc) return;
   genreTooltipEl.textContent = desc;
-  const r = chipEl.getBoundingClientRect();
-  const tooltipW = 220, gap = 8;
-  let left = r.left;
-  let top  = r.top - gap;
-  // flip up: position above chip
-  genreTooltipEl.style.left = Math.min(left, window.innerWidth - tooltipW - 12) + 'px';
-  genreTooltipEl.style.top  = (top - 80) + 'px'; // rough height estimate, reposition after visible
   genreTooltipEl.classList.add('visible');
-  // precise reposition once rendered
   requestAnimationFrame(() => {
+    const r  = chipEl.getBoundingClientRect();
+    const tw = genreTooltipEl.offsetWidth;
     const th = genreTooltipEl.offsetHeight;
-    genreTooltipEl.style.top = (r.top - th - gap) + 'px';
+    const gap = 8, margin = 12;
+    // flip: above if room, else below
+    const top = (r.top - th - gap >= margin)
+      ? r.top - th - gap
+      : r.bottom + gap;
+    const left = Math.max(margin, Math.min(r.left, window.innerWidth - tw - margin));
+    genreTooltipEl.style.left = left + 'px';
+    genreTooltipEl.style.top  = top  + 'px';
   });
 }
 
