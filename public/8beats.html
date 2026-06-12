@@ -4255,7 +4255,7 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
 .ts-tab {
   flex: none; height: auto; border: none; align-self: center;
   display: flex; align-items: center; gap: var(--space-2);
-  padding: var(--space-2) var(--space-2);
+  padding: 6px var(--space-3);
   border-radius: var(--radius-control);
   background: transparent; color: var(--text-tertiary);
   font-family: var(--font); font-size: var(--text-base); cursor: pointer;
@@ -4264,7 +4264,8 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
 }
 .ts-tab::before { display: none; }
 .ts-tab:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
-.ts-tab.active { background: transparent; color: var(--text-primary); cursor: default; }
+.ts-tab.active { background: transparent; color: var(--text-primary); }
+.ts-tab.active:hover { background: rgba(255,255,255,0.08); }
 .ts-tab svg { width: 14px; height: 14px; stroke: currentColor; fill: none;
               stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
               flex-shrink: 0; display: block; }
