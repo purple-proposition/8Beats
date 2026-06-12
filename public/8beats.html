@@ -4022,7 +4022,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   display: flex; align-items: center; gap: var(--space-3);
   padding: 0 var(--space-4);
 }
-#ts-search-icon { width: 15px; height: 15px; stroke: var(--text-tertiary); fill: none; display: block; flex-shrink: 0; will-change: auto; transform: translateZ(0); }
+#ts-search-icon { width: 15px; height: 15px; stroke: var(--text-tertiary); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: block; flex-shrink: 0; will-change: auto; transform: translateZ(0); }
 
 /* Text area: flex:1 + right padding clears the absolutely-positioned badge */
 #ts-text { flex: 1; min-width: 0; position: relative; height: 100%; display: flex; align-items: center; overflow: hidden; padding-right: 52px; }
@@ -4204,7 +4204,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 #ts-filter-btn {
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   color: var(--text-tertiary); background: none; border: none;
-  padding: var(--space-2);
+  padding: var(--space-2) 0 var(--space-2) var(--space-2);
   border-radius: var(--radius-control);
   cursor: pointer; margin-left: auto;
   display: none; align-items: center; gap: var(--space-2);
