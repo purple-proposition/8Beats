@@ -4303,8 +4303,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   flex-shrink: 0; overflow: hidden;
 }
 .ts-resident-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.ts-resident-name { font-size: var(--text-base); color: var(--text-primary); line-height: 1.2; }
-.ts-resident-freq { font-size: var(--text-base); color: var(--text-tertiary); }
+.ts-resident-name { font-size: var(--text-base); color: var(--text-primary); line-height: 1; }
+.ts-resident-freq { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1; }
 
 /* ── Schedule tab in search dropdown ── */
 .ts-sched-daytabs {
@@ -9309,18 +9309,22 @@ function _renderTopbarSchedule() {
         const isAlerted = getAlerts().has(alertKey);
         const dayIdx    = _dowToIdx(_topbarSchedDow);
         const onclick   = showEntry ? `closeTopbarSearch();openShow('${safeTitle}')` : '';
-        const badge = isLive
+        const liveBadge = isLive
           ? `<span class="ts-sched-live-badge"><span class="live-dot" style="width:6px;height:6px;"></span>Live</span>`
-          : isNew
-            ? `<span class="badge-new"><span>NEW</span></span>`
-            : '';
+          : '';
+        const newBadge = !isLive && isNew
+          ? `<span class="badge-new"><span>NEW</span></span>`
+          : '';
         return `<div class="ts-sched-row" onclick="${onclick}">
           <span class="ts-sched-time">${slot.time}</span>
           <div class="ts-sched-info">
-            <span class="ts-sched-name">${showTitle}</span>
-            <span class="ts-sched-host">${slot.title}</span>
+            <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+              <span class="ts-sched-name">${showTitle}</span>
+              ${newBadge}
+            </div>
+            <span class="ts-sched-host" style="line-height:1;">${slot.title}</span>
           </div>
-          <div class="ts-sched-right">${badge}</div>
+          <div class="ts-sched-right">${liveBadge}</div>
           <button class="ts-sched-alert${isAlerted ? ' alerted' : ''}"
             onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeHost}')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
