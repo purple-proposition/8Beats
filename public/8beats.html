@@ -3907,7 +3907,7 @@ html.light .ts-resident-row:hover { background: rgba(0,0,0,0.08); }
 html.light .ts-sched-row:hover { background: rgba(0,0,0,0.08); }
 html.light #ts-filter-btn:hover { background: rgba(0,0,0,0.08); }
 html.light .ts-sched-daytab:hover { background: rgba(0,0,0,0.08); }
-html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
+html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color: var(--text-primary); }
 
 /* ── FWM: drag grip icon ── */
 .fwm-grip {
@@ -4244,8 +4244,8 @@ html.light .ts-filter-chips .chip--active { border-color: var(--text-primary); }
   background: rgba(255,255,255,0.08); border: none;
   backdrop-filter: none; -webkit-backdrop-filter: none;
 }
-.ts-filter-chips .chip:hover { background: rgba(255,255,255,0.16); border: none; }
-.ts-filter-chips .chip--active { background: var(--accent-soft); border: 1px solid var(--text-primary); }
+.ts-filter-chips .chip:hover { background: rgba(255,255,255,0.16); }
+.ts-filter-chips .chip--active { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .ts-tab {
   flex: none; height: auto; border: none; align-self: center;
   display: flex; align-items: center; gap: var(--space-2);
@@ -9058,11 +9058,11 @@ function _buildTopbarFilters() {
   const row = document.getElementById('ts-filter-row');
   const genreChips = GENRES.map(g => {
     const active = tsActiveGenres.has(g.toLowerCase());
-    return `<button class="chip${active ? ' chip--active' : ''}" onclick="event.stopPropagation();_toggleTsGenre('${g.replace(/'/g,"\\'")}')">${g}</button>`;
+    return `<button class="chip${active ? ' chip--active' : ''}" onclick="event.stopPropagation();_toggleTsGenre(this,'${g.replace(/'/g,"\\'")}')">${g}</button>`;
   }).join('');
   const timeChips = TIME_RANGES.map((tr, i) => {
     const active = tsActiveTime === i;
-    return `<button class="chip${active ? ' chip--active' : ''}" onclick="event.stopPropagation();_toggleTsTime(${i})">${tr.label}</button>`;
+    return `<button class="chip${active ? ' chip--active' : ''}" onclick="event.stopPropagation();_toggleTsTime(this,${i})">${tr.label}</button>`;
   }).join('');
   row.innerHTML = `
     <div class="ts-filter-section">
@@ -9079,16 +9079,18 @@ function _buildTopbarFilters() {
   });
 }
 
-function _toggleTsGenre(g) {
+function _toggleTsGenre(el, g) {
   const key = g.toLowerCase();
   if (tsActiveGenres.has(key)) tsActiveGenres.delete(key); else tsActiveGenres.add(key);
-  _buildTopbarFilters();
+  el.classList.toggle('chip--active', tsActiveGenres.has(key));
   handleTopbarSearch(document.getElementById('topbar-search-input')?.value || '');
 }
 
-function _toggleTsTime(i) {
+function _toggleTsTime(el, i) {
+  const section = el.closest('.ts-filter-section');
+  if (section) section.querySelectorAll('.chip').forEach(c => c.classList.remove('chip--active'));
   tsActiveTime = tsActiveTime === i ? null : i;
-  _buildTopbarFilters();
+  if (tsActiveTime !== null) el.classList.add('chip--active');
   handleTopbarSearch(document.getElementById('topbar-search-input')?.value || '');
 }
 
