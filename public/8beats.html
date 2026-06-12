@@ -9214,10 +9214,9 @@ function _renderTopbarShows(q) {
   initScrollFade(container, 48);
 }
 
-/* Escape closes / ⌘K opens topbar dropdown */
+/* Escape closes topbar dropdown */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && _topbarSearchOpen) { closeTopbarSearch(); return; }
-  if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); _topbarSearchOpen ? closeTopbarSearch() : openTopbarSearch(); }
 });
 
 /* ── Topbar search cycling words ── */
