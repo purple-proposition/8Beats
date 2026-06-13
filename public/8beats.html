@@ -98,6 +98,9 @@
   /* ── Semantic — Interactive surfaces ── */
   --surface-hover:      transparent;
   --surface-hover-soft: transparent;
+  /* Control surface — the "player-ctrl style": adaptive translucent fill (reads dark over a black bg, light over a light bg). Shared by player buttons + progress bar. */
+  --surface-control:       rgba(255,255,255,0.08);
+  --surface-control-hover: rgba(255,255,255,0.16);
 
   /* ── Semantic — Icons (miroir du texte) ── */
   --icon-primary:       #f2f2f2;
@@ -302,6 +305,8 @@ html.light {
 
   --surface-hover:          transparent;
   --surface-hover-soft:     transparent;
+  --surface-control:        rgba(0,0,0,0.06);
+  --surface-control-hover:  rgba(0,0,0,0.12);
 
   --icon-primary:           #0b0b0b;
   --icon-secondary:         #3a3a3a;
@@ -1500,7 +1505,7 @@ html.light .newsletter-card { background: transparent; }
 .progress-time.end { text-align: right; }
 .progress-track {
   flex: 1; height: 4px;
-  background: var(--border-subtle);
+  background: var(--surface-control);
   border-radius: 99px; position: relative; cursor: pointer; user-select: none;
 }
 .progress-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--text-secondary); border-radius: 99px; width: 5%; transition: width .1s linear; }
@@ -1551,14 +1556,14 @@ html.light .newsletter-card { background: transparent; }
 .player-ctrl {
   width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.08); border: none;
+  background: var(--surface-control); border: none;
   border-radius: var(--radius-control);
   cursor: pointer; color: var(--icon-tertiary);
   transition: background var(--dur-short) var(--ease-out),
               color var(--dur-micro) var(--ease-out),
               transform var(--dur-micro) var(--ease-out);
 }
-.player-ctrl:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
+.player-ctrl:hover { background: var(--surface-control-hover); color: var(--text-primary); }
 .player-ctrl:active { transform: scale(0.92); }
 .player-ctrl svg { width: 16px; height: 16px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; }
 .player-ctrl.icon-btn--spotify svg { fill: currentColor; stroke: none; }
@@ -3884,8 +3889,7 @@ html.light .vol-track { background: rgba(0,0,0,0.24); }
 html.light .vol-fill { background: var(--text-primary); }
 html.light .play-btn { background: rgba(0,0,0,0.06); }
 html.light .play-btn:hover { background: rgba(0,0,0,0.12); }
-html.light .player-ctrl { background: rgba(0,0,0,0.06); }
-html.light .player-ctrl:hover { background: rgba(0,0,0,0.12); }
+/* .player-ctrl bg/hover now via var(--surface-control[-hover]) — adapts to light automatically */
 html.light #playlist-btn.active { background: rgba(0,0,0,0.12); }
 html.light .icon-btn { background: rgba(0,0,0,0.06); }
 html.light .icon-btn:hover { background: rgba(0,0,0,0.12); }
