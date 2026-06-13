@@ -1652,10 +1652,10 @@ html.light .newsletter-card { background: transparent; }
 }
 /* vol-popup-glass kept as empty element for backwards compat */
 .vol-popup-glass { display: none; }
-/* Open state: hover-level fill, same as player-ctrl:hover */
+/* Open state: exact continuation of player-ctrl closed background */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.08);
   border: none;
   /* Open: spring bounce */
   transition: height 200ms var(--ease-spring),
@@ -1699,8 +1699,8 @@ html.light .newsletter-card { background: transparent; }
   transition: background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out);
 }
 .vol-btn-face:hover { background: transparent; }
-.vol-popup.vol-open .vol-btn-face { background: rgba(255,255,255,0.16); color: var(--text-primary); }
-.vol-popup.vol-open .vol-btn-face:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
+.vol-popup.vol-open .vol-btn-face { background: transparent; color: var(--text-primary); }
+.vol-popup.vol-open .vol-btn-face:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
 /* SVGs/icons stacked via JS initVolIcons — position:absolute, opacity crossfade.
  * Size is controlled here (not inline) so a single edit propagates everywhere. */
 .vol-btn-face svg,
@@ -3800,7 +3800,7 @@ html.light .player-shell {
   border-color: rgba(0,0,0,0.08);
 }
 html.light .vol-popup.vol-open {
-  background: rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.06);
   border: none;
 }
 html.light .panel-cookie {
@@ -3876,8 +3876,8 @@ html.light .schedule-slot-alert:hover { background: rgba(0,0,0,0.12); }
 html.light .card-play { background: rgba(0,0,0,0.06); }
 html.light .card-play:hover { background: rgba(0,0,0,0.12); }
 html.light .vol-btn-face:hover { background: transparent; }
-html.light .vol-popup.vol-open .vol-btn-face { background: rgba(0,0,0,0.12); }
-html.light .vol-popup.vol-open .vol-btn-face:hover { background: rgba(0,0,0,0.12); }
+html.light .vol-popup.vol-open .vol-btn-face { background: transparent; }
+html.light .vol-popup.vol-open .vol-btn-face:hover { background: rgba(0,0,0,0.06); }
 html.light .panel-support-amt { background: rgba(0,0,0,0.06); }
 html.light .panel-support-amt:hover { background: rgba(0,0,0,0.12); }
 html.light .show-tracklist-inline .icon-btn--stream { background: rgba(0,0,0,0.06); }
