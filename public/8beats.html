@@ -3919,6 +3919,22 @@ html.light #topbar-search-esc { background: rgba(0,0,0,0.06); }
 html.light #topbar-search-esc:hover { background: rgba(0,0,0,0.12); }
 html.light .badge-new { background: rgba(0,0,0,0.06); }
 
+/* ── Show hero — light mode: subtle warm tint instead of dark drama ── */
+html.light .show-hero-bg {
+  filter: blur(48px) saturate(0.4) brightness(1.5);
+  opacity: 0.25;
+}
+html.light .show-hero-scrim {
+  background: linear-gradient(to bottom,
+    rgba(247,247,247,.5)  0%,
+    rgba(247,247,247,.7)  15%,
+    rgba(247,247,247,.85) 30%,
+    rgba(247,247,247,.93) 45%,
+    rgba(247,247,247,1)   60%
+  );
+}
+html.light .ts-btn { color: var(--text-secondary); }
+
 /* ── Day tabs ── */
 html.light .ts-sched-daytab:hover { background: rgba(0,0,0,0.04); }
 html.light .ts-sched-daytab.active { background: rgba(0,0,0,0.08); }
