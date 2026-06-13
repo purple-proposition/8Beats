@@ -3071,6 +3071,15 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   grid-column: 6 / span 5;
   display: flex; flex-direction: column; gap: var(--space-5);
 }
+.show-head { display: flex; flex-direction: column; }
+/* 12px visible gap — Geist cap-height 0.725 */
+/* title(34.56px lh1.2)→host(16px lh1.25): 12+8.21+4.20=24px */
+.show-head .show-host { margin-top: 24px; }
+/* host(16px lh1.25)→submeta(14px lh1.5): 12+4.20+5.43=22px */
+/* title→submeta when host hidden: 12+8.21+5.43=26px */
+.show-head .show-submeta { margin-top: 26px; }
+.show-head .show-host[style*="flex"] ~ .show-submeta,
+.show-head .show-host[style*="block"] ~ .show-submeta { margin-top: 22px; }
 /* LEFT column: cover art, tags, artist */
 .show-sidebar {
   grid-column: 3 / span 3;
@@ -4779,17 +4788,19 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
       </div>
       <!-- RIGHT: title, host, tags, submeta, desc, actions, tracklist -->
       <div class="show-main">
-        <h1 class="show-title" id="show-title">International Radio Day</h1>
-        <div class="show-host" id="show-host-wrap" style="display:none">
-          <div class="show-host-av" id="show-host-av">PP</div>
-          <span class="show-host-name" id="show-host-name">Purple Proposition</span>
-        </div>
-        <div class="show-submeta">
-          <span class="show-submeta-host" id="show-submeta-host" onclick="openArtist(document.getElementById('show-host-name').textContent.trim())">Purple Proposition</span>
-          <span class="show-submeta-dot">·</span>
-          <span id="show-date">13 Feb 2024</span>
-          <span class="show-submeta-dot">·</span>
-          <span id="show-duration"></span>
+        <div class="show-head">
+          <h1 class="show-title" id="show-title">International Radio Day</h1>
+          <div class="show-host" id="show-host-wrap" style="display:none">
+            <div class="show-host-av" id="show-host-av">PP</div>
+            <span class="show-host-name" id="show-host-name">Purple Proposition</span>
+          </div>
+          <div class="show-submeta">
+            <span class="show-submeta-host" id="show-submeta-host" onclick="openArtist(document.getElementById('show-host-name').textContent.trim())">Purple Proposition</span>
+            <span class="show-submeta-dot">·</span>
+            <span id="show-date">13 Feb 2024</span>
+            <span class="show-submeta-dot">·</span>
+            <span id="show-duration"></span>
+          </div>
         </div>
         <p class="show-desc" id="show-desc"></p>
         <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:12px;">
