@@ -3121,7 +3121,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
    separator→name1: 14px CSS (12+2 name overflow) = 12px ink
    game→name: 16px CSS (12+2+2) = 12px ink
    last game→separator: 13px CSS (12+2-1 border) = 12px ink
-   name→game: 12px CSS (8+2+2) = 8px ink */
+   name→game: 16px CSS gap = 12px (baseline of name → cap-top of game), measured char-to-char */
 .show-tracklist-inline { padding-bottom: 0; }
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
@@ -3134,7 +3134,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-tracklist-inline .track + .track { border-top: none; }
 .show-tracklist-inline .track-info {
-  display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 12px;
+  display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 16px;
 }
 /* Track name first (primary), game name below (tertiary) */
 .show-tracklist-inline .track-name {
