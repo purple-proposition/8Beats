@@ -3695,13 +3695,23 @@ body { padding-top: 24px; }
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
-.ham-theme-row:hover::before { background: rgba(255,255,255,0.11); }
 .ham-theme-row svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-secondary); }
 .ham-theme-label {
   flex: 1;
   font-size: var(--text-base); font-family: var(--font);
   color: var(--text-secondary); letter-spacing: -.1px;
 }
+.ham-theme-btns { display: flex; gap: 4px; }
+.ham-theme-btn {
+  height: 28px; padding: 0 8px;
+  font-size: var(--text-sm); font-family: var(--font); letter-spacing: -.1px;
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.11); border: none; border-radius: var(--radius-control);
+  cursor: pointer; white-space: nowrap;
+  transition: background var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+.ham-theme-btn:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
+.ham-theme-btn.active { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .ham-social-row {
   display: flex; align-items: center;
   padding: 0 16px;
@@ -3962,7 +3972,9 @@ html.light .ts-sched-daytab.active { background: rgba(0,0,0,0.08); }
 html.light .explore-show-row:hover::before { background: rgba(0,0,0,0.08); }
 html.light #topbar-dropdown-shows .explore-show-row:hover { background: rgba(0,0,0,0.08); }
 html.light .ham-item:hover::before { background: rgba(0,0,0,0.08); }
-html.light .ham-theme-row:hover::before { background: rgba(0,0,0,0.08); }
+html.light .ham-theme-btn { background: rgba(0,0,0,0.06); }
+html.light .ham-theme-btn:hover,
+html.light .ham-theme-btn.active { background: rgba(0,0,0,0.12); color: var(--text-primary); }
 html.light .ts-tab:hover { background: rgba(0,0,0,0.08); }
 html.light .ts-resident-row:hover { background: rgba(0,0,0,0.08); }
 html.light .ts-sched-row:hover { background: rgba(0,0,0,0.08); }
@@ -4623,10 +4635,12 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
         </button>
         <div class="ham-theme-row">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          <span class="ham-theme-label" id="ham-theme-label">Theme</span>
-          <button class="theme-toggle" id="ham-theme-toggle" aria-label="Toggle theme">
-            <span class="theme-knob" id="ham-theme-knob"></span>
-          </button>
+          <span class="ham-theme-label">Theme</span>
+          <div class="ham-theme-btns" id="ham-theme-btns">
+            <button class="ham-theme-btn" data-mode="system" onclick="setThemeMode('system')">System</button>
+            <button class="ham-theme-btn" data-mode="light" onclick="setThemeMode('light')">Light</button>
+            <button class="ham-theme-btn active" data-mode="dark" onclick="setThemeMode('dark')">Dark</button>
+          </div>
         </div>
         <div class="ham-sep"></div>
         <div class="ham-social-row">
@@ -5588,28 +5602,46 @@ function toggleTheme() {
 if (ddThemeToggle) ddThemeToggle.addEventListener('click', e => { e.stopPropagation(); toggleTheme(); });
 
 /* ── Topbar hamburger menu ── */
-const hamMenu      = document.getElementById('ham-menu');
-const hamBtn       = document.getElementById('ham-btn');
-const hamThemeKnob = document.getElementById('ham-theme-knob');
-const hamThemeToggle = document.getElementById('ham-theme-toggle');
+const hamMenu = document.getElementById('ham-menu');
+const hamBtn  = document.getElementById('ham-btn');
 
-// Init icon in knob
-if (hamThemeKnob) setThemeIcon(hamThemeKnob, 'sun');
+/* 3-mode theme selector: system | light | dark */
+let themeMode = 'dark';
 
-// Label is static "Theme" — no sync needed
-function _syncHamThemeLabel() {}
+function setThemeMode(mode) {
+  themeMode = mode;
+  if (mode === 'system') {
+    light = window.matchMedia('(prefers-color-scheme: light)').matches;
+  } else {
+    light = (mode === 'light');
+  }
+  document.documentElement.classList.toggle('light', light);
+  setThemeIcon(themeKnobD, light ? 'moon' : 'sun');
+  if (ddThemeKnob) setThemeIcon(ddThemeKnob, light ? 'moon' : 'sun');
+  document.querySelectorAll('.ham-theme-btn').forEach(btn =>
+    btn.classList.toggle('active', btn.dataset.mode === mode)
+  );
+}
 
-// Patch toggleTheme to also sync ham
+/* Keep toggleTheme in sync (keyboard shortcut, nav dropdown) */
 const _origToggleTheme = toggleTheme;
 toggleTheme = function() {
   _origToggleTheme();
-  if (hamThemeKnob) setThemeIcon(hamThemeKnob, light ? 'moon' : 'sun');
-  _syncHamThemeLabel();
+  themeMode = light ? 'light' : 'dark';
+  document.querySelectorAll('.ham-theme-btn').forEach(btn =>
+    btn.classList.toggle('active', btn.dataset.mode === themeMode)
+  );
 };
 
-if (hamThemeToggle) {
-  hamThemeToggle.addEventListener('click', e => { e.stopPropagation(); toggleTheme(); });
-}
+/* System mode: update when OS preference changes */
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+  if (themeMode === 'system') {
+    light = e.matches;
+    document.documentElement.classList.toggle('light', light);
+    setThemeIcon(themeKnobD, light ? 'moon' : 'sun');
+    if (ddThemeKnob) setThemeIcon(ddThemeKnob, light ? 'moon' : 'sun');
+  }
+});
 
 function toggleHamMenu() {
   if (hamMenu.classList.contains('open')) {
