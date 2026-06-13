@@ -1675,10 +1675,12 @@ html.light .newsletter-card { background: transparent; }
 }
 /* vol-popup-glass kept as empty element for backwards compat */
 .vol-popup-glass { display: none; }
-/* Open state: matches the button's HOVER background (player-ctrl:hover 0.16) — harmonised surface */
+/* Open state: matches the button's HOVER background (player-ctrl:hover 0.16) + glass blur */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
   background: var(--surface-control-hover);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
   border: none;
   /* Open: spring bounce */
   transition: height 200ms var(--ease-spring),
