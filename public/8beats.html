@@ -3884,7 +3884,6 @@ html.light .donate-amt { background: rgba(0,0,0,0.06); }
 html.light .donate-amt:hover { background: rgba(0,0,0,0.12); }
 
 /* ── Player-ctrl interactive buttons ── */
-/* progress-track uses var(--border-subtle) — adapts to light automatically, no override needed */
 html.light .vol-track { background: rgba(0,0,0,0.24); }
 html.light .vol-fill { background: var(--text-primary); }
 html.light .play-btn { background: rgba(0,0,0,0.06); }
@@ -6103,11 +6102,11 @@ function showProgressBar(showTitle) {
     let parts = [];
     let prev = 0;
     gradStops.forEach(([a, b]) => {
-      parts.push(`var(--border-default) ${prev}%, var(--border-default) ${a}%`);
+      parts.push(`var(--surface-control) ${prev}%, var(--surface-control) ${a}%`);
       parts.push(`transparent ${a}%, transparent ${b}%`);
       prev = b;
     });
-    parts.push(`var(--border-default) ${prev}%, var(--border-default) 100%`);
+    parts.push(`var(--surface-control) ${prev}%, var(--surface-control) 100%`);
     progressTrack.style.background = grad + parts.join(', ') + ')';
   }
 
