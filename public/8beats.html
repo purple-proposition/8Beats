@@ -1265,6 +1265,12 @@ html.light .newsletter-card { background: transparent; }
   font-size: 12px; color: var(--text-secondary);
   text-align: center; letter-spacing: .02em;
   display: flex; align-items: center; justify-content: center; gap: 5px;
+  max-height: 0; overflow: hidden; opacity: 0;
+  margin-top: calc(-1 * var(--space-4));
+  transition: max-height 280ms var(--ease-out), opacity 200ms 60ms var(--ease-out), margin-top 280ms var(--ease-out);
+}
+.panel-support:hover .panel-support-note {
+  max-height: 30px; opacity: 1; margin-top: 0;
 }
 .paypal-logo-svg { height: 11px; width: auto; display: inline-block; fill: currentColor; flex-shrink: 0; }
 
