@@ -4429,29 +4429,32 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 .ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
 .ts-sched-row {
   display: flex; align-items: center; gap: var(--space-4);
-  padding: var(--space-2) 16px;
+  padding: 8px 8px; margin: 0 -8px;
   cursor: pointer;
   border-radius: var(--radius-control);
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
-.ts-sched-row:hover { background: rgba(255,255,255,0.11); }
+.ts-sched-row:hover { background: var(--surface-control); }
 .ts-sched-time {
   font-size: var(--text-sm); color: var(--text-tertiary);
   flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font);
 }
-.ts-sched-info { display: flex; flex-direction: column; gap: var(--space-3); flex: 1; min-width: 0; }
-.ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ts-sched-info { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 0; padding-right: 16px; }
+.ts-sched-title-row { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1; min-width: 0; }
 .ts-sched-host { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ts-sched-right { display: flex; align-items: center; flex-shrink: 0; }
 .ts-sched-live-badge {
   flex-shrink: 0;
-  display: inline-flex; align-items: center; gap: 4px;
-  background: rgba(255,255,255,0.11); border: none;
-  border-radius: var(--radius-control);
-  padding: 2px 8px;
-  font-size: var(--text-sm); font-family: var(--font);
-  color: var(--text-primary); white-space: nowrap;
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  height: 28px; padding: 0 10px;
+  background: var(--surface-control); border: none; border-radius: var(--radius-control);
+  font-size: var(--text-sm); font-family: var(--font); font-weight: 400;
+  text-transform: uppercase; letter-spacing: .06em; line-height: 1;
+  color: var(--text-secondary); white-space: nowrap;
+  transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
+.ts-sched-live-badge:hover { background: var(--surface-control-hover); color: var(--text-primary); }
 .ts-sched-alert {
   width: 28px; height: 28px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
@@ -9489,7 +9492,7 @@ function _renderTopbarSchedule() {
         const dayIdx    = _dowToIdx(_topbarSchedDow);
         const onclick   = showEntry ? `closeTopbarSearch();openShow('${safeTitle}')` : '';
         const liveBadge = isLive
-          ? `<span class="ts-sched-live-badge"><span class="live-dot" style="width:6px;height:6px;"></span>Live</span>`
+          ? `<span class="ts-sched-live-badge"><span class="live-dot" style="width:6px;height:6px;animation:blink 1.4s ease-in-out infinite;"></span>LIVE</span>`
           : '';
         const newBadge = !isLive && isNew
           ? `<span class="badge-new"><span>PREMIERE</span></span>`
@@ -9497,13 +9500,13 @@ function _renderTopbarSchedule() {
         return `<div class="ts-sched-row" onclick="${onclick}">
           <span class="ts-sched-time">${slot.time}</span>
           <div class="ts-sched-info">
-            <div style="display:flex;align-items:baseline;gap:12px;min-width:0;">
+            <div class="ts-sched-title-row">
               <span class="ts-sched-name">${showTitle}</span>
-              ${newBadge}
+              ${liveBadge}${newBadge}
             </div>
-            <span class="ts-sched-host" style="line-height:1;">${slot.title}</span>
+            <span class="ts-sched-host">${slot.title}</span>
           </div>
-          <div class="ts-sched-right">${liveBadge}</div>
+          <div class="ts-sched-right"></div>
         </div>`;
       }).join('')
     : '<p class="ts-no-results">No shows scheduled</p>';
