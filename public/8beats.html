@@ -1652,13 +1652,11 @@ html.light .newsletter-card { background: transparent; }
 }
 /* vol-popup-glass kept as empty element for backwards compat */
 .vol-popup-glass { display: none; }
-/* Open state: same glass as player-shell */
+/* Open state: hover-level fill, same as player-ctrl:hover */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: rgba(0,0,0,0.48);
-  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.16);
+  border: none;
   /* Open: spring bounce */
   transition: height 200ms var(--ease-spring),
               transform var(--dur-micro) var(--ease-out);
@@ -1689,8 +1687,8 @@ html.light .newsletter-card { background: transparent; }
   -webkit-mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
   mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
 }
-.vol-track { width: 4px; height: 88px; background: rgba(255,255,255,0.08); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }
-.vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.36); border-radius: 99px; }
+.vol-track { width: 4px; height: 88px; background: rgba(255,255,255,0.24); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }
+.vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
 .vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
 .vol-btn-face {
   width: 32px; height: 32px; flex-shrink: 0;
@@ -3802,10 +3800,8 @@ html.light .player-shell {
   border-color: rgba(0,0,0,0.08);
 }
 html.light .vol-popup.vol-open {
-  background: rgba(248,248,248,0.88);
-  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
-  border-color: rgba(0,0,0,0.08);
+  background: rgba(0,0,0,0.12);
+  border: none;
 }
 html.light .panel-cookie {
   background: rgba(248,248,248,0.88) !important;
@@ -3858,8 +3854,8 @@ html.light .donate-amt:hover { background: rgba(0,0,0,0.12); }
 
 /* ── Player-ctrl interactive buttons ── */
 html.light .progress-track { background: rgba(0,0,0,0.08); }
-html.light .vol-track { background: rgba(0,0,0,0.08); }
-html.light .vol-fill { background: rgba(0,0,0,0.40); }
+html.light .vol-track { background: rgba(0,0,0,0.24); }
+html.light .vol-fill { background: var(--text-primary); }
 html.light .play-btn { background: rgba(0,0,0,0.06); }
 html.light .play-btn:hover { background: rgba(0,0,0,0.12); }
 html.light .player-ctrl { background: rgba(0,0,0,0.06); }
