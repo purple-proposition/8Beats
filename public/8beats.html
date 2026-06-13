@@ -1695,13 +1695,13 @@ html.light .newsletter-card { background: transparent; }
 .vol-btn-face {
   width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.08); border: none; border-radius: var(--radius-control); cursor: pointer;
-  color: var(--icon-secondary); padding: 0;
+  background: transparent; border: none; border-radius: var(--radius-control); cursor: pointer;
+  color: var(--icon-tertiary); padding: 0;
   position: relative; z-index: 1;
   transition: background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out);
 }
-.vol-btn-face:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
-.vol-popup.vol-open .vol-btn-face { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+.vol-btn-face:hover { background: transparent; }
+.vol-popup.vol-open .vol-btn-face { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 /* SVGs/icons stacked via JS initVolIcons — position:absolute, opacity crossfade.
  * Size is controlled here (not inline) so a single edit propagates everywhere. */
@@ -3879,8 +3879,8 @@ html.light .schedule-slot-alert { background: rgba(0,0,0,0.06); }
 html.light .schedule-slot-alert:hover { background: rgba(0,0,0,0.12); }
 html.light .card-play { background: rgba(0,0,0,0.06); }
 html.light .card-play:hover { background: rgba(0,0,0,0.12); }
-html.light .vol-btn-face:hover { background: rgba(0,0,0,0.12); }
-html.light .vol-popup.vol-open .vol-btn-face { background: rgba(0,0,0,0.06); }
+html.light .vol-btn-face:hover { background: transparent; }
+html.light .vol-popup.vol-open .vol-btn-face { background: rgba(0,0,0,0.12); }
 html.light .vol-popup.vol-open .vol-btn-face:hover { background: rgba(0,0,0,0.12); }
 html.light .panel-support-amt { background: rgba(0,0,0,0.06); }
 html.light .panel-support-amt:hover { background: rgba(0,0,0,0.12); }
