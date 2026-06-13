@@ -9185,7 +9185,17 @@ function handleTopbarSearch(q) {
       const DAY_MAP = {monday:0,tuesday:1,wednesday:2,thursday:3,friday:4,saturday:5,sunday:6};
       let targetDow = null;
       if ('today'.startsWith(lower))    targetDow = todayDow;
-      else if ('tomorrow'.startsWith(lower)) targetDow = (todayDow + 1) % 7;
+      else if ('tomorrow'.startsWith(lower)) {
+        if (todayDow === 6) {
+          // Sunday: tomorrow = next Monday — schedule not published yet
+          _topbarSchedDow = 0;
+          _renderTopbarSchedule();
+          const slotsEl = document.getElementById('topbar-dropdown-schedule');
+          if (slotsEl) slotsEl.innerHTML = '<p class="ts-no-results">Next week\'s schedule isn\'t available yet — check back Monday.</p>';
+          return;
+        }
+        targetDow = (todayDow + 1) % 7;
+      }
       else { for (const [d, i] of Object.entries(DAY_MAP)) { if (d.startsWith(lower)) { targetDow = i; break; } } }
       if (targetDow !== null && targetDow !== _topbarSchedDow) _selectTopbarSchedDay(targetDow);
       return;
