@@ -3127,8 +3127,17 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tracklist-inline { padding-bottom: 0; }
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-4); padding: 16px 0 0 0; border-radius: 0; cursor: default;
+  gap: var(--space-4); padding: 16px 0 0 0; border-radius: 0; cursor: pointer;
+  position: relative;
 }
+/* Whole-row hover highlight (like search results) — bleeds 8px sideways, hugs content */
+.show-tracklist-inline .track::before {
+  content: ''; position: absolute; left: -8px; right: -8px; top: 10px; bottom: -6px;
+  border-radius: var(--radius-control); background: transparent;
+  transition: background var(--dur-micro) var(--ease-hover); pointer-events: none;
+}
+.show-tracklist-inline .track:hover::before { background: rgba(255,255,255,0.06); }
+.show-tracklist-inline .track-info, .show-tracklist-inline .track-right { position: relative; z-index: 1; }
 .show-tracklist-inline .tracklist-header + .track { padding-top: 14px; }
 .show-tracklist-inline .track:last-child {
   padding-bottom: 13px;
@@ -3146,14 +3155,6 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   display: block; font-size: var(--text-base); color: var(--text-tertiary);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   line-height: 1;
-}
-/* Game name acts like the timestamp: click seeks to the track */
-.show-tracklist-inline .track-game-link {
-  cursor: pointer; width: fit-content; max-width: 100%;
-  transition: color var(--dur-short) var(--ease-hover);
-}
-.show-tracklist-inline .track-game-link:hover {
-  color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px;
 }
 .show-tracklist-inline .track-right {
   display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0;
@@ -3898,6 +3899,7 @@ html.light .panel-support-amt { background: rgba(0,0,0,0.06); }
 html.light .panel-support-amt:hover { background: rgba(0,0,0,0.12); }
 html.light .show-tracklist-inline .icon-btn--stream { background: rgba(0,0,0,0.06); }
 html.light .show-tracklist-inline .icon-btn--stream:hover { background: rgba(0,0,0,0.12); }
+html.light .show-tracklist-inline .track:hover::before { background: rgba(0,0,0,0.05); }
 html.light .ham-social-row .icon-btn--ghost { background: rgba(0,0,0,0.06); }
 html.light .ham-social-row .icon-btn--ghost:hover { background: rgba(0,0,0,0.12); }
 html.light #topbar-search-kbd { background: rgba(0,0,0,0.06); }
@@ -7264,14 +7266,14 @@ function openShow(key) {
       <span class="tracklist-header-name">Tracklist</span>
     </div>
   ` + tl.map((t, i) => `
-    <div class="track">
+    <div class="track" role="button" tabindex="0" onclick="seekToShow('${t.ts}', '${key}')">
       <div class="track-info">
         <span class="track-name lh-d">${t.name}</span>
-        ${t.game ? `<span class="track-game track-game-link" onclick="seekToShow('${t.ts}', '${key}')">${t.game}</span>` : ''}
+        ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
       </div>
       <div class="track-right">
-        ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-        <button class="ts-btn" onclick="seekToShow('${t.ts}', '${key}')">${t.ts}</button>
+        ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
+        <button class="ts-btn" onclick="event.stopPropagation();seekToShow('${t.ts}', '${key}')">${t.ts}</button>
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
