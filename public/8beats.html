@@ -683,7 +683,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 }
 /* ── Horizontal separators — unified style ── */
 .ham-sep, .nav-dropdown-sep, .mno-sep, .ts-sched-sep {
-  height: 1px; background: rgba(255,255,255,0.09); margin: var(--space-4) var(--space-4);
+  height: 1px; background: rgba(255,255,255,0.09); margin: 0 16px;
 }
 .nav-dd-theme-row {
   display: flex; align-items: center; gap: var(--space-3);
@@ -3653,10 +3653,11 @@ body { padding-top: 24px; }
 #ham-menu-inner {
   overflow: hidden;
   border-radius: calc(var(--radius-btn) - 1px);
+  display: flex; flex-direction: column; gap: 16px; padding: 16px 0;
 }
 .ham-item {
   display: flex; align-items: center; gap: 12px;
-  padding: 13px var(--space-4);
+  padding: 0 16px; min-height: 20px;
   font-size: var(--text-base); font-family: var(--font); font-weight: 400;
   color: var(--text-secondary);
   cursor: pointer; border: none; background: none;
@@ -3680,7 +3681,7 @@ body { padding-top: 24px; }
 .ham-sep {}
 .ham-theme-row {
   display: flex; align-items: center; gap: 12px;
-  padding: 13px var(--space-4);
+  padding: 0 16px; min-height: 20px;
   position: relative; cursor: default;
   transition: color var(--dur-micro) var(--ease-hover);
 }
@@ -3702,8 +3703,8 @@ body { padding-top: 24px; }
 }
 .ham-social-row {
   display: flex; align-items: center;
-  padding: var(--space-4);
-  gap: var(--space-4);
+  padding: 0 16px;
+  gap: 16px;
 }
 .ham-social-row .icon-btn--ghost {
   width: 32px; height: 32px;
