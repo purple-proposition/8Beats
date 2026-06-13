@@ -1678,9 +1678,7 @@ html.light .newsletter-card { background: transparent; }
 /* Open state: matches the button's HOVER background (player-ctrl:hover 0.16) — harmonised surface */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: rgba(0,0,0,0.40);
-  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  background: var(--surface-control-hover);
   border: none;
   /* Open: spring bounce */
   transition: height 200ms var(--ease-spring),
@@ -3886,9 +3884,7 @@ html.light .player-shell {
   border-color: rgba(0,0,0,0.08);
 }
 html.light .vol-popup.vol-open {
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.04);
+  background: rgba(0,0,0,0.12);
   border: none;
 }
 html.light .panel-cookie {
