@@ -1500,7 +1500,7 @@ html.light .newsletter-card { background: transparent; }
 .progress-time.end { text-align: right; }
 .progress-track {
   flex: 1; height: 4px;
-  background: rgba(255,255,255,0.08);
+  background: var(--border-subtle);
   border-radius: 99px; position: relative; cursor: pointer; user-select: none;
 }
 .progress-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--text-secondary); border-radius: 99px; width: 5%; transition: width .1s linear; }
@@ -3879,7 +3879,7 @@ html.light .donate-amt { background: rgba(0,0,0,0.06); }
 html.light .donate-amt:hover { background: rgba(0,0,0,0.12); }
 
 /* ── Player-ctrl interactive buttons ── */
-html.light .progress-track { background: rgba(0,0,0,0.08); }
+/* progress-track uses var(--border-subtle) — adapts to light automatically, no override needed */
 html.light .vol-track { background: rgba(0,0,0,0.24); }
 html.light .vol-fill { background: var(--text-primary); }
 html.light .play-btn { background: rgba(0,0,0,0.06); }
