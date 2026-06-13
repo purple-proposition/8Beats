@@ -2575,17 +2575,30 @@ html.light .newsletter-card { background: transparent; }
 .sp-show-row {
   display: flex; align-items: center;
   gap: var(--space-4);
-  padding: 12px 12px;
-  margin: -12px 12px;
+  padding: 8px 8px;
+  margin: 0 -8px;
   cursor: pointer;
   border-radius: var(--radius-control);
   transition: background var(--dur-micro) var(--ease-hover);
 }
-.sp-show-row:hover { background: #1c1c1c; }
-.sp-show-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-.sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-micro) var(--ease-hover); }
-.sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Right section: tags + live btn + bell */
+.sp-show-row:hover { background: var(--surface-control); }
+.sp-show-info { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 0; padding-right: 16px; }
+.sp-show-title-row { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; transition: color var(--dur-micro) var(--ease-hover); flex-shrink: 1; min-width: 0; }
+.sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; }
+/* Live button — player-ctrl style, uppercase */
+.sp-live-btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  height: 28px; padding: 0 10px; flex-shrink: 0;
+  background: var(--surface-control); border: none; border-radius: var(--radius-control);
+  cursor: pointer; white-space: nowrap;
+  font-family: var(--font); font-size: var(--text-sm); font-weight: 400;
+  text-transform: uppercase; letter-spacing: .06em; line-height: 1;
+  color: var(--text-secondary);
+  transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+.sp-live-btn:hover { background: var(--surface-control-hover); color: var(--text-primary); }
+/* Right section: bell */
 .sp-show-right { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 .sp-new {
   font-size: var(--text-xs); font-weight: 600; letter-spacing: .06em;
@@ -2684,16 +2697,16 @@ html.light .newsletter-card { background: transparent; }
   font-family: var(--font);
 }
 .schedule-slot.is-live .schedule-slot-time { color: var(--text-primary); }
-.schedule-slot-body { flex: 1; min-width: 0; }
+.schedule-slot-body { flex: 1; min-width: 0; padding-right: 16px; }
 .schedule-slot-title {
-  display: flex; align-items: center; gap: 12px; min-width: 0;
-  font-size: var(--text-md); font-weight: 400; color: var(--text-primary);
+  display: flex; align-items: center; gap: 16px; min-width: 0;
+  font-size: var(--text-md); font-weight: 400; color: var(--text-primary); line-height: 1;
 }
 .schedule-slot-title .slot-title-text {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1;
 }
 .schedule-slot-host {
-  font-size: var(--text-base); color: var(--text-secondary); margin-top: var(--space-1);
+  font-size: var(--text-base); color: var(--text-secondary); margin-top: 12px; line-height: 1;
   display: flex; align-items: center; gap: var(--space-2);
 }
 .schedule-slot-avatar {
@@ -2702,7 +2715,19 @@ html.light .newsletter-card { background: transparent; }
 }
 .schedule-slot-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .schedule-slot-avatar svg { width: 100%; height: 100%; display: block; }
-.schedule-slot-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; margin-left: auto; }
+.schedule-slot-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+.schedule-slot-live-btn {
+  display: none; align-items: center; gap: var(--space-2);
+  height: 28px; padding: 0 10px; flex-shrink: 0;
+  background: var(--surface-control); border: none; border-radius: var(--radius-control);
+  cursor: pointer; white-space: nowrap;
+  font-family: var(--font); font-size: var(--text-sm); font-weight: 400;
+  text-transform: uppercase; letter-spacing: .06em; line-height: 1;
+  color: var(--text-secondary);
+  transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+}
+.schedule-slot.is-live .schedule-slot-live-btn { display: flex; }
+.schedule-slot-live-btn:hover { background: var(--surface-control-hover); color: var(--text-primary); }
 .schedule-slot-alert {
   width: 32px; height: 32px; border-radius: var(--radius-control); flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
@@ -2712,14 +2737,6 @@ html.light .newsletter-card { background: transparent; }
 }
 .schedule-slot-alert:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .schedule-slot-alert.alerted { background: rgba(var(--color-live-rgb),.12); border-color: rgba(var(--color-live-rgb),.4); color: var(--color-live); }
-.schedule-slot-live-badge {
-  display: none; align-items: center; gap: var(--space-1);
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-  color: var(--text-primary); padding: var(--space-1) var(--space-2);
-  background: rgba(255,255,255,0.11); border: none;
-  border-radius: var(--radius-control);
-}
-.schedule-slot.is-live .schedule-slot-live-badge { display: flex; }
 .schedule-slot-new {}
 .schedule-empty {
   padding: var(--space-2) var(--space-3);
@@ -8286,6 +8303,7 @@ function renderSchedule() {
             <div class="schedule-slot-body">
               <div class="schedule-slot-title">
                 <span class="slot-title-text">${slot.title}</span>
+                ${isLive ? `<button class="schedule-slot-live-btn" onclick="event.stopPropagation()"><span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>LIVE</button>` : ''}
                 ${slot.isNew ? `<span class="badge-new"><span>NEW</span></span>` : ''}
               </div>
               <div class="schedule-slot-host">
@@ -8294,10 +8312,6 @@ function renderSchedule() {
               </div>
             </div>
             <div class="schedule-slot-right">
-              <div class="schedule-slot-live-badge">
-                <span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>
-                Live
-              </div>
               ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="chip genre-tag">${g}</span>`).join('')}</div>` : ''}
               <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
                 title="${isAlerted ? 'Rappel activé' : 'Me rappeler'}"
@@ -8392,6 +8406,16 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
       return h >= start && h < end;
     });
 
+    /* Find the currently live show within this block */
+    let liveSlotTime = null;
+    if (isBlockLive) {
+      const started = blockShows.filter(s => {
+        const [h, m] = s.time.split(':').map(Number);
+        return h * 60 + m <= nowMin;
+      });
+      if (started.length) liveSlotTime = started[started.length - 1].time;
+    }
+
     blockShows.forEach(slot => {
       /* Look up show by resident name: find show where showData.host === slot.title */
       const showEntry  = SHOW_DATA && Object.entries(SHOW_DATA).find(([, d]) => d.host === slot.title);
@@ -8402,11 +8426,18 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
       const isAlerted  = getAlerts().has(alertKey);
       const dayIdx     = _dowToIdx(dayIndex);
       const onclk      = showEntry ? `${closeFn};openShow('${safeTitle}')` : '';
+      const isShowLive = liveSlotTime === slot.time;
+      const liveBtnHtml = isShowLive
+        ? `<button class="sp-live-btn" onclick="event.stopPropagation()"><span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>LIVE</button>`
+        : '';
       html += `
         <div class="sp-show-row" role="button" tabindex="0" onclick="${onclk}">
           <span class="sp-block-time">${slot.time}</span>
           <div class="sp-show-info">
-            <div class="sp-show-name">${showTitle}</div>
+            <div class="sp-show-title-row">
+              <div class="sp-show-name">${showTitle}</div>
+              ${liveBtnHtml}
+            </div>
             <div class="sp-show-artist">${artistName}</div>
           </div>
           <div class="sp-show-right">
