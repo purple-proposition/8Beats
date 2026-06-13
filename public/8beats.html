@@ -3140,12 +3140,20 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 /* Track name first (primary), game name below (tertiary) */
 .show-tracklist-inline .track-name {
-  font-size: var(--text-base); color: var(--text-primary); line-height: 1;
+  font-size: var(--text-base); color: var(--text-primary); line-height: var(--lh-d, 1);
 }
 .show-tracklist-inline .track-game {
   display: block; font-size: var(--text-base); color: var(--text-tertiary);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   line-height: 1;
+}
+/* Game name acts like the timestamp: click seeks to the track */
+.show-tracklist-inline .track-game-link {
+  cursor: pointer; width: fit-content; max-width: 100%;
+  transition: color var(--dur-short) var(--ease-hover);
+}
+.show-tracklist-inline .track-game-link:hover {
+  color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px;
 }
 .show-tracklist-inline .track-right {
   display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0;
@@ -7257,10 +7265,9 @@ function openShow(key) {
     </div>
   ` + tl.map((t, i) => `
     <div class="track">
-      <span class="track-num">${i + 1}</span>
       <div class="track-info">
-        <span class="track-name">${t.name}</span>
-        ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
+        <span class="track-name lh-d">${t.name}</span>
+        ${t.game ? `<span class="track-game track-game-link" onclick="seekToShow('${t.ts}', '${key}')">${t.game}</span>` : ''}
       </div>
       <div class="track-right">
         ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
@@ -7268,6 +7275,8 @@ function openShow(key) {
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
+  // Dynamic line-height: track titles get lh:1.5 when they wrap to 2 lines (recomputed on resize)
+  requestAnimationFrame(() => { if (typeof initDynLH === 'function') initDynLH(); });
 
 
   // Related cards — triées du plus récent au plus ancien
