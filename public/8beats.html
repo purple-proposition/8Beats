@@ -3116,14 +3116,20 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .tracklist-header-ts   { width: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-disabled); }
 .tracklist-header-ts svg { width: 13px; height: 13px; stroke: currentColor; fill: none; display: block; }
 
-/* Tracklist rows — no separator, 24px top spacing before each row */
+/* Tracklist rows — spacing verified with Range API (Inter 14px, lh:1, +2px overflow each side)
+   All measurements ink-to-ink:
+   separator→name1: 18px CSS (16+2 name overflow) = 16px ink
+   game→name: 20px CSS (16+2+2) = 16px ink
+   last game→separator: 17px CSS (16+2-1 border) = 16px ink
+   name→game: 16px CSS (12+2+2) = 12px ink */
 .show-tracklist-inline { padding-bottom: 0; }
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--space-4); padding: 20px 0 0 0; border-radius: 0; cursor: default;
 }
+.show-tracklist-inline .tracklist-header + .track { padding-top: 18px; }
 .show-tracklist-inline .track:last-child {
-  padding-bottom: var(--space-3);
+  padding-bottom: 17px;
   border-bottom: 1px solid var(--border-subtle);
 }
 .show-tracklist-inline .track + .track { border-top: none; }
