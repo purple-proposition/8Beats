@@ -4387,7 +4387,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 .ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
 .ts-sched-row {
   display: flex; align-items: center; gap: var(--space-4);
-  padding: var(--space-2);
+  padding: var(--space-2) 16px;
   cursor: pointer;
   border-radius: var(--radius-control);
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
@@ -4431,7 +4431,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 .badge-new {
   flex-shrink: 0;
-  align-self: center;
+  align-self: auto;
   background: none;
   border: none;
   padding: 0;
@@ -9390,21 +9390,13 @@ function _renderTopbarSchedule() {
         return `<div class="ts-sched-row" onclick="${onclick}">
           <span class="ts-sched-time">${slot.time}</span>
           <div class="ts-sched-info">
-            <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <div style="display:flex;align-items:baseline;gap:12px;min-width:0;">
               <span class="ts-sched-name">${showTitle}</span>
               ${newBadge}
             </div>
             <span class="ts-sched-host" style="line-height:1;">${slot.title}</span>
           </div>
           <div class="ts-sched-right">${liveBadge}</div>
-          <button class="ts-sched-alert${isAlerted ? ' alerted' : ''}"
-            onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${safeHost}')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              ${isAlerted
-                ? '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M2 8c0-2.2.7-4.3 2-6"/><path d="M22 8a10 10 0 0 0-2-6"/>'
-                : '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'}
-            </svg>
-          </button>
         </div>`;
       }).join('')
     : '<p class="ts-no-results">No shows scheduled</p>';
