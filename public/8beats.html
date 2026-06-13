@@ -7326,8 +7326,6 @@ function openShow(key) {
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
-  // Dynamic line-height: track titles get lh:1.5 when they wrap to 2 lines (recomputed on resize)
-  requestAnimationFrame(() => { if (typeof initDynLH === 'function') initDynLH(); });
 
 
   // Related cards — triées du plus récent au plus ancien
@@ -7414,7 +7412,10 @@ function openShow(key) {
     window.scrollTo(0,0);
     navCollapsed = false;
     navPill.classList.remove('collapsed');
-    requestAnimationFrame(() => show.classList.add('visible'));
+    requestAnimationFrame(() => {
+      show.classList.add('visible');
+      if (typeof initDynLH === 'function') initDynLH();
+    });
   }, 280);
 
   // Update nav wordmark to be a back button
