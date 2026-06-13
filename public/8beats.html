@@ -1703,9 +1703,7 @@ html.light .newsletter-card { background: transparent; }
   -webkit-mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
   mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
 }
-.vol-track { width: 4px; height: 88px; background: rgba(255,255,255,0.24); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }
-.vol-track::before { content: ''; position: absolute; left: -3px; right: -3px; top: 50%; height: 2px; transform: translateY(-50%); background: rgba(255,255,255,0.35); border-radius: 1px; pointer-events: none; z-index: 2; }
-.vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
+.vol-track { width: 4px; height: 88px; background: rgba(255,255,255,0.24); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }.vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
 .vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
 .vol-btn-face {
   width: 32px; height: 32px; flex-shrink: 0;
@@ -6822,7 +6820,7 @@ window.addEventListener('resize', _updateNavCompact);
 
 function setVol(pct) {
   let v = Math.max(0, Math.min(100, Math.round(pct)));
-  if (v >= 46 && v <= 54) v = 50;
+  if (v >= 48 && v <= 52) v = 50;
   volPct = v;
   volFill.style.height = `${volPct}%`;
   volKnob.style.bottom = `calc(${volPct}% - 4px)`;
