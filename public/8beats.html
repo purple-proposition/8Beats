@@ -3165,11 +3165,11 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-tracklist-inline .track:hover::before { background: rgba(255,255,255,0.06); }
 .show-tracklist-inline .track-info, .show-tracklist-inline .track-right { position: relative; z-index: 1; }
-.show-tracklist-inline .tracklist-header + .track { padding-top: 14px; }
-.show-tracklist-inline .tracklist-header + .track::before { top: calc(14px - var(--hover-bleed)); }       /* first track padding-top 14px */
-.show-tracklist-inline .track:last-child::before { bottom: calc(14px - var(--hover-bleed)); }            /* last track padding-bottom 13px + 1px border */
+.show-tracklist-inline .tracklist-header + .track { padding-top: 16px; }
+.show-tracklist-inline .tracklist-header + .track::before { top: calc(16px - var(--hover-bleed)); }
+.show-tracklist-inline .track:last-child::before { bottom: calc(16px - var(--hover-bleed)); }
 .show-tracklist-inline .track:last-child {
-  padding-bottom: 13px;
+  padding-bottom: 15px;
   border-bottom: 1px solid var(--border-subtle);
 }
 .show-tracklist-inline .track + .track { border-top: none; }
@@ -9406,7 +9406,11 @@ function _renderTopbarSchedule() {
   requestAnimationFrame(() => {
     initScrollFade(container, 48);
     const tabsEl = headerEl && headerEl.querySelector('.ts-sched-daytabs');
-    if (tabsEl) initHScrollFade(tabsEl, 16, 16);
+    if (tabsEl) {
+      initHScrollFade(tabsEl, 16, 16);
+      const activeTab = tabsEl.querySelector('.ts-sched-daytab.active');
+      if (activeTab) activeTab.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' });
+    }
   });
 }
 
