@@ -3651,7 +3651,6 @@ body { padding-top: 24px; }
 }
 /* Inner wrapper handles content clipping for border-radius — separate from animation shell */
 #ham-menu-inner {
-  overflow: hidden;
   border-radius: calc(var(--radius-btn) - 1px);
   display: flex; flex-direction: column; gap: 16px; padding: 16px 0;
 }
@@ -3669,7 +3668,7 @@ body { padding-top: 24px; }
 .ham-item::before {
   content: '';
   position: absolute;
-  inset: -8px;
+  inset: -8px 8px;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
@@ -3688,7 +3687,7 @@ body { padding-top: 24px; }
 .ham-theme-row::before {
   content: '';
   position: absolute;
-  inset: -8px;
+  inset: -8px 8px;
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
