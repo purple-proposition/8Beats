@@ -1658,7 +1658,6 @@ html.light .newsletter-card { background: transparent; }
   z-index: 10;
   flex-direction: column; /* override icon-btn row → column for track+face stack */
   overflow: hidden;
-  will-change: height;
   /* No filter:blur on closed state — it propagates to .vol-btn-face child */
   transition: height var(--dur-short) var(--ease-in),
               border-color var(--dur-short) var(--ease-out),
@@ -4371,7 +4370,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 .ts-resident-row:hover { background: rgba(255,255,255,0.11); }
 .ts-resident-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
+  width: 40px; height: 40px; border-radius: 50%;
   background: var(--surface-elevated); border: 1px solid var(--border-default);
   display: flex; align-items: center; justify-content: center;
   font-size: var(--text-sm); font-weight: 600; color: var(--text-tertiary);
@@ -9361,7 +9360,7 @@ function _renderTopbarResidents(q) {
     list.map(r => `
       <div class="ts-resident-row" onclick="closeTopbarSearch();openArtist('${r.name.replace(/'/g,"\\'")}')">
         <div class="ts-resident-avatar">${r.initials}</div>
-        <div style="display:flex;flex-direction:column;gap:16px;min-width:0;">
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:0;">
           <span class="ts-resident-name">${r.name}</span>
           <span class="ts-resident-freq">${r.frequency}</span>
         </div>
