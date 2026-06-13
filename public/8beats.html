@@ -9191,7 +9191,7 @@ function handleTopbarSearch(q) {
           _topbarSchedDow = 0;
           _renderTopbarSchedule();
           const slotsEl = document.getElementById('topbar-dropdown-schedule');
-          if (slotsEl) slotsEl.innerHTML = '<p class="ts-no-results">Next week\'s schedule isn\'t available yet — check back Monday.</p>';
+          if (slotsEl) slotsEl.innerHTML = '<p class="ts-no-results">Next week\'s schedule isn\'t available yet, check back Monday.</p>';
           return;
         }
         targetDow = (todayDow + 1) % 7;
@@ -9324,7 +9324,7 @@ function _renderTopbarResidents(q) {
     list.map(r => `
       <div class="ts-resident-row" onclick="closeTopbarSearch();openArtist('${r.name.replace(/'/g,"\\'")}')">
         <div class="ts-resident-avatar">${r.initials}</div>
-        <div style="display:flex;flex-direction:column;gap:12px;min-width:0;">
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:0;">
           <span class="ts-resident-name">${r.name}</span>
           <span class="ts-resident-freq">${r.frequency}</span>
         </div>
