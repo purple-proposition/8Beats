@@ -1049,7 +1049,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-thumb.is-playing .card-play { pointer-events: none; color: var(--text-tertiary); }
 
 .card-body { padding: var(--space-3) 0 0; display: flex; flex-direction: column; gap: var(--space-3); }
-.card-body h3 { font-size: var(--text-show); font-weight: 400; line-height: 1.2; max-height: calc(var(--text-show) * 1.2 * 2); letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: var(--text-primary); transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; }
+.card-body h3 { font-size: var(--text-show); font-weight: 400; line-height: 1.5; max-height: calc(var(--text-show) * 1.5 * 2); letter-spacing: -.2px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: var(--text-primary); transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; }
 .card-body h3:hover { opacity: 0.64; }
 
 .card-host { display: flex; align-items: center; gap: var(--space-2); }
@@ -1255,7 +1255,7 @@ html.light .newsletter-card { background: transparent; }
 }
 .panel-support-amt:hover { background: rgba(255,255,255,0.16); }
 .panel .panel-support-note {
-  font-size: 12px; color: var(--text-disabled);
+  font-size: 12px; color: var(--text-secondary);
   text-align: center; letter-spacing: .02em;
   display: flex; align-items: center; justify-content: center; gap: 5px;
 }
@@ -1304,7 +1304,7 @@ html.light .newsletter-card { background: transparent; }
 }
 .donate-amt:hover { background: rgba(255,255,255,0.16); }
 #donate-popup-note {
-  font-size: 12px; color: var(--text-disabled);
+  font-size: 12px; color: var(--text-secondary);
   text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px;
 }
 
@@ -1811,7 +1811,7 @@ html.light .newsletter-card { background: transparent; }
   /* ── Cards — carousel mobile, ~3 visible on tablet portrait ── */
   .card { flex: 0 0 195px; }
   .card-body { padding: var(--space-3) 0 0; gap: var(--space-2); }
-  .card-body h3 { font-size: var(--text-show); line-height: 1.2; max-height: calc(var(--text-show) * 1.2 * 2); }
+  .card-body h3 { font-size: var(--text-show); line-height: 1.5; max-height: calc(var(--text-show) * 1.5 * 2); }
   .card-host .host-name { font-size: var(--text-base); }
   .card-meta { font-size: var(--text-base); }
   .card-tags { padding-top: var(--space-2); gap: var(--space-2); }
@@ -3128,19 +3128,19 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-tracklist-inline .track + .track { border-top: none; }
 .show-tracklist-inline .track-info {
-  display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 0;
+  display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 12px;
 }
 /* Track name first (primary), game name below (tertiary) */
 .show-tracklist-inline .track-name {
-  font-size: var(--text-base); color: var(--text-primary); order: 0; line-height: 1;
+  font-size: var(--text-base); color: var(--text-primary); line-height: 1;
 }
 .show-tracklist-inline .track-game {
   display: block; font-size: var(--text-base); color: var(--text-tertiary);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  order: 1; margin-top: 12px; line-height: 1;
+  line-height: 1;
 }
 .show-tracklist-inline .track-right {
-  display: flex; align-items: center; gap: var(--space-4); flex-shrink: 0;
+  display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0;
 }
 /* Icon-only timestamp button */
 .ts-btn-icon {
