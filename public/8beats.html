@@ -180,6 +180,8 @@
   --space-4:     16px;
   --space-5:     24px;
   --space-6:     32px;
+  /* Hover highlight overshoot — standard 8px beyond the element on every side (used everywhere a row/item highlights on hover) */
+  --hover-bleed: 8px;
   --space-7:     48px;
   --space-8:     64px;
   --space-9:     96px;
@@ -1652,10 +1654,10 @@ html.light .newsletter-card { background: transparent; }
 }
 /* vol-popup-glass kept as empty element for backwards compat */
 .vol-popup-glass { display: none; }
-/* Open state: exact continuation of player-ctrl closed background */
+/* Open state: matches the button's HOVER background (player-ctrl:hover 0.16) — harmonised surface */
 .vol-popup.vol-open {
   height: 146px; border-radius: var(--radius-control);
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.16);
   border: none;
   /* Open: spring bounce */
   transition: height 200ms var(--ease-spring),
@@ -1700,7 +1702,7 @@ html.light .newsletter-card { background: transparent; }
 }
 .vol-btn-face:hover { background: transparent; }
 .vol-popup.vol-open .vol-btn-face { background: transparent; color: var(--text-primary); }
-.vol-popup.vol-open .vol-btn-face:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+.vol-popup.vol-open .vol-btn-face:hover { background: transparent; color: var(--text-primary); }
 /* SVGs/icons stacked via JS initVolIcons — position:absolute, opacity crossfade.
  * Size is controlled here (not inline) so a single edit propagates everywhere. */
 .vol-btn-face svg,
@@ -2399,7 +2401,7 @@ html.light .newsletter-card { background: transparent; }
 .explore-show-row::before {
   content: '';
   position: absolute;
-  inset: -8px;
+  inset: calc(-1 * var(--hover-bleed));
   border-radius: var(--radius-control);
   background: transparent;
   transition: background var(--dur-micro) var(--ease-hover);
@@ -3130,15 +3132,22 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   gap: var(--space-4); padding: 16px 0 0 0; border-radius: 0; cursor: pointer;
   position: relative;
 }
-/* Whole-row hover highlight (like search results) — bleeds 8px sideways, hugs content */
+/* Whole-row hover highlight (like search results) — overshoots --hover-bleed (8px) beyond content on every side.
+   top/bottom offsets cancel the track's own padding so the bleed is measured from the visible content, not the box. */
 .show-tracklist-inline .track::before {
-  content: ''; position: absolute; left: -8px; right: -8px; top: 10px; bottom: -6px;
+  content: ''; position: absolute;
+  left: calc(-1 * var(--hover-bleed));
+  right: calc(-1 * var(--hover-bleed));
+  top: calc(16px - var(--hover-bleed));       /* track padding-top 16px → 8px above content */
+  bottom: calc(-1 * var(--hover-bleed));
   border-radius: var(--radius-control); background: transparent;
   transition: background var(--dur-micro) var(--ease-hover); pointer-events: none;
 }
 .show-tracklist-inline .track:hover::before { background: rgba(255,255,255,0.06); }
 .show-tracklist-inline .track-info, .show-tracklist-inline .track-right { position: relative; z-index: 1; }
 .show-tracklist-inline .tracklist-header + .track { padding-top: 14px; }
+.show-tracklist-inline .tracklist-header + .track::before { top: calc(14px - var(--hover-bleed)); }       /* first track padding-top 14px */
+.show-tracklist-inline .track:last-child::before { bottom: calc(14px - var(--hover-bleed)); }            /* last track padding-bottom 13px + 1px border */
 .show-tracklist-inline .track:last-child {
   padding-bottom: 13px;
   border-bottom: 1px solid var(--border-subtle);
@@ -3817,7 +3826,7 @@ html.light .player-shell {
   border-color: rgba(0,0,0,0.08);
 }
 html.light .vol-popup.vol-open {
-  background: rgba(0,0,0,0.06);
+  background: rgba(0,0,0,0.12);
   border: none;
 }
 html.light .panel-cookie {
@@ -3894,7 +3903,7 @@ html.light .card-play { background: rgba(0,0,0,0.06); }
 html.light .card-play:hover { background: rgba(0,0,0,0.12); }
 html.light .vol-btn-face:hover { background: transparent; }
 html.light .vol-popup.vol-open .vol-btn-face { background: transparent; }
-html.light .vol-popup.vol-open .vol-btn-face:hover { background: rgba(0,0,0,0.06); }
+html.light .vol-popup.vol-open .vol-btn-face:hover { background: transparent; }
 html.light .panel-support-amt { background: rgba(0,0,0,0.06); }
 html.light .panel-support-amt:hover { background: rgba(0,0,0,0.12); }
 html.light .show-tracklist-inline .icon-btn--stream { background: rgba(0,0,0,0.06); }
@@ -4158,7 +4167,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     opacity   300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms,
     transform 300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms;
 }
-#topbar-dropdown-shows .explore-show-row { gap: 16px; margin: -6px 8px -6px 8px; padding: 8px; border-radius: var(--radius-control); }
+#topbar-dropdown-shows .explore-show-row { gap: 16px; margin: -6px var(--hover-bleed) -6px var(--hover-bleed); padding: var(--hover-bleed); border-radius: var(--radius-control); }
 #topbar-dropdown-shows .explore-show-row::before { display: none; }
 #topbar-dropdown-shows .explore-show-row:hover { background: rgba(255,255,255,0.08); }
 #topbar-dropdown-shows::-webkit-scrollbar { width: 4px; }
