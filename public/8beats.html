@@ -1666,6 +1666,7 @@ html.light .newsletter-card { background: transparent; }
   position: absolute;
   bottom: 0; left: 0;
   z-index: 10;
+  pointer-events: all; /* portal lives outside .player-shell; re-enable events explicitly */
   flex-direction: column; /* override icon-btn row → column for track+face stack */
   overflow: hidden;
   /* No filter:blur on closed state — it propagates to .vol-btn-face child */
