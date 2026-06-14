@@ -1755,6 +1755,10 @@ html.light .newsletter-card { background: transparent; }
   .player-wrap { width: calc(8 * var(--grid-col) + 7 * var(--space-5)); }
 }
 
+/* Hidden by default, shown on mobile */
+.wm-short { display: none; }
+.show-action-label { display: none; }
+
 @media (max-width: 1024px) {
   /* Hero: expand columns to fill more width */
   .hero { padding: var(--space-9) var(--space); }
@@ -4530,6 +4534,62 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   #topbar-search:focus-within { width: 50vw; }
 }
 
+/* ── Mobile: topbar nav + show page refinements ── */
+@media (max-width: 768px) {
+  /* Body: offset for fixed topbar */
+  body, body.sb-icons, body.sb-closed {
+    padding-top: calc(var(--space) + 40px + var(--space)) !important;
+  }
+
+  /* Hide nav-pill — topbar handles mobile nav */
+  .nav-wrap { display: none !important; }
+
+  /* Topbar: tight mobile padding, top aligned with --space */
+  #topbar { padding: 0 var(--space); top: var(--space); }
+
+  /* Logo: "8" only */
+  .wm-full { display: none; }
+  .wm-short { display: inline; }
+
+  /* Hamburger: player-ctrl style */
+  #ham-btn {
+    background: var(--surface-control);
+    border-radius: var(--radius-control);
+    transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+  }
+  #ham-btn:hover { background: var(--surface-control-hover); color: var(--text-primary); }
+
+  /* Search: 8 grid cols */
+  #topbar-search,
+  #topbar-search:hover,
+  #topbar-search.search-open,
+  #topbar-search:focus-within { width: calc(8 * var(--grid-col) + 7 * var(--space-5)); }
+
+  /* Cards: 4 grids wide */
+  .card { flex: 0 0 calc(4 * var(--grid-col) + 3 * var(--space-5)) !important; min-width: 0; }
+
+  /* Carousel: right-edge fade to indicate scroll */
+  .cards {
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--space-5))), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--space-5))), transparent 100%);
+  }
+
+  /* Show page: cover art 6 grids wide */
+  .show-art {
+    width: calc(6 * var(--grid-col) + 5 * var(--space-5)) !important;
+    height: auto !important; aspect-ratio: 1 !important;
+  }
+
+  /* Show actions: text labels + full-width 50/50 split */
+  .show-action-label { display: inline; }
+  #show-follow-btn, #show-bookmark-btn {
+    flex: 1; height: 44px; width: auto !important;
+    justify-content: center; gap: var(--space-2);
+    font-size: 12px; font-family: var(--font);
+    border-radius: var(--radius-control);
+  }
+}
+
 /* ── Accessibilité : prefers-reduced-motion ──────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -4608,7 +4668,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 <div id="nav-backdrop"></div>
 <!-- ══ TOPBAR (test) — sidebar below kept for easy revert ══ -->
 <div id="topbar">
-  <a href="#" id="topbar-wordmark" onclick="event.preventDefault();closeShow();">8Beats</a>
+  <a href="#" id="topbar-wordmark" onclick="event.preventDefault();closeShow();"><span class="wm-full">8Beats</span><span class="wm-short">8</span></a>
   <div id="topbar-search">
     <!-- Invisible trigger — passes through on open -->
     <button id="topbar-search-btn" onclick="openTopbarSearch()" aria-label="Search"></button>
@@ -4869,9 +4929,11 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           </button>
           <button class="icon-btn icon-btn--action" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
             <i data-lucide="user-plus" style="fill:none;display:block"></i>
+            <span class="show-action-label">Follow</span>
           </button>
           <button class="icon-btn icon-btn--action" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
             <i data-lucide="bookmark" style="fill:none;display:block"></i>
+            <span class="show-action-label">Save</span>
           </button>
         </div>
         <div class="show-tracklist-wrap">
@@ -5713,6 +5775,7 @@ window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e 
 });
 
 function toggleHamMenu() {
+  if (window.innerWidth <= 768) { openNavMenu(); return; }
   if (hamMenu.classList.contains('open')) {
     closeHamMenu();
   } else {
