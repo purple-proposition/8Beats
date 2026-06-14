@@ -5444,18 +5444,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <button class="player-ctrl icon-btn--spotify" id="spotify-btn" aria-label="Spotify">
               <svg viewBox="0 0 24 24" style="stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
             </button>
-            <div class="vol-wrap" id="vol-wrap">
-              <div class="vol-popup player-ctrl" id="vol-popup">
-                <div class="vol-popup-glass"></div>
-                <div class="vol-track-area" id="vol-slider">
-                  <div class="vol-track" id="vol-track">
-                    <div class="vol-fill" id="vol-fill" style="height:75%"></div>
-                    <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 4px)"></div>
-                  </div>
-                </div>
-                <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
-              </div>
-            </div>
+            <div class="vol-wrap" id="vol-wrap"></div>
             <button class="player-ctrl" id="playlist-btn"
                     aria-label="Playlist" aria-expanded="false" aria-controls="playlist">
               <i data-lucide="list-music" style="fill:none;display:block"></i>
@@ -5475,6 +5464,17 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     </div>
 
   </div><!-- /.player-shell -->
+  <!-- vol-popup portal: outside player-shell so backdrop-filter sees page content, not player-shell's composited layer -->
+  <div class="vol-popup player-ctrl" id="vol-popup">
+    <div class="vol-popup-glass"></div>
+    <div class="vol-track-area" id="vol-slider">
+      <div class="vol-track" id="vol-track">
+        <div class="vol-fill" id="vol-fill" style="height:75%"></div>
+        <div class="vol-knob" id="vol-knob" style="bottom:calc(75% - 4px)"></div>
+      </div>
+    </div>
+    <button class="vol-btn-face" id="vol-btn" aria-label="Volume"></button>
+  </div>
 </div><!-- /.player-wrap -->
 
 <!-- iOS LIQUID GLASS NAV ─────────────────────────────────────── -->
@@ -6837,29 +6837,38 @@ function resolvePopupDir(triggerRect, panelH) {
 /* _updatePlayerLayout supprimée — la playlist s'étend désormais à l'intérieur
  * du shell (grid-template-rows), la direction est toujours vers le haut. */
 
+function _syncVolPos() {
+  /* Portal sync: vol-popup lives in player-wrap, must mirror vol-wrap's position */
+  if (!volWrap || !playerWrap || !volPopup) return;
+  const wr = volWrap.getBoundingClientRect();
+  const pr = playerWrap.getBoundingClientRect();
+  volPopup.style.left   = Math.round(wr.left - pr.left) + 'px';
+  volPopup.style.bottom = Math.round(pr.bottom - wr.bottom) + 'px';
+  volPopup.style.top    = 'auto';
+  volPopup.style.width  = wr.width + 'px';
+}
 function openVol() {
-  /* vol-popup is position:absolute inside vol-wrap — no pixel coords needed, just direction */
-  const r   = volWrap.getBoundingClientRect();
-  const dir = resolvePopupDir(r, 146);
+  const wr  = volWrap.getBoundingClientRect();
+  const pr  = playerWrap.getBoundingClientRect();
+  const dir = resolvePopupDir(wr, 146);
   volPopup.dataset.dir = dir;
+  volPopup.style.left  = Math.round(wr.left - pr.left) + 'px';
+  volPopup.style.width = wr.width + 'px';
   if (dir === 'above') {
-    volPopup.style.bottom = '0';
+    volPopup.style.bottom = Math.round(pr.bottom - wr.bottom) + 'px';
     volPopup.style.top    = 'auto';
     volPopup.style.flexDirection = 'column';
   } else {
-    volPopup.style.top    = '0';
+    volPopup.style.top    = Math.round(wr.top - pr.top) + 'px';
     volPopup.style.bottom = 'auto';
     volPopup.style.flexDirection = 'column-reverse';
   }
   volPopup.classList.add('vol-open');
-  // Let vol-popup escape player-shell's overflow:hidden clip
-  playerShell.style.overflow = 'visible';
   // Elevate player above all overlays (cookie panel etc.) while vol is open
   playerWrap.style.zIndex = '10000';
 }
 function closeVol() {
   volPopup.classList.remove('vol-open');
-  playerShell.style.overflow = '';
   playerWrap.style.zIndex = '';
 }
 
@@ -6883,6 +6892,10 @@ function _updateNavCompact() {
   }
 }
 window.addEventListener('resize', _updateNavCompact);
+/* Sync vol-popup portal position on resize */
+window.addEventListener('resize', _syncVolPos);
+/* Initial sync — defer one frame so layout is settled */
+requestAnimationFrame(_syncVolPos);
 /* Initial load: apply compact state instantly (no animation) to match CSS paint-time state */
 (function() {
   if (mq.matches) return;
