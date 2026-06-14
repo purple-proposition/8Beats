@@ -2592,7 +2592,7 @@ html.light .newsletter-card { background: transparent; }
   transition: background var(--dur-micro) var(--ease-hover);
 }
 .sp-show-row:hover { background: var(--surface-control); }
-.sp-show-info { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 0; padding-right: 16px; }
+.sp-show-info { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 0; }
 .sp-show-title-row { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; transition: color var(--dur-micro) var(--ease-hover); flex-shrink: 1; min-width: 0; }
 .sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; }
@@ -5672,13 +5672,10 @@ function cycleHamTheme() {
   }, 120);
 }
 
-/* mouseenter cycles (desktop hover), click cycles for touch */
 (function() {
   const cycler = document.getElementById('ham-theme-cycler');
   if (!cycler) return;
-  let _enteredAt = 0;
-  cycler.addEventListener('mouseenter', () => { _enteredAt = Date.now(); cycleHamTheme(); });
-  cycler.addEventListener('click', () => { if (Date.now() - _enteredAt > 200) cycleHamTheme(); });
+  cycler.addEventListener('click', cycleHamTheme);
 })();
 
 /* Keep toggleTheme (keyboard / nav dropdown) in sync */
@@ -8446,11 +8443,11 @@ function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
           <div class="sp-show-info">
             <div class="sp-show-title-row">
               <div class="sp-show-name">${showTitle}</div>
-              ${liveBtnHtml}
             </div>
             <div class="sp-show-artist">${artistName}</div>
           </div>
           <div class="sp-show-right">
+            ${liveBtnHtml}
             <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
               title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
               onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${slot.title.replace(/'/g,"\\'")}')">
