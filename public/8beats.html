@@ -1933,13 +1933,14 @@ html.light .newsletter-card { background: transparent; }
   .show-sidebar {
     grid-column: 1 / -1 !important;
     flex-direction: column !important; gap: var(--space-4) !important;
+    min-width: 0;
   }
   .show-art {
     width: 100% !important; height: auto !important;
     aspect-ratio: 1 !important; border-radius: var(--radius-sm) !important;
     box-shadow: none !important;
   }
-  .show-main { grid-column: 1 / -1 !important; }
+  .show-main { grid-column: 1 / -1 !important; min-width: 0; }
   .show-title { font-size: clamp(24px, 6vw, 32px) !important; }
   .show-actions { flex-wrap: wrap; gap: var(--space-2); }
   .show-btn-play { flex: 1 1 100%; justify-content: center; }
@@ -4539,10 +4540,17 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 
 /* ── Mobile: topbar nav + show page refinements ── */
 @media (max-width: 768px) {
-  /* Body: offset for fixed topbar */
+  /* Prevent horizontal scroll */
+  html, body { overflow-x: hidden; }
+
+  /* Body: offset for fixed topbar; reset ios-nav padding-bottom */
   body, body.sb-icons, body.sb-closed {
     padding-top: calc(var(--space) + 40px + var(--space)) !important;
+    padding-bottom: calc(var(--player-h) + var(--space) + var(--space-5)) !important;
   }
+
+  /* iOS liquid-glass nav bar — app only, hide on web */
+  #ios-nav { display: none !important; }
 
   /* Hide nav-pill — topbar handles mobile nav */
   .nav-wrap { display: none !important; }
@@ -4574,8 +4582,9 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   /* Cards: 4 grids wide */
   .card { flex: 0 0 calc(4 * var(--grid-col) + 3 * var(--space-5)) !important; min-width: 0; }
 
-  /* Carousel: right-edge fade to indicate scroll */
+  /* Carousel: gap matches grid column gap; right-edge fade */
   .cards {
+    gap: var(--space-5);
     -webkit-mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--space-5))), transparent 100%);
     mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--space-5))), transparent 100%);
   }
@@ -4591,7 +4600,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   #show-follow-btn, #show-bookmark-btn {
     flex: 1; height: 44px; width: auto !important;
     justify-content: center; gap: var(--space-2);
-    font-size: 12px; font-family: var(--font);
+    font-size: 14px; font-family: var(--font);
     border-radius: var(--radius-control);
   }
 
