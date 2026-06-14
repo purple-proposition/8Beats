@@ -1795,6 +1795,9 @@ html.light .newsletter-card { background: transparent; }
   /* Panels — cookies + keepbeat : 3 grids wide (class selectors so ≤768px override can win) */
   .panel-cookie,
   .panel-support { width: calc(3 * var(--grid-col) + 2 * var(--space-5)) !important; }
+
+  /* Volume button — not useful on touch/small screens */
+  .vol-wrap { display: none; }
 }
 
 @media (max-width: 768px) {
@@ -4551,13 +4554,16 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   .wm-full { display: none; }
   .wm-short { display: inline; }
 
-  /* Hamburger: player-ctrl style */
-  #ham-btn {
+  /* Hamburger: player-ctrl style on icon only, not the button */
+  #ham-btn { background: transparent !important; }
+  #ham-btn .ham-icon-wrap {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
     background: var(--surface-control);
     border-radius: var(--radius-control);
-    transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
+    transition: background var(--dur-short) var(--ease-hover);
   }
-  #ham-btn:hover { background: var(--surface-control-hover); color: var(--text-primary); }
+  #ham-btn:hover .ham-icon-wrap { background: var(--surface-control-hover); }
 
   /* Search: 8 grid cols */
   #topbar-search,
@@ -4587,6 +4593,28 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     justify-content: center; gap: var(--space-2);
     font-size: 12px; font-family: var(--font);
     border-radius: var(--radius-control);
+  }
+
+  /* Search results: allow title to wrap to 2 lines */
+  #topbar-dropdown-shows .explore-show-title {
+    white-space: normal !important;
+    text-overflow: unset !important;
+    overflow: visible !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Schedule: allow name & host to wrap, no ellipsis */
+  .ts-sched-name {
+    white-space: normal !important;
+    text-overflow: unset !important;
+    overflow: visible !important;
+    line-height: 1.2 !important;
+  }
+  .ts-sched-host {
+    white-space: normal !important;
+    text-overflow: unset !important;
+    overflow: visible !important;
+    line-height: 1.2 !important;
   }
 }
 
@@ -4719,11 +4747,13 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   <div id="topbar-right">
     <div id="ham-wrap">
       <button id="ham-btn" onclick="toggleHamMenu()" aria-label="Menu" aria-expanded="false" aria-controls="ham-menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
+        <span class="ham-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </span>
       </button>
       <div id="ham-menu" role="menu">
         <div id="ham-menu-inner">
@@ -9596,10 +9626,11 @@ function _renderTopbarSchedule() {
         <div class="ts-sched-info">
           <div class="ts-sched-title-row">
             <span class="ts-sched-name">${showTitle}</span>
-            ${liveBadge}${newBadge}
+            ${newBadge}
           </div>
           <span class="ts-sched-host">${slot.title}</span>
         </div>
+        ${liveBadge}
       </div>`;
     }).join('') || `<p class="ts-no-results" style="margin:0;padding:0 var(--space-4) var(--space-2);">No shows scheduled</p>`;
 
