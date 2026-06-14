@@ -1781,6 +1781,33 @@ html.light .newsletter-card { background: transparent; }
 
   /* Nav compact: handled entirely by JS (_updateNavCompact) via .sb-icons class (240ms transition).
      No CSS compact rules here — they would snap instantly and block the JS animation. */
+
+  /* Search bar — 4 cols default, 8 cols expanded */
+  #topbar-search { width: calc(4 * var(--grid-col) + 3 * var(--space-5)); }
+  #topbar-search:hover,
+  #topbar-search.search-open,
+  #topbar-search:focus-within { width: calc(8 * var(--grid-col) + 7 * var(--space-5)); }
+
+  /* Keepbeat — floating panel above player (right corner), glass dark */
+  .keepbeat-section {
+    position: fixed !important;
+    bottom: calc(var(--player-h) + var(--space-5)) !important;
+    right: var(--space-5) !important;
+    width: var(--sidebar-full) !important;
+    margin: 0 !important;
+    grid-column: unset !important;
+    z-index: var(--z-panel);
+  }
+  .keepbeat-section .keepbeat-card {
+    background: rgba(0,0,0,0.40) !important;
+    backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
+    border: 1px solid rgba(255,255,255,0.11) !important;
+    padding: var(--space-4) !important;
+  }
+  .keepbeat-section .keepbeat-deco { display: none; }
+  .keepbeat-section .keepbeat-title { font-size: 22px; }
+  .keepbeat-section .pitch-body { font-size: var(--text-sm); }
 }
 
 @media (max-width: 768px) {
@@ -1865,6 +1892,13 @@ html.light .newsletter-card { background: transparent; }
   .panel-support {
     bottom: calc(var(--player-h) + var(--space-5) + env(safe-area-inset-bottom, 0px)) !important;
     left: var(--space) !important; right: var(--space) !important;
+    width: auto !important;
+  }
+
+  /* Keepbeat — override tablet: full width, même position que support panel */
+  .keepbeat-section {
+    bottom: calc(var(--player-h) + var(--space-5) + env(safe-area-inset-bottom, 0px)) !important;
+    right: var(--space) !important; left: var(--space) !important;
     width: auto !important;
   }
   .panel-support .panel-support-amounts {
@@ -7282,7 +7316,7 @@ const HOME_INTERSTITIALS = {
       </div>
     </div>
   </div>`,
-  'keep-beat': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
+  'keep-beat': `<div class="section keepbeat-section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="keepbeat-card">
       <div class="pitch-inner">
         <h2 class="keepbeat-title">Keep the beat going</h2>
@@ -9909,6 +9943,16 @@ function syncSettingsShortcuts() {
 }
 
 FWM.init();
+
+/* Move support panel above the player on tablet (769–1024px) — mirrors cookie panel corner */
+(function _initSupportCorner() {
+  function update() {
+    const w = window.innerWidth;
+    FWM.setCorner('support', w > 768 && w <= 1024 ? 'bottom-right' : 'bottom-left');
+  }
+  window.addEventListener('resize', update);
+  update();
+})();
 
 lucide.createIcons({ nodes: [document.getElementById('panel-support'), document.getElementById('panel-cookie')].filter(Boolean) });
 
