@@ -4387,16 +4387,15 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
               transform 300ms cubic-bezier(0.0,0,0.2,1) 180ms;
 }
 .ts-resident-row {
-  display: flex; align-items: center; gap: var(--space-3);
-  padding: var(--space-2);
-  margin: 0 var(--space-2);
+  display: flex; align-items: center; gap: 16px;
+  padding: var(--hover-bleed); margin: -6px var(--hover-bleed);
   cursor: pointer;
   border-radius: var(--radius-control);
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
 .ts-resident-row:hover { background: rgba(255,255,255,0.11); }
 .ts-resident-avatar {
-  width: 40px; height: 40px; border-radius: 50%;
+  width: 36px; height: 36px; border-radius: 50%;
   background: var(--surface-elevated); border: 1px solid var(--border-default);
   display: flex; align-items: center; justify-content: center;
   font-size: var(--text-sm); font-weight: 600; color: var(--text-tertiary);
@@ -4404,7 +4403,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 .ts-resident-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ts-resident-name { font-size: var(--text-base); color: var(--text-primary); line-height: 1; }
-.ts-resident-freq { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1; }
+.ts-resident-freq { font-size: var(--text-base); color: var(--text-secondary); line-height: 1; }
 
 /* ── Schedule tab in search dropdown ── */
 .ts-sched-daytabs {
@@ -9216,6 +9215,7 @@ function closeTopbarSearch() {
 }
 
 function _topbarSearchOutside(e) {
+  if (!e.target.isConnected) return; // target was detached mid-event (e.g. innerHTML re-render)
   if (!document.getElementById('topbar-search').contains(e.target)) closeTopbarSearch();
 }
 
@@ -9429,11 +9429,11 @@ function _renderTopbarResidents(q) {
     container.innerHTML = '<p class="ts-no-results">No results</p>';
     return;
   }
-  container.innerHTML = '<div style="display:flex;flex-direction:column;padding:var(--space-2) 0;">' +
+  container.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px;padding:14px 0 var(--space-4);">' +
     list.map(r => `
       <div class="ts-resident-row" onclick="closeTopbarSearch();openArtist('${r.name.replace(/'/g,"\\'")}')">
         <div class="ts-resident-avatar">${r.initials}</div>
-        <div style="display:flex;flex-direction:column;gap:12px;min-width:0;">
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:0;flex:1;">
           <span class="ts-resident-name">${r.name}</span>
           <span class="ts-resident-freq">${r.frequency}</span>
         </div>
