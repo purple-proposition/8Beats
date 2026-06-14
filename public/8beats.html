@@ -1774,10 +1774,10 @@ html.light .newsletter-card { background: transparent; }
     align-items: start;
   }
   .cards::-webkit-scrollbar { display: none; }
-  .card { flex: 0 0 240px; max-width: unset; scroll-snap-align: start; }
+  .card { flex: 0 0 calc(2 * var(--grid-col) + var(--space-5)); max-width: unset; scroll-snap-align: start; }
 
-  /* Player: fill all available width right of compact nav */
-  .player-wrap { width: calc(100vw - var(--space) * 3 - var(--sidebar-icon)); }
+  /* Player: full grid width on tablet */
+  .player-wrap { width: calc(100vw - 2 * var(--space)); }
 
   /* Nav compact: handled entirely by JS (_updateNavCompact) via .sb-icons class (240ms transition).
      No CSS compact rules here — they would snap instantly and block the JS animation. */
@@ -1788,26 +1788,9 @@ html.light .newsletter-card { background: transparent; }
   #topbar-search.search-open,
   #topbar-search:focus-within { width: calc(8 * var(--grid-col) + 7 * var(--space-5)); }
 
-  /* Keepbeat — floating panel above player (right corner), glass dark */
-  .keepbeat-section {
-    position: fixed !important;
-    bottom: calc(var(--player-h) + var(--space-5)) !important;
-    right: var(--space-5) !important;
-    width: var(--sidebar-full) !important;
-    margin: 0 !important;
-    grid-column: unset !important;
-    z-index: var(--z-panel);
-  }
-  .keepbeat-section .keepbeat-card {
-    background: rgba(0,0,0,0.40) !important;
-    backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
-    border: 1px solid rgba(255,255,255,0.11) !important;
-    padding: var(--space-4) !important;
-  }
-  .keepbeat-section .keepbeat-deco { display: none; }
-  .keepbeat-section .keepbeat-title { font-size: 22px; }
-  .keepbeat-section .pitch-body { font-size: var(--text-sm); }
+  /* Panels — cookies + keepbeat : 3 grids wide (class selectors so ≤768px override can win) */
+  .panel-cookie,
+  .panel-support { width: calc(3 * var(--grid-col) + 2 * var(--space-5)) !important; }
 }
 
 @media (max-width: 768px) {
@@ -1895,12 +1878,6 @@ html.light .newsletter-card { background: transparent; }
     width: auto !important;
   }
 
-  /* Keepbeat — override tablet: full width, même position que support panel */
-  .keepbeat-section {
-    bottom: calc(var(--player-h) + var(--space-5) + env(safe-area-inset-bottom, 0px)) !important;
-    right: var(--space) !important; left: var(--space) !important;
-    width: auto !important;
-  }
   .panel-support .panel-support-amounts {
     max-height: 60px !important; opacity: 1 !important; margin-top: 0 !important;
   }
@@ -6932,10 +6909,15 @@ function _updateNavCompact() {
   }
 }
 window.addEventListener('resize', _updateNavCompact);
-/* Sync vol-popup portal position on resize */
-window.addEventListener('resize', _syncVolPos);
-/* Initial sync — defer one frame so layout is settled */
-requestAnimationFrame(_syncVolPos);
+/* Sync vol-popup portal position on resize — defer to rAF so FWM player placement fires first */
+window.addEventListener('resize', () => requestAnimationFrame(_syncVolPos));
+/* Re-sync when FWM moves the player (style attribute change on player-wrap) */
+if (playerWrap) {
+  new MutationObserver(() => requestAnimationFrame(_syncVolPos))
+    .observe(playerWrap, { attributes: true, attributeFilter: ['style'] });
+}
+/* Initial sync — double rAF: first lets FWM settle, second reads final layout */
+requestAnimationFrame(() => requestAnimationFrame(_syncVolPos));
 /* Initial load: apply compact state instantly (no animation) to match CSS paint-time state */
 (function() {
   if (mq.matches) return;
