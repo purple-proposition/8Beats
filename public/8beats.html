@@ -411,13 +411,22 @@ h1,
 .section-header-text h2 { color: var(--text-primary); }
 
 /* ── .label — classe unique pour tous les titres en majuscules ── */
-.label {
+/* ── Label typography — shared across all uppercase 12px labels ── */
+.label,
+.panel-support-header,
+.settings-section-heading,
+.sp-day-section-header,
+.ts-sched-day-label,
+.ts-sched-next-week,
+.ts-filter-section-label,
+.tracklist-header-name {
   font-size: var(--text-sm);
   font-weight: 400;
   font-family: var(--font);
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text-tertiary);
+  line-height: 1;
 }
 
 /* ============================================================
@@ -1248,8 +1257,6 @@ html.light .newsletter-card { background: transparent; }
 }
 .panel-support-header {
   display: flex; align-items: center; gap: var(--space-2);
-  font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--text-tertiary);
 }
 .panel-support-header svg { width: 13px; height: 13px; fill: none; stroke: var(--text-secondary); stroke-width: 2; flex-shrink: 0; }
 .panel-support-amounts {
@@ -2334,8 +2341,6 @@ html.light .newsletter-card { background: transparent; }
 .settings-section:last-child { border-bottom: none; }
 .settings-section-heading {
   display: flex; align-items: center; gap: var(--space-2);
-  font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
-  letter-spacing: 1px; text-transform: uppercase;
   margin-bottom: var(--space-5);
 }
 .settings-group { display: flex; flex-direction: column; gap: var(--space-5); }
@@ -2545,8 +2550,6 @@ html.light .newsletter-card { background: transparent; }
 .sp-day-section:last-child { border-bottom: none; }
 .sp-day-section-header {
   padding: var(--space-3) var(--space-5) var(--space-2);
-  font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
-  text-transform: uppercase; letter-spacing: 1px;
   position: sticky; top: 0;
   background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
   z-index: 1; border-bottom: 1px solid var(--border-subtle);
@@ -3165,7 +3168,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   margin-bottom: 0;
 }
 .tracklist-header-num  { font-size: var(--text-sm); color: var(--text-disabled); min-width: 24px; flex-shrink: 0; letter-spacing: .04em; }
-.tracklist-header-name { font-size: var(--text-sm); color: var(--text-tertiary); min-width: 0; letter-spacing: 1px; text-transform: uppercase; font-weight: 400; line-height: 1; }
+.tracklist-header-name { min-width: 0; }
 .tracklist-header-ts   { width: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-disabled); }
 .tracklist-header-ts svg { width: 13px; height: 13px; stroke: currentColor; fill: none; display: block; }
 
@@ -4333,8 +4336,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   display: flex; align-items: center; gap: var(--space-3); min-width: 0;
 }
 .ts-filter-section-label {
-  font-size: var(--text-sm); letter-spacing: .08em; text-transform: uppercase;
-  color: var(--text-tertiary); font-weight: 500; flex-shrink: 0; width: 44px;
+  font-weight: 500; flex-shrink: 0; width: 44px;
 }
 .ts-filter-chips {
   display: flex; gap: var(--space-2);
@@ -4410,16 +4412,10 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 
 /* ── Schedule tab in search dropdown ── */
 .ts-sched-day-label {
-  font-size: var(--text-sm); font-weight: 400;
-  text-transform: uppercase; letter-spacing: .08em;
-  color: var(--text-tertiary); line-height: 1;
   padding: 20px var(--space-4) var(--space-3);
 }
 .ts-sched-day-section:first-child .ts-sched-day-label { padding-top: var(--space-4); }
 .ts-sched-next-week {
-  font-size: var(--text-sm); font-weight: 400;
-  text-transform: uppercase; letter-spacing: .08em;
-  color: var(--text-tertiary); line-height: 1;
   padding: 20px var(--space-4) var(--space-4); margin: 0;
 }
 .ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
