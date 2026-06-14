@@ -4433,7 +4433,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   font-size: var(--text-sm); color: var(--text-tertiary);
   flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font);
 }
-.ts-sched-info { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 0; padding-right: 16px; }
+.ts-sched-info { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 0; }
 .ts-sched-title-row { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1; min-width: 0; }
 .ts-sched-host { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -9477,7 +9477,8 @@ function _renderTopbarSchedule() {
 
     const daySlots = (SCHEDULE_SHOWS || [])
       .filter(s => s.day === i && s.host === 'Resident')
-      .sort((a, b) => a.time.localeCompare(b.time));
+      .sort((a, b) => a.time.localeCompare(b.time))
+      .slice(0, 5);
 
     /* Live slot detection for today */
     let liveSlotTime = null;
@@ -9507,11 +9508,11 @@ function _renderTopbarSchedule() {
         <div class="ts-sched-info">
           <div class="ts-sched-title-row">
             <span class="ts-sched-name">${showTitle}</span>
-            ${liveBadge}${newBadge}
+            ${newBadge}
           </div>
           <span class="ts-sched-host">${slot.title}</span>
         </div>
-        <div class="ts-sched-right"></div>
+        <div class="ts-sched-right">${liveBadge}</div>
       </div>`;
     }).join('') || `<p class="ts-no-results" style="margin:0;padding:0 var(--space-4) var(--space-2);">No shows scheduled</p>`;
 
