@@ -1136,6 +1136,15 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .pitch-deco-left  { left: var(--space-7); }
 .pitch-deco-right { right: var(--space-7); }
 
+/* CTAs inside interstitial cards use player-ctrl surface (light translucent, not glass-dark) */
+.pitch-card .btn, .keepbeat-card .btn, .newsletter-card .btn {
+  background: var(--surface-control); backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.pitch-card .btn:hover, .keepbeat-card .btn:hover, .newsletter-card .btn:hover,
+.pitch-card .btn:active, .keepbeat-card .btn:active, .newsletter-card .btn:active {
+  background: var(--surface-control-hover);
+}
+
 /* ── Keep the Beat Going ── */
 .keepbeat-card {
   position: relative; overflow: hidden;
@@ -1730,7 +1739,7 @@ html.light .newsletter-card { background: transparent; }
   position: relative; z-index: 1;
   transition: background var(--dur-short) var(--ease-out), color var(--dur-micro) var(--ease-out);
 }
-.vol-btn-face:hover { background: transparent; }
+.vol-btn-face:hover { background: transparent; color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face { background: transparent; color: var(--text-primary); }
 .vol-popup.vol-open .vol-btn-face:hover { background: transparent; color: var(--text-primary); }
 /* SVGs/icons stacked via JS initVolIcons — position:absolute, opacity crossfade.
@@ -3965,9 +3974,9 @@ html.light .schedule-slot-alert { background: rgba(0,0,0,0.06); }
 html.light .schedule-slot-alert:hover { background: rgba(0,0,0,0.12); }
 html.light .card-play { background: rgba(0,0,0,0.06); }
 html.light .card-play:hover { background: rgba(0,0,0,0.12); }
-html.light .vol-btn-face:hover { background: transparent; }
+html.light .vol-btn-face:hover { background: transparent; color: var(--text-primary); }
 html.light .vol-popup.vol-open .vol-btn-face { background: transparent; }
-html.light .vol-popup.vol-open .vol-btn-face:hover { background: transparent; }
+html.light .vol-popup.vol-open .vol-btn-face:hover { background: transparent; color: var(--text-primary); }
 html.light .panel-support-amt { background: rgba(0,0,0,0.06); }
 html.light .panel-support-amt:hover { background: rgba(0,0,0,0.12); }
 html.light .show-tracklist-inline .icon-btn--stream { background: rgba(0,0,0,0.06); }
@@ -6198,6 +6207,7 @@ function showProgressBar(showTitle) {
   setProgressPct(5);
   progressCurrent.textContent = fmtTime(Math.round(dur * 0.05));
   progressWrap.classList.add('visible');
+  requestAnimationFrame(_syncVolPos);
 
   // Markers — gradient avec gaps transparents sur la track
   progressTrack.querySelectorAll('.progress-marker').forEach(m => m.remove());
@@ -6339,6 +6349,7 @@ function backToLive() {
   if (typeof plOpen !== 'undefined' && plOpen) _closePl();
   plPanel.classList.remove('tracklist');
   progressWrap.classList.remove('visible');
+  requestAnimationFrame(_syncVolPos);
   progressTrack.style.background = '';
   progressTrack._markers = [];
   if (progressInterval) clearInterval(progressInterval);
@@ -9506,11 +9517,10 @@ function _renderTopbarSchedule() {
         <div class="ts-sched-info">
           <div class="ts-sched-title-row">
             <span class="ts-sched-name">${showTitle}</span>
-            ${newBadge}
+            ${liveBadge}${newBadge}
           </div>
           <span class="ts-sched-host">${slot.title}</span>
         </div>
-        <div class="ts-sched-right">${liveBadge}</div>
       </div>`;
     }).join('') || `<p class="ts-no-results" style="margin:0;padding:0 var(--space-4) var(--space-2);">No shows scheduled</p>`;
 
