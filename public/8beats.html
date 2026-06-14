@@ -1272,7 +1272,7 @@ html.light .newsletter-card { background: transparent; }
 }
 .panel-support-amt:hover { background: rgba(255,255,255,0.16); }
 .panel .panel-support-note {
-  font-size: 12px; color: var(--text-secondary);
+  font-size: 12px; color: var(--text-secondary); line-height: 1;
   text-align: center; letter-spacing: .02em;
   display: flex; align-items: center; justify-content: center; gap: 5px;
   max-height: 0; overflow: hidden; opacity: 0;
@@ -1854,6 +1854,9 @@ html.light .newsletter-card { background: transparent; }
   .panel-support .panel-support-amounts {
     max-height: 60px !important; opacity: 1 !important; margin-top: 0 !important;
   }
+  .panel-support .panel-support-note {
+    max-height: 30px !important; opacity: 1 !important; margin-top: 0 !important;
+  }
 
   /* Cookie — bandeau fixe en bas sur mobile */
   .panel-cookie {
@@ -1968,7 +1971,6 @@ html.light .newsletter-card { background: transparent; }
   /* ── Playlist ── */
   .player-wrap.pl-open .playlist-clip { max-height: 260px; } /* matches .playlist-inner on mobile */
   .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; gap: var(--space-4); }
-  .playlist-header { margin-bottom: var(--space); }
   /* No vertical padding on track — gap alone handles the 24px spacing */
   .track { padding: 0; border-radius: 0; }
   .track-name { font-size: var(--text-base); }
