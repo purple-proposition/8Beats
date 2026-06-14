@@ -4406,23 +4406,19 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 .ts-resident-freq { font-size: var(--text-base); color: var(--text-secondary); line-height: 1; }
 
 /* ── Schedule tab in search dropdown ── */
-.ts-sched-daytabs {
-  display: flex; gap: var(--space-1);
-  padding: var(--space-4) var(--space-2) var(--space-4) var(--space-2);
-  overflow-x: auto; scrollbar-width: none;
+.ts-sched-day-label {
+  font-size: var(--text-sm); font-weight: 400;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-tertiary); line-height: 1;
+  padding: 20px var(--space-4) var(--space-3);
 }
-.ts-sched-daytabs::-webkit-scrollbar { display: none; }
-.ts-sched-sep { margin: 0 var(--space-4); }
-.ts-sched-daytab {
-  flex-shrink: 0; height: 28px; padding: 0 var(--space-2);
-  border: none; border-radius: var(--radius-control);
-  font-size: var(--text-base); font-family: var(--font);
-  color: var(--text-tertiary); background: transparent; cursor: pointer;
-  transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-  white-space: nowrap;
+.ts-sched-day-section:first-child .ts-sched-day-label { padding-top: var(--space-4); }
+.ts-sched-next-week {
+  font-size: var(--text-sm); font-weight: 400;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-tertiary); line-height: 1;
+  padding: 20px var(--space-4) var(--space-4); margin: 0;
 }
-.ts-sched-daytab:hover { background: rgba(255,255,255,0.11); color: var(--text-secondary); }
-.ts-sched-daytab.active { background: rgba(255,255,255,0.11); color: var(--text-primary); }
 .ts-sched-slots { display: flex; flex-direction: column; padding: var(--space-2) 0; }
 .ts-sched-row {
   display: flex; align-items: center; gap: var(--space-4);
@@ -9451,93 +9447,88 @@ function _renderTopbarResidents(q) {
   requestAnimationFrame(() => initScrollFade(container, 48));
 }
 
-/* ── Topbar: render compact schedule ── */
-let _topbarSchedDow = null;
+/* ── Topbar: render compact schedule (all 7 days, scroll to today) ── */
+const _FULL_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function _renderTopbarSchedule() {
   const container = document.getElementById('topbar-dropdown-schedule');
   if (!container) return;
-  const today = new Date();
-  const todayDow = (today.getDay() + 6) % 7;
-  if (_topbarSchedDow === null) _topbarSchedDow = todayDow;
-  const nowMin = today.getHours() * 60 + today.getMinutes();
 
-  /* Day tabs with full date labels */
+  const today    = new Date();
+  const todayDow = (today.getDay() + 6) % 7;
+  const nowMin   = today.getHours() * 60 + today.getMinutes();
+
   const monday = new Date(today);
   monday.setDate(today.getDate() - todayDow);
-  monday.setHours(0,0,0,0);
-  const tabs = Array.from({length: 7}, (_, i) => {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    const label = i === todayDow
-      ? `Today, ${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`
-      : `${SP_DAY_SHORT[i]}, ${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`;
-    return `<button class="ts-sched-daytab${i === _topbarSchedDow ? ' active' : ''}" onclick="_selectTopbarSchedDay(${i})">${label}</button>`;
-  }).join('');
+  monday.setHours(0, 0, 0, 0);
 
-  /* Recent shows for NEW badge */
   const recentTitles = new Set(
     shows.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4).map(s => s.title)
   );
 
-  const allSlots = (SCHEDULE_SHOWS || [])
-    .filter(s => s.day === _topbarSchedDow && s.host === 'Resident')
-    .sort((a, b) => a.time.localeCompare(b.time));
+  let html = '';
 
-  const isToday = _topbarSchedDow === todayDow;
-  const slotsHtml = allSlots.length
-    ? allSlots.map(slot => {
-        const showEntry = SHOW_DATA && Object.entries(SHOW_DATA).find(([, d]) => d.host === slot.title);
-        const showTitle = showEntry ? showEntry[0] : slot.title;
-        const safeTitle = showTitle.replace(/'/g, "\\'");
-        const safeHost  = slot.title.replace(/'/g, "\\'");
-        const [h, m]    = slot.time.split(':').map(Number);
-        const slotMin   = h * 60 + m;
-        const isLive    = isToday && slotMin <= nowMin && nowMin < slotMin + 60;
-        const isNew     = recentTitles.has(showTitle);
-        const alertKey  = `${slot.day}|${slot.time}|${slot.title}`;
-        const isAlerted = getAlerts().has(alertKey);
-        const dayIdx    = _dowToIdx(_topbarSchedDow);
-        const onclick   = showEntry ? `closeTopbarSearch();openShow('${safeTitle}')` : '';
-        const liveBadge = isLive
-          ? `<span class="ts-sched-live-badge"><span class="live-dot" style="width:6px;height:6px;animation:blink 1.4s ease-in-out infinite;"></span>LIVE</span>`
-          : '';
-        const newBadge = !isLive && isNew
-          ? `<span class="badge-new"><span>PREMIERE</span></span>`
-          : '';
-        return `<div class="ts-sched-row" onclick="${onclick}">
-          <span class="ts-sched-time">${slot.time}</span>
-          <div class="ts-sched-info">
-            <div class="ts-sched-title-row">
-              <span class="ts-sched-name">${showTitle}</span>
-              ${liveBadge}${newBadge}
-            </div>
-            <span class="ts-sched-host">${slot.title}</span>
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const isToday  = i === todayDow;
+    const dayLabel = `${DAY_NAMES[i].toUpperCase()}, ${_FULL_MONTHS[d.getMonth()].toUpperCase()} ${d.getDate()}`;
+
+    const daySlots = (SCHEDULE_SHOWS || [])
+      .filter(s => s.day === i && s.host === 'Resident')
+      .sort((a, b) => a.time.localeCompare(b.time));
+
+    /* Live slot detection for today */
+    let liveSlotTime = null;
+    if (isToday && daySlots.length) {
+      const started = daySlots.filter(s => {
+        const [h, m] = s.time.split(':').map(Number);
+        return h * 60 + m <= nowMin;
+      });
+      if (started.length) liveSlotTime = started[started.length - 1].time;
+    }
+
+    const slotsHtml = daySlots.map(slot => {
+      const showEntry = SHOW_DATA && Object.entries(SHOW_DATA).find(([, d]) => d.host === slot.title);
+      const showTitle = showEntry ? showEntry[0] : slot.title;
+      const safeTitle = showTitle.replace(/'/g, "\\'");
+      const isLive    = liveSlotTime === slot.time;
+      const isNew     = recentTitles.has(showTitle);
+      const onclick   = showEntry ? `closeTopbarSearch();openShow('${safeTitle}')` : '';
+      const liveBadge = isLive
+        ? `<span class="ts-sched-live-badge"><span class="live-dot" style="width:6px;height:6px;animation:blink 1.4s ease-in-out infinite;"></span>LIVE</span>`
+        : '';
+      const newBadge = !isLive && isNew
+        ? `<span class="badge-new"><span>PREMIERE</span></span>`
+        : '';
+      return `<div class="ts-sched-row" onclick="${onclick}">
+        <span class="ts-sched-time">${slot.time}</span>
+        <div class="ts-sched-info">
+          <div class="ts-sched-title-row">
+            <span class="ts-sched-name">${showTitle}</span>
+            ${liveBadge}${newBadge}
           </div>
-          <div class="ts-sched-right"></div>
-        </div>`;
-      }).join('')
-    : '<p class="ts-no-results">No shows scheduled</p>';
+          <span class="ts-sched-host">${slot.title}</span>
+        </div>
+        <div class="ts-sched-right"></div>
+      </div>`;
+    }).join('') || `<p class="ts-no-results" style="margin:0;padding:0 var(--space-4) var(--space-2);">No shows scheduled</p>`;
 
-  const headerEl = document.getElementById('ts-sched-header');
-  if (headerEl) headerEl.innerHTML = `<div class="ts-sched-daytabs">${tabs}</div><div class="ts-sched-sep"></div>`;
+    html += `<div class="ts-sched-day-section${isToday ? ' ts-sched-today' : ''}" data-dow="${i}">
+      <div class="ts-sched-day-label">${dayLabel}</div>
+      <div class="ts-sched-slots">${slotsHtml}</div>
+    </div>`;
+  }
 
-  container.innerHTML = `<div class="ts-sched-slots">${slotsHtml}</div>`;
+  html += `<p class="ts-sched-next-week">Next week — schedule coming soon</p>`;
+
+  container.innerHTML = html;
 
   requestAnimationFrame(() => {
+    const todaySection = container.querySelector('.ts-sched-today');
+    if (todaySection) container.scrollTop = todaySection.offsetTop;
     initScrollFade(container, 48);
-    const tabsEl = headerEl && headerEl.querySelector('.ts-sched-daytabs');
-    if (tabsEl) {
-      initHScrollFade(tabsEl, 16, 16);
-      const activeTab = tabsEl.querySelector('.ts-sched-daytab.active');
-      if (activeTab) activeTab.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' });
-    }
   });
-}
-
-function _selectTopbarSchedDay(dow) {
-  _topbarSchedDow = dow;
-  _renderTopbarSchedule();
 }
 
 /* ── Search category tabs ── */
@@ -9554,16 +9545,13 @@ function _selectTopbarSchedDay(dow) {
     if (showsEl)       showsEl.style.display       = name === 'shows'     ? '' : 'none';
     if (residentsEl)   residentsEl.style.display   = name === 'residents' ? '' : 'none';
     if (scheduleEl)    scheduleEl.style.display     = name === 'schedule'  ? '' : 'none';
-    if (schedHeaderEl) schedHeaderEl.style.display = name === 'schedule'  ? '' : 'none';
+    if (schedHeaderEl) schedHeaderEl.style.display = 'none';
     if (filterBtn)   filterBtn.style.display   = name === 'shows'     ? 'flex' : 'none';
     if (name !== 'shows') _resetTopbarFilters();
     if (name === 'residents') {
       _renderTopbarResidents(document.getElementById('topbar-search-input')?.value || '');
     }
-    if (name === 'schedule') {
-      _topbarSchedDow = null;
-      _renderTopbarSchedule();
-    }
+    if (name === 'schedule') _renderTopbarSchedule();
     if (name === 'shows' && showsEl) {
       requestAnimationFrame(() => initScrollFade(showsEl, 48));
     }
