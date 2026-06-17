@@ -3324,7 +3324,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 /* Show page — play btn smooth expand/collapse */
 .show-btn-play { min-width: 0; transition: min-width var(--dur-medium) var(--ease-standard), gap var(--dur-medium) var(--ease-standard), padding var(--dur-medium) var(--ease-standard); }
 /* Show page — play btn in live/playing state */
-.show-btn-play--live { min-width: 200px; gap: var(--space-2); padding-left: var(--space-3); padding-right: var(--space-3); }
+.show-btn-play--live { min-width: var(--grid-col); width: var(--grid-col); gap: var(--space-2); padding-left: var(--space-3); padding-right: var(--space-3); }
 .show-mini-track { flex: 1; height: 3px; border-radius: 99px; position: relative; overflow: hidden; background: rgba(255,255,255,0.22); pointer-events: none; cursor: default; user-select: none; }
 html.light .show-mini-track { background: rgba(0,0,0,0.18); }
 .show-mini-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--action-primary-fg); border-radius: 99px; transition: width 1s linear; }
