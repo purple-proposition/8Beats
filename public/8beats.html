@@ -4953,8 +4953,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <span class="show-submeta-host" id="show-submeta-host" onclick="openArtist(document.getElementById('show-host-name').textContent.trim())">Purple Proposition</span>
             <span class="show-submeta-dot">·</span>
             <span id="show-date">13 Feb 2024</span>
-            <span class="show-submeta-dot">·</span>
-            <span id="show-duration"></span>
           </div>
         </div>
         <p class="show-desc" id="show-desc"></p>
@@ -4964,7 +4962,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
         <div class="show-actions">
           <button class="btn btn-primary show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
             <i data-lucide="play" style="display:block"></i>
-            Play
+            <span id="show-duration"></span>
           </button>
           <button class="icon-btn icon-btn--action" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
             <i data-lucide="user-plus" style="fill:none;display:block"></i>
@@ -7659,10 +7657,9 @@ function seekToShow(ts, showKey) {
 function updateShowPlayBtn() {
   const btn = document.getElementById('show-play-btn');
   if (!btn) return;
-  const data = currentShowKey ? SHOW_DATA[currentShowKey] : null;
+  const dur = (document.getElementById('show-duration') || {}).textContent || '';
   const iconName = playing ? 'pause' : 'play';
-  const label = playing ? 'Pause' : 'Play';
-  btn.innerHTML = `<i data-lucide="${iconName}" style="display:block"></i>${label}`;
+  btn.innerHTML = `<i data-lucide="${iconName}" style="display:block"></i><span id="show-duration">${dur}</span>`;
   lucide.createIcons({ nodes: [btn] });
 }
 
