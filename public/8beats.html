@@ -3321,6 +3321,12 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 /* Show page — primary play btn — icon reveal sans overshoot */
 .show-btn-play svg { fill: var(--surface-page) !important; stroke: none !important; animation: icon-swap var(--dur-short) var(--ease-standard) both; }
+/* Show page — play btn in live/playing state */
+.show-btn-play--live { flex: 1; gap: var(--space-2); padding-left: var(--space-3); padding-right: var(--space-3); }
+.show-mini-track { flex: 1; height: 3px; border-radius: 99px; position: relative; overflow: hidden; background: rgba(255,255,255,0.22); }
+html.light .show-mini-track { background: rgba(0,0,0,0.18); }
+.show-mini-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--action-primary-fg); border-radius: 99px; transition: width 1s linear; }
+.show-mini-remaining { font-size: var(--text-sm); font-weight: 400; line-height: 1; flex-shrink: 0; color: var(--action-primary-fg); }
 /* Show page — secondary ghost btn */
 .show-btn-ghost { padding-left: var(--space-4); padding-right: var(--space-4); }
 /* Show page — secondary icon-only btn → uses .icon-btn.icon-btn--action */
@@ -4595,9 +4601,9 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     height: auto !important; aspect-ratio: 1 !important;
   }
 
-  /* Show actions: text labels + full-width 50/50 split */
+  /* Show actions: text labels + full-width split */
   .show-action-label { display: inline; }
-  #show-follow-btn, #show-bookmark-btn {
+  #show-bookmark-btn {
     flex: 1; height: 44px; width: auto !important;
     justify-content: center; gap: var(--space-2);
     font-size: 14px; font-family: var(--font);
@@ -4963,10 +4969,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           <button class="btn btn-primary show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
             <i data-lucide="play" style="display:block"></i>
             <span id="show-duration"></span>
-          </button>
-          <button class="icon-btn icon-btn--action" id="show-follow-btn" onclick="toggleShowFollow(this)" title="Follow artist">
-            <i data-lucide="user-plus" style="fill:none;display:block"></i>
-            <span class="show-action-label">Follow</span>
           </button>
           <button class="icon-btn icon-btn--action" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
             <i data-lucide="bookmark" style="fill:none;display:block"></i>
@@ -6231,6 +6233,8 @@ const progressTrack   = document.getElementById('progress-track');
 let progressPct = 5;
 let progressDragging = false;
 let progressInterval = null;
+let showElapsed = 0;
+let showDur = 0;
 
 // Total durations per show (seconds)
 const SHOW_DURATIONS = {
@@ -6357,15 +6361,17 @@ function showProgressBar(showTitle) {
     ts: t.ts
   }));
 
+  showDur = dur;
+  showElapsed = Math.round(dur * 0.05);
   if (progressInterval) clearInterval(progressInterval);
-  let elapsed = Math.round(dur * 0.05);
   progressInterval = setInterval(() => {
     if (!playing || progressDragging) return;
-    elapsed = Math.min(dur, elapsed + 1);
-    const pct = (elapsed / dur) * 100;
+    showElapsed = Math.min(showDur, showElapsed + 1);
+    const pct = (showElapsed / showDur) * 100;
     setProgressPct(pct);
-    progressCurrent.textContent = fmtTime(elapsed);
-    if (elapsed >= dur) clearInterval(progressInterval);
+    progressCurrent.textContent = fmtTime(showElapsed);
+    updateShowPlayBtn();
+    if (showElapsed >= showDur) clearInterval(progressInterval);
   }, 1000);
 }
 
@@ -7517,6 +7523,7 @@ function openShow(key) {
 
   // Duration
   const totalSecs = SHOW_DURATIONS[key];
+  if (totalSecs) showDur = totalSecs;
   document.getElementById('show-duration').textContent = totalSecs ? fmtTime(totalSecs) : (data.duration || '');
 
   // Art credit
@@ -7657,9 +7664,16 @@ function seekToShow(ts, showKey) {
 function updateShowPlayBtn() {
   const btn = document.getElementById('show-play-btn');
   if (!btn) return;
-  const dur = (document.getElementById('show-duration') || {}).textContent || '';
-  const iconName = playing ? 'pause' : 'play';
-  btn.innerHTML = `<i data-lucide="${iconName}" style="display:block"></i><span id="show-duration">${dur}</span>`;
+  if (playing && showDur > 0) {
+    const pct = (showElapsed / showDur) * 100;
+    const remaining = showDur - showElapsed;
+    btn.classList.add('show-btn-play--live');
+    btn.innerHTML = `<i data-lucide="pause" style="display:block"></i><span class="show-mini-track"><span class="show-mini-fill" style="width:${pct.toFixed(1)}%"></span></span><span class="show-mini-remaining">−${fmtTime(remaining)}</span>`;
+  } else {
+    btn.classList.remove('show-btn-play--live');
+    const durText = showDur > 0 ? fmtTime(showDur) : '';
+    btn.innerHTML = `<i data-lucide="play" style="display:block"></i><span id="show-duration">${durText}</span>`;
+  }
   lucide.createIcons({ nodes: [btn] });
 }
 
