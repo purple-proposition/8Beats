@@ -3321,9 +3321,11 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 /* Show page — primary play btn — icon reveal sans overshoot */
 .show-btn-play svg { fill: var(--surface-page) !important; stroke: none !important; animation: icon-swap var(--dur-short) var(--ease-standard) both; }
+/* Show page — play btn smooth expand/collapse */
+.show-btn-play { min-width: 0; transition: min-width var(--dur-medium) var(--ease-standard), gap var(--dur-medium) var(--ease-standard), padding var(--dur-medium) var(--ease-standard); }
 /* Show page — play btn in live/playing state */
-.show-btn-play--live { flex: 1; gap: var(--space-2); padding-left: var(--space-3); padding-right: var(--space-3); }
-.show-mini-track { flex: 1; height: 3px; border-radius: 99px; position: relative; overflow: hidden; background: rgba(255,255,255,0.22); }
+.show-btn-play--live { min-width: 200px; gap: var(--space-2); padding-left: var(--space-3); padding-right: var(--space-3); }
+.show-mini-track { flex: 1; height: 3px; border-radius: 99px; position: relative; overflow: hidden; background: rgba(255,255,255,0.22); pointer-events: none; cursor: default; user-select: none; }
 html.light .show-mini-track { background: rgba(0,0,0,0.18); }
 .show-mini-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--action-primary-fg); border-radius: 99px; transition: width 1s linear; }
 .show-mini-remaining { font-size: var(--text-sm); font-weight: 400; line-height: 1; flex-shrink: 0; color: var(--action-primary-fg); }
@@ -6370,7 +6372,11 @@ function showProgressBar(showTitle) {
     const pct = (showElapsed / showDur) * 100;
     setProgressPct(pct);
     progressCurrent.textContent = fmtTime(showElapsed);
-    updateShowPlayBtn();
+    // Update mini progress in-place — no full rebuild each tick
+    const fill = document.querySelector('#show-play-btn .show-mini-fill');
+    const rem  = document.querySelector('#show-play-btn .show-mini-remaining');
+    if (fill) fill.style.width = pct.toFixed(1) + '%';
+    if (rem)  rem.textContent  = '−' + fmtTime(showDur - showElapsed);
     if (showElapsed >= showDur) clearInterval(progressInterval);
   }, 1000);
 }
@@ -9944,7 +9950,7 @@ const FWM = (() => {
     register({
       id: 'support', el: document.getElementById('panel-support'),
       handleEl:      null,
-      corner: 'bottom-left',  priority: 10,  draggable: false,
+      corner: 'bottom-right', priority: 10,  draggable: false,
     });
     // Initial placement — no transition, prevents flash
     resolveCornerStacks(true);
@@ -10039,15 +10045,6 @@ function syncSettingsShortcuts() {
 
 FWM.init();
 
-/* Move support panel above the player on tablet (769–1024px) — mirrors cookie panel corner */
-(function _initSupportCorner() {
-  function update() {
-    const w = window.innerWidth;
-    FWM.setCorner('support', w > 768 && w <= 1024 ? 'bottom-right' : 'bottom-left');
-  }
-  window.addEventListener('resize', update);
-  update();
-})();
 
 lucide.createIcons({ nodes: [document.getElementById('panel-support'), document.getElementById('panel-cookie')].filter(Boolean) });
 
