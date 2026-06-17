@@ -6321,8 +6321,8 @@ function setProgressPct(pct) {
 function showProgressBar(showTitle) {
   const dur = SHOW_DURATIONS[showTitle] || 3600;
   progressTotal.textContent = fmtTime(dur);
-  setProgressPct(5);
-  progressCurrent.textContent = fmtTime(Math.round(dur * 0.05));
+  setProgressPct(0);
+  progressCurrent.textContent = fmtTime(0);
   progressWrap.classList.add('visible');
   requestAnimationFrame(_syncVolPos);
 
@@ -6364,7 +6364,7 @@ function showProgressBar(showTitle) {
   }));
 
   showDur = dur;
-  showElapsed = Math.round(dur * 0.05);
+  showElapsed = 0;
   if (progressInterval) clearInterval(progressInterval);
   progressInterval = setInterval(() => {
     if (!playing || progressDragging) return;
