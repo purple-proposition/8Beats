@@ -1195,7 +1195,7 @@ html.light .newsletter-card { background: transparent; }
 }
 .newsletter-form {
   display: flex; gap: var(--space-3); width: 100%; max-width: 480px;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--dur-short) var(--ease-hover);
 }
 .newsletter-input {
   flex: 1; min-width: 0;
@@ -1222,7 +1222,7 @@ html.light .newsletter-card { background: transparent; }
 .newsletter-confirm {
   font-size: var(--text-base); color: var(--text-secondary);
   display: none; align-items: center; gap: var(--space-2);
-  opacity: 0; transition: opacity 0.3s ease;
+  opacity: 0; transition: opacity var(--dur-medium) var(--ease-standard);
 }
 .newsletter-confirm svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
 
@@ -2195,7 +2195,7 @@ html.light .newsletter-card { background: transparent; }
     stroke-linecap: round;
     stroke-linejoin: round;
     display: block; flex-shrink: 0;
-    transition: stroke 0.2s ease;
+    transition: stroke var(--dur-short) var(--ease-hover);
     filter: drop-shadow(0 0 0px rgba(255,255,255,0));
   }
   .ios-tab span {
@@ -2205,7 +2205,7 @@ html.light .newsletter-card { background: transparent; }
     letter-spacing: 0.02em;
     line-height: 1;
     color: rgba(255,255,255,0.36);
-    transition: color 0.2s ease;
+    transition: color var(--dur-short) var(--ease-hover);
     white-space: nowrap;
   }
 
@@ -3880,7 +3880,7 @@ html.fwm-is-dragging { cursor: grabbing !important; }
   box-shadow: 0 20px 56px rgba(0,0,0,0.44), 0 0 0 1px rgba(255,255,255,0.04) !important;
   transform: scale(1.008);
   /* Only transition box-shadow/transform — left/top update instantly during drag */
-  transition: box-shadow 100ms ease, transform 100ms ease !important;
+  transition: box-shadow 100ms var(--ease-hover), transform 100ms var(--ease-hover) !important;
 }
 .fwm-dragging * { cursor: grabbing !important; pointer-events: none; }
 
