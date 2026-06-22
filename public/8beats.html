@@ -8215,7 +8215,7 @@ window.addEventListener('popstate', e => {
   if (latestEl && latestEl.classList.contains('active') && (!e.state || !e.state.latest)) {
     closeLatestShows();
   } else if (e.state && e.state.latest) {
-    openLatestShows();
+    openLatestShows(false);
   } else if (artistEl && artistEl.classList.contains('active') && (!e.state || !e.state.artist)) {
     closeArtist();
   } else if (e.state && e.state.artist) {
@@ -9255,7 +9255,7 @@ function _latestRenderBatch() {
   }
 }
 
-function openLatestShows() {
+function openLatestShows(pushHistory = true) {
   const el      = document.getElementById('view-latest');
   const homeEl  = document.getElementById('view-home');
   const showEl  = document.getElementById('view-show');
@@ -9265,7 +9265,7 @@ function openLatestShows() {
   if (showEl.classList.contains('active'))       fromEl = showEl;
   else if (artistEl.classList.contains('active')) fromEl = artistEl;
 
-  history.pushState({ latest: true }, '', '#shows');
+  if (pushHistory) history.pushState({ latest: true }, '', '#shows');
   fromEl.style.opacity = '0';
   fromEl.style.pointerEvents = 'none';
   setTimeout(() => {
