@@ -4121,15 +4121,17 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 /* ── Topbar search — unified glass block ── */
 #topbar-search {
   position: relative;
-  width: calc(2 * var(--grid-col) + var(--space-5));
   height: 48px;
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
-#topbar-search:hover,
-#topbar-search.search-open,
-#topbar-search:focus-within {
-  width: calc(4 * var(--grid-col) + 3 * var(--space-5));
-  transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1);
+@media (min-width: 1025px) {
+  #topbar-search { width: calc(2 * var(--grid-col) + var(--space-5)); }
+  #topbar-search:hover,
+  #topbar-search.search-open,
+  #topbar-search:focus-within {
+    width: calc(4 * var(--grid-col) + 3 * var(--space-5));
+    transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 
 /* Invisible click trigger — sits on top, passes through when open */
