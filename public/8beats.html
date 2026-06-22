@@ -5639,6 +5639,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 </nav>
 
 <script>
+history.scrollRestoration = 'manual';
+
 /* ── SVG helper ── */
 function mkSvg(d, size, stroke) {
   const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -8209,7 +8211,12 @@ function toggleArtistFollow(btn) {
 window.addEventListener('popstate', e => {
   const artistEl = document.getElementById('view-artist');
   const showEl   = document.getElementById('view-show');
-  if (artistEl && artistEl.classList.contains('active') && (!e.state || !e.state.artist)) {
+  const latestEl = document.getElementById('view-latest');
+  if (latestEl && latestEl.classList.contains('active') && (!e.state || !e.state.latest)) {
+    closeLatestShows();
+  } else if (e.state && e.state.latest) {
+    openLatestShows();
+  } else if (artistEl && artistEl.classList.contains('active') && (!e.state || !e.state.artist)) {
     closeArtist();
   } else if (e.state && e.state.artist) {
     openArtist(e.state.artist);
@@ -9258,6 +9265,7 @@ function openLatestShows() {
   if (showEl.classList.contains('active'))       fromEl = showEl;
   else if (artistEl.classList.contains('active')) fromEl = artistEl;
 
+  history.pushState({ latest: true }, '', '#shows');
   fromEl.style.opacity = '0';
   fromEl.style.pointerEvents = 'none';
   setTimeout(() => {
@@ -9306,12 +9314,15 @@ function closeLatestShows() {
   const homeEl = document.getElementById('view-home');
   if (_latestObserver) { _latestObserver.disconnect(); _latestObserver = null; }
   el.classList.remove('visible');
+  if (history.state && history.state.latest) {
+    history.replaceState(null, '', location.pathname);
+  }
+  window.scrollTo(0, 0);
   setTimeout(() => {
     el.classList.remove('active');
     homeEl.style.display = '';
     homeEl.style.pointerEvents = '';
     requestAnimationFrame(() => { homeEl.style.opacity = '1'; });
-    window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
     const wordmark = document.querySelector('.nav-wordmark');
     wordmark.onclick = null; wordmark.title = '';
