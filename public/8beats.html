@@ -3334,9 +3334,6 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-btn-play { min-width: 0; transition: min-width var(--dur-medium) var(--ease-standard), gap var(--dur-medium) var(--ease-standard), padding var(--dur-medium) var(--ease-standard); }
 /* Show page — play btn in live/playing state */
 .show-btn-play--live { min-width: var(--grid-col); width: var(--grid-col); gap: var(--space-2); padding-left: var(--space-3); padding-right: var(--space-3); }
-.show-mini-track { flex: 1; height: 3px; border-radius: var(--radius-full); position: relative; overflow: hidden; background: rgba(255,255,255,0.22); pointer-events: none; cursor: default; user-select: none; }
-html.light .show-mini-track { background: rgba(0,0,0,0.18); }
-.show-mini-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--action-primary-fg); border-radius: var(--radius-full); transition: width 1s linear; }
 .show-mini-remaining { font-size: var(--text-sm); font-weight: 400; line-height: 1; flex-shrink: 0; color: var(--action-primary-fg); }
 /* Show page — secondary ghost btn */
 .show-btn-ghost { padding-left: var(--space-4); padding-right: var(--space-4); }
@@ -6393,11 +6390,8 @@ function showProgressBar(showTitle) {
     const pct = (showElapsed / showDur) * 100;
     setProgressPct(pct);
     progressCurrent.textContent = fmtTime(showElapsed);
-    // Update mini progress in-place — no full rebuild each tick
-    const fill = document.querySelector('#show-play-btn .show-mini-fill');
-    const rem  = document.querySelector('#show-play-btn .show-mini-remaining');
-    if (fill) fill.style.width = pct.toFixed(1) + '%';
-    if (rem)  rem.textContent  = '−' + fmtTime(showDur - showElapsed);
+    const rem = document.querySelector('#show-play-btn .show-mini-remaining');
+    if (rem) rem.textContent = '−' + fmtTime(showDur - showElapsed);
     if (showElapsed >= showDur) clearInterval(progressInterval);
   }, 1000);
 }
@@ -7694,7 +7688,7 @@ function updateShowPlayBtn() {
     const pct = (showElapsed / showDur) * 100;
     const remaining = showDur - showElapsed;
     btn.classList.add('show-btn-play--live');
-    btn.innerHTML = `<i data-lucide="pause" style="display:block"></i><span class="show-mini-track"><span class="show-mini-fill" style="width:${pct.toFixed(1)}%"></span></span><span class="show-mini-remaining">−${fmtTime(remaining)}</span>`;
+    btn.innerHTML = `<i data-lucide="pause" style="display:block"></i><span class="show-mini-remaining">−${fmtTime(remaining)}</span>`;
   } else {
     btn.classList.remove('show-btn-play--live');
     const durText = showDur > 0 ? fmtTime(showDur) : '';
