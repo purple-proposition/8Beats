@@ -8209,14 +8209,27 @@ function toggleArtistFollow(btn) {
 
 /* ── Browser back / hash routing ── */
 window.addEventListener('popstate', e => {
-  const artistEl = document.getElementById('view-artist');
-  const showEl   = document.getElementById('view-show');
-  const latestEl = document.getElementById('view-latest');
-  if (latestEl && latestEl.classList.contains('active') && (!e.state || !e.state.latest)) {
-    closeLatestShows();
-  } else if (e.state && e.state.latest) {
-    openLatestShows(false);
-  } else if (artistEl && artistEl.classList.contains('active') && (!e.state || !e.state.artist)) {
+  const artistEl  = document.getElementById('view-artist');
+  const showEl    = document.getElementById('view-show');
+
+  // Flat secondary views: home ↔ view (all share the same back-to-home pattern)
+  const flatViews = [
+    { key: 'latest',   el: document.getElementById('view-latest'),   open: (p) => openLatestShows(p), close: closeLatestShows },
+    { key: 'support',  el: document.getElementById('view-support'),  open: (p) => openSupport(p),     close: closeSupport     },
+    { key: 'about',    el: document.getElementById('view-about'),    open: (p) => openAbout(p),       close: closeAbout       },
+    { key: 'proposal', el: document.getElementById('view-proposal'), open: (p) => openProposal(p),    close: closeProposal    },
+  ];
+  const activeFlat  = flatViews.find(v => v.el && v.el.classList.contains('active'));
+  const targetKey   = e.state && (e.state.latest ? 'latest' : e.state.support ? 'support' : e.state.about ? 'about' : e.state.proposal ? 'proposal' : null);
+  const targetFlat  = targetKey ? flatViews.find(v => v.key === targetKey) : null;
+
+  if (activeFlat || targetFlat) {
+    if (activeFlat && activeFlat.key !== targetKey) activeFlat.close();
+    if (targetFlat && (!activeFlat || activeFlat.key !== targetKey)) targetFlat.open(false);
+    return;
+  }
+
+  if (artistEl && artistEl.classList.contains('active') && (!e.state || !e.state.artist)) {
     closeArtist();
   } else if (e.state && e.state.artist) {
     openArtist(e.state.artist);
@@ -9019,7 +9032,7 @@ function _cleanSecondaryViews(exceptId) {
   });
 }
 
-function openSupport() {
+function openSupport(pushHistory = true) {
   renderSupportPlans();
   const supportEl = document.getElementById('view-support');
 
@@ -9036,6 +9049,7 @@ function openSupport() {
   else if (proposalEl.classList.contains('active')){ supportPreviousView = 'proposal'; fromEl = proposalEl; }
   else { supportPreviousView = 'home'; }
 
+  if (pushHistory) history.pushState({ support: true }, '', '#support');
   fromEl.style.opacity = '0';
   fromEl.style.pointerEvents = 'none';
   setTimeout(() => {
@@ -9056,6 +9070,8 @@ function openSupport() {
 function closeSupport() {
   const supportEl = document.getElementById('view-support');
   const homeEl = document.getElementById('view-home');
+  if (history.state && history.state.support) history.replaceState(null, '', location.pathname);
+  window.scrollTo(0, 0);
   supportEl.classList.remove('visible');
   supportEl.classList.add('accepting');
   setTimeout(() => {
@@ -9063,7 +9079,6 @@ function closeSupport() {
     homeEl.style.display = '';
     homeEl.style.pointerEvents = '';
     requestAnimationFrame(() => { homeEl.style.opacity = '1'; });
-    window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
     const wordmark = document.querySelector('.nav-wordmark');
     wordmark.onclick = null; wordmark.title = '';
@@ -9100,7 +9115,7 @@ function animateCounters() {
   });
 }
 
-function openAbout() {
+function openAbout(pushHistory = true) {
   const aboutEl   = document.getElementById('view-about');
   const homeEl    = document.getElementById('view-home');
   const showEl    = document.getElementById('view-show');
@@ -9115,6 +9130,7 @@ function openAbout() {
   else if (proposalEl.classList.contains('active')){ prevView = 'proposal'; fromEl = proposalEl; }
 
   aboutEl._prevView = prevView;
+  if (pushHistory) history.pushState({ about: true }, '', '#about');
   fromEl.style.opacity = '0';
   fromEl.style.pointerEvents = 'none';
   setTimeout(() => {
@@ -9139,20 +9155,21 @@ function openAbout() {
 function closeAbout() {
   const aboutEl = document.getElementById('view-about');
   const homeEl  = document.getElementById('view-home');
+  if (history.state && history.state.about) history.replaceState(null, '', location.pathname);
+  window.scrollTo(0, 0);
   aboutEl.classList.remove('visible');
   setTimeout(() => {
     aboutEl.classList.remove('active');
     homeEl.style.display = '';
     homeEl.style.pointerEvents = '';
     requestAnimationFrame(() => { homeEl.style.opacity = '1'; });
-    window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
     const wordmark = document.querySelector('.nav-wordmark');
     wordmark.onclick = null; wordmark.title = '';
   }, 280);
 }
 
-function openProposal() {
+function openProposal(pushHistory = true) {
   const el     = document.getElementById('view-proposal');
   const homeEl = document.getElementById('view-home');
   const showEl = document.getElementById('view-show');
@@ -9167,6 +9184,7 @@ function openProposal() {
   else if (aboutEl.classList.contains('active')) { prevView = 'about';  fromEl = aboutEl; }
 
   el._prevView = prevView;
+  if (pushHistory) history.pushState({ proposal: true }, '', '#proposal');
   fromEl.style.opacity = '0';
   fromEl.style.pointerEvents = 'none';
   setTimeout(() => {
@@ -9190,13 +9208,14 @@ function openProposal() {
 function closeProposal() {
   const el     = document.getElementById('view-proposal');
   const homeEl = document.getElementById('view-home');
+  if (history.state && history.state.proposal) history.replaceState(null, '', location.pathname);
+  window.scrollTo(0, 0);
   el.classList.remove('visible');
   setTimeout(() => {
     el.classList.remove('active');
     homeEl.style.display = '';
     homeEl.style.pointerEvents = '';
     requestAnimationFrame(() => { homeEl.style.opacity = '1'; });
-    window.scrollTo(0, 0);
     navCollapsed = false; navPill.classList.remove('collapsed');
     const wordmark = document.querySelector('.nav-wordmark');
     wordmark.onclick = null; wordmark.title = '';
