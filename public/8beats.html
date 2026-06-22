@@ -1404,20 +1404,12 @@ html.light .newsletter-card { background: transparent; }
 }
 
 /* ── playlist-clip: le clip qui anime la hauteur ─────────────────────────────
- * max-height:0 → 260px : le clip contrôle exactement la hauteur visible.
- * .playlist-section n'a plus de hauteur propre → sectionH = clipH toujours.
+ * height:0 au repos — les transitions sont gérées en JS (inline style) pour
+ * utiliser la hauteur exacte du contenu (pas un max arbitraire).
  * ──────────────────────────────────────────────────────────────────────────── */
 .playlist-clip {
   overflow: hidden;
-  max-height: 0;
-  /* Close easing — actif quand .pl-open est retiré */
-  transition: max-height var(--dur-playlist) var(--ease-playlist-close);
-}
-
-.player-wrap.pl-open .playlist-clip {
-  max-height: 320px; /* matches .playlist-inner max-height on desktop */
-  /* Open easing — actif quand .pl-open est ajouté */
-  transition: max-height var(--dur-playlist) var(--ease-playlist-open);
+  height: 0;
 }
 
 /* ── playlist-inner: contenu stylisé — vit DANS .playlist-clip ───────────────
@@ -1458,7 +1450,6 @@ html.light .newsletter-card { background: transparent; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .playlist-clip { transition: none; }
   .playlist-inner,
   .player-wrap.pl-open .playlist-inner {
     transition: opacity 120ms linear;
@@ -2005,7 +1996,7 @@ html.light .newsletter-card { background: transparent; }
   .explore-show-row > div:last-child { margin-left: 0 !important; flex-shrink: unset !important; }
 
   /* ── Playlist ── */
-  .player-wrap.pl-open .playlist-clip { max-height: 260px; } /* matches .playlist-inner on mobile */
+  /* playlist-clip height managed by JS — no max-height override needed */
   .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; gap: var(--space-4); }
   /* No vertical padding on track — gap alone handles the 24px spacing */
   .track { padding: 0; border-radius: 0; }
@@ -6848,9 +6839,32 @@ const playerInner = document.querySelector('.player-inner');
 const cookieEl   = document.getElementById('panel-cookie');
 const plBtnD     = document.getElementById('playlist-btn');
 
-/* Durées — doivent correspondre aux transitions CSS sur .playlist-section */
-const PL_DUR_OPEN  = 240 + 60 + 16; /* grid (240ms) + délai contenu (60ms) + marge */
-const PL_DUR_CLOSE = 200 + 16;
+/* Durées — doivent correspondre aux transitions JS sur .playlist-clip */
+const PL_DUR_OPEN  = 380 + 60 + 16; /* height spring (380ms) + délai contenu (60ms) + marge */
+const PL_DUR_CLOSE = 240 + 16;
+
+const _plReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let   _plTransId = 0;
+
+/* Helper : anime .playlist-clip vers toH avec l'easing donné.
+ * _plTransId invalide les callbacks d'une animation précédente si on toggle vite. */
+function _plAnimate(clip, toH, easing, onDone) {
+  const tid = ++_plTransId;
+  if (_plReducedMotion) {
+    clip.style.transition = '';
+    clip.style.height = toH;
+    if (onDone) onDone();
+    return;
+  }
+  clip.style.transition = easing;
+  clip.style.height = toH;
+  clip.addEventListener('transitionend', function onEnd(e) {
+    if (e.propertyName !== 'height' || _plTransId !== tid) return;
+    clip.removeEventListener('transitionend', onEnd);
+    clip.style.transition = '';
+    if (onDone) onDone();
+  });
+}
 
 function _closePl() {
   if (!plOpen) return;
@@ -6859,9 +6873,19 @@ function _closePl() {
   plBtnD.classList.remove('active');
   plBtnD.setAttribute('aria-expanded', 'false');
 
-  /* CSS grid-template-rows gère l'animation (ease-in, 200ms) */
+  const clip = playerWrap.querySelector('.playlist-clip');
+  /* Snapshot la hauteur rendue en cours (gère le cas mid-animation) */
+  const currentH = clip.style.height === 'auto'
+    ? clip.getBoundingClientRect().height
+    : (parseFloat(clip.style.height) || 0);
+  clip.style.transition = 'none';
+  clip.style.height = currentH + 'px';
+  clip.offsetHeight; /* force reflow pour que le départ soit propre */
+
   playerWrap.classList.remove('pl-open');
   plPanel.setAttribute('aria-hidden', 'true');
+
+  _plAnimate(clip, '0px', 'height 240ms cubic-bezier(0.4, 0, 0.2, 1)', null);
 
   /* Remettre inert après la fin de la transition */
   clearTimeout(plPanel._plTimer);
@@ -6881,9 +6905,26 @@ function _openPl() {
   plBtnD.classList.add('active');
   plBtnD.setAttribute('aria-expanded', 'true');
 
-  /* CSS grid-template-rows gère l'animation (ease-out, 240ms) */
   clearTimeout(plPanel._plTimer);
+
+  const clip = playerWrap.querySelector('.playlist-clip');
+  /* Snapshot la hauteur rendue en cours (gère le cas mid-animation) */
+  const currentH = clip.style.height === 'auto'
+    ? clip.getBoundingClientRect().height
+    : (parseFloat(clip.style.height) || 0);
+  clip.style.transition = 'none';
+  clip.style.height = currentH + 'px';
+  clip.offsetHeight; /* force reflow */
+
+  /* scrollHeight = hauteur réelle du contenu indépendamment de clip.height */
+  const targetH = clip.scrollHeight;
+
   playerWrap.classList.add('pl-open');
+
+  /* Spring open — height: auto après la transition pour absorber les reflows */
+  _plAnimate(clip, targetH + 'px', 'height 380ms cubic-bezier(0.22, 1, 0.36, 1)', () => {
+    clip.style.height = 'auto';
+  });
 
   /* Scroll fade-mask — tracklist mode uniquement */
   const inner = plPanel.querySelector('.playlist-inner');
