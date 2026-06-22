@@ -9878,13 +9878,20 @@ const FWM = (() => {
       const primaryStack  = menuHere ? stack.filter(n => n.id === 'menu') : stack;
       const lateralStack  = menuHere ? stack.filter(n => n.id !== 'menu') : [];
 
-      /* ── Base offset: tous les coins bottom partent au-dessus du player.
-         Le player (priorité 100) ancre le bas — les autres panneaux flottent
-         au-dessus, trackés frame-par-frame par le ResizeObserver. ── */
-      const playerNode    = reg.get('player');
-      const playerHere    = playerNode && playerNode.corner === corner;
-      const playerBaseOff = (isBot && !playerHere && playerNode && _isVisible(playerNode.el))
-        ? playerNode.el.offsetHeight + GAP : 0;
+      /* ── Base offset: si le player et ce coin se chevaucheraient horizontalement
+         (viewport trop étroit), offset ce coin au-dessus du player.
+         Géométrie pure — aucune breakpoint hardcodée. ── */
+      const playerNode = reg.get('player');
+      const playerHere = playerNode && playerNode.corner === corner;
+      let   playerBaseOff = 0;
+      if (isBot && !playerHere && playerNode && _isVisible(playerNode.el)) {
+        const stackMaxW  = stack.reduce((m, n) => Math.max(m, n.el.offsetWidth || 0), 0);
+        const playerLeft = window.innerWidth - EDGE - playerNode.el.offsetWidth;
+        const panelRight = EDGE + stackMaxW;
+        if (panelRight + GAP > playerLeft) {
+          playerBaseOff = playerNode.el.offsetHeight + GAP;
+        }
+      }
 
       /* ── Primary (menu) — vertical stack at EDGE from corner ── */
       let slotOff = EDGE + playerBaseOff;
