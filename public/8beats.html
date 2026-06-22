@@ -9879,10 +9879,16 @@ const FWM = (() => {
       const primaryStack  = menuHere ? stack.filter(n => n.id === 'menu') : stack;
       const lateralStack  = menuHere ? stack.filter(n => n.id !== 'menu') : [];
 
+      /* ── Base offset: tous les coins bottom partent au-dessus du player.
+         Le player (priorité 100) ancre le bas — les autres panneaux flottent
+         au-dessus, trackés frame-par-frame par le ResizeObserver. ── */
+      const playerNode    = reg.get('player');
+      const playerHere    = playerNode && playerNode.corner === corner;
+      const playerBaseOff = (isBot && !playerHere && playerNode && _isVisible(playerNode.el))
+        ? playerNode.el.offsetHeight + GAP : 0;
+
       /* ── Primary (menu) — vertical stack at EDGE from corner ── */
-      /* Same-corner panels stack naturally by priority (player=100 first,
-         cookies/support=10 above). Cross-corner panels sit at EDGE independently. */
-      let slotOff = EDGE;
+      let slotOff = EDGE + playerBaseOff;
       for (const node of primaryStack) {
         const w = node.el.offsetWidth, h = node.el.offsetHeight;
         if (!w || !h) continue;
@@ -9891,7 +9897,7 @@ const FWM = (() => {
       }
 
       /* ── Lateral (non-menu siblings) — beside menu, same vertical anchor ── */
-      let sidOff = EDGE;
+      let sidOff = EDGE + playerBaseOff;
       for (const node of lateralStack) {
         const w = node.el.offsetWidth, h = node.el.offsetHeight;
         if (!w || !h) continue;
