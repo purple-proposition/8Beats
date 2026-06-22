@@ -1098,7 +1098,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel-header { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: var(--z-base); cursor: grab; }
 .panel-header-actions { display: flex; align-items: center; gap: var(--space-3); }
 
-.panel p { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.7; letter-spacing: -0.1px; position: relative; z-index: var(--z-base); }
+.panel p { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.4; letter-spacing: -0.1px; position: relative; z-index: var(--z-base); }
 .panel p strong { color: var(--text-primary); font-weight: 500; }
 
 
@@ -1159,7 +1159,7 @@ html.light .keepbeat-card { background: transparent; }
   font-family: 'Alpha Lyrae', var(--font);
   font-size: 32px; font-weight: 400;
   letter-spacing: normal; text-transform: none; color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.35;
 }
 .keepbeat-deco {
   position: absolute; top: 50%; transform: translateY(-50%);
@@ -1265,7 +1265,7 @@ html.light .newsletter-card { background: transparent; }
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
 }
 .panel-support-header {
-  display: flex; align-items: center; gap: var(--space-2);
+  display: flex; align-items: center; gap: var(--space-2); line-height: 1.4;
 }
 .panel-support-header svg { width: 13px; height: 13px; fill: none; stroke: var(--text-secondary); stroke-width: 2; flex-shrink: 0; }
 .panel-support-amounts {
@@ -1282,7 +1282,7 @@ html.light .newsletter-card { background: transparent; }
   display: flex; align-items: center; justify-content: center;
   background: rgba(255,255,255,0.11); border: none;
   border-radius: var(--radius-control); cursor: pointer;
-  font-family: var(--font); font-size: var(--text-base); font-weight: 500;
+  font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   color: #a1a1a1;
   transition: background var(--dur-short) var(--ease-hover);
 }
@@ -1795,6 +1795,13 @@ html.light .newsletter-card { background: transparent; }
   /* Panels — cookies + keepbeat : 3 grids wide (class selectors so ≤768px override can win) */
   .panel-cookie,
   .panel-support { width: calc(3 * var(--grid-col) + 2 * var(--space-5)) !important; }
+
+  /* Support panel — player full-width on tablet: pin above player, left edge */
+  .panel-support {
+    bottom: calc(var(--player-h) + var(--space) + env(safe-area-inset-bottom, 0px)) !important;
+    left: var(--space) !important;
+    right: auto !important;
+  }
 
   /* Volume button — not useful on touch/small screens */
   .vol-wrap { display: none; }
@@ -4122,14 +4129,14 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 /* ── Topbar search — unified glass block ── */
 #topbar-search {
   position: relative;
-  width: calc(2 * var(--grid-col) + var(--space-5));
+  width: calc(4 * var(--grid-col) + 3 * var(--space-5));
   height: 48px;
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 #topbar-search:hover,
 #topbar-search.search-open,
 #topbar-search:focus-within {
-  width: calc(4 * var(--grid-col) + 3 * var(--space-5));
+  width: calc(8 * var(--grid-col) + 7 * var(--space-5));
   transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -7820,7 +7827,8 @@ function updateScrollFade(el) {
   el.style.maskImage = atBottom ? '' : fade;
   el.style.webkitMaskImage = atBottom ? '' : fade;
 }
-function initScrollFade(el, fadeSize, topSafe = 0) {
+function initScrollFade(el, fadeSize, topSafe = 0, skipFirstScrollEvent = false) {
+  let _skip = skipFirstScrollEvent;
   const check = () => {
     const atTop    = el.scrollTop <= 2;
     const atBottom = el.scrollHeight - el.scrollTop <= el.clientHeight + 2;
@@ -7839,7 +7847,10 @@ function initScrollFade(el, fadeSize, topSafe = 0) {
     el.style.maskImage = mask;
     el.style.webkitMaskImage = mask;
   };
-  el.addEventListener('scroll', check);
+  el.addEventListener('scroll', () => {
+    if (_skip) { _skip = false; return; }
+    check();
+  });
   el.addEventListener('wheel', () => requestAnimationFrame(check), { passive: true });
   check();
 }
@@ -9671,8 +9682,9 @@ function _renderTopbarSchedule() {
 
   requestAnimationFrame(() => {
     const todaySection = container.querySelector('.ts-sched-today');
+    const willScroll = !!(todaySection && todaySection.offsetTop > 2);
+    initScrollFade(container, 48, 0, willScroll);
     if (todaySection) container.scrollTop = todaySection.offsetTop;
-    initScrollFade(container, 48);
   });
 }
 
@@ -9950,7 +9962,7 @@ const FWM = (() => {
     register({
       id: 'support', el: document.getElementById('panel-support'),
       handleEl:      null,
-      corner: 'bottom-right', priority: 10,  draggable: false,
+      corner: 'bottom-left', priority: 10,  draggable: false,
     });
     // Initial placement — no transition, prevents flash
     resolveCornerStacks(true);
