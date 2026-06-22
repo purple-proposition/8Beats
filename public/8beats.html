@@ -208,6 +208,7 @@
   /* ── Primitives — Border-radius scale ── */
   --radius-btn:     12px;
   --radius-control: 8px;
+  --radius-full:    99px;
 
   /* ── Primitives — Z-index scale ── */
   --z-base:            1;
@@ -797,7 +798,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   cursor: pointer; background: none; border: none; padding: 0;
 }
 .mno-toggle-track {
-  position: absolute; inset: 0; border-radius: 99px;
+  position: absolute; inset: 0; border-radius: var(--radius-full);
   background: transparent; border: 1px solid var(--border-default);
   transition: border-color var(--dur-micro) var(--ease-hover);
 }
@@ -1074,7 +1075,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .host-name:hover { opacity: 0.64; }
 
 .card-meta   { font-size: var(--text-base); color: var(--text-tertiary); font-family: var(--font); line-height: 1; }
-.card-tags   { display: none; gap: 12px; }
+.card-tags   { display: none; gap: var(--space-3); }
 
 /* ── Family 3: Chip (.chip) + Genre tag (.genre-tag) ── */
 .chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; color: var(--text-secondary); background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: none; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
@@ -1538,9 +1539,9 @@ html.light .newsletter-card { background: transparent; }
 .progress-track {
   flex: 1; height: 4px;
   background: var(--surface-control);
-  border-radius: 99px; position: relative; cursor: pointer; user-select: none;
+  border-radius: var(--radius-full); position: relative; cursor: pointer; user-select: none;
 }
-.progress-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--text-secondary); border-radius: 99px; width: 5%; transition: width .1s linear; }
+.progress-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--text-secondary); border-radius: var(--radius-full); width: 5%; transition: width .1s linear; }
 .progress-knob {
   position: absolute; top: 50%; transform: translate(-50%, -50%);
   width: 8px; height: 8px; border-radius: 50%;
@@ -1729,7 +1730,7 @@ html.light .newsletter-card { background: transparent; }
   -webkit-mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
   mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
 }
-.vol-track { width: 4px; height: 88px; background: rgba(255,255,255,0.24); border-radius: 99px; position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }.vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: 99px; }
+.vol-track { width: 4px; height: 88px; background: rgba(255,255,255,0.24); border-radius: var(--radius-full); position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }.vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: var(--radius-full); }
 .vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
 .vol-btn-face {
   width: 32px; height: 32px; flex-shrink: 0;
@@ -1986,7 +1987,7 @@ html.light .newsletter-card { background: transparent; }
     border: 1px solid var(--border-default);
   }
   .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; }
-  .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: 8px; }
+  .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: var(--radius-control); }
   .play-btn svg { width: 24px; height: 24px; }
   .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: var(--space-1); justify-content: center; }
   .player-info-top { gap: var(--space-2); }
@@ -2296,7 +2297,7 @@ html.light .newsletter-card { background: transparent; }
   width: 28px; height: 28px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: var(--surface-btn);
-  border-radius: 8px; color: var(--text-secondary);
+  border-radius: var(--radius-control); color: var(--text-secondary);
 }
 
 /* ── Corner layout picker ── */
@@ -2352,7 +2353,7 @@ html.light .newsletter-card { background: transparent; }
 
 /* ── Compact sidebar toggle (independent of theme) ── */
 .compact-toggle {
-  width: 44px; height: 24px; border-radius: 99px;
+  width: 44px; height: 24px; border-radius: var(--radius-full);
   border: 1px solid var(--border-default); background: transparent;
   cursor: pointer; padding: 0; position: relative; flex-shrink: 0;
   transition: border-color var(--dur-large) var(--ease-hover);
@@ -2456,8 +2457,8 @@ html.light .newsletter-card { background: transparent; }
 
 .explore-show-row {
   display:flex;align-items:center;justify-content:space-between;
-  padding: 12px 12px;
-  margin: -12px 12px;
+  padding: var(--space-3);
+  margin: calc(-1 * var(--space-3)) var(--space-3);
   cursor:pointer;
   border-radius: 0;
   position: relative;
@@ -2475,7 +2476,8 @@ html.light .newsletter-card { background: transparent; }
 .explore-show-row:hover::before { background: rgba(255,255,255,0.11); }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
-.explore-show-title { font-size:var(--text-show); font-weight:400; line-height:1; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.explore-show-title { font-size:var(--text-show); font-weight:400; line-height:1; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 
 /* ============================================================
    TOOL PANEL — base class for floating utility windows
@@ -2626,15 +2628,15 @@ html.light .newsletter-card { background: transparent; }
 .sp-show-row {
   display: flex; align-items: center;
   gap: var(--space-4);
-  padding: 8px 8px;
-  margin: 0 -8px;
+  padding: var(--space-2);
+  margin: 0 calc(-1 * var(--space-2));
   cursor: pointer;
   border-radius: var(--radius-control);
   transition: background var(--dur-micro) var(--ease-hover);
 }
 .sp-show-row:hover { background: var(--surface-control); }
-.sp-show-info { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 0; }
-.sp-show-title-row { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.sp-show-info { display: flex; flex-direction: column; gap: var(--space-3); flex: 1; min-width: 0; }
+.sp-show-title-row { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
 .sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; transition: color var(--dur-micro) var(--ease-hover); flex-shrink: 1; min-width: 0; }
 .sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; }
 /* Live button — player-ctrl style, uppercase */
@@ -2659,7 +2661,7 @@ html.light .newsletter-card { background: transparent; }
   padding: var(--space-5);
   font-size: var(--text-base); color: var(--text-tertiary);
 }
-#filter-count { font-size: 10px; font-weight: 700; letter-spacing: .3px; line-height: 1; background: var(--text-secondary); color: var(--surface-page); border-radius: 99px; padding: 2px 5px; vertical-align: middle; }
+#filter-count { font-size: 10px; font-weight: 700; letter-spacing: .3px; line-height: 1; background: var(--text-secondary); color: var(--surface-page); border-radius: var(--radius-full); padding: 2px 5px; vertical-align: middle; }
 
 /* Genre tooltip — même dark glass que la search bar */
 #genre-tooltip {
@@ -2748,16 +2750,16 @@ html.light .newsletter-card { background: transparent; }
   font-family: var(--font);
 }
 .schedule-slot.is-live .schedule-slot-time { color: var(--text-primary); }
-.schedule-slot-body { flex: 1; min-width: 0; padding-right: 16px; }
+.schedule-slot-body { flex: 1; min-width: 0; padding-right: var(--space-4); }
 .schedule-slot-title {
-  display: flex; align-items: center; gap: 16px; min-width: 0;
+  display: flex; align-items: center; gap: var(--space-4); min-width: 0;
   font-size: var(--text-md); font-weight: 400; color: var(--text-primary); line-height: 1;
 }
 .schedule-slot-title .slot-title-text {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1;
 }
 .schedule-slot-host {
-  font-size: var(--text-base); color: var(--text-secondary); margin-top: 12px; line-height: 1;
+  font-size: var(--text-base); color: var(--text-secondary); margin-top: var(--space-3); line-height: 1;
   display: flex; align-items: center; gap: var(--space-2);
 }
 .schedule-slot-avatar {
@@ -3243,7 +3245,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-tracklist-inline .track + .track { border-top: none; }
 .show-tracklist-inline .track-info {
-  display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 8px;
+  display: flex; flex-direction: column; flex: 1; min-width: 0; gap: var(--space-2);
 }
 /* Track name first (primary), game name below (tertiary) */
 .show-tracklist-inline .track-name {
@@ -3332,9 +3334,9 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-btn-play { min-width: 0; transition: min-width var(--dur-medium) var(--ease-standard), gap var(--dur-medium) var(--ease-standard), padding var(--dur-medium) var(--ease-standard); }
 /* Show page — play btn in live/playing state */
 .show-btn-play--live { min-width: var(--grid-col); width: var(--grid-col); gap: var(--space-2); padding-left: var(--space-3); padding-right: var(--space-3); }
-.show-mini-track { flex: 1; height: 3px; border-radius: 99px; position: relative; overflow: hidden; background: rgba(255,255,255,0.22); pointer-events: none; cursor: default; user-select: none; }
+.show-mini-track { flex: 1; height: 3px; border-radius: var(--radius-full); position: relative; overflow: hidden; background: rgba(255,255,255,0.22); pointer-events: none; cursor: default; user-select: none; }
 html.light .show-mini-track { background: rgba(0,0,0,0.18); }
-.show-mini-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--action-primary-fg); border-radius: 99px; transition: width 1s linear; }
+.show-mini-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--action-primary-fg); border-radius: var(--radius-full); transition: width 1s linear; }
 .show-mini-remaining { font-size: var(--text-sm); font-weight: 400; line-height: 1; flex-shrink: 0; color: var(--action-primary-fg); }
 /* Show page — secondary ghost btn */
 .show-btn-ghost { padding-left: var(--space-4); padding-right: var(--space-4); }
@@ -3729,11 +3731,11 @@ body { padding-top: 24px; }
 /* Inner wrapper handles content clipping for border-radius — separate from animation shell */
 #ham-menu-inner {
   border-radius: calc(var(--radius-btn) - 1px);
-  display: flex; flex-direction: column; gap: 16px; padding: 16px 0;
+  display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4) 0;
 }
 .ham-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 0 16px; min-height: 20px;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: 0 var(--space-4); min-height: 20px;
   font-size: var(--text-base); font-family: var(--font); font-weight: 400;
   color: var(--text-secondary);
   cursor: pointer; border: none; background: none;
@@ -3756,8 +3758,8 @@ body { padding-top: 24px; }
 .ham-item svg { width: 14px; height: 14px; flex-shrink: 0; }
 .ham-sep {}
 .ham-theme-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 0 16px; min-height: 20px;
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: 0 var(--space-4); min-height: 20px;
   position: relative; cursor: default;
   transition: color var(--dur-micro) var(--ease-hover);
 }
@@ -3791,8 +3793,8 @@ body { padding-top: 24px; }
 }
 .ham-social-row {
   display: flex; align-items: center;
-  padding: 0 16px;
-  gap: 16px;
+  padding: 0 var(--space-4);
+  gap: var(--space-4);
 }
 .ham-social-row .icon-btn--ghost {
   width: 32px; height: 32px;
@@ -4435,7 +4437,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
               transform 300ms cubic-bezier(0.0,0,0.2,1) 180ms;
 }
 .ts-resident-row {
-  display: flex; align-items: center; gap: 16px;
+  display: flex; align-items: center; gap: var(--space-4);
   padding: var(--hover-bleed); margin: -6px var(--hover-bleed);
   cursor: pointer;
   border-radius: var(--radius-control);
@@ -4452,6 +4454,18 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 .ts-resident-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ts-resident-name { font-size: var(--text-base); color: var(--text-primary); line-height: 1; }
 .ts-resident-freq { font-size: var(--text-base); color: var(--text-secondary); line-height: 1; }
+.ts-resident-info { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; min-width: 0; }
+
+/* ── Show results in search dropdown ── */
+.ts-results-list { display: flex; flex-direction: column; gap: var(--space-3); padding: 14px 0 var(--space-4); }
+.ts-show-cover { width: 36px; height: 36px; border-radius: var(--radius-control); object-fit: cover; flex-shrink: 0; display: block; align-self: flex-start; }
+.ts-show-cover-ph { width: 36px; height: 36px; border-radius: var(--radius-control); background: #191919; flex-shrink: 0; align-self: flex-start; }
+.ts-show-info { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; min-width: 0; }
+.ts-show-title-row { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.ts-show-host-link { font-size: var(--text-base); line-height: 1; color: var(--text-secondary); cursor: pointer; align-self: flex-start; transition: color var(--dur-short) var(--ease-hover); }
+.ts-show-host-link:hover { color: var(--text-primary); }
+.ts-timestamp-tag { display: inline-flex; align-items: center; gap: var(--space-1); background: rgba(255,255,255,0.11); border: none; border-radius: var(--radius-control); padding: 2px 8px; font-size: var(--text-sm); color: #A1A1A1; white-space: nowrap; cursor: pointer; }
+.ts-timestamps-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
 
 /* ── Schedule tab in search dropdown ── */
 .ts-sched-day-label {
@@ -4474,8 +4488,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   font-size: var(--text-sm); color: var(--text-tertiary);
   flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font);
 }
-.ts-sched-info { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 0; }
-.ts-sched-title-row { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.ts-sched-info { display: flex; flex-direction: column; gap: var(--space-3); flex: 1; min-width: 0; }
+.ts-sched-title-row { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
 .ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1; min-width: 0; }
 .ts-sched-host { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ts-sched-right { display: flex; align-items: center; flex-shrink: 0; }
@@ -4971,7 +4985,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           </div>
         </div>
         <p class="show-desc" id="show-desc"></p>
-        <div class="hero-tags" id="show-tags" style="display:flex;flex-wrap:wrap;gap:12px;">
+        <div class="hero-tags" id="show-tags">
           <span class="chip genre-tag">Ambient</span><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">Drum &amp; Bass</span>
         </div>
         <div class="show-actions">
@@ -9523,34 +9537,34 @@ function _renderTopbarShows(q) {
       if (matched.length) {
         const items = matched.slice(0, 3).map(t => {
           const trackTitle = t.name && t.name.includes(' – ') ? t.name.split(' – ').slice(1).join(' – ') : (t.name || '');
-          return `<span onclick="seekTo('${t.ts}')" style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.11);border:none;border-radius:var(--radius-control);padding:2px 8px;font-size:var(--text-sm);color:#A1A1A1;white-space:nowrap;cursor:pointer;">
+          return `<span onclick="seekTo('${t.ts}')" class="ts-timestamp-tag">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             &ldquo;${trackTitle}&rdquo; from ${t.game}
           </span>`;
         }).join('');
-        contextHint = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:0;">${items}</div>`;
+        contextHint = `<div class="ts-timestamps-wrap">${items}</div>`;
       }
     }
     const cover = (SHOW_DATA[s.title] || {}).artImage || '';
     const coverEl = cover
-      ? `<img src="${cover}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;display:block;align-self:flex-start;" alt="">`
-      : `<div style="width:36px;height:36px;border-radius:6px;background:#191919;flex-shrink:0;align-self:flex-start;"></div>`;
+      ? `<img src="${cover}" class="ts-show-cover" alt="">`
+      : `<div class="ts-show-cover-ph"></div>`;
     const newBadge = recentTitles.has(s.title)
       ? `<span class="badge-new"><span>NEW</span></span>`
       : '';
     return `<div class="explore-show-row" role="button" tabindex="0" onclick="closeTopbarSearch();openShow('${s.title.replace(/'/g, "\\'")}')">
       ${coverEl}
-      <div style="display:flex;flex-direction:column;gap:var(--space-2);min-width:0;flex:1;">
-        <div style="display:flex;align-items:center;gap:12px;min-width:0;">
-          <span class="explore-show-title" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1;">${s.title}</span>
+      <div class="ts-show-info">
+        <div class="ts-show-title-row">
+          <span class="explore-show-title">${s.title}</span>
           ${newBadge}
         </div>
-        <span onclick="event.stopPropagation();closeTopbarSearch();openArtist('${s.host.replace(/'/g,"\\'")}');" style="font-size:var(--text-base);line-height:1;color:var(--text-secondary);cursor:pointer;align-self:flex-start;transition:color var(--dur-short) var(--ease-hover);" onmouseenter="this.style.color='var(--text-primary)'" onmouseleave="this.style.color='';">${s.host}</span>
+        <span class="ts-show-host-link" onclick="event.stopPropagation();closeTopbarSearch();openArtist('${s.host.replace(/'/g,"\\'")}');">${s.host}</span>
         ${contextHint}
       </div>
     </div>`;
   }).join('');
-  container.innerHTML = genreCardHtml + `<div style="display:flex;flex-direction:column;gap:12px;padding:14px 0 var(--space-4);">${rows}</div>`;
+  container.innerHTML = genreCardHtml + `<div class="ts-results-list">${rows}</div>`;
   initScrollFade(container, 48);
 }
 
@@ -9590,11 +9604,11 @@ function _renderTopbarResidents(q) {
     container.innerHTML = '<p class="ts-no-results">No results</p>';
     return;
   }
-  container.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px;padding:14px 0 var(--space-4);">' +
+  container.innerHTML = '<div class="ts-results-list">' +
     list.map(r => `
       <div class="ts-resident-row" onclick="closeTopbarSearch();openArtist('${r.name.replace(/'/g,"\\'")}')">
         <div class="ts-resident-avatar">${r.initials}</div>
-        <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1;">
+        <div class="ts-resident-info">
           <span class="ts-resident-name">${r.name}</span>
           <span class="ts-resident-freq">${r.frequency}</span>
         </div>
