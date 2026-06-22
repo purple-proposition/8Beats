@@ -4165,6 +4165,14 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 /* hide label only when user has typed something */
 #topbar-search.has-query #topbar-search-label { opacity: 0; filter: blur(6px); pointer-events: none; }
+/* compact desktop: fondue rapide en sortie de hover avant que la barre ne rétrécisse sur le badge ⌘K */
+@media (min-width: 1025px) {
+  #topbar-search:not(:hover):not(.search-open):not(:focus-within) #topbar-search-label {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 100ms var(--ease-hover);
+  }
+}
 #topbar-search-cycle {
   display: inline-block; vertical-align: baseline;
   will-change: opacity, filter;
