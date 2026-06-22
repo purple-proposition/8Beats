@@ -6603,7 +6603,8 @@ function _getAudio() {
   if (!_audio) {
     _audio = new Audio();
     _audio.preload = 'none';
-    _audio.crossOrigin = 'anonymous';   /* needed for Web Audio API analyser */
+    /* crossOrigin NOT set here — setting it blocks the stream on servers without CORS headers.
+       connectHeroAnalyser() will retry with a fresh CORS element if needed. */
     _audio.src = STREAM_URL;
     _audio.addEventListener('error', () => { /* stream unavailable — stay in paused state */ });
   }
