@@ -9836,8 +9836,15 @@ const FWM = (() => {
       const primaryStack  = menuHere ? stack.filter(n => n.id === 'menu') : stack;
       const lateralStack  = menuHere ? stack.filter(n => n.id !== 'menu') : [];
 
+      /* ── For bottom corners without the player: start above the player height
+         so panels track the player expand/collapse just like the cookies panel. */
+      const playerNode    = reg.get('player');
+      const playerHere    = playerNode && playerNode.corner === corner;
+      const playerBaseOff = (isBot && !playerHere && playerNode && _isVisible(playerNode.el))
+        ? playerNode.el.offsetHeight + GAP : 0;
+
       /* ── Primary (menu) — vertical stack at EDGE from corner ── */
-      let slotOff = EDGE;
+      let slotOff = EDGE + playerBaseOff;
       for (const node of primaryStack) {
         const w = node.el.offsetWidth, h = node.el.offsetHeight;
         if (!w || !h) continue;
@@ -9846,7 +9853,7 @@ const FWM = (() => {
       }
 
       /* ── Lateral (non-menu siblings) — beside menu, same vertical anchor ── */
-      let sidOff = EDGE;
+      let sidOff = EDGE + playerBaseOff;
       for (const node of lateralStack) {
         const w = node.el.offsetWidth, h = node.el.offsetHeight;
         if (!w || !h) continue;
