@@ -1104,10 +1104,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 
 
-.panel-close { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); width: 28px; height: 28px; border-radius: var(--radius-full); flex-shrink: 0; transition: background var(--dur-short) var(--ease-hover); }
-.panel-close svg { width: 16px; height: 16px; stroke: var(--text-tertiary); fill: none; display: block; transition: stroke var(--dur-short) var(--ease-hover); }
-.panel-close:hover { background: rgba(255,255,255,0.08); }
-.panel-close:hover svg { stroke: var(--text-secondary); }
+.panel-close { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); transition: color var(--dur-short) var(--ease-hover); }
+.panel-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; display: block; }
+.panel-close:hover { color: var(--text-primary); }
 
 /* ── Pitch / Join the party ── */
 .pitch-card {
