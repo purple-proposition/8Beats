@@ -1786,7 +1786,7 @@ html.light .newsletter-card { background: transparent; }
 
   /* Panels — cookies + keepbeat : 3 grids wide (class selectors so ≤768px override can win) */
   .panel-cookie,
-  .panel-support { width: calc(3 * var(--grid-col) + 2 * var(--space-5)) !important; }
+  .panel-support { width: calc(4 * var(--grid-col) + 3 * var(--space-5)) !important; }
 
   /* Tablet touch — pas de hover : montants et note toujours visibles */
   .panel-support .panel-support-amounts { max-height: 60px !important; opacity: 1 !important; margin-top: 0 !important; }
@@ -2677,6 +2677,43 @@ html.light .newsletter-card { background: transparent; }
   transition: opacity   180ms var(--ease-spring),
               filter    200ms var(--ease-spring),
               transform 220ms var(--ease-spring);
+}
+/* Game tooltip — même dark glass que le genre, + footer attribution IGDB */
+#game-tooltip {
+  position: fixed; z-index: var(--z-top);
+  max-width: 300px;
+  background: rgba(255,255,255,0.11);
+  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font);
+  pointer-events: none;
+  opacity: 0; filter: blur(6px);
+  transform: scale(0.92) translateY(4px);
+  transform-origin: bottom center;
+  transition: opacity   180ms var(--ease-in),
+              filter    200ms var(--ease-in),
+              transform 220ms var(--ease-in);
+}
+#game-tooltip.visible {
+  opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
+  transition: opacity   180ms var(--ease-spring),
+              filter    200ms var(--ease-spring),
+              transform 220ms var(--ease-spring);
+}
+#game-tooltip .gt-desc { font-size: var(--text-base); line-height: 1.5; color: var(--text-tertiary); }
+#game-tooltip .gt-foot {
+  display: flex; align-items: center; gap: 5px;
+  margin-top: var(--space-3); padding-top: var(--space-2);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  font-size: var(--text-xs); line-height: 1; color: var(--text-disabled); letter-spacing: .02em;
+}
+#game-tooltip .gt-foot .igdb-mark { font-weight: 700; color: var(--text-secondary); letter-spacing: -.02em; }
+.track-game.gt-active {
+  text-decoration: underline dotted; text-underline-offset: 3px;
+  text-decoration-color: rgba(255,255,255,0.30); cursor: help;
 }
 /* ══════════════════════════════════════
    VIEW SYSTEM — home ↔ show
@@ -4665,6 +4702,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 <body>
 
 <div id="genre-tooltip"></div>
+<div id="game-tooltip"></div>
 <div id="progress-tooltip" class="progress-tooltip"></div>
 
 <!-- NAV DROPDOWN — must live directly in body, outside any backdrop-filter ancestor -->
@@ -6085,6 +6123,58 @@ function hideGenreTooltip() {
   genreTooltipEl.classList.remove('visible');
 }
 
+/* ── Game tooltip (descriptions IGDB) — test sur International Radio Day ── */
+const GAME_INFO = {
+  'L.O.L.: Lack of Love': {desc:'L.O.L: Lack Of Love, is an evolutionary adventure game developed by Love-de-Lic and published by ASCII Entertainment for the Sega Dreamcast. The game was released exclusively in Japan on November 2, 2000.', url:'https://www.igdb.com/games/l-dot-o-l-dot-lack-of-love'},
+  'VA-11 HALL-A: Cyberpunk Bartender Action': {desc:'Learn about daily life in a cyberpunk dystopia. A branching storyline where your decisions do not depend on traditional choices, but through the drinks you prepare.', url:'https://www.igdb.com/games/va-11-hall-a-cyberpunk-bartender-action'},
+  'Baroque': {desc:'Baroque is horror-themed action game with elements of survival gameplay. The whole game is set in the tower: you slowly work your way to the top, fighting demons as you progress. You have HP as well as stamina gauge.', url:'https://www.igdb.com/games/baroque--1'},
+  'Cyber Troopers Virtual-On Marz': {desc:'Virtual-On Marz is currently the latest game in the Virtual-On series, and it is the only game that is exclusive to consoles. It is based on Virtual-On Force.', url:'https://www.igdb.com/games/cyber-troopers-virtual-on-marz'},
+  'Jet de GO! Let\'s Go by Airliner': {desc:'Jet de GO! is a spin-off from the famous Densha de GO! series by Taito. Instead of trains, this title focus exclusively on flying planes.', url:'https://www.igdb.com/games/jet-de-go-lets-go-by-airliner'},
+  'Tenerezza': {desc:'Japanese game developer Aquaplus, better known for its H dating sims such as To Heart and Comic Party made this 3D action RPG, Tenerezza (meaning "tenderness" in Italian). Tenerezza is an action role-playing game.', url:'https://www.igdb.com/games/tenerezza'},
+  'Gallop Racer 2001': {desc:'Gallop Racer 2001 is a horse racing video game focused on simulating the jockey racing experience through a season mode. The game bases its challenges on knowing how your horse handles each race rather than pure driving.', url:'https://www.igdb.com/games/gallop-racer-2001'},
+  'Rasetsu': {desc:'Rasetsu is a real time strategy with RPG elements that was released in 2001 for Microsoft Windows 98. It plays similarly to any other real-time strategy title with an isometric view and common point-and-click interface, and also toting…', url:'https://www.igdb.com/games/rasetsu'},
+  'A Memoir Blue': {desc:'A Memoir Blue is an atmospheric journey through the memories of Miriam: a champion swimmer, who on the day of her greatest success dwells on her childhood memories of her mother and a special trip they took.', url:'https://www.igdb.com/games/a-memoir-blue'},
+  'Missing Parts: The Tantei Stories': {desc:'The first entry in the cult classic adventure game series by F.O.G.', url:'https://www.igdb.com/games/missing-parts-the-tantei-stories'},
+  'Super Producers': {desc:'"Super Producers: Mezase Show Biz Kai" is a Sega Dreamcast simulation game.', url:'https://www.igdb.com/games/super-producers'},
+  'Tokyo Xanadu': {desc:'Tokyo Xanadu is an action RPG that blends dungeon crawling with high school life simulation. By day, you\'re a student in modern Tokyo building relationships and enjoying school activities.', url:'https://www.igdb.com/games/tokyo-xanadu'},
+  'Final Fantasy: Crystal Chronicles': {desc:'Join a crystal caravan! A deadly miasma has swallowed the land, and it\'s up to you to hold it at bay! Many dangers lie along your journey, but you need not face them alone.', url:'https://www.igdb.com/games/final-fantasy-crystal-chronicles'},
+  'Monster Hunter': {desc:'The popular fantasy action franchise Monster Hunter is now one of the most iconic gaming series in the world selling over 21 million copies worldwide since the series began in 2004.', url:'https://www.igdb.com/games/monster-hunter-3-ultimate'},
+  'Musashi: Samurai Legend': {desc:'Musashi Samurai Legend marks the second chapter in the Musashi series. You\'ll play as Musashi, a young swordsman summoned to rescue a kidnapped princess. The journey, however, is a difficult one, as enemies of all types stand in your way.', url:'https://www.igdb.com/games/musashi-samurai-legend'},
+  'Test Drive Unlimited': {desc:'Test Drive Unlimited is the ultimate automotive experience for car and bike enthusiasts alike. Visit the most sophisticated car and bike dealers to purchase new vehicles or simply take them for a spin.', url:'https://www.igdb.com/games/test-drive-unlimited'},
+  'Metal Gear Solid 2: Sons of Liberty': {desc:'Metal Gear Solid 2: Sons of Liberty is the sequel to the espionage action game Metal Gear Solid. Much of the gameplay remains the same, as the game\'s protagonist has to sneak past guards, outsmart them using various gadgets and defeat the…', url:'https://www.igdb.com/games/metal-gear-solid-2-sons-of-liberty'},
+  'Metal Gear Solid 2: Substance': {desc:'Metal Gear Solid 2: Substance is a re-vamped and revised edition of the original Metal Gear Solid 2: Sons of Liberty, in which Solid Snake must recover the stolen Metal Gear Ray from a group of terrorists bent on using its power for…', url:'https://www.igdb.com/games/metal-gear-solid-2-substance'},
+};
+
+const gameTooltipEl = document.getElementById('game-tooltip');
+let _gameActiveEl = null;
+
+function showGameTooltip(name, el) {
+  const info = GAME_INFO[name];
+  if (!info) return;
+  gameTooltipEl.innerHTML =
+    '<div class="gt-desc">' + info.desc + '</div>' +
+    '<div class="gt-foot"><span>via</span><span class="igdb-mark">igdb</span></div>';
+  gameTooltipEl.classList.add('visible');
+  el.classList.add('gt-active');
+  _gameActiveEl = el;
+  requestAnimationFrame(() => {
+    const r  = el.getBoundingClientRect();
+    const tw = gameTooltipEl.offsetWidth;
+    const th = gameTooltipEl.offsetHeight;
+    const gap = 8, margin = 12;
+    const top = (r.top - th - gap >= margin) ? r.top - th - gap : r.bottom + gap;
+    const left = Math.max(margin, Math.min(r.left, window.innerWidth - tw - margin));
+    gameTooltipEl.style.left = left + 'px';
+    gameTooltipEl.style.top  = top  + 'px';
+  });
+}
+
+function hideGameTooltip() {
+  clearTimeout(_gameTimer);
+  gameTooltipEl.classList.remove('visible');
+  if (_gameActiveEl) { _gameActiveEl.classList.remove('gt-active'); _gameActiveEl = null; }
+}
+
 
 
 /* ══════════════════════════════════════
@@ -6127,7 +6217,7 @@ const TRACKLISTS = {
     {ts:'04:10', name:'Shigeki Hayashi – Floatage Girl', game:'Baroque', avail:true},
     {ts:'05:36', name:'Kentaro Koyama – An Intermission, Episode 6: Voice of TANGRAM (Remix)', game:'Cyber Troopers Virtual-On Marz', avail:true},
     {ts:'07:19', name:'Kenichiro Fukui – (Earthlight) Staff Roll', game:'Einhänder', avail:true},
-    {ts:'10:09', name:'Shuichiro Nakazawa – Theme of L.G. (Rising Sun Mix)', game:'Jet De GO! Let\'s Go by Airliner', avail:true},
+    {ts:'10:09', name:'Shuichiro Nakazawa – Theme of L.G. (Rising Sun Mix)', game:'Jet de GO! Let\'s Go by Airliner', avail:true},
     {ts:'15:13', name:'Junya Matsuoka – Stage (Snow Mountain)', game:'Tenerezza', avail:true},
     {ts:'18:19', name:'Ayako Toyoda, Takayasu Sodeoka & Ryo Koike – Track 32', game:'Gallop Racer 2001', avail:false},
     {ts:'19:52', name:'Hiroto Saitoh – Silent Terra', game:'Rasetsu', avail:true},
@@ -6590,6 +6680,23 @@ document.addEventListener('mouseout', e => {
   if (!el) return;
   clearTimeout(_gtTimer);
   hideGenreTooltip();
+});
+
+// Game tooltip — hover sur le nom du jeu (.track-game) si une fiche IGDB existe
+let _gameTimer = null;
+document.addEventListener('mouseover', e => {
+  const el = e.target.closest('.track-game');
+  if (!el) return;
+  const name = el.textContent.trim();
+  if (!GAME_INFO[name]) return;
+  clearTimeout(_gameTimer);
+  _gameTimer = setTimeout(() => showGameTooltip(name, el), 600);
+});
+document.addEventListener('mouseout', e => {
+  const el = e.target.closest('.track-game');
+  if (!el) return;
+  clearTimeout(_gameTimer);
+  hideGameTooltip();
 });
 
 /* ── Play / Pause ── */
