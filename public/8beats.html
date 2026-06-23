@@ -1758,6 +1758,9 @@ html.light .newsletter-card { background: transparent; }
 @media (max-width: 1024px) {
   :root { --gutter: 16px; }
 
+  /* All direct .section children of .content span the full grid — overrides any inline grid-column */
+  .content .section[style] { grid-column: 1 / -1 !important; }
+
   /* Hero: expand columns to fill more width */
   .hero { padding: var(--space-9) var(--space); }
   .hero-inner { grid-column: 4 / span 6; }
