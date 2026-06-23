@@ -3854,26 +3854,28 @@ body { padding-top: 24px; }
   display: none; position: fixed;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(0.96);
-  width: min(440px, calc(100vw - 32px));
-  max-height: min(580px, calc(100vh - 80px));
-  overflow-y: auto;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop);
-  -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
+  width: min(400px, calc(100vw - 32px));
+  max-height: min(560px, calc(100vh - 80px));
+  overflow: hidden;
+  background: rgba(0,0,0,0.40);
+  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: var(--radius-btn);
   z-index: var(--z-modal);
   opacity: 0;
   transition: opacity var(--dur-medium) var(--ease-standard),
               transform var(--dur-medium) var(--ease-standard);
 }
-#profile-modal.pf-open { display: block; }
+#profile-modal.pf-open { display: flex; flex-direction: column; }
 #profile-modal.pf-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
+.pf-body {
+  padding: 16px; display: flex; flex-direction: column; gap: 16px;
+  overflow-y: auto; flex: 1;
+}
 .pf-header {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 20px 16px;
-  border-bottom: 1px solid var(--glass-border);
 }
 .pf-title {
   font-size: var(--text-base); font-weight: 600; letter-spacing: -0.02em;
@@ -3889,13 +3891,12 @@ body { padding-top: 24px; }
 .pf-close:hover { background: rgba(255,255,255,0.12); color: var(--text-primary); }
 .pf-close svg { display: block; width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-.pf-body { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+.pf-sep { height: 1px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
 .pf-section { display: flex; flex-direction: column; gap: 10px; }
 .pf-section-label {
   font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
   color: var(--text-tertiary); line-height: 1;
 }
-.pf-sep { height: 1px; background: var(--glass-border); }
 
 .pf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .pf-chip {
@@ -3915,11 +3916,11 @@ body { padding-top: 24px; }
   border-color: transparent;
 }
 
-.pf-saved-empty { font-size: var(--text-sm); color: var(--text-tertiary); padding: 2px 0; }
+.pf-saved-empty { font-size: var(--text-sm); color: var(--text-tertiary); }
 .pf-saved-list { display: flex; flex-direction: column; gap: 4px; }
 .pf-saved-item {
   display: flex; align-items: center; gap: 10px;
-  padding: 9px 10px; border-radius: 10px;
+  padding: 8px 10px; border-radius: var(--radius-control);
   background: rgba(255,255,255,0.04); cursor: pointer;
   transition: background var(--dur-short) var(--ease-hover);
 }
@@ -3935,6 +3936,13 @@ body { padding-top: 24px; }
 .pf-saved-remove svg { display: block; width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 html.light #profile-backdrop { background: rgba(0,0,0,0.35); }
+html.light #profile-modal {
+  background: rgba(248,248,248,0.40);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.20);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.20);
+  border-color: rgba(0,0,0,0.08);
+}
+html.light .pf-sep { background: rgba(0,0,0,0.08); }
 html.light .pf-close { background: rgba(0,0,0,0.06); }
 html.light .pf-close:hover { background: rgba(0,0,0,0.12); }
 html.light .pf-chip { border-color: rgba(0,0,0,0.12); background: rgba(0,0,0,0.04); }
@@ -4957,11 +4965,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
           Profile
         </button>
-        <div class="ham-theme-row">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          <span class="ham-theme-label">Theme</span>
-          <button class="ham-theme-cycler" id="ham-theme-cycler"><span class="ham-theme-cycler-text" id="ham-theme-cycler-text">Dark</span></button>
-        </div>
         <div class="ham-sep"></div>
         <div class="ham-social-row">
           <button class="icon-btn icon-btn--ghost" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></button>
@@ -10724,13 +10727,14 @@ function closeProfile() {
 <!-- PROFILE MODAL -->
 <div id="profile-backdrop" onclick="closeProfile()"></div>
 <div id="profile-modal" role="dialog" aria-label="Profile" aria-modal="true">
-  <div class="pf-header">
-    <span class="pf-title">Profile</span>
-    <button class="pf-close" onclick="closeProfile()" aria-label="Close">
-      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
   <div class="pf-body">
+    <div class="pf-header">
+      <span class="pf-title">Profile</span>
+      <button class="pf-close" onclick="closeProfile()" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="pf-sep"></div>
     <div class="pf-section">
       <div class="pf-section-label">Streaming platform</div>
       <div class="pf-chips" id="pf-platforms"></div>
