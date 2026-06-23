@@ -2712,12 +2712,9 @@ html.light .newsletter-card { background: transparent; }
 }
 #game-tooltip .gt-foot .igdb-mark { font-weight: 700; color: var(--text-secondary); letter-spacing: -.02em; }
 .track-game.gt-active {
+  color: var(--text-primary);
   text-decoration: underline dotted; text-underline-offset: 3px;
   text-decoration-color: rgba(255,255,255,0.30); cursor: pointer;
-}
-#game-tooltip .gt-title {
-  font-size: var(--text-base); font-weight: 500; line-height: 1; color: var(--text-primary);
-  margin-bottom: var(--space-2);
 }
 /* ══════════════════════════════════════
    VIEW SYSTEM — home ↔ show
@@ -6151,7 +6148,6 @@ function showGameTooltip(name, el) {
   const info = GAME_INFO[name];
   if (!info) return;
   gameTooltipEl.innerHTML =
-    '<div class="gt-title">' + name + '</div>' +
     '<div class="gt-desc">' + info.desc + '</div>' +
     '<div class="gt-foot"><span>via</span><span class="igdb-mark">igdb</span></div>';
   gameTooltipEl.classList.add('visible');
