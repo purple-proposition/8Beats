@@ -452,7 +452,7 @@ h1,
 
 /* Editorial column — standard 8-col centered content area within 12-col grid */
 .col-editorial { grid-column: 3 / span 8; }
-@media (max-width: 1024px) { .col-editorial { grid-column: 2 / span 10; } }
+@media (max-width: 1024px) { .col-editorial { grid-column: 1 / -1; } }
 @media (max-width: 768px)  { .col-editorial { grid-column: 1 / -1; } }
 
 /* ── Drawer ── */
@@ -1605,7 +1605,7 @@ html.light .newsletter-card { background: transparent; }
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
-.player-title-row { display: flex; align-items: center; gap: 2px; overflow: hidden; margin-top: auto; }
+.player-title-row { display: flex; align-items: center; gap: 2px; overflow: hidden; margin-top: 12px; }
 .player-title-wrap { flex: 1; min-width: 0; overflow: hidden; line-height: 1; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
 .player-title { font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; color: var(--text-primary); }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
@@ -1990,6 +1990,7 @@ html.light .newsletter-card { background: transparent; }
   .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: var(--space-1); justify-content: center; }
   .player-info-top { gap: var(--space-2); }
   .player-info-top .label { font-size: var(--text-sm); }
+  .player-title-row { margin-top: 0; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
   .player-title { font-size: var(--text-md); font-weight: 400; }
   .player-game  { font-size: var(--text-sm); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
