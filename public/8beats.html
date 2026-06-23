@@ -1285,9 +1285,9 @@ html.light .newsletter-card { background: transparent; }
   border-radius: var(--radius-control); cursor: pointer;
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   color: #a1a1a1;
-  transition: background var(--dur-short) var(--ease-hover);
+  transition: background var(--dur-short) var(--ease-hover), color var(--dur-short) var(--ease-hover);
 }
-.panel-support-amt:hover { background: rgba(255,255,255,0.16); }
+.panel-support-amt:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .panel .panel-support-note {
   font-size: 12px; color: var(--text-secondary); line-height: 1;
   text-align: center; letter-spacing: .02em;
