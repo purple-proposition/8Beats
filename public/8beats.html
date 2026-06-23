@@ -1795,6 +1795,10 @@ html.light .newsletter-card { background: transparent; }
   .panel-support .panel-support-amounts { max-height: 60px !important; opacity: 1 !important; margin-top: 0 !important; }
   .panel-support .panel-support-note    { max-height: 30px !important; opacity: 1 !important; margin-top: 0 !important; }
 
+  /* Show page — full grid width on tablet */
+  .show-sidebar { grid-column: 1 / span 4; }
+  .show-main    { grid-column: 5 / span 8; }
+
   /* Volume button — not useful on touch/small screens */
   .vol-wrap { display: none; }
 }
@@ -3168,7 +3172,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 
 /* RIGHT column: title, submeta, desc, actions, tracklist */
 .show-main {
-  grid-column: 5 / span 8;
+  grid-column: 5 / span 7;
   display: flex; flex-direction: column; gap: var(--space-5);
 }
 .show-head { display: flex; flex-direction: column; }
@@ -3182,7 +3186,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-head .show-host[style*="block"] ~ .show-submeta { margin-top: 22px; }
 /* LEFT column: cover art, tags, artist */
 .show-sidebar {
-  grid-column: 1 / span 4;
+  grid-column: 2 / span 3;
   display: flex; flex-direction: column; gap: var(--space-5);
 }
 /* Cover art fills sidebar width */
