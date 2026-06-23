@@ -222,6 +222,8 @@
   --z-explore:         500;
   --z-tracklist-scrim: 999;
   --z-tracklist:       1000;
+  --z-modal-bd:        8000;
+  --z-modal:           8001;
   --z-backdrop:        9995;
   --z-mno:             9996;
   --z-nav-backdrop:    9997;
@@ -3836,6 +3838,111 @@ body { padding-top: 24px; }
 .ham-social-row .icon-btn--ghost:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .ham-social-row .icon-btn--ghost svg { width: 14px; height: 14px; }
 
+/* ── Profile modal ── */
+#profile-backdrop {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  z-index: var(--z-modal-bd);
+  opacity: 0; transition: opacity var(--dur-medium) var(--ease-standard);
+}
+#profile-backdrop.pf-open { display: block; }
+#profile-backdrop.pf-visible { opacity: 1; }
+
+#profile-modal {
+  display: none; position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: min(440px, calc(100vw - 32px));
+  max-height: min(580px, calc(100vh - 80px));
+  overflow-y: auto;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  z-index: var(--z-modal);
+  opacity: 0;
+  transition: opacity var(--dur-medium) var(--ease-standard),
+              transform var(--dur-medium) var(--ease-standard);
+}
+#profile-modal.pf-open { display: block; }
+#profile-modal.pf-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.pf-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.pf-title {
+  font-size: var(--text-base); font-weight: 600; letter-spacing: -0.02em;
+  color: var(--text-primary); line-height: 1;
+}
+.pf-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary); flex-shrink: 0;
+  transition: background var(--dur-short) var(--ease-hover), color var(--dur-short) var(--ease-hover);
+}
+.pf-close:hover { background: rgba(255,255,255,0.12); color: var(--text-primary); }
+.pf-close svg { display: block; width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.pf-body { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+.pf-section { display: flex; flex-direction: column; gap: 10px; }
+.pf-section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--text-tertiary); line-height: 1;
+}
+.pf-sep { height: 1px; background: var(--glass-border); }
+
+.pf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pf-chip {
+  height: 30px; padding: 0 13px; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.05);
+  color: var(--text-secondary);
+  font-size: var(--text-sm); font-weight: 500; letter-spacing: -0.01em; line-height: 1;
+  cursor: pointer; white-space: nowrap;
+  transition: background var(--dur-short) var(--ease-hover),
+              color var(--dur-short) var(--ease-hover),
+              border-color var(--dur-short) var(--ease-hover);
+}
+.pf-chip:hover { background: rgba(255,255,255,0.10); color: var(--text-primary); }
+.pf-chip.pf-selected {
+  background: var(--text-primary); color: var(--surface-page);
+  border-color: transparent;
+}
+
+.pf-saved-empty { font-size: var(--text-sm); color: var(--text-tertiary); padding: 2px 0; }
+.pf-saved-list { display: flex; flex-direction: column; gap: 4px; }
+.pf-saved-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 10px;
+  background: rgba(255,255,255,0.04); cursor: pointer;
+  transition: background var(--dur-short) var(--ease-hover);
+}
+.pf-saved-item:hover { background: rgba(255,255,255,0.08); }
+.pf-saved-name { flex: 1; font-size: var(--text-sm); color: var(--text-primary); font-weight: 500; line-height: 1.2; }
+.pf-saved-remove {
+  width: 20px; height: 20px; flex-shrink: 0;
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--text-tertiary); display: flex; align-items: center; justify-content: center;
+  transition: color var(--dur-short) var(--ease-hover);
+}
+.pf-saved-remove:hover { color: var(--text-primary); }
+.pf-saved-remove svg { display: block; width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+html.light #profile-backdrop { background: rgba(0,0,0,0.35); }
+html.light .pf-close { background: rgba(0,0,0,0.06); }
+html.light .pf-close:hover { background: rgba(0,0,0,0.12); }
+html.light .pf-chip { border-color: rgba(0,0,0,0.12); background: rgba(0,0,0,0.04); }
+html.light .pf-chip:hover { background: rgba(0,0,0,0.08); }
+html.light .pf-chip.pf-selected { background: var(--text-primary); color: var(--surface-page); }
+html.light .pf-saved-item { background: rgba(0,0,0,0.04); }
+html.light .pf-saved-item:hover { background: rgba(0,0,0,0.08); }
+
 /* ── Labels ── */
 .nav-label {
   display: inline-block; overflow: hidden; white-space: nowrap;
@@ -4842,6 +4949,14 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           Support us
         </button>
+        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openProposal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Submit a show
+        </button>
+        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openProfile()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          Profile
+        </button>
         <div class="ham-theme-row">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           <span class="ham-theme-label">Theme</span>
@@ -4883,6 +4998,14 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
         <span class="nav-icon-box"><i data-lucide="heart" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Support us</span>
       </a>
+      <a href="#" class="nav-item nav-collapsible-item" aria-label="Submit a show" onclick="event.preventDefault();openProposal()">
+        <span class="nav-icon-box"><i data-lucide="send" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
+        <span class="nav-label">Submit a show</span>
+      </a>
+      <button class="nav-item nav-collapsible-item" aria-label="Profile" onclick="openProfile()">
+        <span class="nav-icon-box"><i data-lucide="user-round" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
+        <span class="nav-label">Profile</span>
+      </button>
       <button class="nav-item" id="settings-btn" onclick="toggleSettings()" aria-label="Settings">
         <span class="nav-icon-box"><i data-lucide="settings" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Settings</span>
@@ -5032,7 +5155,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <i data-lucide="play" style="display:block"></i>
             <span id="show-duration"></span>
           </button>
-          <button class="icon-btn icon-btn--action" id="show-bookmark-btn" onclick="this.classList.toggle('active')" title="Save for later">
+          <button class="icon-btn icon-btn--action" id="show-bookmark-btn" onclick="toggleBookmark()" title="Save for later">
             <i data-lucide="bookmark" style="fill:none;display:block"></i>
             <span class="show-action-label">Save</span>
           </button>
@@ -7801,6 +7924,10 @@ function openShow(key) {
     recSection.style.display = 'none';
   }
 
+  // Bookmark state
+  const bmBtn = document.getElementById('show-bookmark-btn');
+  if (bmBtn) bmBtn.classList.toggle('active', getBookmarks().includes(key));
+
   // Init show play button icon & Lucide icons for the show page
   updateShowPlayBtn();
   lucide.createIcons({ nodes: [document.getElementById('view-show')] });
@@ -10478,7 +10605,152 @@ window.addEventListener('resize', () => {
   _dynLHTimer = setTimeout(initDynLH, 100);
 }, { passive: true });
 
+/* ── Profile modal ── */
+const PLATFORMS = [
+  { key: 'spotify',      name: 'Spotify' },
+  { key: 'appleMusic',   name: 'Apple Music' },
+  { key: 'tidal',        name: 'Tidal' },
+  { key: 'deezer',       name: 'Deezer' },
+  { key: 'youtubeMusic', name: 'YouTube Music' },
+  { key: 'amazonMusic',  name: 'Amazon Music' },
+  { key: 'soundcloud',   name: 'SoundCloud' },
+  { key: 'qobuz',        name: 'Qobuz' },
+];
+const LS_PLATFORM  = '8beats-platform';
+const LS_BOOKMARKS = '8beats-bookmarks';
+
+function getPlatformPref()    { return localStorage.getItem(LS_PLATFORM) || null; }
+function setPlatformPref(key) { if (key) localStorage.setItem(LS_PLATFORM, key); else localStorage.removeItem(LS_PLATFORM); }
+
+function getBookmarks() {
+  try { return JSON.parse(localStorage.getItem(LS_BOOKMARKS) || '[]'); } catch { return []; }
+}
+function saveBookmarks(arr) { localStorage.setItem(LS_BOOKMARKS, JSON.stringify(arr)); }
+
+function toggleBookmark() {
+  if (!currentShowKey) return;
+  const btn = document.getElementById('show-bookmark-btn');
+  const bm  = getBookmarks();
+  const idx = bm.indexOf(currentShowKey);
+  if (idx === -1) { bm.push(currentShowKey); if (btn) btn.classList.add('active'); }
+  else            { bm.splice(idx, 1);        if (btn) btn.classList.remove('active'); }
+  saveBookmarks(bm);
+}
+
+function pfSetTheme(mode) {
+  setThemeMode(mode);
+  const textEl = document.getElementById('ham-theme-cycler-text');
+  if (textEl) textEl.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+  document.querySelectorAll('#pf-themes .pf-chip').forEach(c =>
+    c.classList.toggle('pf-selected', c.dataset.theme === mode));
+}
+
+function pfSelectPlatform(key) {
+  setPlatformPref(key);
+  document.querySelectorAll('#pf-platforms .pf-chip').forEach(c =>
+    c.classList.toggle('pf-selected', c.dataset.platform === key));
+}
+
+function pfRemoveSaved(key) {
+  saveBookmarks(getBookmarks().filter(k => k !== key));
+  if (currentShowKey === key) {
+    const btn = document.getElementById('show-bookmark-btn');
+    if (btn) btn.classList.remove('active');
+  }
+  pfRenderSaved();
+}
+
+function pfRenderPlatforms() {
+  const el = document.getElementById('pf-platforms');
+  if (!el) return;
+  const pref = getPlatformPref();
+  el.innerHTML = PLATFORMS.map(p =>
+    `<button class="pf-chip${pref === p.key ? ' pf-selected' : ''}" data-platform="${p.key}" onclick="pfSelectPlatform('${p.key}')">${p.name}</button>`
+  ).join('');
+}
+
+function pfRenderTheme() {
+  document.querySelectorAll('#pf-themes .pf-chip').forEach(c =>
+    c.classList.toggle('pf-selected', c.dataset.theme === themeMode));
+}
+
+function pfRenderSaved() {
+  const el = document.getElementById('pf-saved');
+  if (!el) return;
+  const bm = getBookmarks();
+  if (!bm.length) {
+    el.innerHTML = '<div class="pf-saved-empty">No saved shows yet.</div>';
+    return;
+  }
+  el.innerHTML = '<div class="pf-saved-list">' + bm.map(key => {
+    const safe = key.replace(/'/g, "\\'");
+    return `<div class="pf-saved-item" onclick="closeProfile();openShow('${safe}')">
+      <span class="pf-saved-name">${key}</span>
+      <button class="pf-saved-remove" onclick="event.stopPropagation();pfRemoveSaved('${safe}')" aria-label="Remove">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function _pfEsc(e) { if (e.key === 'Escape') closeProfile(); }
+
+function openProfile() {
+  pfRenderPlatforms();
+  pfRenderTheme();
+  pfRenderSaved();
+  const bd    = document.getElementById('profile-backdrop');
+  const modal = document.getElementById('profile-modal');
+  bd.classList.add('pf-open');
+  modal.classList.add('pf-open');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    bd.classList.add('pf-visible');
+    modal.classList.add('pf-visible');
+  }));
+  document.addEventListener('keydown', _pfEsc);
+}
+
+function closeProfile() {
+  const bd    = document.getElementById('profile-backdrop');
+  const modal = document.getElementById('profile-modal');
+  bd.classList.remove('pf-visible');
+  modal.classList.remove('pf-visible');
+  setTimeout(() => { bd.classList.remove('pf-open'); modal.classList.remove('pf-open'); }, 260);
+  document.removeEventListener('keydown', _pfEsc);
+}
+
 </script>
+
+<!-- PROFILE MODAL -->
+<div id="profile-backdrop" onclick="closeProfile()"></div>
+<div id="profile-modal" role="dialog" aria-label="Profile" aria-modal="true">
+  <div class="pf-header">
+    <span class="pf-title">Profile</span>
+    <button class="pf-close" onclick="closeProfile()" aria-label="Close">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="pf-body">
+    <div class="pf-section">
+      <div class="pf-section-label">Streaming platform</div>
+      <div class="pf-chips" id="pf-platforms"></div>
+    </div>
+    <div class="pf-sep"></div>
+    <div class="pf-section">
+      <div class="pf-section-label">Theme</div>
+      <div class="pf-chips" id="pf-themes">
+        <button class="pf-chip" data-theme="dark" onclick="pfSetTheme('dark')">Dark</button>
+        <button class="pf-chip" data-theme="system" onclick="pfSetTheme('system')">System</button>
+        <button class="pf-chip" data-theme="light" onclick="pfSetTheme('light')">Light</button>
+      </div>
+    </div>
+    <div class="pf-sep"></div>
+    <div class="pf-section">
+      <div class="pf-section-label">Saved shows</div>
+      <div id="pf-saved"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Global grid debug overlay + toggle -->
 <div id="grid-debug"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
