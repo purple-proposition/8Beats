@@ -1471,7 +1471,7 @@ html.light .newsletter-card { background: transparent; }
 .playlist.tracklist .track-num { display: block; }
 .track-info { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; flex: 1; }
 .track-name { font-size: var(--text-base); line-height: 1.4; color: var(--text-primary); }
-.track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
 .track-ago  { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; }
 
 /* ── Tracklist mode — show-page visual language inside player panel ── */
@@ -3280,8 +3280,10 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tracklist-inline .track-game {
   display: block; font-size: var(--text-base); color: var(--text-tertiary);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  line-height: 1;
+  line-height: 1; transition: color var(--dur-short) var(--ease-hover);
 }
+.show-tracklist-inline .track-game.gt-active,
+.track-game.gt-active { color: var(--text-primary); }
 .show-tracklist-inline .track-right {
   display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0;
 }
