@@ -2655,9 +2655,11 @@ html.light .newsletter-card { background: transparent; }
 #genre-tooltip {
   position: fixed; z-index: var(--z-top);
   max-width: 220px;
-  background: var(--surface-control);
-  border: none;
-  border-radius: var(--radius-control);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
   padding: var(--space-3) var(--space-4);
   font-family: var(--font); font-size: var(--text-base); line-height: 1.5;
   color: var(--text-tertiary);
@@ -2680,9 +2682,11 @@ html.light .newsletter-card { background: transparent; }
 #game-tooltip {
   position: fixed; z-index: var(--z-top);
   max-width: 300px;
-  background: var(--surface-control);
-  border: none;
-  border-radius: var(--radius-control);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
   padding: var(--space-3) var(--space-4);
   font-family: var(--font);
   pointer-events: none;
