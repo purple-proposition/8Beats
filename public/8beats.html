@@ -3881,22 +3881,14 @@ body { padding-top: 24px; }
   font-size: var(--text-base); font-weight: 600; letter-spacing: -0.02em;
   color: var(--text-primary); line-height: 1;
 }
-.pf-close {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-secondary); flex-shrink: 0;
-  transition: background var(--dur-short) var(--ease-hover), color var(--dur-short) var(--ease-hover);
-}
-.pf-close:hover { background: rgba(255,255,255,0.12); color: var(--text-primary); }
-.pf-close svg { display: block; width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
 .pf-sep { height: 1px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
 .pf-section { display: flex; flex-direction: column; gap: 10px; }
 .pf-section-label {
+  display: flex; align-items: center; gap: 6px;
   font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-tertiary); line-height: 1;
 }
+.pf-section-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; flex-shrink: 0; }
 
 .pf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 
@@ -5464,7 +5456,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 <aside class="panel panel-support" id="panel-support">
   <div class="panel-header">
     <div class="panel-support-header">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <i data-lucide="hand-heart" style="width:13px;height:13px;stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
       Keep the beat going
     </div>
     <button class="panel-close" onclick="closeSupportPanel()" aria-label="Close">
@@ -10735,6 +10727,7 @@ function openProfile() {
   const modal = document.getElementById('profile-modal');
   bd.classList.add('pf-open');
   modal.classList.add('pf-open');
+  lucide.createIcons({ nodes: [modal] });
   requestAnimationFrame(() => requestAnimationFrame(() => {
     bd.classList.add('pf-visible');
     modal.classList.add('pf-visible');
@@ -10759,18 +10752,18 @@ function closeProfile() {
   <div class="pf-body">
     <div class="pf-header">
       <span class="pf-title">Profile</span>
-      <button class="pf-close" onclick="closeProfile()" aria-label="Close">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <button class="panel-close" onclick="closeProfile()" aria-label="Close">
+        <i data-lucide="x" style="stroke:currentColor;fill:none;display:block"></i>
       </button>
     </div>
     <div class="pf-sep"></div>
     <div class="pf-section">
-      <div class="pf-section-label">Streaming platform</div>
+      <div class="pf-section-label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1 .83-.642 2.077-1.017 3.5-1 1.423-.017 2.67.358 3.5 1"/><path d="M6.003 17.124 6 17a6 6 0 0 1 12 0v.17"/><path d="M7.5 8a4.5 4.5 0 0 0 9 0"/></svg>Streaming platform</div>
       <div class="pf-chips" id="pf-platforms"></div>
     </div>
     <div class="pf-sep"></div>
     <div class="pf-section">
-      <div class="pf-section-label">Theme</div>
+      <div class="pf-section-label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>Theme</div>
       <div class="pf-chips" id="pf-themes">
         <button class="pf-chip" data-theme="dark" onclick="pfSetTheme('dark')">Dark</button>
         <button class="pf-chip" data-theme="system" onclick="pfSetTheme('system')">System</button>
@@ -10779,7 +10772,7 @@ function closeProfile() {
     </div>
     <div class="pf-sep"></div>
     <div class="pf-section">
-      <div class="pf-section-label">Saved shows</div>
+      <div class="pf-section-label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>Saved shows</div>
       <div id="pf-saved"></div>
     </div>
   </div>
