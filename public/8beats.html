@@ -3889,6 +3889,7 @@ body { padding-top: 24px; }
   color: var(--text-tertiary); line-height: 1;
 }
 .pf-section-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; flex-shrink: 0; }
+@media (max-width: 1024px) { .pf-desktop-only { display: none !important; } }
 
 .pf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 #pf-platforms.pf-chips { gap: 12px; }
@@ -10790,8 +10791,8 @@ function closeProfile() {
         <button class="pf-chip" data-theme="light" onclick="pfSetTheme('light')">Light</button>
       </div>
     </div>
-    <div class="pf-sep"></div>
-    <div class="pf-section">
+    <div class="pf-sep pf-desktop-only"></div>
+    <div class="pf-section pf-desktop-only">
       <div class="pf-section-label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8l4 4-4 4"/><path d="M6 8l-4 4 4 4"/><path d="M2 12h20"/></svg>Player position</div>
       <div class="pf-chips" id="pf-player-side"></div>
     </div>
