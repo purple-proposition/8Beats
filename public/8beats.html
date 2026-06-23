@@ -3829,7 +3829,7 @@ body { padding-top: 24px; }
 .ham-social-row {
   display: flex; align-items: center;
   padding: 0 var(--space-4);
-  gap: var(--space-4);
+  gap: 12px;
 }
 .ham-social-row .icon-btn--ghost {
   width: 32px; height: 32px;
@@ -3891,6 +3891,7 @@ body { padding-top: 24px; }
 .pf-section-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; flex-shrink: 0; }
 
 .pf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+#pf-platforms.pf-chips { gap: 12px; }
 
 .pf-platform-btn {
   width: 36px; height: 36px; flex-shrink: 0;
@@ -10698,6 +10699,24 @@ function pfRenderTheme() {
     c.classList.toggle('pf-selected', c.dataset.theme === themeMode));
 }
 
+function pfSetPlayerSide(side) {
+  const cur = _layoutPrefs.player || 'bottom-right';
+  const vert = cur.startsWith('top') ? 'top' : 'bottom';
+  setPlayerCornerOnly(vert + '-' + side);
+  document.querySelectorAll('#pf-player-side .pf-chip').forEach(c =>
+    c.classList.toggle('pf-selected', c.dataset.side === side));
+}
+
+function pfRenderPlayerSide() {
+  const el = document.getElementById('pf-player-side');
+  if (!el) return;
+  const cur = _layoutPrefs.player || 'bottom-right';
+  const activeSide = cur.endsWith('left') ? 'left' : 'right';
+  el.innerHTML =
+    `<button class="pf-chip${activeSide==='left'?' pf-selected':''}" data-side="left" onclick="pfSetPlayerSide('left')">Left</button>` +
+    `<button class="pf-chip${activeSide==='right'?' pf-selected':''}" data-side="right" onclick="pfSetPlayerSide('right')">Right</button>`;
+}
+
 function pfRenderSaved() {
   const el = document.getElementById('pf-saved');
   if (!el) return;
@@ -10722,6 +10741,7 @@ function _pfEsc(e) { if (e.key === 'Escape') closeProfile(); }
 function openProfile() {
   pfRenderPlatforms();
   pfRenderTheme();
+  pfRenderPlayerSide();
   pfRenderSaved();
   const bd    = document.getElementById('profile-backdrop');
   const modal = document.getElementById('profile-modal');
@@ -10758,7 +10778,7 @@ function closeProfile() {
     </div>
     <div class="pf-sep"></div>
     <div class="pf-section">
-      <div class="pf-section-label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1 .83-.642 2.077-1.017 3.5-1 1.423-.017 2.67.358 3.5 1"/><path d="M6.003 17.124 6 17a6 6 0 0 1 12 0v.17"/><path d="M7.5 8a4.5 4.5 0 0 0 9 0"/></svg>Streaming platform</div>
+      <div class="pf-section-label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Preferred streaming platform</div>
       <div class="pf-chips" id="pf-platforms"></div>
     </div>
     <div class="pf-sep"></div>
@@ -10769,6 +10789,11 @@ function closeProfile() {
         <button class="pf-chip" data-theme="system" onclick="pfSetTheme('system')">System</button>
         <button class="pf-chip" data-theme="light" onclick="pfSetTheme('light')">Light</button>
       </div>
+    </div>
+    <div class="pf-sep"></div>
+    <div class="pf-section">
+      <div class="pf-section-label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8l4 4-4 4"/><path d="M6 8l-4 4 4 4"/><path d="M2 12h20"/></svg>Player position</div>
+      <div class="pf-chips" id="pf-player-side"></div>
     </div>
     <div class="pf-sep"></div>
     <div class="pf-section">
