@@ -1081,8 +1081,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-tags   { display: none; gap: var(--space-3); }
 
 /* ── Family 3: Chip (.chip) + Genre tag (.genre-tag) ── */
-.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; color: var(--text-secondary); background: rgba(0,0,0,0.40); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: none; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
-.chip:hover { color: var(--text-primary); background: rgba(255,255,255,0.11); }
+.chip { font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; color: var(--text-secondary); background: var(--surface-control); border: none; border-radius: var(--radius-control); height: 32px; display: inline-flex; align-items: center; padding: 0 8px; cursor: pointer; transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover); }
+.chip:hover { color: var(--text-primary); background: var(--surface-control-hover); }
 .chip--active { border-color: var(--text-primary); background: var(--accent-soft); color: var(--text-primary); }
 .chip--active:hover { border-color: var(--text-primary); background: var(--accent-soft); opacity: 0.85; }
 /* .genre-tag is a semantic marker — all genre buttons carry this class.
