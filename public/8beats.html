@@ -189,6 +189,7 @@
   --space-8:     64px;
   --space-9:     96px;
   --space:       var(--space-5);
+  --gutter:      var(--space-5); /* grid column gap — overridden per breakpoint */
 
   /* ── Primitives — Typography scale ── */
   --text-xs:     11px;
@@ -986,7 +987,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   position: relative; z-index: var(--z-base);
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--space-5);
+  gap: var(--gutter);
   padding: 0 var(--space);
 }
 
@@ -1005,7 +1006,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .section-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; display: block; flex-shrink: 0; transition: transform var(--dur-short) var(--ease-spring); }
 
 /* ── Cards ── */
-.cards { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--space-5); align-items: start; }
+.cards { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--gutter); align-items: start; }
 
 .card { display: flex; flex-direction: column; }
 
@@ -1744,7 +1745,7 @@ html.light .newsletter-card { background: transparent; }
    ============================================================ */
 @media (max-width: 1280px) {
   /* Player: grow to 8 grids — first expansion step */
-  .player-wrap { width: calc(8 * var(--grid-col) + 7 * var(--space-5)); }
+  .player-wrap { width: calc(8 * var(--grid-col) + 7 * var(--gutter)); }
 }
 
 /* Hidden by default, shown on mobile */
@@ -1752,6 +1753,8 @@ html.light .newsletter-card { background: transparent; }
 .show-action-label { display: none; }
 
 @media (max-width: 1024px) {
+  :root { --gutter: 16px; }
+
   /* Hero: expand columns to fill more width */
   .hero { padding: var(--space-9) var(--space); }
   .hero-inner { grid-column: 4 / span 6; }
@@ -1759,7 +1762,7 @@ html.light .newsletter-card { background: transparent; }
   /* Cards — carousel, ~3.5 visible on large tablet */
   .cards {
     display: flex;
-    gap: var(--space-3);
+    gap: var(--gutter);
     overflow-x: auto;
     padding: 4px var(--space) 12px;
     margin: 0 calc(-1 * var(--space));
@@ -1770,7 +1773,7 @@ html.light .newsletter-card { background: transparent; }
     align-items: start;
   }
   .cards::-webkit-scrollbar { display: none; }
-  .card { flex: 0 0 calc(3 * var(--grid-col) + 2 * var(--space-5)); max-width: unset; scroll-snap-align: start; }
+  .card { flex: 0 0 calc(3 * var(--grid-col) + 2 * var(--gutter)); max-width: unset; scroll-snap-align: start; }
 
   /* Player: full grid width on tablet */
   .player-wrap { width: calc(100vw - 2 * var(--space)); }
@@ -1779,14 +1782,14 @@ html.light .newsletter-card { background: transparent; }
      No CSS compact rules here — they would snap instantly and block the JS animation. */
 
   /* Search bar — 4 cols default, 8 cols expanded */
-  #topbar-search { width: calc(4 * var(--grid-col) + 3 * var(--space-5)); }
+  #topbar-search { width: calc(4 * var(--grid-col) + 3 * var(--gutter)); }
   #topbar-search:hover,
   #topbar-search.search-open,
-  #topbar-search:focus-within { width: calc(8 * var(--grid-col) + 7 * var(--space-5)); }
+  #topbar-search:focus-within { width: calc(8 * var(--grid-col) + 7 * var(--gutter)); }
 
-  /* Panels — cookies + keepbeat : 3 grids wide (class selectors so ≤768px override can win) */
+  /* Panels — cookies + keepbeat : 4 grids wide (class selectors so ≤768px override can win) */
   .panel-cookie,
-  .panel-support { width: calc(4 * var(--grid-col) + 3 * var(--space-5)) !important; }
+  .panel-support { width: calc(4 * var(--grid-col) + 3 * var(--gutter)) !important; }
 
   /* Tablet touch — pas de hover : montants et note toujours visibles */
   .panel-support .panel-support-amounts { max-height: 60px !important; opacity: 1 !important; margin-top: 0 !important; }
@@ -1807,7 +1810,7 @@ html.light .newsletter-card { background: transparent; }
 
 
   /* ── Tokens ── */
-  :root { --nav-h: 56px; --player-h: 87px; --space: 12px; }
+  :root { --nav-h: 56px; --player-h: 87px; --space: 12px; --gutter: 12px; }
 
   body { padding-bottom: calc(var(--player-h) + var(--space) + env(safe-area-inset-bottom,0px) + 8px); overflow-x: hidden; }
 
@@ -1863,7 +1866,7 @@ html.light .newsletter-card { background: transparent; }
   .section-header-text h3 { font-size: var(--text-sm); }
 
   /* ── Cards — carousel mobile, 5 grid cols wide ── */
-  .card { flex: 0 0 calc(5 * var(--grid-col) + 4 * var(--space-5)); }
+  .card { flex: 0 0 calc(5 * var(--grid-col) + 4 * var(--gutter)); }
   .card-body { padding: var(--space-3) 0 0; gap: var(--space-2); }
   .card-body h3 { font-size: var(--text-show); line-height: 1.5; max-height: calc(var(--text-show) * 1.5 * 2); }
   .card-host .host-name { font-size: var(--text-base); }
@@ -2984,11 +2987,11 @@ html.light .newsletter-card { background: transparent; }
   display: grid;
   /* 3 sections × 2 grid-cols + 2 gaps × 1 grid-col = 8 editorial cols exactly */
   grid-template-columns:
-    calc(2 * var(--grid-col) + var(--space-5))
-    calc(var(--grid-col) + 2 * var(--space-5))
-    calc(2 * var(--grid-col) + var(--space-5))
-    calc(var(--grid-col) + 2 * var(--space-5))
-    calc(2 * var(--grid-col) + var(--space-5));
+    calc(2 * var(--grid-col) + var(--gutter))
+    calc(var(--grid-col) + 2 * var(--gutter))
+    calc(2 * var(--grid-col) + var(--gutter))
+    calc(var(--grid-col) + 2 * var(--gutter))
+    calc(2 * var(--grid-col) + var(--gutter));
   column-gap: 0;
   border-top: 1px solid var(--border-default); padding-top: var(--space-7);
 }
@@ -3140,7 +3143,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   position: relative; z-index: 2;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--space-5);
+  gap: var(--gutter);
   padding: calc(var(--nav-h) + var(--space) + var(--space-9)) var(--space) var(--space-9);
   align-items: start;
 }
@@ -3488,11 +3491,11 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
    SIDEBAR — Card mode
    ============================================================ */
 :root {
-  --grid-col:     calc((100vw - 2 * var(--space) - 11 * var(--space-5)) / 12);
-  --sidebar-full: calc(2 * var(--grid-col) + var(--space-5));
+  --grid-col:     calc((100vw - 2 * var(--space) - 11 * var(--gutter)) / 12);
+  --sidebar-full: calc(2 * var(--grid-col) + var(--gutter));
   --sidebar-icon: var(--grid-col);
   /* 6-column modal width — standard full-screen overlay (Explorer, Schedule) */
-  --modal-6col:   calc(6 * var(--grid-col) + 5 * var(--space-5));
+  --modal-6col:   calc(6 * var(--grid-col) + 5 * var(--gutter));
 
   /* ── Sidebar / menu design tokens ─────────────────────── */
   --sidebar-width:             var(--sidebar-full);
@@ -4155,11 +4158,11 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 @media (min-width: 1025px) {
-  #topbar-search { width: calc(2 * var(--grid-col) + var(--space-5)); }
+  #topbar-search { width: calc(2 * var(--grid-col) + var(--gutter)); }
   #topbar-search:hover,
   #topbar-search.search-open,
   #topbar-search:focus-within {
-    width: calc(4 * var(--grid-col) + 3 * var(--space-5));
+    width: calc(4 * var(--grid-col) + 3 * var(--gutter));
     transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
@@ -4636,21 +4639,21 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   #topbar-search,
   #topbar-search:hover,
   #topbar-search.search-open,
-  #topbar-search:focus-within { width: calc(8 * var(--grid-col) + 7 * var(--space-5)); }
+  #topbar-search:focus-within { width: calc(8 * var(--grid-col) + 7 * var(--gutter)); }
 
   /* Cards: 5 grids wide */
-  .card { flex: 0 0 calc(5 * var(--grid-col) + 4 * var(--space-5)) !important; min-width: 0; }
+  .card { flex: 0 0 calc(5 * var(--grid-col) + 4 * var(--gutter)) !important; min-width: 0; }
 
   /* Carousel: gap matches grid column gap; right-edge fade */
   .cards {
-    gap: var(--space-5);
-    -webkit-mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--space-5))), transparent 100%);
-    mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--space-5))), transparent 100%);
+    gap: var(--gutter);
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--gutter))), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--gutter))), transparent 100%);
   }
 
   /* Show page: cover art 6 grids wide */
   .show-art {
-    width: calc(6 * var(--grid-col) + 5 * var(--space-5)) !important;
+    width: calc(6 * var(--grid-col) + 5 * var(--gutter)) !important;
     height: auto !important; aspect-ratio: 1 !important;
   }
 
@@ -6695,6 +6698,13 @@ document.addEventListener('mouseout', e => {
   if (!el) return;
   clearTimeout(_gameTimer);
   hideGameTooltip();
+});
+document.addEventListener('click', e => {
+  const el = e.target.closest('.track-game');
+  if (!el) return;
+  const name = el.textContent.trim();
+  const info = GAME_INFO[name];
+  if (info && info.url) window.open(info.url, '_blank', 'noopener');
 });
 
 /* ── Play / Pause ── */
