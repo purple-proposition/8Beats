@@ -3235,14 +3235,8 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   display: flex; flex-direction: column; gap: var(--space-5);
 }
 .show-head { display: flex; flex-direction: column; }
-/* 12px visible gap — Geist cap-height 0.725 */
-/* title(34.56px lh1.2)→host(16px lh1.25): 12+8.21+4.20=24px */
-.show-head .show-host { margin-top: 24px; }
-/* host(16px lh1.25)→submeta(14px lh1.5): 12+4.20+5.43=22px */
-/* title→submeta when host hidden: 12+8.21+5.43=26px */
-.show-head .show-submeta { margin-top: 26px; }
-.show-head .show-host[style*="flex"] ~ .show-submeta,
-.show-head .show-host[style*="block"] ~ .show-submeta { margin-top: 22px; }
+.show-head .show-submeta { margin-top: 12px; }
+.show-head #show-date { margin-top: 12px; display: block; }
 /* LEFT column: cover art, tags, artist */
 .show-sidebar {
   grid-column: 3 / span 3;
@@ -5231,9 +5225,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           <div class="show-submeta">
             <span class="show-submeta-av" id="show-submeta-av" style="display:none"></span>
             <span class="show-submeta-host" id="show-submeta-host" onclick="openArtist(document.getElementById('show-host-name').textContent.trim())">Purple Proposition</span>
-            <span class="show-submeta-dot">·</span>
-            <span id="show-date">13 Feb 2024</span>
           </div>
+          <span id="show-date">13 Feb 2024</span>
         </div>
         <p class="show-desc" id="show-desc"></p>
         <div class="show-actions">
