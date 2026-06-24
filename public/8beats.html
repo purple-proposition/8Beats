@@ -8201,10 +8201,8 @@ function updateShowPlayBtn() {
   const btn = document.getElementById('show-play-btn');
   if (!btn) return;
   if (playing && showDur > 0) {
-    const pct = (showElapsed / showDur) * 100;
-    const remaining = showDur - showElapsed;
     btn.classList.add('show-btn-play--live');
-    btn.innerHTML = `<i data-lucide="pause" style="display:block"></i><span class="show-mini-remaining">−${fmtTime(remaining)}</span>`;
+    btn.innerHTML = `<i data-lucide="pause" style="display:block"></i><span id="show-duration">Pause</span>`;
   } else {
     btn.classList.remove('show-btn-play--live');
     btn.innerHTML = `<i data-lucide="play" style="display:block"></i><span id="show-duration">Play</span>`;
