@@ -1950,6 +1950,8 @@ html.light .newsletter-card { background: transparent; }
 
   /* Cancel the hero's own negative margin-top so it starts at the natural top */
   .show-hero { margin-top: calc(-1 * (var(--nav-h) + var(--space))) !important; }
+  /* No blurred bg on mobile — only the cover with gradient fade */
+  .show-hero-bg, .show-hero-scrim { display: none !important; }
 
   /* Stack sidebar then main, no padding/gap — cover bleeds edge-to-edge */
   .show-hero-content {
