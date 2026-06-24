@@ -3251,12 +3251,12 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .show-tl-summary {
-  font-size: var(--text-sm); color: var(--text-tertiary);
-  margin-top: 16px; line-height: 1;
+  font-size: var(--text-md); color: var(--text-tertiary);
+  margin-top: -8px; line-height: 1; /* show-main gap:24px → 24-8=16px visual gap */
 }
 .show-art-credit {
-  font-size: var(--text-sm); color: var(--text-tertiary);
-  margin-top: 12px; line-height: 1;
+  font-size: var(--text-md); color: var(--text-tertiary);
+  margin-top: -12px; line-height: 1; /* show-main gap:24px → 24-12=12px visual gap */
 }
 
 /* Submeta row: host · date · tracks · duration */
@@ -3337,7 +3337,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tracklist-inline .tracklist-header + .track::before { top: calc(16px - var(--hover-bleed)); }
 .show-tracklist-inline .track:last-child::before { bottom: calc(16px - var(--hover-bleed)); }
 .show-tracklist-inline .track:last-child {
-  padding-bottom: 15px;
+  padding-bottom: 16px;
   border-bottom: 1px solid var(--border-subtle);
 }
 .show-tracklist-inline .track + .track { border-top: none; }
