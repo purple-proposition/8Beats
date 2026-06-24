@@ -1597,6 +1597,8 @@ html.light .newsletter-card { background: transparent; }
 .player-ctrl svg { width: 16px; height: 16px; display: block; flex-shrink: 0; stroke: currentColor; fill: none; }
 .player-ctrl.icon-btn--spotify svg { fill: currentColor; stroke: none; }
 #playlist-btn.active { background: rgba(255,255,255,0.16); color: var(--text-primary); }
+#player-qmenu-btn { display: none; }
+.player-qmenu { display: none; }
 
 .player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; height: 68px; gap: 0; }
 .player-info-top { display: flex; align-items: center; gap: var(--space-3); }
@@ -2047,13 +2049,45 @@ html.light .newsletter-card { background: transparent; }
   .player-title-row { margin-top: 0; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
   .player-title { font-size: var(--text-md); font-weight: 400; }
-  .player-game  { font-size: var(--text-sm); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player-game  { font-size: var(--text-sm); color: var(--text-secondary); white-space: normal; overflow: visible; text-overflow: unset; line-height: 1.3; }
   .player-controls { gap: var(--space-2); flex-shrink: 0; }
   .icon-btn--spotify,
   .vol-wrap, .vol-popup,
   .back-to-live,
   .player-controls .divider { display: none; }
-  #playlist-btn { display: flex; }
+  #playlist-btn { display: none; }
+  #player-qmenu-btn { display: flex; }
+
+  /* Player quick menu (mobile) — override global display:none */
+  .player-qmenu { display: block; }
+  .player-qmenu {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 220ms var(--ease-hover), opacity 180ms var(--ease-hover);
+  }
+  .player-qmenu.open {
+    max-height: 64px;
+    opacity: 1;
+  }
+  .player-qmenu-inner {
+    display: flex; align-items: stretch;
+    padding: var(--space-2) var(--space) var(--space-3);
+    gap: var(--space-3);
+  }
+  .player-qmenu-action {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    gap: var(--space-2);
+    height: 40px;
+    font-size: var(--text-md); font-family: var(--font); font-weight: 400;
+    color: var(--text-secondary);
+    background: var(--surface-control); border: none; border-radius: var(--radius-control);
+    cursor: pointer;
+    transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .player-qmenu-action:active { color: var(--text-primary); background: var(--surface-control-hover); }
+  .player-qmenu-action .back-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff3b3b; flex-shrink: 0; }
 
   /* ── Explore / Schedule / Settings — full width on mobile ── */
   #explore, #schedule, #settings {
@@ -5814,6 +5848,20 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
       </div><!-- /.playlist-clip -->
     </div><!-- /.playlist-section -->
 
+    <!-- Quick menu (mobile): tracklist + back to live -->
+    <div id="player-qmenu" class="player-qmenu" aria-hidden="true" inert>
+      <div class="player-qmenu-inner">
+        <button class="player-qmenu-action" id="qmenu-tl-btn" onclick="closePlayerQMenu(); document.getElementById('playlist-btn').click()">
+          <i data-lucide="list-music" style="fill:none;display:block;width:16px;height:16px;stroke:currentColor"></i>
+          Tracklist
+        </button>
+        <button class="player-qmenu-action" id="qmenu-live-btn" onclick="closePlayerQMenu(); backToLive()">
+          <span class="back-live-dot" style="flex-shrink:0"></span>
+          Back to live
+        </button>
+      </div>
+    </div>
+
     <!-- Separator: top border of player bar → inset separator when playlist opens -->
     <div id="player-sep"></div>
 
@@ -5845,6 +5893,10 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <button class="player-ctrl" id="playlist-btn"
                     aria-label="Playlist" aria-expanded="false" aria-controls="playlist">
               <i data-lucide="list-music" style="fill:none;display:block"></i>
+            </button>
+            <button class="player-ctrl" id="player-qmenu-btn"
+                    aria-label="More options" onclick="togglePlayerQMenu()">
+              <i data-lucide="ellipsis" style="fill:none;display:block"></i>
             </button>
           </div>
         </div>
@@ -6095,6 +6147,37 @@ window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e 
     if (ddThemeKnob) setThemeIcon(ddThemeKnob, light ? 'moon' : 'sun');
   }
 });
+
+/* ── Player quick menu (mobile) ── */
+const playerQMenu = document.getElementById('player-qmenu');
+const playerQMenuBtn = document.getElementById('player-qmenu-btn');
+let qMenuOpen = false;
+
+function togglePlayerQMenu() {
+  qMenuOpen ? closePlayerQMenu() : openPlayerQMenu();
+}
+function openPlayerQMenu() {
+  qMenuOpen = true;
+  playerQMenu.removeAttribute('inert');
+  playerQMenu.setAttribute('aria-hidden', 'false');
+  playerQMenu.classList.add('open');
+  playerQMenuBtn.classList.add('active');
+  setTimeout(() => document.addEventListener('click', _qMenuOutside, { once: true }), 0);
+}
+function closePlayerQMenu() {
+  qMenuOpen = false;
+  playerQMenu.setAttribute('inert', '');
+  playerQMenu.setAttribute('aria-hidden', 'true');
+  playerQMenu.classList.remove('open');
+  playerQMenuBtn.classList.remove('active');
+}
+function _qMenuOutside(e) {
+  if (!playerQMenu.contains(e.target) && e.target !== playerQMenuBtn) {
+    closePlayerQMenu();
+  } else {
+    setTimeout(() => document.addEventListener('click', _qMenuOutside, { once: true }), 0);
+  }
+}
 
 function toggleHamMenu() {
   if (hamMenu.classList.contains('open')) {
