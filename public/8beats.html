@@ -1981,7 +1981,6 @@ html.light .newsletter-card { background: transparent; }
     box-shadow: none !important;
   }
   /* Hide copyright credit on mobile hero */
-  .show-art-credit { display: none !important; }
 
   /* Pull show-main up over the last third of the cover */
   .show-main {
@@ -3258,8 +3257,9 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .show-art-credit {
-  font-size: var(--text-sm); color: var(--text-secondary);
-  margin-top: calc(-1 * var(--space-3)); line-height: 1.5;
+  font-size: var(--text-sm); color: var(--text-tertiary);
+  margin-top: var(--space-3); padding-top: var(--space-3);
+  border-top: 1px solid var(--border-default); line-height: 1;
 }
 
 /* Submeta row: host · date · tracks · duration */
@@ -5206,7 +5206,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
         <div class="show-art" id="show-art">
           <div id="show-art-media" style="width:100%;height:100%;"></div>
         </div>
-        <p class="show-art-credit" id="show-art-credit"></p>
       </div>
       <!-- RIGHT: title, host, tags, submeta, desc, actions, tracklist -->
       <div class="show-main">
@@ -5241,6 +5240,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           <div class="show-tl-vdivider"></div>
           <div class="show-tl-body"><div class="show-tracklist-inline" id="show-tracklist-inline"></div></div>
         </div>
+        <p class="show-art-credit" id="show-art-credit"></p>
       </div>
     </div>
   </section>
@@ -7918,7 +7918,7 @@ function openShow(key) {
 
   // Art credit
   const creditEl = document.getElementById('show-art-credit');
-  creditEl.textContent = data.artCredit || '';
+  creditEl.textContent = data.artCredit ? `Photo credit: ${data.artCredit}` : '';
   creditEl.style.display = data.artCredit ? '' : 'none';
 
   // Tags — filtrer 'Classics', gap 6px
