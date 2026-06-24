@@ -1879,8 +1879,17 @@ html.light .newsletter-card { background: transparent; }
   .section-header-text h2 { font-size: var(--text-base); letter-spacing: -0.01em; }
   .section-header-text h3 { font-size: var(--text-sm); }
 
-  /* ── Cards — carousel mobile, 5 grid cols wide ── */
-  .card { flex: 0 0 calc(2 * var(--grid-col)); }
+  /* ── Cards — 2×2 grid on mobile ── */
+  .cards {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gutter);
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    scroll-snap-type: none;
+  }
+  .card { flex: none; max-width: none; scroll-snap-align: none; }
   .card-body { padding: var(--space-3) 0 0; gap: var(--space-2); }
   .card-body h3 { font-size: var(--text-show); line-height: 1.5; max-height: calc(var(--text-show) * 1.5 * 2); }
   .card-host .host-name { font-size: var(--text-base); }
