@@ -6627,9 +6627,9 @@ function playShow(showTitle, hostName, seriesName) {
   labelEl.textContent = 'Replay';
   labelEl.className   = 'label';
 
-  // Swap spotify for back-to-live
+  // Swap spotify for back-to-live (desktop only — mobile uses ··· menu)
   document.getElementById('spotify-btn').style.display = 'none';
-  document.getElementById('back-to-live-btn').style.display = 'flex';
+  if (window.innerWidth > 768) document.getElementById('back-to-live-btn').style.display = 'flex';
   // Mobile: swap playlist+spotify for ··· menu
   document.getElementById('playlist-btn').style.display = 'none';
   document.getElementById('player-qmenu-btn').style.display = 'flex';
