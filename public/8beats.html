@@ -3267,10 +3267,13 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.show-tl-summary {
+  font-size: var(--text-sm); color: var(--text-tertiary);
+  margin-top: var(--space-3); line-height: 1;
+}
 .show-art-credit {
   font-size: var(--text-sm); color: var(--text-tertiary);
-  margin-top: var(--space-3); padding-top: var(--space-3);
-  border-top: 1px solid var(--border-default); line-height: 1;
+  margin-top: var(--space-2); line-height: 1;
 }
 
 /* Submeta row: host · date · tracks · duration */
@@ -5262,6 +5265,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           <div class="show-tl-vdivider"></div>
           <div class="show-tl-body"><div class="show-tracklist-inline" id="show-tracklist-inline"></div></div>
         </div>
+        <p class="show-tl-summary" id="show-tl-summary" style="display:none"></p>
         <p class="show-art-credit" id="show-art-credit"></p>
       </div>
     </div>
@@ -7941,6 +7945,15 @@ function openShow(key) {
   const totalSecs = SHOW_DURATIONS[key];
   if (totalSecs) showDur = totalSecs;
   document.getElementById('show-duration').textContent = totalSecs ? fmtTime(totalSecs) : (data.duration || '');
+
+  // Track count + duration summary
+  const summaryEl = document.getElementById('show-tl-summary');
+  const tlCount = (TRACKLISTS[key] || []).length;
+  if (tlCount > 0) {
+    const durText = totalSecs ? fmtTime(totalSecs) : (data.duration || '');
+    summaryEl.textContent = durText ? `${tlCount} tracks, ${durText}` : `${tlCount} tracks`;
+    summaryEl.style.display = '';
+  } else { summaryEl.style.display = 'none'; }
 
   // Art credit
   const creditEl = document.getElementById('show-art-credit');
