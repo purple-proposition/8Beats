@@ -2008,7 +2008,7 @@ html.light .newsletter-card { background: transparent; }
   .show-submeta { justify-content: center; }
   /* Description and below: left-aligned, starts after the gradient zone */
   .show-desc { margin-top: var(--space-3); }
-  .show-actions { flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+  .show-actions { flex-wrap: wrap; gap: var(--space-2); margin-top: 16px; }
   .show-btn-play { flex: 1 1 100%; justify-content: center; }
   .show-btn-ghost { flex: 1; justify-content: center; padding: 11px var(--space-3); }
   .icon-btn--action { width: 44px; height: 44px; flex-shrink: 0; }
@@ -4877,8 +4877,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     min-width: unset;
   }
 
-  /* Show head: tags centred below date */
-  .show-head .hero-tags { margin-top: 12px; justify-content: center; }
+  /* Genre tags now below description, outside show-head */
+  .hero-tags { margin-top: var(--space-3); justify-content: center; }
 
   /* Hamburger: bare icon, player-ctrl icon color, 44px tap target */
   #ham-wrap { margin-right: 0; }
@@ -5287,20 +5287,20 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <span class="show-submeta-host" id="show-submeta-host" onclick="openArtist(document.getElementById('show-host-name').textContent.trim())">Purple Proposition</span>
           </div>
           <span id="show-date">13 Feb 2024</span>
-          <div class="hero-tags" id="show-tags">
-            <span class="chip genre-tag">Ambient</span><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">Drum &amp; Bass</span>
+          <div class="show-actions">
+            <button class="btn btn-primary show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
+              <i data-lucide="play" style="display:block"></i>
+              <span id="show-duration">Play</span>
+            </button>
+            <button class="icon-btn icon-btn--action" id="show-bookmark-btn" onclick="toggleBookmark()" title="Save for later">
+              <i data-lucide="bookmark" style="fill:none;display:block"></i>
+              <span class="show-action-label">Save</span>
+            </button>
           </div>
         </div>
         <p class="show-desc" id="show-desc"></p>
-        <div class="show-actions">
-          <button class="btn btn-primary show-btn-play" id="show-play-btn" onclick="playShowFromPage()">
-            <i data-lucide="play" style="display:block"></i>
-            <span id="show-duration">Play</span>
-          </button>
-          <button class="icon-btn icon-btn--action" id="show-bookmark-btn" onclick="toggleBookmark()" title="Save for later">
-            <i data-lucide="bookmark" style="fill:none;display:block"></i>
-            <span class="show-action-label">Save</span>
-          </button>
+        <div class="hero-tags" id="show-tags">
+          <span class="chip genre-tag">Ambient</span><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">Drum &amp; Bass</span>
         </div>
         <div class="show-tracklist-wrap">
           <div class="show-tl-left"><span class="show-tl-label">Tracklist</span></div>
