@@ -1950,8 +1950,6 @@ html.light .newsletter-card { background: transparent; }
 
   /* Cancel the hero's own negative margin-top so it starts at the natural top */
   .show-hero { margin-top: calc(-1 * (var(--nav-h) + var(--space))) !important; }
-  /* No blurred bg on mobile — only the cover with gradient fade */
-  .show-hero-bg, .show-hero-scrim { display: none !important; }
 
   /* Stack sidebar then main, no padding/gap — cover bleeds edge-to-edge */
   .show-hero-content {
@@ -3269,11 +3267,11 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .show-tl-summary {
   font-size: var(--text-sm); color: var(--text-tertiary);
-  margin-top: var(--space-3); line-height: 1;
+  margin-top: 16px; line-height: 1;
 }
 .show-art-credit {
   font-size: var(--text-sm); color: var(--text-tertiary);
-  margin-top: var(--space-2); line-height: 1;
+  margin-top: 12px; line-height: 1;
 }
 
 /* Submeta row: host · date · tracks · duration */
@@ -3282,8 +3280,11 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   font-size: var(--text-base); color: var(--text-tertiary);
 }
 .show-submeta-av {
-  width: 20px; height: 20px; border-radius: 50%;
-  object-fit: cover; flex-shrink: 0;
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  background: var(--surface-elevated); background-size: cover; background-position: center;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 600; color: var(--text-secondary); letter-spacing: .02em;
+  line-height: 1;
 }
 .show-submeta-dot { opacity: .45; }
 .show-submeta-host { color: var(--text-primary); cursor: pointer; transition: color var(--dur-short) var(--ease-hover); }
@@ -4835,22 +4836,18 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   .wm-full { display: none; }
   .wm-short { display: inline; }
 
-  /* Hamburger: bare wrapper, only ham-icon-wrap is visible */
+  /* Hamburger: player-ctrl style directly on the button */
   #ham-btn {
-    width: auto !important; height: auto !important;
+    width: 32px !important; height: 32px !important;
     padding: 0 !important; margin: 0 !important;
-    background: none !important; border: none !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    background: var(--surface-control) !important;
+    border: none !important; border-radius: var(--radius-control) !important;
     outline: none !important; box-shadow: none !important;
     -webkit-appearance: none; appearance: none;
+    transition: background var(--dur-short) var(--ease-hover) !important;
   }
-  #ham-btn .ham-icon-wrap {
-    display: flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px;
-    background: var(--surface-control);
-    border-radius: var(--radius-control);
-    transition: background var(--dur-short) var(--ease-hover);
-  }
-  #ham-btn:active .ham-icon-wrap { background: var(--surface-control-hover); }
+  #ham-btn:active { background: var(--surface-control-hover) !important; }
 
   /* Search: 2 grid cols, centred in the 1fr-auto-1fr topbar grid */
   #topbar-search,
@@ -4904,6 +4901,11 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     overflow: visible !important;
     line-height: 1.2 !important;
   }
+}
+
+/* ── No blurred hero bg on mobile — only cover with gradient fade ── */
+@media (max-width: 768px) {
+  .show-hero-bg, .show-hero-scrim { display: none !important; }
 }
 
 /* ── Accessibilité : prefers-reduced-motion ──────────────────────────────── */
@@ -5036,13 +5038,11 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   <div id="topbar-right">
     <div id="ham-wrap">
       <button id="ham-btn" onclick="toggleHamMenu()" aria-label="Menu" aria-expanded="false" aria-controls="ham-menu">
-        <span class="ham-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
       </button>
       <div id="ham-menu" role="menu">
         <div id="ham-menu-inner">
@@ -5240,7 +5240,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <span class="show-host-name" id="show-host-name">Purple Proposition</span>
           </div>
           <div class="show-submeta">
-            <img class="show-submeta-av" id="show-submeta-av" src="" alt="" style="display:none">
+            <span class="show-submeta-av" id="show-submeta-av" style="display:none"></span>
             <span class="show-submeta-host" id="show-submeta-host" onclick="openArtist(document.getElementById('show-host-name').textContent.trim())">Purple Proposition</span>
             <span class="show-submeta-dot">·</span>
             <span id="show-date">13 Feb 2024</span>
@@ -7911,9 +7911,10 @@ function openShow(key) {
   document.getElementById('show-host-name').textContent = data.host;
   document.getElementById('show-submeta-host').textContent = data.host;
   const avEl = document.getElementById('show-submeta-av');
-  const artistPhoto = ARTISTS[data.host]?.photo;
-  if (artistPhoto) { avEl.src = artistPhoto; avEl.alt = data.host; avEl.style.display = ''; }
-  else { avEl.style.display = 'none'; }
+  const artistData = ARTISTS[data.host];
+  avEl.textContent = data.initials || '';
+  avEl.style.backgroundImage = artistData?.photo ? `url(${artistData.photo})` : '';
+  avEl.style.display = '';
   document.getElementById('show-desc').textContent = data.desc || '';
   document.getElementById('show-more-title').textContent = `More from ${data.host}`;
 
