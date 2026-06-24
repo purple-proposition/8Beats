@@ -1541,8 +1541,11 @@ html.light .newsletter-card { background: transparent; }
   position: absolute; top: 50%; transform: translate(-50%, -50%);
   width: 8px; height: 8px; border-radius: 50%;
   background: var(--text-secondary); left: 5%;
-  transition: left .1s linear;
+  transition: left .1s linear, width 150ms var(--ease-spring), height 150ms var(--ease-spring);
   z-index: 2;
+}
+.progress-knob.scrubbing {
+  width: 20px; height: 20px;
 }
 .progress-marker {
   position: absolute; top: -2px; bottom: -2px; width: 2px;
@@ -6833,6 +6836,31 @@ document.addEventListener('mousemove', e => {
   setProgressPct(pct);
 });
 document.addEventListener('mouseup', () => { progressDragging = false; });
+
+/* ── Touch scrubbing (mobile) ── */
+progressTrack.addEventListener('touchstart', e => {
+  progressDragging = true;
+  progressKnob.classList.add('scrubbing');
+  if (navigator.vibrate) navigator.vibrate(10);
+  let pct = pctFromProgressEvent(e.touches[0]);
+  const { nearest, minDist } = getTrackAtPct(pct);
+  if (nearest && minDist < 2) { pct = nearest.pct; if (navigator.vibrate) navigator.vibrate(6); }
+  setProgressPct(pct);
+  e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchmove', e => {
+  if (!progressDragging) return;
+  let pct = pctFromProgressEvent(e.touches[0]);
+  const { nearest, minDist } = getTrackAtPct(pct);
+  if (nearest && minDist < 2) { pct = nearest.pct; if (navigator.vibrate) navigator.vibrate(6); }
+  setProgressPct(pct);
+  e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchend', () => {
+  if (!progressDragging) return;
+  progressDragging = false;
+  progressKnob.classList.remove('scrubbing');
+});
 
 function switchToTracklist(showTitle) {
   const tracks = TRACKLISTS[showTitle] || DEFAULT_TRACKLIST;
