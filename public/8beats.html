@@ -3278,6 +3278,10 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap;
   font-size: var(--text-base); color: var(--text-tertiary);
 }
+.show-submeta-av {
+  width: 20px; height: 20px; border-radius: 50%;
+  object-fit: cover; flex-shrink: 0;
+}
 .show-submeta-dot { opacity: .45; }
 .show-submeta-host { color: var(--text-primary); cursor: pointer; transition: color var(--dur-short) var(--ease-hover); }
 .show-submeta-host:hover { color: var(--text-primary); }
@@ -5233,6 +5237,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <span class="show-host-name" id="show-host-name">Purple Proposition</span>
           </div>
           <div class="show-submeta">
+            <img class="show-submeta-av" id="show-submeta-av" src="" alt="" style="display:none">
             <span class="show-submeta-host" id="show-submeta-host" onclick="openArtist(document.getElementById('show-host-name').textContent.trim())">Purple Proposition</span>
             <span class="show-submeta-dot">·</span>
             <span id="show-date">13 Feb 2024</span>
@@ -7901,6 +7906,10 @@ function openShow(key) {
   document.getElementById('show-host-av').textContent = data.initials;
   document.getElementById('show-host-name').textContent = data.host;
   document.getElementById('show-submeta-host').textContent = data.host;
+  const avEl = document.getElementById('show-submeta-av');
+  const artistPhoto = ARTISTS[data.host]?.photo;
+  if (artistPhoto) { avEl.src = artistPhoto; avEl.alt = data.host; avEl.style.display = ''; }
+  else { avEl.style.display = 'none'; }
   document.getElementById('show-desc').textContent = data.desc || '';
   document.getElementById('show-more-title').textContent = `More from ${data.host}`;
 
