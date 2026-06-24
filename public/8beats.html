@@ -3286,12 +3286,14 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-art svg { width: 100%; height: 100%; display: block; }
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .show-tl-summary {
-  font-size: var(--text-md); color: var(--text-tertiary);
+  font-size: var(--text-base); color: var(--text-tertiary);
   margin-top: -8px; line-height: 1; /* show-main gap:24px → 24-8=16px visual gap */
+  mask-image: none; -webkit-mask-image: none;
 }
 .show-art-credit {
-  font-size: var(--text-md); color: var(--text-tertiary);
+  font-size: var(--text-base); color: var(--text-tertiary);
   margin-top: -12px; line-height: 1; /* show-main gap:24px → 24-12=12px visual gap */
+  mask-image: none; -webkit-mask-image: none;
 }
 
 /* Submeta row: host · date · tracks · duration */
