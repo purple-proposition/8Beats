@@ -2067,7 +2067,7 @@ html.light .newsletter-card { background: transparent; }
     transition: max-height 220ms var(--ease-hover), opacity 180ms var(--ease-hover);
   }
   .player-qmenu.open {
-    max-height: 64px;
+    max-height: 72px;
     opacity: 1;
   }
   .player-qmenu-inner {
@@ -2085,8 +2085,10 @@ html.light .newsletter-card { background: transparent; }
     cursor: pointer;
     transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
     -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
   }
   .player-qmenu-action:active { color: var(--text-primary); background: var(--surface-control-hover); }
+  .player-qmenu-inner { padding: var(--space-2) var(--space) var(--space-3); gap: var(--space-2); }
   .player-qmenu-action .back-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff3b3b; flex-shrink: 0; }
 
   /* ── Explore / Schedule / Settings — full width on mobile ── */
@@ -5861,6 +5863,10 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
         <button class="player-qmenu-action" id="qmenu-tl-btn" onclick="closePlayerQMenu(); document.getElementById('playlist-btn').click()">
           <i data-lucide="list-music" style="fill:none;display:block;width:16px;height:16px;stroke:currentColor"></i>
           Tracklist
+        </button>
+        <button class="player-qmenu-action" id="qmenu-save-btn" onclick="closePlayerQMenu(); toggleBookmark()">
+          <i data-lucide="bookmark" style="fill:none;display:block;width:16px;height:16px;stroke:currentColor"></i>
+          Save
         </button>
         <button class="player-qmenu-action" id="qmenu-live-btn" onclick="closePlayerQMenu(); backToLive()">
           <span class="back-live-dot" style="flex-shrink:0"></span>
