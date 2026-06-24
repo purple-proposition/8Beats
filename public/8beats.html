@@ -4827,7 +4827,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   .wm-full { display: none; }
   .wm-short { display: inline; }
 
-  /* Hamburger: bare icon only */
+  /* Hamburger: bare icon, player-ctrl icon color */
   #ham-btn {
     width: auto !important; height: auto !important;
     padding: 0 !important; margin: 0 !important;
@@ -4836,8 +4836,10 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     border: none !important; border-radius: 0 !important;
     outline: none !important; box-shadow: none !important;
     -webkit-appearance: none !important; appearance: none !important;
-    color: var(--text-primary) !important;
+    color: var(--icon-secondary) !important;
+    transition: color var(--dur-micro) var(--ease-hover) !important;
   }
+  #ham-btn:active { color: var(--text-primary) !important; }
 
   /* Search: 2 grid cols, centred in the 1fr-auto-1fr topbar grid */
   #topbar-search,
