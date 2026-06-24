@@ -4858,12 +4858,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   /* Cards: 5 grids wide */
   .card { flex: 0 0 calc(5 * var(--grid-col) + 4 * var(--gutter)) !important; min-width: 0; }
 
-  /* Carousel: gap matches grid column gap; right-edge fade */
-  .cards {
-    gap: var(--gutter);
-    -webkit-mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--gutter))), transparent 100%);
-    mask-image: linear-gradient(to right, black calc(100% - calc(var(--grid-col) + var(--gutter))), transparent 100%);
-  }
+  /* Carousel: gap matches grid column gap */
+  .cards { gap: var(--gutter); }
 
   /* Show page: cover art 6 grids wide */
   .show-art {
