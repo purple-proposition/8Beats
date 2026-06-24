@@ -7950,7 +7950,14 @@ function openShow(key) {
   const summaryEl = document.getElementById('show-tl-summary');
   const tlCount = (TRACKLISTS[key] || []).length;
   if (tlCount > 0) {
-    const durText = totalSecs ? fmtTime(totalSecs) : (data.duration || '');
+    let durText = '';
+    if (totalSecs) {
+      const h = Math.floor(totalSecs / 3600);
+      const m = Math.round((totalSecs % 3600) / 60);
+      const hPart = h > 0 ? `${h} hour${h > 1 ? 's' : ''}` : '';
+      const mPart = m > 0 ? `${String(m).padStart(2,'0')} minute${m > 1 ? 's' : ''}` : '';
+      durText = [hPart, mPart].filter(Boolean).join(' ');
+    }
     summaryEl.textContent = durText ? `${tlCount} tracks, ${durText}` : `${tlCount} tracks`;
     summaryEl.style.display = '';
   } else { summaryEl.style.display = 'none'; }
