@@ -3847,8 +3847,8 @@ body { padding-top: 24px; }
 #profile-backdrop {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(8px) saturate(160%);
-  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: var(--z-modal-bd);
   opacity: 0; transition: opacity var(--dur-medium) var(--ease-standard);
 }
@@ -3863,8 +3863,8 @@ body { padding-top: 24px; }
   max-height: min(560px, calc(100vh - 80px));
   overflow: hidden;
   background: rgba(0,0,0,0.40);
-  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  backdrop-filter: blur(24px) brightness(0.56);
+  -webkit-backdrop-filter: blur(24px) brightness(0.56);
   border: 1px solid rgba(255,255,255,0.11);
   border-radius: var(--radius-btn);
   z-index: var(--z-modal);
@@ -3887,17 +3887,17 @@ body { padding-top: 24px; }
   color: var(--text-primary); line-height: 1;
 }
 .pf-sep { height: 1px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
-.pf-section { display: flex; flex-direction: column; gap: 10px; }
+.pf-section { display: flex; flex-direction: column; gap: 16px; }
 .pf-section-label {
   display: flex; align-items: center; gap: 6px;
-  font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
+  font-size: var(--text-sm); font-weight: 400;
   color: var(--text-tertiary); line-height: 1;
 }
 .pf-section-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; flex-shrink: 0; }
 @media (max-width: 1024px) { .pf-desktop-only { display: none !important; } }
 
 .pf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-#pf-platforms.pf-chips { gap: 12px; }
+#pf-platforms.pf-chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 12px; }
 
 .pf-platform-btn {
   width: 36px; height: 36px; flex-shrink: 0;
@@ -3956,8 +3956,8 @@ html.light .pf-platform-btn.pf-selected { background: var(--text-primary); color
 html.light #profile-backdrop { background: rgba(0,0,0,0.35); }
 html.light #profile-modal {
   background: rgba(248,248,248,0.40);
-  backdrop-filter: blur(24px) saturate(160%) brightness(1.20);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.20);
+  backdrop-filter: blur(24px) brightness(1.20);
+  -webkit-backdrop-filter: blur(24px) brightness(1.20);
   border-color: rgba(0,0,0,0.08);
 }
 html.light .pf-sep { background: rgba(0,0,0,0.08); }
