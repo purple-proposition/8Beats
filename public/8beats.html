@@ -1923,9 +1923,10 @@ html.light .newsletter-card { background: transparent; }
   .panel-cookie {
     display: flex !important;
     position: fixed !important;
-    bottom: 0 !important; left: 0 !important; right: 0 !important;
+    bottom: calc(var(--player-h) + var(--space)) !important;
+    left: var(--gutter) !important; right: var(--gutter) !important;
     width: auto !important;
-    border-radius: 0 !important;
+    border-radius: var(--radius-panel) !important;
     border: 1px solid var(--border-subtle) !important;
     flex-direction: row;
     align-items: center;
