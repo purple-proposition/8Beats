@@ -4814,16 +4814,20 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   /* Hide nav-pill — topbar handles mobile nav */
   .nav-wrap { display: none !important; }
 
-  /* Topbar: tight mobile padding, top aligned with --space */
-  #topbar { padding: 0 var(--space); top: var(--space); }
+  /* Topbar: aligned to grid (16px = --gutter) */
+  #topbar { padding: 0 var(--gutter); top: var(--space); }
 
-  /* Logo: "8" only */
-  .wm-full { display: none; }
-  .wm-short { display: inline; }
+  /* Logo: full wordmark */
+  .wm-full { display: inline; }
+  .wm-short { display: none; }
 
-  /* Hamburger: bare icon, player-ctrl icon color */
+  /* Search bar: hidden on mobile (accessible via ham menu) */
+  #topbar-search { display: none !important; }
+
+  /* Hamburger: bare icon, player-ctrl icon color, 44px tap target */
+  #ham-wrap { margin-right: 0; }
   #ham-btn {
-    width: auto !important; height: auto !important;
+    width: 44px !important; height: 44px !important;
     padding: 0 !important; margin: 0 !important;
     display: flex !important; align-items: center !important; justify-content: center !important;
     background: none !important;
