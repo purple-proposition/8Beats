@@ -4824,6 +4824,9 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   /* Search bar: hidden on mobile (accessible via ham menu) */
   #topbar-search { display: none !important; }
 
+  /* Show head: tags centred below date */
+  .show-head .hero-tags { margin-top: 12px; justify-content: center; }
+
   /* Hamburger: bare icon, player-ctrl icon color, 44px tap target */
   #ham-wrap { margin-right: 0; }
   #ham-btn {
@@ -5231,6 +5234,9 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <span class="show-submeta-host" id="show-submeta-host" onclick="openArtist(document.getElementById('show-host-name').textContent.trim())">Purple Proposition</span>
           </div>
           <span id="show-date">13 Feb 2024</span>
+          <div class="hero-tags" id="show-tags">
+            <span class="chip genre-tag">Ambient</span><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">Drum &amp; Bass</span>
+          </div>
         </div>
         <p class="show-desc" id="show-desc"></p>
         <div class="show-actions">
@@ -5242,9 +5248,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             <i data-lucide="bookmark" style="fill:none;display:block"></i>
             <span class="show-action-label">Save</span>
           </button>
-        </div>
-        <div class="hero-tags" id="show-tags">
-          <span class="chip genre-tag">Ambient</span><span class="chip genre-tag">Downtempo</span><span class="chip genre-tag">Drum &amp; Bass</span>
         </div>
         <div class="show-tracklist-wrap">
           <div class="show-tl-left"><span class="show-tl-label">Tracklist</span></div>
