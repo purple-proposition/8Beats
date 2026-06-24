@@ -6097,7 +6097,6 @@ window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e 
 });
 
 function toggleHamMenu() {
-  if (window.innerWidth <= 768) { navMenuOpen ? closeNavMenu() : openNavMenu(); return; }
   if (hamMenu.classList.contains('open')) {
     closeHamMenu();
   } else {
