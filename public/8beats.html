@@ -4873,11 +4873,20 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   .track-duration { font-size: var(--text-md); }
 
   /* Ham menu: 16px margin on all sides */
+  #ham-wrap { position: static; }
   #ham-menu {
-    right: 0;
-    width: calc(100vw - 32px);
+    left: var(--gutter);
+    right: auto;
+    width: calc(100vw - 2 * var(--gutter));
     min-width: unset;
   }
+  #ham-menu-inner {
+    padding: var(--space) 0;
+    gap: var(--space-3);
+  }
+  .ham-item { padding: 0 var(--space); }
+  .ham-item::before { inset: -6px var(--space-2); }
+  .ham-social-row { padding: 0 var(--space); }
 
   /* Mobile ordering: head → actions → desc → tags */
   .show-head { order: 1; }
