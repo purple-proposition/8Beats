@@ -4756,6 +4756,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 @media (max-width: 768px) {
   /* Prevent horizontal scroll */
   html, body { overflow-x: hidden; }
+  /* Re-declare 4-col --grid-col here so it wins over the global :root at line 3506 */
+  :root { --grid-col: calc((100vw - 60px) / 4); }
 
   /* Body: offset for fixed topbar; reset ios-nav padding-bottom */
   body, body.sb-icons, body.sb-closed {
@@ -4787,11 +4789,11 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   }
   #ham-btn:hover .ham-icon-wrap { background: var(--surface-control-hover); }
 
-  /* Search: 8 grid cols */
+  /* Search: 2 grid cols, centred in the 1fr-auto-1fr topbar grid */
   #topbar-search,
   #topbar-search:hover,
   #topbar-search.search-open,
-  #topbar-search:focus-within { width: calc(8 * var(--grid-col) + 7 * var(--gutter)); }
+  #topbar-search:focus-within { width: calc(2 * var(--grid-col) + var(--gutter)); }
 
   /* Cards: 5 grids wide */
   .card { flex: 0 0 calc(5 * var(--grid-col) + 4 * var(--gutter)) !important; min-width: 0; }
@@ -6036,7 +6038,7 @@ window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e 
 });
 
 function toggleHamMenu() {
-  if (window.innerWidth <= 768) { openNavMenu(); return; }
+  if (window.innerWidth <= 768) { navMenuOpen ? closeNavMenu() : openNavMenu(); return; }
   if (hamMenu.classList.contains('open')) {
     closeHamMenu();
   } else {
