@@ -1876,7 +1876,7 @@ html.light .newsletter-card { background: transparent; }
 
   /* ── Content ── */
   .content { display: flex; flex-direction: column; padding: 0 var(--space); gap: var(--space-8); }
-  #view-home > .content { margin-top: 0 !important; }
+  #view-home > .content { margin-top: var(--space-8) !important; }
   /* Reset inline section margins so they don't stack with flex gap */
   .content .section[style] { margin-top: 0 !important; margin-bottom: 0 !important; grid-column: unset !important; }
   .section { grid-column: unset; gap: var(--space); }
@@ -1915,7 +1915,9 @@ html.light .newsletter-card { background: transparent; }
     display: flex; flex-direction: column-reverse; gap: var(--space);
     z-index: 51;
     pointer-events: none;
+    transition: bottom 300ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+  #panel-support { display: none !important; }
   #panel-stack > * { pointer-events: all; }
   /* Override individual fixed positioning — panels are now flow children of #panel-stack */
   #panel-stack .panel-support,
@@ -4884,15 +4886,18 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     top: var(--space);
     left: var(--gutter); right: var(--gutter);
     width: auto !important;
+    height: calc(100dvh - var(--space) * 2 - var(--player-h));
     z-index: 9999;
     flex-direction: column;
     background: transparent;
     padding: 0;
   }
   #topbar-search.search-open #ts-panel {
+    position: relative;
+    top: auto; left: auto; right: auto;
+    flex: 1; min-height: 0;
     border-radius: var(--radius-btn);
     overflow: hidden;
-    max-height: calc(100dvh - var(--space) * 2 - var(--player-h));
     display: flex; flex-direction: column;
   }
   #topbar-search.search-open #ts-body {
@@ -4906,6 +4911,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     -webkit-backdrop-filter: blur(12px);
     background: rgba(0,0,0,0.48) !important;
   }
+  /* Lift topbar above backdrop when search is open */
+  body.search-open-mobile #topbar { z-index: 10000; }
 
   /* Tracklist: 16px text */
   .show-tracklist-inline .track-name { font-size: var(--text-base); }
@@ -10076,6 +10083,7 @@ function openTopbarSearch() {
   _topbarSearchOpen = true;
   document.getElementById('topbar-search').classList.add('search-open');
   if (window.innerWidth <= 768) {
+    document.body.classList.add('search-open-mobile');
     mnoBackdrop.style.display = 'block';
     requestAnimationFrame(() => { mnoBackdrop.classList.add('open'); mnoBackdrop.classList.add('search-blur'); });
     setTimeout(() => { document.getElementById('topbar-search-input')?.focus(); }, 50);
@@ -10110,6 +10118,7 @@ function closeTopbarSearch() {
   s.classList.remove('has-query');
   document.removeEventListener('click', _topbarSearchOutside);
   if (window.innerWidth <= 768 && !navMenuOpen) {
+    document.body.classList.remove('search-open-mobile');
     mnoBackdrop.classList.remove('open');
     mnoBackdrop.classList.remove('search-blur');
     setTimeout(() => { if (!navMenuOpen) mnoBackdrop.style.display = 'none'; }, 200);
