@@ -1915,7 +1915,6 @@ html.light .newsletter-card { background: transparent; }
     display: flex; flex-direction: column-reverse; gap: var(--space);
     z-index: 55;
     pointer-events: none;
-    transition: bottom 300ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   #panel-support { display: none !important; }
   #panel-stack > * { pointer-events: all; }
@@ -2068,6 +2067,7 @@ html.light .newsletter-card { background: transparent; }
   #playlist-btn { display: none; }
   #spotify-btn { display: none; }
   #player-qmenu-btn { display: flex; }
+  #player-qmenu-btn.active { background: var(--surface-control); color: var(--text-primary); }
 
   /* Player quick menu (mobile) — override global display:none */
   .player-qmenu { display: block; }
@@ -7509,12 +7509,13 @@ function _openPl() {
     clip.style.height = 'auto';
   });
 
-  /* Scroll fade-mask — tracklist mode uniquement */
+  /* Scroll fade-mask — tracklist mode uniquement, pas de fade bas sur mobile */
   const inner = plPanel.querySelector('.playlist-inner');
   if (inner && plPanel.classList.contains('tracklist')) {
+    const isMobile = window.innerWidth <= 768;
     const updateMask = () => {
       const atTop    = inner.scrollTop <= 2;
-      const atBottom = inner.scrollHeight - inner.scrollTop <= inner.clientHeight + 2;
+      const atBottom = isMobile || inner.scrollHeight - inner.scrollTop <= inner.clientHeight + 2;
       let mask = '';
       if (!atTop && !atBottom)  mask = 'linear-gradient(to bottom,transparent 0%,black 32px,black calc(100% - 32px),transparent 100%)';
       else if (!atTop)          mask = 'linear-gradient(to bottom,transparent 0%,black 32px,black 100%)';
@@ -7823,15 +7824,15 @@ function checkGameMarquee() {
 document.fonts.ready.then(() => setTimeout(checkGameMarquee, 50));
 addEventListener('resize', checkGameMarquee);
 
-/* ── Mobile: keep --player-h in sync with actual player height ── */
+/* ── Mobile: keep --player-h in sync with actual player height (shell incl. qmenu) ── */
 if (window.innerWidth <= 768) {
-  const _playerInnerEl = document.querySelector('.player-inner');
-  if (_playerInnerEl && window.ResizeObserver) {
+  const _playerShellEl = document.querySelector('.player-shell');
+  if (_playerShellEl && window.ResizeObserver) {
     new ResizeObserver(entries => {
       const h = entries[0].contentRect.height;
       const BOTTOM_OFFSET = 16;
       document.documentElement.style.setProperty('--player-h', `${h + BOTTOM_OFFSET}px`);
-    }).observe(_playerInnerEl);
+    }).observe(_playerShellEl);
   }
 }
 
