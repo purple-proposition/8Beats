@@ -1826,7 +1826,7 @@ html.light .newsletter-card { background: transparent; }
 
   /* ── Tokens ── */
   :root {
-    --nav-h: 56px; --player-h: 87px; --space: 16px; --gutter: 16px;
+    --nav-h: 56px; --player-h: 110px; --space: 16px; --gutter: 16px;
     /* 4-column grid on mobile: (100vw - 2×12 - 3×12) / 4 */
     --grid-col: calc((100vw - 60px) / 4);
   }
@@ -1909,7 +1909,7 @@ html.light .newsletter-card { background: transparent; }
   /* Panel stack — both panels stack above player with 16px gaps */
   #panel-stack {
     position: fixed;
-    bottom: calc(var(--player-h) + var(--space));
+    bottom: calc(var(--player-h) + 2 * var(--space));
     left: var(--gutter); right: var(--gutter);
     display: flex; flex-direction: column-reverse; gap: var(--space);
     z-index: 51;
@@ -1935,7 +1935,7 @@ html.light .newsletter-card { background: transparent; }
   /* Cookie panel — column layout with title visible */
   .panel-cookie {
     display: flex !important;
-    border-radius: var(--radius-panel) !important;
+    border-radius: var(--radius-btn) !important;
     border: 1px solid var(--border-subtle) !important;
     flex-direction: column !important;
     gap: var(--space-3);
