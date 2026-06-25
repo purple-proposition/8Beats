@@ -1906,9 +1906,22 @@ html.light .newsletter-card { background: transparent; }
   /* ── Panels ── */
 
   /* Support panel — repositionné au-dessus du player sur mobile */
-  .panel-support {
-    bottom: calc(var(--player-h) + var(--space-5) + env(safe-area-inset-bottom, 0px)) !important;
-    left: var(--space) !important; right: var(--space) !important;
+  /* Panel stack — both panels stack above player with 16px gaps */
+  #panel-stack {
+    position: fixed;
+    bottom: calc(var(--player-h) + var(--space));
+    left: var(--gutter); right: var(--gutter);
+    display: flex; flex-direction: column-reverse; gap: var(--space);
+    z-index: 51;
+    pointer-events: none;
+  }
+  #panel-stack > * { pointer-events: all; }
+  /* Override individual fixed positioning — panels are now flow children of #panel-stack */
+  #panel-stack .panel-support,
+  #panel-stack .panel-cookie {
+    position: relative !important;
+    left: auto !important; right: auto !important;
+    bottom: auto !important; top: auto !important;
     width: auto !important;
   }
 
@@ -1919,37 +1932,28 @@ html.light .newsletter-card { background: transparent; }
     max-height: 30px !important; opacity: 1 !important; margin-top: 0 !important;
   }
 
-  /* Cookie — bandeau fixe en bas sur mobile */
+  /* Cookie panel — column layout with title visible */
   .panel-cookie {
     display: flex !important;
-    position: fixed !important;
-    bottom: calc(var(--player-h) + var(--space)) !important;
-    left: var(--gutter) !important; right: var(--gutter) !important;
-    width: auto !important;
     border-radius: var(--radius-panel) !important;
     border: 1px solid var(--border-subtle) !important;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column !important;
     gap: var(--space-3);
     padding: var(--space-3) var(--space);
     margin-bottom: 0;
-    pointer-events: all;
   }
   .panel-cookie .orb-3 { display: none; }
-  .panel-cookie .panel-header {
-    display: none;
-  }
+  .panel-cookie .panel-header { display: flex !important; }
   .panel-cookie p {
-    font-size: var(--text-sm);
-    flex: 1;
+    font-size: 14px;
     line-height: 1.4;
+    margin: 0;
   }
   .cookie-accept-btn {
-    width: auto !important;
-    padding: 0 var(--space) !important;
-    font-size: var(--text-sm) !important;
+    width: 100% !important;
+    padding: var(--space-2) var(--space) !important;
+    font-size: 14px !important;
     white-space: nowrap;
-    flex-shrink: 0;
   }
 
   /* ── Show page — full-bleed hero on mobile ── */
@@ -1999,7 +2003,7 @@ html.light .newsletter-card { background: transparent; }
   /* Title + submeta centered, overlaid on the gradient */
   .show-head {
     text-align: center;
-    padding-bottom: var(--space-5);
+    padding-bottom: 0;
   }
   .show-title {
     font-size: clamp(24px, 6vw, 30px) !important;
@@ -4890,9 +4894,9 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 
   /* Mobile ordering: head → actions → desc → tags */
   .show-head { order: 1; }
-  .show-actions { order: 2; margin-top: 0; }
+  .show-actions { order: 2; margin-top: calc(16px - var(--space-5)); }
   .show-desc { order: 3; }
-  .show-main > .hero-tags { order: 4; margin-top: 0; justify-content: center; }
+  .show-main > .hero-tags { order: 4; margin-top: 0; justify-content: flex-start; }
   .show-tracklist-wrap { order: 5; }
   .show-tl-summary { order: 6; }
   .show-art-credit { order: 7; }
@@ -5588,6 +5592,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 </div>
 
 <!-- FLOATING PANELS (positioned by FWM) -->
+<div id="panel-stack">
 <aside class="panel panel-cookie glass" id="panel-cookie">
   <div class="orb orb-3"></div>
   <div class="panel-header">
@@ -5618,6 +5623,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   </div>
   <p class="panel-support-note">Secure payment via <svg class="paypal-logo-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="PayPal"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.217A.859.859 0 0 1 5.79 2.624h7.925c2.124 0 3.864.489 5.175 1.454a6.159 6.159 0 0 1 1.455 1.453c.388.601.65 1.255.785 1.959.135.703.135 1.474 0 2.312C20.896 11.062 20.076 12.55 18.88 13.607a9.875 9.875 0 0 1-3.316 1.791 12.966 12.966 0 0 1-4.048.592H9.898a.858.858 0 0 0-.848.726L8.357 20.997a.641.641 0 0 1-.633.541H7.076z"/></svg></p>
 </aside>
+</div><!-- /#panel-stack -->
 
 <!-- DONATE POPUP -->
 <div id="donate-popup" style="display:none;">
