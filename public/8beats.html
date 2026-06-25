@@ -2076,18 +2076,18 @@ html.light .newsletter-card { background: transparent; }
     transition: max-height 220ms var(--ease-hover), opacity 180ms var(--ease-hover);
   }
   .player-qmenu.open {
-    max-height: 80px;
+    max-height: 100px;
     opacity: 1;
   }
   .player-qmenu-inner {
     display: flex; align-items: stretch;
     padding: var(--space-2) var(--space) var(--space-3);
-    gap: var(--space-3);
+    gap: var(--space-2);
   }
   .player-qmenu-action {
     flex: 1; display: flex; align-items: center; justify-content: center;
     gap: var(--space-2);
-    height: 40px;
+    padding: var(--space);
     font-size: var(--text-base); font-family: var(--font); font-weight: 400;
     color: var(--text-secondary);
     background: var(--surface-control); border: none; border-radius: var(--radius-control);
@@ -2097,7 +2097,7 @@ html.light .newsletter-card { background: transparent; }
     white-space: nowrap;
   }
   .player-qmenu-action:active { color: var(--text-primary); background: var(--surface-control-hover); }
-  .player-qmenu-inner { padding: var(--space) var(--space) var(--space-3); gap: var(--space-3); }
+  .player-qmenu-inner { padding: var(--space) var(--space) var(--space-3); gap: var(--space-2); }
   .player-qmenu-action .back-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff3b3b; flex-shrink: 0; }
 
   /* ── Explore / Schedule / Settings — full width on mobile ── */
@@ -4971,6 +4971,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     flex: 1; height: 40px; width: auto !important;
     justify-content: center; gap: var(--space-2);
     font-size: 14px; font-family: var(--font);
+    color: var(--text-secondary) !important;
     border-radius: var(--radius-sm);
   }
 
