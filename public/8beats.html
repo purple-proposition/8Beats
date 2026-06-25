@@ -1616,7 +1616,7 @@ html.light .newsletter-card { background: transparent; }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game { font-size: 14px; line-height: 1; color: var(--text-secondary); margin-top: 8px; }
+.player-game { font-size: 14px; line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
 /* ── Family 2: IconButton (.icon-btn) ── */
@@ -2053,14 +2053,14 @@ html.light .newsletter-card { background: transparent; }
   .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; }
   .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: var(--radius-control); }
   .play-btn svg { width: 24px; height: 24px; }
-  .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: var(--space-3); justify-content: center; }
+  .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: var(--space-1); justify-content: center; }
   .player-info-top { gap: var(--space-2); }
   .player-info-top .label { font-size: var(--text-sm); text-transform: uppercase; }
   .player-title-row { margin-top: 0; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
   .player-title { font-size: var(--text-md); font-weight: 400; }
   .player-game-wrap { overflow: hidden; line-height: 1; mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
-  .player-game  { font-size: var(--text-base); color: var(--text-secondary); white-space: nowrap; display: inline-block; line-height: 1; }
+  .player-game  { font-size: var(--text-base); color: var(--text-secondary); white-space: nowrap; display: block; line-height: 1; }
   .player-controls { gap: var(--space-2); flex-shrink: 0; }
   .vol-wrap, .vol-popup,
   .back-to-live,
