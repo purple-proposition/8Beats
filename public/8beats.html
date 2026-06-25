@@ -1867,7 +1867,7 @@ html.light .newsletter-card { background: transparent; }
     padding: var(--space-8) var(--space) var(--space-6);
   }
   .hero-inner { grid-column: unset; width: 100%; }
-  .hero-inner h1 { font-size: 32px; letter-spacing: -0.03em; max-width: 66.667%; margin-left: auto; margin-right: auto; }
+  .hero-inner h1 { font-size: 64px; letter-spacing: -0.03em; max-width: 100%; margin-left: auto; margin-right: auto; line-height: 1; }
   #hero-waveform { display: none; }
   .hero-inner p  { font-size: var(--text-md); max-width: 320px; }
   .hero-actions  { display: flex; flex-direction: column; width: 100%; gap: var(--space-3); }
@@ -2050,8 +2050,8 @@ html.light .newsletter-card { background: transparent; }
     border-radius: var(--radius);
     border: 1px solid var(--border-default);
   }
-  .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; }
-  .play-btn { width: 48px; height: 48px; flex-shrink: 0; border-radius: var(--radius-control); }
+  .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; align-items: stretch; }
+  .play-btn { width: 58px; height: auto; align-self: stretch; flex-shrink: 0; border-radius: var(--radius-control); }
   .play-btn svg { width: 24px; height: 24px; }
   .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: var(--space-2); justify-content: center; }
   .player-info-top { gap: var(--space-2); }
