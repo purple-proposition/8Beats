@@ -4880,15 +4880,16 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   #ham-wrap { position: static; }
   #ham-menu {
     left: var(--gutter);
-    right: auto;
-    width: calc(100vw - 2 * var(--gutter));
+    right: var(--gutter);
+    width: auto;
     min-width: unset;
   }
   #ham-menu-inner {
     padding: var(--space) 0;
     gap: var(--space-3);
   }
-  .ham-item { padding: 0 var(--space); }
+  .ham-item { padding: 0 var(--space); font-size: var(--text-md); }
+  .ham-item svg { width: 16px; height: 16px; }
   .ham-item::before { inset: -6px var(--space-2); }
   .ham-social-row { padding: 0 var(--space); }
 
