@@ -2115,6 +2115,8 @@ html.light .newsletter-card { background: transparent; }
   #schedule-card, #settings-card { max-width: 100% !important; }
   .explore-show-row { padding: 0 var(--space) !important; flex-direction: column !important; align-items: flex-start !important; gap: var(--space-2) !important; }
   .explore-show-row > div:last-child { margin-left: 0 !important; flex-shrink: unset !important; }
+  /* Search dropdown: keep rows horizontal (image left, text right) */
+  #topbar-dropdown-shows .explore-show-row { flex-direction: row !important; align-items: flex-start !important; gap: 12px !important; padding: var(--hover-bleed) !important; }
 
   /* ── Playlist ── */
   /* playlist-clip height managed by JS — no max-height override needed */
@@ -10267,7 +10269,7 @@ function _renderTopbarShows(q) {
   if (tsActiveTime !== null) list = list.filter(s => TIME_RANGES[tsActiveTime].fn(s.date));
   if (!list.length) {
     container.innerHTML = genreCardHtml + '<p class="ts-no-results">No results</p>';
-    initScrollFade(container, 48);
+    initScrollFade(container, window.innerWidth <= 768 ? 16 : 48);
     return;
   }
   const rows = list.map(s => {
@@ -10306,7 +10308,7 @@ function _renderTopbarShows(q) {
     </div>`;
   }).join('');
   container.innerHTML = genreCardHtml + `<div class="ts-results-list">${rows}</div>`;
-  initScrollFade(container, 48);
+  initScrollFade(container, window.innerWidth <= 768 ? 16 : 48);
 }
 
 /* Escape closes topbar dropdown */
@@ -10354,7 +10356,7 @@ function _renderTopbarResidents(q) {
           <span class="ts-resident-freq">${r.frequency}</span>
         </div>
       </div>`).join('') + '</div>';
-  requestAnimationFrame(() => initScrollFade(container, 48));
+  requestAnimationFrame(() => initScrollFade(container, window.innerWidth <= 768 ? 16 : 48));
 }
 
 /* ── Topbar: render compact schedule (all 7 days, scroll to today) ── */
