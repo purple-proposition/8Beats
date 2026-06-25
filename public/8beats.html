@@ -1826,7 +1826,7 @@ html.light .newsletter-card { background: transparent; }
 
   /* ── Tokens ── */
   :root {
-    --nav-h: 56px; --player-h: 110px; --space: 16px; --gutter: 16px;
+    --nav-h: 56px; --player-h: 126px; --space: 16px; --gutter: 16px;
     /* 4-column grid on mobile: (100vw - 2×12 - 3×12) / 4 */
     --grid-col: calc((100vw - 60px) / 4);
   }
@@ -1909,7 +1909,7 @@ html.light .newsletter-card { background: transparent; }
   /* Panel stack — both panels stack above player with 16px gaps */
   #panel-stack {
     position: fixed;
-    bottom: calc(var(--player-h) + 2 * var(--space));
+    bottom: calc(var(--player-h) + var(--space));
     left: var(--gutter); right: var(--gutter);
     display: flex; flex-direction: column-reverse; gap: var(--space);
     z-index: 51;
@@ -4876,13 +4876,18 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   .show-tracklist-inline .track-game { font-size: var(--text-base); }
   .track-duration { font-size: var(--text-md); }
 
-  /* Ham menu: 16px margin on all sides */
+  /* Ham menu: anchored right with 16px, shrinks to content width */
   #ham-wrap { position: static; }
   #ham-menu {
-    left: var(--gutter);
+    left: auto;
     right: var(--gutter);
     width: auto;
     min-width: unset;
+  }
+  /* Burger icon: adapts to background via mix-blend-mode — zero JS */
+  #ham-btn {
+    color: #a1a1a1 !important;
+    mix-blend-mode: difference;
   }
   #ham-menu-inner {
     padding: var(--space) 0;
