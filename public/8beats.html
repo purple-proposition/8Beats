@@ -1867,7 +1867,7 @@ html.light .newsletter-card { background: transparent; }
     padding: var(--space-8) var(--space) var(--space-6);
   }
   .hero-inner { grid-column: unset; width: 100%; }
-  .hero-inner h1 { font-size: 48px !important; letter-spacing: -0.03em; max-width: 100%; margin-left: auto; margin-right: auto; line-height: 1; }
+  .hero-inner h1 { font-size: 32px !important; letter-spacing: -0.03em; max-width: 100%; margin-left: auto; margin-right: auto; line-height: 1; }
   #hero-waveform { display: none; }
   .hero-inner p  { font-size: var(--text-md); max-width: 320px; }
   .hero-actions  { display: flex; flex-direction: column; width: 100%; gap: var(--space-3); }
@@ -2120,7 +2120,7 @@ html.light .newsletter-card { background: transparent; }
 
   /* ── Playlist ── */
   /* playlist-clip height managed by JS — no max-height override needed */
-  .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; gap: var(--space-4); }
+  .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; gap: var(--space-4); mask-image: none !important; -webkit-mask-image: none !important; }
   /* No vertical padding on track — gap alone handles the 24px spacing */
   .track { padding: 0; border-radius: 0; }
   .track-name { font-size: var(--text-base); }
@@ -7829,12 +7829,24 @@ addEventListener('resize', checkGameMarquee);
 /* ── Mobile: keep --player-h in sync with actual player height (shell incl. qmenu) ── */
 if (window.innerWidth <= 768) {
   const _playerShellEl = document.querySelector('.player-shell');
-  if (_playerShellEl && window.ResizeObserver) {
-    new ResizeObserver(entries => {
-      const h = entries[0].contentRect.height;
-      const BOTTOM_OFFSET = 16;
-      document.documentElement.style.setProperty('--player-h', `${h + BOTTOM_OFFSET}px`);
-    }).observe(_playerShellEl);
+  if (_playerShellEl) {
+    const BOTTOM_OFFSET = 16;
+    const _syncPlayerH = () => {
+      document.documentElement.style.setProperty('--player-h', `${_playerShellEl.offsetHeight + BOTTOM_OFFSET}px`);
+    };
+    // Initial sync + ResizeObserver as baseline
+    _syncPlayerH();
+    if (window.ResizeObserver) new ResizeObserver(_syncPlayerH).observe(_playerShellEl);
+    // rAF loop during qmenu open/close transitions (max-height CSS transition = ~220ms)
+    const _origOpenQMenu = openPlayerQMenu;
+    const _origCloseQMenu = closePlayerQMenu;
+    const _rafSync = (ms) => {
+      const end = performance.now() + ms;
+      const loop = () => { _syncPlayerH(); if (performance.now() < end) requestAnimationFrame(loop); };
+      requestAnimationFrame(loop);
+    };
+    openPlayerQMenu = function() { _origOpenQMenu.apply(this, arguments); _rafSync(280); };
+    closePlayerQMenu = function() { _origCloseQMenu.apply(this, arguments); _rafSync(280); };
   }
 }
 
