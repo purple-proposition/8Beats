@@ -4868,8 +4868,17 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   .wm-full { display: inline; }
   .wm-short { display: none; }
 
-  /* Search bar: hidden on mobile (accessible via ham menu) */
+  /* Search bar: hidden on mobile, shown as full overlay when open */
   #topbar-search { display: none !important; }
+  #topbar-search.search-open {
+    display: flex !important;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: calc(var(--z-nav) + 2);
+    flex-direction: column;
+    background: var(--surface-page);
+    padding: var(--space);
+  }
 
   /* Tracklist: 16px text */
   .show-tracklist-inline .track-name { font-size: var(--text-base); }
@@ -5117,6 +5126,10 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
       </button>
       <div id="ham-menu" role="menu">
         <div id="ham-menu-inner">
+        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openTopbarSearch()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
         <button class="ham-item" role="menuitem" onclick="closeHamMenu();openAbout()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           About
