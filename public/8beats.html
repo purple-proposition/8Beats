@@ -4884,6 +4884,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   /* Search bar: hidden on mobile, drops from topbar position with backdrop */
   #topbar-search { display: none !important; }
   #topbar-search-kbd { display: none !important; }
+  /* Prevent iOS auto-zoom on focus (triggered when font-size < 16px) */
+  #topbar-search-input { font-size: 16px !important; }
   #topbar-search.search-open {
     display: flex !important;
     position: fixed;
