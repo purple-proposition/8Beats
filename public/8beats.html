@@ -2071,6 +2071,8 @@ html.light .newsletter-card { background: transparent; }
 
   /* Player quick menu (mobile) — override global display:none */
   .player-qmenu { display: block; }
+  /* On mobile, playlist is hidden — overflow:hidden not needed on shell, and it clips the progress bar */
+  .player-shell { overflow: visible; }
   .player-qmenu {
     overflow: hidden;
     max-height: 0;
@@ -5950,7 +5952,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           <span class="qmenu-label">Available on Spotify</span>
         </button>
         <button class="player-qmenu-action" id="qmenu-pl-btn" onclick="closePlayerQMenu(); document.getElementById('playlist-btn').click()">
-          <i data-lucide="list-music" style="fill:none;display:block;width:16px;height:16px;stroke:currentColor"></i>
+          <i data-lucide="clock" style="fill:none;display:block;width:16px;height:16px;stroke:currentColor"></i>
           <span class="qmenu-label">Last played tracks</span>
         </button>
       </div>
@@ -5958,7 +5960,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
       <div class="player-qmenu-inner" id="qmenu-replay-btns" style="display:none">
         <button class="player-qmenu-action" id="qmenu-tl-btn" onclick="closePlayerQMenu(); document.getElementById('playlist-btn').click()">
           <i data-lucide="list-music" style="fill:none;display:block;width:16px;height:16px;stroke:currentColor"></i>
-          <span class="qmenu-label">Tracklist</span>
+          <span class="qmenu-label">Show tracklist</span>
         </button>
         <button class="player-qmenu-action" id="qmenu-save-btn" onclick="closePlayerQMenu(); toggleBookmark()">
           <i data-lucide="bookmark" style="fill:none;display:block;width:16px;height:16px;stroke:currentColor"></i>
@@ -7829,24 +7831,12 @@ addEventListener('resize', checkGameMarquee);
 /* ── Mobile: keep --player-h in sync with actual player height (shell incl. qmenu) ── */
 if (window.innerWidth <= 768) {
   const _playerShellEl = document.querySelector('.player-shell');
-  if (_playerShellEl) {
-    const BOTTOM_OFFSET = 16;
+  if (_playerShellEl && window.ResizeObserver) {
     const _syncPlayerH = () => {
-      document.documentElement.style.setProperty('--player-h', `${_playerShellEl.offsetHeight + BOTTOM_OFFSET}px`);
+      const h = document.querySelector('.player-shell').offsetHeight;
+      document.documentElement.style.setProperty('--player-h', `${h + 16}px`);
     };
-    // Initial sync + ResizeObserver as baseline
-    _syncPlayerH();
-    if (window.ResizeObserver) new ResizeObserver(_syncPlayerH).observe(_playerShellEl);
-    // rAF loop during qmenu open/close transitions (max-height CSS transition = ~220ms)
-    const _origOpenQMenu = openPlayerQMenu;
-    const _origCloseQMenu = closePlayerQMenu;
-    const _rafSync = (ms) => {
-      const end = performance.now() + ms;
-      const loop = () => { _syncPlayerH(); if (performance.now() < end) requestAnimationFrame(loop); };
-      requestAnimationFrame(loop);
-    };
-    openPlayerQMenu = function() { _origOpenQMenu.apply(this, arguments); _rafSync(280); };
-    closePlayerQMenu = function() { _origCloseQMenu.apply(this, arguments); _rafSync(280); };
+    new ResizeObserver(_syncPlayerH).observe(_playerShellEl);
   }
 }
 
