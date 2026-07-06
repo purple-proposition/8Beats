@@ -969,7 +969,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .btn:disabled, .btn[disabled] { opacity: 0.4 !important; cursor: not-allowed !important; pointer-events: none; }
 /* ── Secondary: glass dark — same surface as search bar ── */
 .btn-secondary {
-  background: rgba(0,0,0,0.40);
+  background: rgba(30,30,30,0.40);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
   border: none;
@@ -1234,8 +1234,8 @@ html.light .newsletter-card { background: transparent; }
 .panel-cookie {
   pointer-events: all;
   padding-bottom: var(--space-4) !important;
-  border: 1px solid rgba(255,255,255,0.11) !important;
-  background: rgba(0,0,0,0.40) !important;
+  border: none !important;
+  background: rgba(30,30,30,0.40) !important;
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
 }
@@ -1263,9 +1263,9 @@ html.light .newsletter-card { background: transparent; }
 /* ── Support / Donate panel ── */
 .panel-support {
   pointer-events: all;
-  border: 1px solid rgba(255,255,255,0.11) !important;
+  border: none !important;
   border-radius: var(--radius) !important;
-  background: rgba(0,0,0,0.40) !important;
+  background: rgba(30,30,30,0.40) !important;
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56) !important;
 }
@@ -1320,10 +1320,10 @@ html.light .newsletter-card { background: transparent; }
 #donate-popup-card {
   position: relative; z-index: 1;
   width: 320px;
-  background: rgba(0,0,0,0.40);
+  background: rgba(30,30,30,0.40);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  border: 1px solid rgba(255,255,255,0.11); border-radius: var(--radius-sm);
+  border: none; border-radius: var(--radius-sm);
   padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4);
 }
 #donate-popup-header {
@@ -1372,9 +1372,9 @@ html.light .newsletter-card { background: transparent; }
  * ──────────────────────────────────────────────────────────────────────────── */
 .player-shell {
   pointer-events: all;
-  border: 1px solid rgba(255,255,255,0.11);
+  border: none;
   border-radius: var(--radius-btn);
-  background: rgba(0,0,0,0.48);
+  background: rgba(30,30,30,0.48);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   display: flex;
@@ -3859,10 +3859,10 @@ body { padding-top: 24px; }
 #ham-menu {
   position: absolute; top: calc(100% + 8px); right: 8px;
   min-width: 192px;
-  background: rgba(0,0,0,0.40);
+  background: rgba(30,30,30,0.40);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  border: 1px solid rgba(255,255,255,0.11);
+  border: none;
   border-radius: var(--radius-btn);
   z-index: var(--z-nav);
   pointer-events: none;
@@ -3979,10 +3979,10 @@ body { padding-top: 24px; }
   width: min(400px, calc(100vw - 32px));
   max-height: min(560px, calc(100vh - 80px));
   overflow: hidden;
-  background: rgba(0,0,0,0.40);
+  background: rgba(30,30,30,0.40);
   backdrop-filter: blur(24px) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) brightness(0.56);
-  border: 1px solid rgba(255,255,255,0.11);
+  border: none;
   border-radius: var(--radius-btn);
   z-index: var(--z-modal);
   opacity: 0;
@@ -4435,11 +4435,11 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 #ts-panel {
   position: absolute; top: 0; left: 0; right: 0; z-index: 1;
   display: flex; flex-direction: column;
-  background: rgba(0,0,0,0.40);
+  background: rgba(30,30,30,0.40);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
   border-radius: var(--radius-btn);
-  border: 1px solid rgba(255,255,255,0.11);
+  border: none;
   overflow: hidden;
   pointer-events: none;
 }
