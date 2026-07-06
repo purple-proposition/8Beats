@@ -653,7 +653,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   width: fit-content;
   min-width: 210px;
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  border: none;
   border-radius: var(--radius-sm);
   z-index: var(--z-top);
   backdrop-filter: var(--glass-backdrop);
@@ -741,7 +741,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   width: min(300px, calc(100vw - 32px));
   transform: translate(-50%, calc(-50% + 8px)) scale(0.95);
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  border: none;
   border-radius: var(--radius-sm);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
@@ -1091,7 +1091,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── Panels ── */
 .panel { position: fixed; width: var(--sidebar-full); min-width: 200px; padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); overflow: hidden; z-index: var(--z-panel); transition: opacity var(--dur-medium) var(--ease-standard), transform var(--dur-medium) var(--ease-standard); }
-.panel.glass { background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); }
+.panel.glass { background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop); border: none; border-radius: var(--radius-sm); }
 .panel.closing {
   opacity: 0; filter: blur(10px); transform: translateY(8px) scale(0.95); pointer-events: none;
   transition: opacity   200ms var(--ease-in),
@@ -1556,7 +1556,7 @@ html.light .newsletter-card { background: transparent; }
 }
 .progress-tooltip {
   position: fixed; z-index: var(--z-top);
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  background: var(--glass-bg); border: none;
   backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-btn); padding: var(--space-2) var(--space-4);
   font-family: var(--font);
@@ -2545,7 +2545,7 @@ html.light .newsletter-card { background: transparent; }
 /* ── Explore modal theming ── */
 .explore-card {
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  border: none;
   border-radius: var(--radius);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
@@ -2599,7 +2599,7 @@ html.light .newsletter-card { background: transparent; }
   max-height: var(--tool-panel-max-h);
   display: none; flex-direction: column;  /* JS sets display:flex to open */
   border-radius: var(--radius);
-  border: 1px solid var(--glass-border);
+  border: none;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
@@ -2779,7 +2779,7 @@ html.light .newsletter-card { background: transparent; }
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid var(--glass-border);
+  border: none;
   border-radius: var(--radius-sm);
   padding: var(--space-3) var(--space-4);
   font-family: var(--font); font-size: var(--text-base); line-height: 1.5;
@@ -2806,7 +2806,7 @@ html.light .newsletter-card { background: transparent; }
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
-  border: 1px solid var(--glass-border);
+  border: none;
   border-radius: var(--radius-sm);
   padding: var(--space-3) var(--space-4);
   font-family: var(--font);
@@ -3515,7 +3515,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
   width: 480px; max-width: calc(100vw - 32px); z-index: var(--z-tracklist);
-  border-radius: var(--radius); border: 1px solid var(--glass-border); overflow: hidden;
+  border-radius: var(--radius); border: none; overflow: hidden;
   background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
   opacity: 0; filter: blur(8px);
   /* exit — symétrique : mêmes durées que l'entrée, ease-in (accélère) */
