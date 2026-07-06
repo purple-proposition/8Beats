@@ -3405,6 +3405,10 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   border-bottom: none;
 }
 .show-tracklist-inline .track + .track { border-top: none; }
+.show-tracklist-inline .track-time {
+  font-size: var(--text-sm); color: var(--text-tertiary);
+  flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font);
+}
 .show-tracklist-inline .track-info {
   display: flex; flex-direction: column; flex: 1; min-width: 0; gap: var(--space-2);
 }
@@ -8279,13 +8283,13 @@ function openShow(key) {
     </div>
   ` + tl.map((t, i) => `
     <div class="track" role="button" tabindex="0" onclick="seekToShow('${t.ts}', '${key}')">
+      <span class="track-time">${t.ts}</span>
       <div class="track-info">
         <span class="track-name lh-d">${t.name}</span>
         ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
       </div>
       <div class="track-right">
         ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-        <button class="ts-btn" onclick="event.stopPropagation();seekToShow('${t.ts}', '${key}')">${t.ts}</button>
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
