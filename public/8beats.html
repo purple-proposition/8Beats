@@ -3314,7 +3314,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .show-tl-summary {
   font-size: var(--text-base); color: var(--text-tertiary);
-  margin-top: -6px; line-height: 1; /* show-main gap:24px → 24-6=18px visual gap */
+  margin-top: 0; line-height: 1; /* show-main gap:24px → 24-0=24px visual gap */
   mask-image: none; -webkit-mask-image: none;
 }
 .show-art-credit {
@@ -3397,8 +3397,8 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-tracklist-inline .track:hover::before { background: rgba(255,255,255,0.06); }
 .show-tracklist-inline .track-info, .show-tracklist-inline .track-right { position: relative; z-index: 1; }
-.show-tracklist-inline .tracklist-header + .track { padding-top: 18px; }
-.show-tracklist-inline .tracklist-header + .track::before { top: calc(18px - var(--hover-bleed)); }
+.show-tracklist-inline .tracklist-header + .track { padding-top: 24px; }
+.show-tracklist-inline .tracklist-header + .track::before { top: calc(24px - var(--hover-bleed)); }
 .show-tracklist-inline .track:last-child::before { bottom: calc(16px - var(--hover-bleed)); }
 .show-tracklist-inline .track:last-child {
   padding-bottom: 16px;
