@@ -1937,7 +1937,7 @@ html.light .newsletter-card { background: transparent; }
   /* Cookie panel — column layout with title visible */
   .panel-cookie {
     border-radius: var(--radius-btn) !important;
-    border: 1px solid var(--border-subtle) !important;
+    border: none !important;
     flex-direction: column !important;
     gap: var(--space-3);
     padding: var(--space-3) var(--space);
@@ -2047,7 +2047,7 @@ html.light .newsletter-card { background: transparent; }
   .player-inner { grid-column: unset; }
   .player-shell {
     border-radius: var(--radius);
-    border: 1px solid var(--border-default);
+    border: none;
   }
   .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; align-items: stretch; }
   .play-btn { width: 58px; height: auto; align-self: stretch; flex-shrink: 0; border-radius: var(--radius-control); }
@@ -4953,8 +4953,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   .show-desc { order: 3; }
   .show-main > .hero-tags { order: 4; margin-top: 0; justify-content: flex-start; }
   .show-tracklist-wrap { order: 5; }
-  .show-tl-summary { order: 6; }
-  .show-art-credit { order: 7; }
+  .show-tl-summary { order: 6; color: #c4c4c4; }
+  .show-art-credit { order: 7; color: #c4c4c4; }
 
   /* Hamburger: bare icon, player-ctrl icon color, 44px tap target */
   #ham-wrap { margin-right: 0; }
