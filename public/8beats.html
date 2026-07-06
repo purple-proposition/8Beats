@@ -68,8 +68,8 @@
   /* ── Semantic — Surfaces ── */
   --surface-page:           #000000;   /* fond global */
   --surface-page-rgb:       0,0,0;
-  --surface-subtle:         #2A2A2A;
-  --surface-elevated:       #424242;
+  --surface-subtle:         #262626;   /* Tailwind neutral-800 */
+  --surface-elevated:       #404040;   /* Tailwind neutral-700 */
   --surface-elevated-rgb:   29,29,29;  /* base RGB pour glass effects */
   --surface-overlay:        rgba(11,11,11,0.92);
   /* ── Glass system — surface unique pour tous les contenants ──
@@ -78,21 +78,21 @@
   --glass-bg:               rgba(0, 0, 0, 0.40);
   --glass-blur:             24px;
   --glass-backdrop:         blur(24px) saturate(160%) brightness(0.56);
-  --glass-border:           #191919;
+  --glass-border:           #171717;   /* Tailwind neutral-900 */
   --surface-glass:          var(--glass-bg);
 
   /* ── Semantic — Text (3 rôles) ── */
-  --text-primary:       #f2f2f2;   /* titres, CTA, track names — moins agressif que #fafafa */
-  --text-primary-rgb:   242,242,242;
-  --text-secondary:     #A1A1A1;   /* corps, descriptions, labels */
-  --text-tertiary:      #A1A1A1;   /* metadata, timestamps, placeholders */
+  --text-primary:       #f5f5f5;   /* Tailwind neutral-100 */
+  --text-primary-rgb:   245,245,245;
+  --text-secondary:     #a3a3a3;   /* Tailwind neutral-400 */
+  --text-tertiary:      #a3a3a3;   /* Tailwind neutral-400 */
   --text-disabled:      #505050;
 
   /* ── Semantic — Borders & strokes ── */
-  --border-subtle:      #191919;
-  --border-default:     #191919;
+  --border-subtle:      #171717;   /* Tailwind neutral-900 */
+  --border-default:     #171717;   /* Tailwind neutral-900 */
   --border-hover:       #484848;
-  --border-btn:         #191919;
+  --border-btn:         #171717;   /* Tailwind neutral-900 */
   --surface-btn-hover:  rgba(var(--text-primary-rgb), 0.08);
 
   /* ── Semantic — Interactive surfaces ── */
@@ -287,24 +287,24 @@
 
 /* ── LIGHT MODE — semantic overrides only ── */
 html.light {
-  --surface-page:           #f7f7f7;
-  --surface-page-rgb:       247,247,247;
-  --surface-subtle:         #ededed;
-  --surface-elevated:       #e4e4e4;
-  --surface-elevated-rgb:   228,228,228;
-  --surface-overlay:        rgba(247,247,247,0.92);
+  --surface-page:           #f5f5f5;
+  --surface-page-rgb:       245,245,245;
+  --surface-subtle:         #e5e5e5;
+  --surface-elevated:       #e5e5e5;
+  --surface-elevated-rgb:   229,229,229;
+  --surface-overlay:        rgba(245,245,245,0.92);
   --surface-glass:          var(--glass-bg);
 
-  --text-primary:           #0b0b0b;
-  --text-primary-rgb:       11,11,11;
-  --text-secondary:         #3a3a3a;
-  --text-tertiary:          #707070;
-  --text-disabled:          #b0b0b0;
+  --text-primary:           #0a0a0a;
+  --text-primary-rgb:       10,10,10;
+  --text-secondary:         #404040;
+  --text-tertiary:          #737373;
+  --text-disabled:          #a3a3a3;
 
-  --border-subtle:          #d0d0d0;
-  --border-default:         #d0d0d0;
-  --border-hover:           #a0a0a0;
-  --border-btn:             #d0d0d0;
+  --border-subtle:          #d4d4d4;
+  --border-default:         #d4d4d4;
+  --border-hover:           #a3a3a3;
+  --border-btn:             #d4d4d4;
   --surface-btn-hover:      rgba(var(--text-primary-rgb), 0.08);
 
   --surface-hover:          transparent;
@@ -312,9 +312,9 @@ html.light {
   --surface-control:        rgba(0,0,0,0.06);
   --surface-control-hover:  rgba(0,0,0,0.12);
 
-  --icon-primary:           #0b0b0b;
-  --icon-secondary:         #3a3a3a;
-  --icon-tertiary:          #707070;
+  --icon-primary:           #0a0a0a;
+  --icon-secondary:         #404040;
+  --icon-tertiary:          #737373;
 
   --overlay:                rgba(0,0,0,0.36);
   --scrim:                  rgba(0,0,0,0.20);
@@ -322,35 +322,35 @@ html.light {
   --shadow-md:              none;
   --shadow-lg:              none;
 
-  --action-primary-bg:      #0b0b0b;
-  --action-primary-fg:      #f2f2f2;
-  --action-primary-border:  #0b0b0b;
-  --action-secondary-fg:    #707070;
-  --action-secondary-border: #d0d0d0;
+  --action-primary-bg:      #0a0a0a;
+  --action-primary-fg:      #f5f5f5;
+  --action-primary-border:  #0a0a0a;
+  --action-secondary-fg:    #737373;
+  --action-secondary-border: #d4d4d4;
 
-  --accent:                 #0b0b0b;
-  --accent-rgb:             11,11,11;
-  --accent-hover:           #3a3a3a;
-  --accent-soft:            rgba(11,11,11,0.08);
+  --accent:                 #0a0a0a;
+  --accent-rgb:             10,10,10;
+  --accent-hover:           #404040;
+  --accent-soft:            rgba(10,10,10,0.08);
 
-  --focus-ring:             #0b0b0b;
-  --color-success:          #0b0b0b;
-  --color-warning:          #3a3a3a;
-  --color-error:            #0b0b0b;
+  --focus-ring:             #0a0a0a;
+  --color-success:          #0a0a0a;
+  --color-warning:          #404040;
+  --color-error:            #0a0a0a;
 
-  --toggle-knob:            #3a3a3a;
-  --toggle-icon:            #f2f2f2;
-  --badge-bg:               rgba(11,11,11,0.04);
-  --badge-border:           #d0d0d0;
+  --toggle-knob:            #404040;
+  --toggle-icon:            #f5f5f5;
+  --badge-bg:               rgba(10,10,10,0.04);
+  --badge-border:           #d4d4d4;
   --color-live:             #E05A4A;
   --color-live-rgb:         224,90,74;
-  --color-debug:            #707070;
+  --color-debug:            #737373;
 
   /* ── Glass overrides for light mode ── */
-  --glass-bg:               rgba(248, 248, 248, 0.40);
+  --glass-bg:               rgba(245, 245, 245, 0.40);
   --glass-backdrop:         blur(24px) saturate(160%) brightness(1.20);
   --glass-border:           rgba(0, 0, 0, 0.08);
-  --surface-glass:          rgba(248, 248, 248, 0.40);
+  --surface-glass:          rgba(245, 245, 245, 0.40);
 }
 
 /* ============================================================
