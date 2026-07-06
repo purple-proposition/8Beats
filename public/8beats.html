@@ -73,9 +73,9 @@
   --surface-elevated-rgb:   29,29,29;  /* base RGB pour glass effects */
   --surface-overlay:        rgba(11,11,11,0.92);
   /* ── Glass system — surface unique pour tous les contenants ──
-     Formule dark glass : rgba(0,0,0,0.40) + blur(24px) saturate(160%) brightness(0.56)
+     Formule dark glass : rgba(75,75,75,0.40) + blur(24px) saturate(160%) brightness(0.56)
      Même valeur sur sidebar, player, modals, cards, tooltips, popups, menus. */
-  --glass-bg:               rgba(0, 0, 0, 0.40);
+  --glass-bg:               rgba(75, 75, 75, 0.40);
   --glass-blur:             24px;
   --glass-backdrop:         blur(24px) saturate(160%) brightness(0.56);
   --glass-border:           #171717;   /* Tailwind neutral-900 */
@@ -1114,10 +1114,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Pitch / Join the party ── */
 .pitch-card {
   position: relative; overflow: hidden;
-  border: 1px solid var(--border-btn); border-radius: var(--radius);
+  border: none; border-radius: var(--radius);
   padding: var(--space-6) var(--space-7);
   text-align: center;
-  background: transparent;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   display: flex; align-items: center; justify-content: center;
 }
 .pitch-inner {
@@ -1152,13 +1154,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Keep the Beat Going ── */
 .keepbeat-card {
   position: relative; overflow: hidden;
-  border: 1px solid var(--border-btn); border-radius: var(--radius);
+  border: none; border-radius: var(--radius);
   padding: var(--space-8) var(--space-7);
   text-align: center;
-  background: transparent;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   display: flex; align-items: center; justify-content: center;
 }
-html.light .keepbeat-card { background: transparent; }
 .keepbeat-title {
   font-family: 'Alpha Lyrae', var(--font);
   font-size: 32px; font-weight: 400;
@@ -1175,13 +1178,14 @@ html.light .keepbeat-card { background: transparent; }
 /* ── Newsletter card ── */
 .newsletter-card {
   position: relative; overflow: hidden;
-  border: 1px solid var(--border-btn); border-radius: var(--radius);
+  border: none; border-radius: var(--radius);
   padding: var(--space-7);
   text-align: center;
-  background: transparent;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   display: flex; align-items: center; justify-content: center;
 }
-html.light .newsletter-card { background: transparent; }
 .newsletter-inner {
   display: flex; flex-direction: column; align-items: center;
   gap: var(--space-5); position: relative; z-index: 1; width: 100%;
