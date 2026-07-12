@@ -1482,9 +1482,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .track-name { font-size: var(--text-base); line-height: 1.4; color: var(--text-primary); }
 .track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
 .track-ago  { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; }
+.track-time { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font); }
 
 /* ── Tracklist mode — show-page visual language inside player panel ── */
 /* font-size stays at 14px (--text-base) for both track-name and track-game — same as base */
+.playlist.tracklist .track { cursor: pointer; }
 .playlist.tracklist .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 
 /* Legacy — kept for compat */
@@ -6983,14 +6985,14 @@ function switchToTracklist(showTitle) {
       </button>
     </div>
     ${tracks.map((t, i) => `
-      <div class="track" style="${i===0?'padding-top:0;':''}">
+      <div class="track" role="button" tabindex="0" onclick="seekTo('${t.ts}')" style="${i===0?'padding-top:0;':''}">
+        <span class="track-time">${t.ts}</span>
         <div class="track-info">
           <span class="track-name">${t.name}</span>
           <span class="track-game">${t.game}</span>
         </div>
         <div class="track-right">
-          ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
-          <button class="ts-btn" onclick="seekTo('${t.ts}')">${t.ts}</button>
+          ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
         </div>
       </div>
     `).join('')}
