@@ -1427,7 +1427,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-bar-main { min-height: 0; display: flex; align-items: center; padding: var(--space-4); gap: var(--space-4); }
 
 /* Player play — taille + flex-shrink spécifiques */
-.play-btn { width: 68px; height: 68px; flex-shrink: 0; background: rgba(255,255,255,0.11); }
+.play-btn { flex-shrink: 0; background: rgba(255,255,255,0.11); }
 .play-btn:hover { background: rgba(255,255,255,0.16); }
 .play-btn svg { width: 20px; height: 20px; }
 
@@ -1884,7 +1884,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     border: none;
   }
   .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; align-items: stretch; }
-  .play-btn { width: 58px; height: auto; align-self: stretch; flex-shrink: 0; border-radius: var(--radius-control); }
+  .play-btn { flex-shrink: 0; border-radius: var(--radius-control); }
   .play-btn svg { width: 24px; height: 24px; }
   .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: 9px; justify-content: center; }
   .player-info-top { gap: var(--space-2); }
@@ -6825,6 +6825,21 @@ document.addEventListener('click', e => {
 /* ── Play / Pause ── */
 let playing = false;
 const playBtn = document.getElementById('play-btn');
+
+/* Keep play-btn perfectly square, sized to match the 3-line player-info block.
+   JS-driven (not aspect-ratio) because aspect-ratio + align-self:stretch inside
+   a flex row resolves width before the stretched height is known — unreliable. */
+(function () {
+  const infoEl = document.querySelector('.player-info');
+  if (!infoEl || !playBtn) return;
+  const syncSize = () => {
+    const h = infoEl.getBoundingClientRect().height;
+    if (h > 0) { playBtn.style.width = h + 'px'; playBtn.style.height = h + 'px'; }
+  };
+  syncSize();
+  new ResizeObserver(syncSize).observe(infoEl);
+  document.fonts?.ready.then(syncSize);
+})();
 
 /* Live radio stream */
 const STREAM_URL = 'https://stream.radiojar.com/2fa4wbch308uv';
