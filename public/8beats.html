@@ -5712,18 +5712,18 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
             </div>
             <div class="player-title-row">
               <div class="player-title-wrap">
-                <span class="player-title" id="player-title">Mark Mothersbaugh & Josh Mancell – Tiny Tiger</span>
+                <span class="player-title" id="player-title">Garoad – A Star Pierces the Darkness</span>
               </div>
             </div>
-            <div class="player-game-wrap"><span class="player-game" id="player-game">Crash Bandicoot 2: Cortex Strikes Back</span></div>
+            <div class="player-game-wrap"><span class="player-game" id="player-game">VA-11 HALL-A: Cyberpunk Bartender Action</span></div>
           </div>
           <div class="player-controls">
             <button class="back-to-live" id="back-to-live-btn" onclick="backToLive()">
               <span class="back-live-dot"></span>
               Back to live
             </button>
-            <button class="player-ctrl icon-btn--spotify" id="spotify-btn" aria-label="Spotify">
-              <svg viewBox="0 0 24 24" style="stroke:none;display:block;"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
+            <button class="player-ctrl icon-btn--spotify" id="spotify-btn" aria-label="Available on other platforms" aria-expanded="false" onclick="showMusicLinksPopup('https://open.spotify.com/track/7zzPjPRCw5ppY2kjt0wFuO', this)">
+              <i data-lucide="music" style="stroke:currentColor;fill:none;display:block"></i>
             </button>
             <div class="vol-wrap" id="vol-wrap"></div>
             <button class="player-ctrl" id="playlist-btn"
@@ -6785,10 +6785,10 @@ function backToLive() {
   const dotEl   = document.querySelector('.live-dot');
 
   // Restore live state
-  titleEl.dataset.text = 'Mark Mothersbaugh & Josh Mancell – Tiny Tiger';
-  titleEl.textContent  = 'Mark Mothersbaugh & Josh Mancell – Tiny Tiger';
-  gameEl.dataset.text  = 'Crash Bandicoot 2: Cortex Strikes Back';
-  gameEl.textContent   = 'Crash Bandicoot 2: Cortex Strikes Back';
+  titleEl.dataset.text = 'Garoad – A Star Pierces the Darkness';
+  titleEl.textContent  = 'Garoad – A Star Pierces the Darkness';
+  gameEl.dataset.text  = 'VA-11 HALL-A: Cyberpunk Bartender Action';
+  gameEl.textContent   = 'VA-11 HALL-A: Cyberpunk Bartender Action';
   dotEl.style.display  = '';
   labelEl.textContent  = 'Evening Program';
 
