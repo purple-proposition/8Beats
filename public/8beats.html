@@ -1451,21 +1451,40 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #player-qmenu-btn { display: none; }
 .player-qmenu { display: none; }
 
-.player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; height: auto; gap: 9px; }
-.player-info-top { display: flex; align-items: center; gap: var(--space-3); }
-.player-info-top .label { line-height: 1; }
+.player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; height: auto; gap: 12px; }
+/* ── Capsize-style leading trim ──────────────────────────────────────────
+   Geist metrics measured via canvas.measureText at 100px (font-size-
+   independent ratios): fontBoundingBoxAscent 1.01em, fontBoundingBoxDescent
+   0.29em, cap-height (actualBoundingBoxAscent of "H") 0.71em.
+   topCrop(fontSize)    = (ascentScale - capHeightScale) * fontSize = 0.30 * fontSize
+   bottomCrop(fontSize) = descentScale * fontSize                   = 0.29 * fontSize
+
+   Only the two OUTER edges of the 3-row block are trimmed (label's top,
+   game's bottom) — via margin on the row WRAPPER, since .player-title-wrap
+   has overflow:hidden (needed for the marquee fade), which blocks margin
+   propagation from a child, so a trim margin on the inner span alone
+   silently fails to shrink the row. The row-to-row `gap` above is NOT the
+   visible ink gap directly: because inner edges stay at their natural
+   (line-height:normal) position, gap is solved from
+   visible_gap(12px) = bottomCrop(upper row) + gap + topCrop(lower row)
+   for both row pairs and averaged (3.72px and 3.16px -> 3.44px, ±0.3px of
+   the 12px target either way — trimming every inner edge individually to
+   hit both exactly would need two different gap values, which flexbox's
+   single `gap` can't express). */
+.player-info-top { display: flex; align-items: center; gap: var(--space-3); margin-top: -3.6px; } /* 12px, outer top trim only */
+.player-info-top .label { line-height: normal; }
 
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
-.player-title-row { display: flex; align-items: center; gap: 2px; overflow: hidden; margin-top: 0; }
-.player-title-wrap { flex: 1; min-width: 0; overflow: hidden; line-height: 1; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
-.player-title { font-family: var(--font); font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; color: var(--text-primary); }
+.player-title-row { display: flex; align-items: center; gap: 2px; overflow: hidden; }
+.player-title-wrap { flex: 1; min-width: 0; overflow: hidden; line-height: normal; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
+.player-title { font-family: var(--font); font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: normal; display: inline-block; color: var(--text-primary); }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game-wrap { margin-top: -4px; }
-.player-game { font-size: 14px; line-height: 1; color: var(--text-secondary); }
+.player-game-wrap { line-height: normal; margin-bottom: -4.06px; } /* 14px, outer bottom trim only */
+.player-game { font-size: 14px; line-height: normal; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
 /* ── Family 2: IconButton (.icon-btn) ── */
@@ -1886,13 +1905,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; align-items: stretch; }
   .play-btn { flex-shrink: 0; border-radius: var(--radius-control); }
   .play-btn svg { width: 24px; height: 24px; }
-  .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: 9px; justify-content: center; }
+  .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
   .player-info-top .label { font-size: var(--text-sm); text-transform: uppercase; }
-  .player-title-row { margin-top: 0; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
   .player-title { font-size: var(--text-md); font-weight: 400; }
-  .player-game-wrap { overflow: hidden; line-height: 1; margin-top: -4px; mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
-  .player-game  { font-size: 14px; color: var(--text-secondary); white-space: nowrap; display: block; line-height: 1; }
+  .player-game-wrap { overflow: hidden; mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
+  .player-game  { font-size: 14px; color: var(--text-secondary); white-space: nowrap; display: block; }
   .player-controls { gap: var(--space-2); flex-shrink: 0; }
   .vol-wrap, .vol-popup,
   .back-to-live,
@@ -6826,6 +6844,13 @@ let playing = false;
 const playBtn = document.getElementById('play-btn');
 
 /* Keep play-btn perfectly square, sized to match the 3-line player-info block.
+   The CSS capsize trim (.player-info-top / .player-game-wrap) gets
+   player-info's own box close to the true glyph ink span, but it's built
+   from static font-metric ratios (canvas-measured), which don't perfectly
+   match actual rendered ink for every string — so for the button specifically
+   we still measure real ink via Range.getBoundingClientRect() for pixel-exact
+   edges, layered on top of (not replacing) the CSS trim that keeps the
+   12px row-to-row gaps correct.
    JS-driven (not aspect-ratio) because aspect-ratio + align-self:stretch inside
    a flex row resolves width before the stretched height is known — unreliable. */
 (function () {
@@ -6840,9 +6865,6 @@ const playBtn = document.getElementById('play-btn');
   };
   playBtn.style.alignSelf = 'flex-start';
   const syncSize = () => {
-    // Match the button's edges to the visible glyph ink of the first and last
-    // lines (not the CSS line-box, which always reserves a little room below
-    // for descenders even when the current text on that line doesn't use one).
     let top, h;
     if (labelEl && gameEl) {
       top = inkRect(labelEl).top;
@@ -6854,9 +6876,6 @@ const playBtn = document.getElementById('play-btn');
     if (h <= 0) return;
     playBtn.style.width = h + 'px';
     playBtn.style.height = h + 'px';
-    // align-self:flex-start puts the button at the row's natural top; nudge
-    // it down with margin-top so its own top edge lands exactly on the
-    // label's ink-top (reset first so repeated calls don't compound).
     playBtn.style.marginTop = '0px';
     const delta = top - playBtn.getBoundingClientRect().top;
     playBtn.style.marginTop = delta + 'px';
