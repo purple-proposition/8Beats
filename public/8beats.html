@@ -1452,33 +1452,32 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #player-qmenu-btn { display: none; }
 .player-qmenu { display: none; }
 
-.player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; height: auto; gap: 24px; }
-/* Capsize-style leading trim — only the two OUTER edges of the 3-row block
-   are trimmed (label's top, game's bottom), via margin on the row WRAPPER
-   (needed because .player-title-wrap's overflow:hidden blocks margin
-   propagation from a plain inner span). The two INNER edges (info-top's
-   bottom, title-row's top/bottom, game-wrap's top) are left untrimmed, so
-   they don't subtract anything from the flex `gap` — gap:24px measures as
-   exactly 24px of real ink-to-ink space for both row pairs (verified via
-   Range.getBoundingClientRect on the actual text, not just element boxes).
-   Geist metrics via canvas.measureText at 100px: ascent 1.01em,
-   descent 0.29em, cap-height 0.71em.
-   topCrop(fontSize) = (ascentScale-capHeightScale)*fontSize = 0.30*fontSize
-   bottomCrop(fontSize) = descentScale*fontSize                = 0.29*fontSize */
-.player-info-top { display: flex; align-items: center; gap: var(--space-3); margin-top: -3.6px; } /* 12px, outer top trim only */
-.player-info-top .label { line-height: normal; }
+.player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; height: auto; gap: 9px; }
+/* Capsize (line-height:normal + font-metric trim) tried three times and
+   abandoned for good this time: every calibration was measured/verified in
+   this session's Chromium environment and did not hold up on a real-device
+   check, each time in a different way (too small, too big, uneven). Back to
+   line-height:1 (tight, proven safe for Geist everywhere else on the site)
+   with a plain, empirically-calibrated gap + single last-row trim — this
+   exact setup (9px / -4px) was the one actually confirmed correct against a
+   real screenshot earlier in this project. Do not reintroduce
+   line-height:normal here without a real-device screenshot in hand to
+   calibrate against — canvas-measured font metrics from this dev
+   environment have not once transferred correctly. */
+.player-info-top { display: flex; align-items: center; gap: var(--space-3); }
+.player-info-top .label { line-height: 1; }
 
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 .player-title-row { display: flex; align-items: center; gap: 2px; overflow: hidden; }
-.player-title-wrap { flex: 1; min-width: 0; overflow: hidden; line-height: normal; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
-.player-title { font-family: var(--font); font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: normal; display: inline-block; color: var(--text-primary); }
+.player-title-wrap { flex: 1; min-width: 0; overflow: hidden; line-height: 1; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
+.player-title { font-family: var(--font); font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; color: var(--text-primary); }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game-wrap { line-height: normal; margin-bottom: -4.06px; } /* 14px, outer bottom trim only */
-.player-game { font-size: 14px; line-height: normal; color: var(--text-secondary); }
+.player-game-wrap { line-height: 1; margin-top: -4px; } /* empirically-calibrated trim */
+.player-game { font-size: 14px; line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
 /* ── Family 2: IconButton (.icon-btn) ── */
@@ -1900,7 +1899,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; align-items: stretch; }
   .play-btn { flex-shrink: 0; border-radius: var(--radius-control); }
   .play-btn svg { width: 24px; height: 24px; }
-  .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: 24px; justify-content: center; }
+  .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: 9px; justify-content: center; }
   .player-info-top .label { font-size: var(--text-sm); text-transform: uppercase; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
   .player-title { font-size: var(--text-md); font-weight: 400; }
