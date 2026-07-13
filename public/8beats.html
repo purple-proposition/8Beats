@@ -1427,7 +1427,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .playlist-inner {
   overflow-y: auto;
   max-height: 320px;
-  padding: var(--space-5) var(--space-5) 0;
+  padding: var(--space-4) var(--space-4) 0;
   display: flex; flex-direction: column;
   gap: var(--space-4);
   opacity: 0;
@@ -1446,7 +1446,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
               margin  200ms cubic-bezier(0.4, 0, 1, 1) 0ms;
 }
 .player-wrap.pl-open #player-sep {
-  margin: var(--space-5) var(--space-5) 0; opacity: 1;
+  margin: var(--space-4) var(--space-4) 0; opacity: 1;
   /* ENTER: flash at full-width, then contract */
   transition: opacity 80ms var(--ease-hover) 0ms,
               margin  300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms;
@@ -1532,10 +1532,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .progress-bar-wrap {
   height: 0; overflow: hidden;
   transition: height var(--dur-panel) var(--ease-panel);
-  padding: 0 var(--space-5);
+  padding: 0 var(--space-4);
   display: flex; align-items: center; gap: var(--space-3);
 }
-.progress-bar-wrap.visible { height: 48px; padding: 0 var(--space-5) var(--space-3); }
+.progress-bar-wrap.visible { height: 48px; padding: 0 var(--space-4) var(--space-3); }
 .progress-time { font-size: var(--text-sm); font-weight: 400; line-height: 1; color: var(--text-tertiary); flex-shrink: 0; min-width: 32px; font-family: var(--font); }
 .progress-time.end { text-align: right; }
 .progress-track {
@@ -1568,7 +1568,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   position: fixed; z-index: var(--z-top);
   background: var(--glass-bg); border: none;
   backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
-  border-radius: var(--radius-btn); padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-btn); padding: var(--space-2) var(--space-4);
   font-family: var(--font);
   pointer-events: none; white-space: nowrap;
   opacity: 0; filter: blur(6px); transform: translateY(6px);
@@ -1586,7 +1586,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-bar {
   display: flex; flex-direction: column;
 }
-.player-bar-main { min-height: 0; display: flex; align-items: center; padding: var(--space-5); gap: var(--space-5); }
+.player-bar-main { min-height: 0; display: flex; align-items: center; padding: var(--space-4); gap: var(--space-4); }
 
 /* Player play — taille + flex-shrink spécifiques */
 .play-btn { width: 68px; height: 68px; flex-shrink: 0; background: rgba(255,255,255,0.11); }
@@ -2059,7 +2059,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     border-radius: var(--radius);
     border: none;
   }
-  .player-bar-main { padding: 24px; gap: 24px; min-height: 0; align-items: stretch; }
+  .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; align-items: stretch; }
   .play-btn { width: 58px; height: auto; align-self: stretch; flex-shrink: 0; border-radius: var(--radius-control); }
   .play-btn svg { width: 24px; height: 24px; }
   .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
@@ -2111,7 +2111,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     white-space: nowrap;
   }
   .player-qmenu-action:active { color: var(--text-primary); background: var(--surface-control-hover); }
-  .player-qmenu-inner { padding: 24px 24px var(--space-3); gap: 24px; }
+  .player-qmenu-inner { padding: var(--space) var(--space) var(--space-3); gap: var(--space); }
   .player-qmenu-action .back-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff3b3b; flex-shrink: 0; }
   /* Both states: icons only — equal width, no text labels */
   .player-qmenu-action { gap: 0; }
@@ -2132,7 +2132,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
   /* ── Playlist ── */
   /* playlist-clip height managed by JS — no max-height override needed */
-  .playlist-inner { padding: 24px 24px 0; max-height: 260px; gap: 24px; mask-image: none !important; -webkit-mask-image: none !important; }
+  .playlist-inner { padding: var(--space) var(--space) 0; max-height: 260px; gap: var(--space-4); mask-image: none !important; -webkit-mask-image: none !important; }
   /* No vertical padding on track — gap alone handles the 24px spacing */
   .track { padding: 0; border-radius: 0; }
   .track-name { font-size: var(--text-base); }
