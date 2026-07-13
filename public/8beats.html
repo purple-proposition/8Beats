@@ -6830,10 +6830,36 @@ const playBtn = document.getElementById('play-btn');
    a flex row resolves width before the stretched height is known — unreliable. */
 (function () {
   const infoEl = document.querySelector('.player-info');
+  const labelEl = document.getElementById('player-program-label');
+  const gameEl = document.getElementById('player-game');
   if (!infoEl || !playBtn) return;
+  const inkRect = el => {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    return range.getBoundingClientRect();
+  };
+  playBtn.style.alignSelf = 'flex-start';
   const syncSize = () => {
-    const h = infoEl.getBoundingClientRect().height;
-    if (h > 0) { playBtn.style.width = h + 'px'; playBtn.style.height = h + 'px'; }
+    // Match the button's edges to the visible glyph ink of the first and last
+    // lines (not the CSS line-box, which always reserves a little room below
+    // for descenders even when the current text on that line doesn't use one).
+    let top, h;
+    if (labelEl && gameEl) {
+      top = inkRect(labelEl).top;
+      h = inkRect(gameEl).bottom - top;
+    } else {
+      const r = infoEl.getBoundingClientRect();
+      top = r.top; h = r.height;
+    }
+    if (h <= 0) return;
+    playBtn.style.width = h + 'px';
+    playBtn.style.height = h + 'px';
+    // align-self:flex-start puts the button at the row's natural top; nudge
+    // it down with margin-top so its own top edge lands exactly on the
+    // label's ink-top (reset first so repeated calls don't compound).
+    playBtn.style.marginTop = '0px';
+    const delta = top - playBtn.getBoundingClientRect().top;
+    playBtn.style.marginTop = delta + 'px';
   };
   syncSize();
   new ResizeObserver(syncSize).observe(infoEl);
