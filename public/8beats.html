@@ -6838,6 +6838,17 @@ const playBtn = document.getElementById('play-btn');
   syncSize();
   new ResizeObserver(syncSize).observe(infoEl);
   document.fonts?.ready.then(syncSize);
+  /* Defensive re-checks: Safari has been observed firing fonts.ready and the
+     initial ResizeObserver callback slightly before layout has fully settled
+     (variable-font reflow lands a frame late), leaving play-btn synced to a
+     transient, too-tall pre-layout size. Re-measure across a few animation
+     frames and a short delay to catch that settle. */
+  requestAnimationFrame(() => requestAnimationFrame(syncSize));
+  window.addEventListener('load', () => {
+    requestAnimationFrame(() => requestAnimationFrame(syncSize));
+    setTimeout(syncSize, 300);
+    setTimeout(syncSize, 1000);
+  });
 })();
 
 /* Live radio stream */
