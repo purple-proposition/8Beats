@@ -2649,6 +2649,37 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: var(--text-xs); line-height: 1; color: var(--text-disabled); letter-spacing: .02em;
 }
 #game-tooltip .gt-foot .igdb-logo { display: block; height: 12px; width: auto; color: var(--text-secondary); }
+
+/* ── PROTOTYPE: "Available on" music-links popup (Odesli/song.link) ── */
+#music-links-popup {
+  position: fixed; z-index: var(--z-top);
+  width: 240px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  font-family: var(--font);
+  pointer-events: none;
+  opacity: 0; filter: blur(6px);
+  transform: scale(0.94) translateY(4px);
+  transform-origin: top center;
+  transition: opacity 160ms var(--ease-in), filter 180ms var(--ease-in), transform 200ms var(--ease-in);
+}
+#music-links-popup.visible {
+  opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
+  pointer-events: all;
+  transition: opacity 160ms var(--ease-spring), filter 180ms var(--ease-spring), transform 200ms var(--ease-spring);
+}
+#music-links-popup .mlp-title {
+  font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-tertiary); margin-bottom: var(--space-3);
+}
+#music-links-popup .mlp-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+#music-links-popup .mlp-links a.chip { text-decoration: none; text-transform: none; letter-spacing: 0; }
+#music-links-popup .mlp-empty,
+#music-links-popup .mlp-loading { font-size: var(--text-base); color: var(--text-tertiary); }
 .track-game.gt-active {
   color: var(--text-primary);
   text-decoration: underline dotted; text-underline-offset: 3px;
@@ -4735,6 +4766,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 <div id="genre-tooltip"></div>
 <div id="game-tooltip"></div>
 <div id="progress-tooltip" class="progress-tooltip"></div>
+<div id="music-links-popup"></div>
 
 <!-- NAV DROPDOWN — must live directly in body, outside any backdrop-filter ancestor -->
 <div id="nav-dropdown">
@@ -6269,6 +6301,74 @@ function hideGameTooltip() {
   if (_gameActiveEl) { _gameActiveEl.classList.remove('gt-active'); _gameActiveEl = null; }
 }
 
+/* ══════════════════════════════════════
+   PROTOTYPE — "Available on" music-links popup
+   Given a Spotify track URL, asks Odesli (song.link) for the same
+   track's links on other platforms and renders them as chips.
+   NOT wired to real per-track data yet — TRACKLISTS has no stored
+   Spotify URL per track, so this is triggered with one demo URL to
+   validate the UX + API before deciding how/whether to roll it out.
+   ══════════════════════════════════════ */
+const musicLinksPopupEl = document.getElementById('music-links-popup');
+const PLATFORM_LABELS = {
+  spotify: 'Spotify', appleMusic: 'Apple Music', youtube: 'YouTube',
+  youtubeMusic: 'YouTube Music', deezer: 'Deezer', tidal: 'Tidal',
+  amazonMusic: 'Amazon Music', soundcloud: 'SoundCloud', pandora: 'Pandora',
+};
+let _musicLinksActiveEl = null;
+
+function closeMusicLinksPopup() {
+  musicLinksPopupEl.classList.remove('visible');
+  if (_musicLinksActiveEl) { _musicLinksActiveEl.setAttribute('aria-expanded', 'false'); _musicLinksActiveEl = null; }
+}
+
+async function showMusicLinksPopup(sourceUrl, anchorEl) {
+  if (_musicLinksActiveEl === anchorEl) { closeMusicLinksPopup(); return; }
+  _musicLinksActiveEl = anchorEl;
+  anchorEl.setAttribute('aria-expanded', 'true');
+  musicLinksPopupEl.innerHTML = '<div class="mlp-title">Available on</div><div class="mlp-loading">Looking up…</div>';
+  musicLinksPopupEl.classList.add('visible');
+  positionMusicLinksPopup(anchorEl);
+
+  try {
+    const res = await fetch('https://api.song.link/v1-alpha.1/links?url=' + encodeURIComponent(sourceUrl));
+    if (!res.ok) throw new Error('lookup failed');
+    const data = await res.json();
+    const entries = Object.entries(data.linksByPlatform || {})
+      .filter(([key]) => PLATFORM_LABELS[key]);
+    if (!entries.length) {
+      musicLinksPopupEl.innerHTML = '<div class="mlp-title">Available on</div><div class="mlp-empty">No other platforms found.</div>';
+      return;
+    }
+    const chips = entries.map(([key, link]) =>
+      `<a class="chip" href="${link.url}" target="_blank" rel="noopener">${PLATFORM_LABELS[key]}</a>`
+    ).join('');
+    musicLinksPopupEl.innerHTML = `<div class="mlp-title">Available on</div><div class="mlp-links">${chips}</div>`;
+  } catch (err) {
+    musicLinksPopupEl.innerHTML = '<div class="mlp-title">Available on</div><div class="mlp-empty">Couldn’t reach the lookup service.</div>';
+  }
+  positionMusicLinksPopup(anchorEl);
+}
+
+function positionMusicLinksPopup(anchorEl) {
+  requestAnimationFrame(() => {
+    const r = anchorEl.getBoundingClientRect();
+    const pw = musicLinksPopupEl.offsetWidth;
+    const ph = musicLinksPopupEl.offsetHeight;
+    const gap = 8, margin = 12;
+    const top = (r.bottom + gap + ph <= window.innerHeight - margin) ? r.bottom + gap : r.top - ph - gap;
+    const left = Math.max(margin, Math.min(r.right - pw, window.innerWidth - pw - margin));
+    musicLinksPopupEl.style.left = left + 'px';
+    musicLinksPopupEl.style.top = top + 'px';
+  });
+}
+
+document.addEventListener('click', e => {
+  if (!_musicLinksActiveEl) return;
+  if (e.target.closest('#music-links-popup') || e.target === _musicLinksActiveEl || _musicLinksActiveEl.contains(e.target)) return;
+  closeMusicLinksPopup();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMusicLinksPopup(); });
 
 
 /* ══════════════════════════════════════
@@ -8007,7 +8107,7 @@ function openShow(key) {
         ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
       </div>
       <div class="track-right">
-        ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
+        ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Available on other platforms" aria-expanded="false" onclick="event.stopPropagation();showMusicLinksPopup('https://open.spotify.com/track/4PTG3Z6ehGkBFwjybzWkR8', this)"><i data-lucide="music" style="stroke:currentColor;fill:none;display:block"></i></button>` : ''}
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
