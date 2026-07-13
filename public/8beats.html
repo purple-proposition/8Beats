@@ -1451,39 +1451,28 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 #player-qmenu-btn { display: none; }
 .player-qmenu { display: none; }
 
-.player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; height: auto; gap: 12px; }
-/* ── Capsize-style leading trim ──────────────────────────────────────────
-   Geist metrics measured via canvas.measureText at 100px (font-size-
-   independent ratios): fontBoundingBoxAscent 1.01em, fontBoundingBoxDescent
-   0.29em, cap-height (actualBoundingBoxAscent of "H") 0.71em.
-   topCrop(fontSize)    = (ascentScale - capHeightScale) * fontSize = 0.30 * fontSize
-   bottomCrop(fontSize) = descentScale * fontSize                   = 0.29 * fontSize
-
-   Only the two OUTER edges of the 3-row block are trimmed (label's top,
-   game's bottom) — via margin on the row WRAPPER, since .player-title-wrap
-   has overflow:hidden (needed for the marquee fade), which blocks margin
-   propagation from a child, so a trim margin on the inner span alone
-   silently fails to shrink the row. The row-to-row `gap` above is NOT the
-   visible ink gap directly: because inner edges stay at their natural
-   (line-height:normal) position, gap is solved from
-   visible_gap(12px) = bottomCrop(upper row) + gap + topCrop(lower row)
-   for both row pairs and averaged (3.72px and 3.16px -> 3.44px, ±0.3px of
-   the 12px target either way — trimming every inner edge individually to
-   hit both exactly would need two different gap values, which flexbox's
-   single `gap` can't express). */
-.player-info-top { display: flex; align-items: center; gap: var(--space-3); margin-top: -3.6px; } /* 12px, outer top trim only */
-.player-info-top .label { line-height: normal; }
+.player-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; height: auto; gap: 9px; }
+/* Reverted the Capsize leading-trim experiment (canvas-measured Geist
+   metrics + line-height:normal) — theoretically cleaner, but the metrics
+   were measured in one browser and didn't hold up on a real-device check
+   (reported gap grew, not just imprecise). Back to the previously-
+   confirmed-correct setup: tight line-height:1 everywhere (proven safe for
+   Geist elsewhere on the site) with an empirically-calibrated gap + a
+   single trim on the last row, verified against a real screenshot rather
+   than font-metric theory. */
+.player-info-top { display: flex; align-items: center; gap: var(--space-3); }
+.player-info-top .label { line-height: 1; }
 
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; animation: blink 1.4s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 .player-title-row { display: flex; align-items: center; gap: 2px; overflow: hidden; }
-.player-title-wrap { flex: 1; min-width: 0; overflow: hidden; line-height: normal; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
-.player-title { font-family: var(--font); font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: normal; display: inline-block; color: var(--text-primary); }
+.player-title-wrap { flex: 1; min-width: 0; overflow: hidden; line-height: 1; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
+.player-title { font-family: var(--font); font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; color: var(--text-primary); }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game-wrap { line-height: normal; margin-bottom: -4.06px; } /* 14px, outer bottom trim only */
+.player-game-wrap { line-height: 1; margin-top: -4px; } /* empirically-calibrated trim, see commit history */
 .player-game { font-size: 14px; line-height: normal; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
@@ -1905,7 +1894,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .player-bar-main { padding: var(--space); gap: var(--space); min-height: 0; align-items: stretch; }
   .play-btn { flex-shrink: 0; border-radius: var(--radius-control); }
   .play-btn svg { width: 24px; height: 24px; }
-  .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+  .player-info { flex: 1; min-width: 0; height: auto; display: flex; flex-direction: column; gap: 9px; justify-content: center; }
   .player-info-top .label { font-size: var(--text-sm); text-transform: uppercase; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
   .player-title { font-size: var(--text-md); font-weight: 400; }
