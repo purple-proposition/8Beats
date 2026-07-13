@@ -3387,7 +3387,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tracklist-inline { padding-bottom: 0; }
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-4); padding: 16px 0 0 0; border-radius: 0; cursor: pointer;
+  gap: var(--space-4); padding: 24px 0 0 0; border-radius: 0; cursor: pointer;
   position: relative;
 }
 /* Whole-row hover highlight (like search results) — overshoots --hover-bleed (8px) beyond content on every side.
@@ -3396,7 +3396,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   content: ''; position: absolute;
   left: calc(-1 * var(--hover-bleed));
   right: calc(-1 * var(--hover-bleed));
-  top: calc(16px - var(--hover-bleed));       /* track padding-top 16px → 8px above content */
+  top: calc(24px - var(--hover-bleed));       /* track padding-top 24px → 8px above content */
   bottom: calc(-1 * var(--hover-bleed));
   border-radius: var(--radius-control); background: transparent;
   transition: background var(--dur-micro) var(--ease-hover); pointer-events: none;
