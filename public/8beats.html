@@ -70,16 +70,12 @@
   --surface-page-rgb:       0,0,0;
   --surface-subtle:         #262626;   /* Tailwind neutral-800 */
   --surface-elevated:       #404040;   /* Tailwind neutral-700 */
-  --surface-elevated-rgb:   29,29,29;  /* base RGB pour glass effects */
-  --surface-overlay:        rgba(11,11,11,0.92);
   /* ── Glass system — surface unique pour tous les contenants ──
      Formule dark glass : rgba(75,75,75,0.40) + blur(24px) saturate(160%) brightness(0.56)
      Même valeur sur sidebar, player, modals, cards, tooltips, popups, menus. */
   --glass-bg:               rgba(75, 75, 75, 0.40);
-  --glass-blur:             24px;
   --glass-backdrop:         blur(24px) saturate(160%) brightness(0.56);
   --glass-border:           #171717;   /* Tailwind neutral-900 */
-  --surface-glass:          var(--glass-bg);
 
   /* ── Semantic — Text (3 rôles) ── */
   --text-primary:       #f5f5f5;   /* Tailwind neutral-100 */
@@ -97,19 +93,16 @@
 
   /* ── Semantic — Interactive surfaces ── */
   --surface-hover:      transparent;
-  --surface-hover-soft: transparent;
   /* Control surface — the "player-ctrl style": adaptive translucent fill (reads dark over a black bg, light over a light bg). Shared by player buttons + progress bar. */
   --surface-control:       rgba(255,255,255,0.11);
   --surface-control-hover: rgba(255,255,255,0.16);
 
   /* ── Semantic — Icons (miroir du texte) ── */
-  --icon-primary:       #f2f2f2;
   --icon-secondary:     #A1A1A1;   /* icônes au repos */
   --icon-tertiary:      #A1A1A1;
 
   /* ── Semantic — Overlays & Shadows ── */
   --overlay:            rgba(0,0,0,0.64);
-  --scrim:              rgba(0,0,0,0.48);
   --shadow-sm:          none;
   --shadow-md:          none;
   --shadow-lg:          none;
@@ -118,22 +111,14 @@
   --action-primary-bg:       #f2f2f2;
   --action-primary-fg:       #0b0b0b;
   --action-primary-border:   #f2f2f2;
-  --action-secondary-fg:     #A1A1A1;
-  --action-secondary-border: #363636;
 
   /* ── Semantic — Accent (achromatic) ── */
   --accent:             #f2f2f2;
   --accent-rgb:         242,242,242;
-  --accent-hover:       #d4d4d4;
   --accent-soft:        rgba(242,242,242,0.08);
 
   /* ── Semantic — Focus ── */
   --focus-ring:         #f2f2f2;
-
-  /* ── Semantic — Feedback (achromatic) ── */
-  --color-success:      #f2f2f2;
-  --color-warning:      #d4d4d4;
-  --color-error:        #f2f2f2;
 
   /* ── Component — Toggle ── */
   --toggle-knob:        #d4d4d4;
@@ -149,26 +134,6 @@
 
   /* ── Debug (dev only) ── */
   --color-debug:        #A1A1A1;
-
-  /* ══════════════════════════════════════════
-     BACKWARD-COMPAT ALIASES (old → semantic)
-     Components should migrate to semantic names.
-     ══════════════════════════════════════════ */
-  --bg:            var(--surface-page);
-  --bg-rgb:        var(--surface-page-rgb);
-  --bg-subtle:     var(--surface-subtle);
-  --bg-elevated:   var(--surface-elevated);
-  --bg-overlay:    var(--surface-overlay);
-  --fg:            var(--text-primary);
-  --fg-rgb:        var(--text-primary-rgb);
-  --fg-secondary:  var(--text-secondary);
-  --fg-tertiary:   var(--text-tertiary);
-  --fg-disabled:   var(--text-disabled);
-  --border:        var(--border-default);
-  --bg-hover:      var(--surface-hover);
-  --bg-hover-soft: var(--surface-hover-soft);
-  --icon:          var(--icon-secondary);
-  --shadow:        var(--shadow-lg);
 
   /* ══════════════════════════════════════════
      PRIMITIVES — Spacing (4px grid)
@@ -198,8 +163,6 @@
   --text-md:     16px;
   --text-lg:     20px;
   --text-xl:     24px;
-  --text-2xl:    32px;
-  --text-3xl:    48px;
   --text-show:   16px;   /* nom des shows — toutes les vues */
 
   /* ── Component — Layout dimensions ── */
@@ -235,7 +198,6 @@
 
   /* Easing — 4 courbes sémantiques */
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);   /* expo-out — enters : pente initiale ≈6, settle doux */
-  --ease-enter:    cubic-bezier(0.16, 1, 0.3, 1);   /* alias de standard */
   --ease-exit:     var(--ease-in);                   /* sortie = accélère (mirror du spring qui décélère) */
   --ease-hover:    cubic-bezier(0, 0, 0.2, 1);       /* décelération pure — réponse instantanée (pente ≈5 à t=0) */
   --ease-collapse: cubic-bezier(0.4, 0, 0.15, 1);   /* sidebar collapse/expand */
@@ -243,29 +205,23 @@
   /* Motion system — canonical tokens (per spec) */
   --ease-out:    cubic-bezier(0.0, 0.0, 0.2, 1);    /* decelerate - enter */
   --ease-in:     cubic-bezier(0.4, 0.0, 1.0, 1.0);  /* accelerate - exit */
-  --ease-inout:  cubic-bezier(0.4, 0.0, 0.2, 1);    /* standard */
   --ease-spring: cubic-bezier(0.36, 1.56, 0.64, 1);  /* spring with bounce — genre popup feel */
 
   /* Durées — échelle à 5 paliers */
   --dur-micro:   80ms;    /* fill · stroke · color swap · hover icons */
   --dur-short:   160ms;   /* hover bg · border · indicateur · vol popup */
   --dur-medium:  240ms;   /* dropdown · popup · small panel · playlist */
-  --dur-long:    320ms;   /* overlay · modal · drawer */
   --dur-large:   320ms;   /* alias de long */
-  --dur-tooltip: 152ms;   /* tooltip enter/exit — entre micro et short */
 
   /* Stagger — discret, jamais cinématique */
   --stagger-tight:  20ms;
-  --stagger-medium: 36ms;
 
   /* Délai contenu — le contenu commence légèrement après le conteneur */
   --delay-content: 40ms;
 
   /* ── Playlist panel motion — source unique, lue par JS et CSS ── */
-  --dur-playlist:        var(--dur-medium);          /* 240ms — durée de la hauteur */
   --ease-playlist-open:  cubic-bezier(0, 0, 0.58, 1);  /* ease-out : décélère à l'arrivée */
   --ease-playlist-close: cubic-bezier(0.42, 0, 1, 1);  /* ease-in  : accélère au départ */
-  --playlist-content-offset: 10px;                   /* translateY initial du contenu */
 
   /* ── Aliases legacy — ne pas supprimer (référencés partout) ── */
   --dur-fast:       var(--dur-micro);
@@ -279,9 +235,6 @@
   --ease-panel-out: var(--ease-exit);
 
   /* ── Aliases — UI convenience ── */
-  --muted-color:    var(--text-tertiary);   /* #A1A1A1 — metadata, inactive tabs */
-  --overlay-radius: var(--radius);          /* centered modal border-radius */
-  --panel-gap:      var(--space-5);         /* 24px internal panel spacing */
   --surface-btn:    var(--surface-subtle);  /* settings icon bg, kbd tag bg */
 }
 
@@ -291,9 +244,6 @@ html.light {
   --surface-page-rgb:       245,245,245;
   --surface-subtle:         #e5e5e5;
   --surface-elevated:       #e5e5e5;
-  --surface-elevated-rgb:   229,229,229;
-  --surface-overlay:        rgba(245,245,245,0.92);
-  --surface-glass:          var(--glass-bg);
 
   --text-primary:           #0a0a0a;
   --text-primary-rgb:       10,10,10;
@@ -308,16 +258,13 @@ html.light {
   --surface-btn-hover:      rgba(var(--text-primary-rgb), 0.08);
 
   --surface-hover:          transparent;
-  --surface-hover-soft:     transparent;
   --surface-control:        rgba(0,0,0,0.06);
   --surface-control-hover:  rgba(0,0,0,0.12);
 
-  --icon-primary:           #0a0a0a;
   --icon-secondary:         #404040;
   --icon-tertiary:          #737373;
 
   --overlay:                rgba(0,0,0,0.36);
-  --scrim:                  rgba(0,0,0,0.20);
   --shadow-sm:              none;
   --shadow-md:              none;
   --shadow-lg:              none;
@@ -325,18 +272,12 @@ html.light {
   --action-primary-bg:      #0a0a0a;
   --action-primary-fg:      #f5f5f5;
   --action-primary-border:  #0a0a0a;
-  --action-secondary-fg:    #737373;
-  --action-secondary-border: #d4d4d4;
 
   --accent:                 #0a0a0a;
   --accent-rgb:             10,10,10;
-  --accent-hover:           #404040;
   --accent-soft:            rgba(10,10,10,0.08);
 
   --focus-ring:             #0a0a0a;
-  --color-success:          #0a0a0a;
-  --color-warning:          #404040;
-  --color-error:            #0a0a0a;
 
   --toggle-knob:            #404040;
   --toggle-icon:            #f5f5f5;
@@ -350,7 +291,6 @@ html.light {
   --glass-bg:               rgba(245, 245, 245, 0.40);
   --glass-backdrop:         blur(24px) saturate(160%) brightness(1.20);
   --glass-border:           rgba(0, 0, 0, 0.08);
-  --surface-glass:          rgba(245, 245, 245, 0.40);
 }
 
 /* ============================================================
@@ -419,7 +359,6 @@ h1,
 .label,
 .panel-support-header,
 .settings-section-heading,
-.sp-day-section-header,
 .ts-sched-day-label,
 .ts-sched-next-week,
 .ts-filter-section-label,
@@ -644,9 +583,6 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 .nav-panel.collapsed .nav-label { max-width: 0; opacity: 0; }
 .nav-panel.collapsed .theme-toggle.nav-collapsible-item { max-width: 0; opacity: 0; margin-right: 0 !important; }
 .nav-panel.collapsed .nav-dots-collapsed { max-width: 24px; opacity: 1; margin-right: 0 !important; }
-
-/* Dropdown */
-.nav-dropdown-wrap { position: relative; }
 #nav-dropdown {
   display: none;
   position: fixed;
@@ -695,7 +631,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   stroke-linecap: round; stroke-linejoin: round;
 }
 /* ── Horizontal separators — unified style ── */
-.ham-sep, .nav-dropdown-sep, .mno-sep, .ts-sched-sep {
+.ham-sep {
   height: 1px; background: rgba(255,255,255,0.11); margin: 0 16px;
 }
 .nav-dd-theme-row {
@@ -708,23 +644,6 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   height: 1px; background: rgba(255,255,255,0.11);
 }
 .nav-dd-theme-label { font-size: var(--text-base); color: var(--text-secondary); flex: 1; }
-.nav-dropdown-social {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-3) var(--space-5);
-  position: relative;
-}
-.nav-dropdown-social::before {
-  content: ''; position: absolute; top: 0; left: var(--space-5); right: var(--space-5);
-  height: 1px; background: rgba(255,255,255,0.11);
-}
-.nav-dropdown-social button {
-  width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
-  background: transparent; border: none;
-  border-radius: var(--radius-control); cursor: pointer; padding: 0;
-  color: var(--icon-secondary); transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.nav-dropdown-social button:hover { background: var(--surface-btn-hover); color: var(--text-primary); }
-.nav-dropdown-social button svg { display: block; fill: currentColor; }
 
 /* ── Mobile nav overlay ── same pattern as tracklist popup ── */
 /* Backdrop: separate element, starts transparent, animates via JS */
@@ -758,9 +677,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
               filter    240ms var(--ease-spring),
               transform 260ms var(--ease-spring);
 }
-.mno-body { display: flex; flex-direction: column; }
 .mno-links { display: flex; flex-direction: column; }
-.mno-sep {}
 .mno-link {
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--space-3); padding: var(--space-4);
@@ -774,17 +691,6 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
   height: 1px; background: var(--border-default);
 }
 .mno-link:hover { background: var(--surface-hover); color: var(--text-primary) !important; }
-.mno-link-left { display: flex; align-items: center; gap: var(--space-3); flex: 1; }
-.mno-link-left svg {
-  width: 16px; height: 16px; flex-shrink: 0;
-  fill: none; stroke: var(--text-secondary); stroke-width: 1.75;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-.mno-chevron {
-  width: 14px; height: 14px; flex-shrink: 0;
-  fill: none; stroke: var(--text-tertiary); stroke-width: 1.75;
-  stroke-linecap: round; stroke-linejoin: round;
-}
 .mno-theme-row {
   display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-4); position: relative;
@@ -842,8 +748,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 @media (min-width: 769px) { #nav-backdrop { display: none !important; } }
 
 
-
-
 .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0; color: var(--text-secondary); }
 .nav-sep-mobile { display: none; }
 
@@ -888,9 +792,8 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
     black 100%
   );
 }
-.hero-inner { position: relative; z-index: 3; }
-
 .hero-inner {
+  position: relative; z-index: 3;
   grid-column: 5 / span 4;
   display: flex; flex-direction: column;
   align-items: center; text-align: center;
@@ -924,12 +827,6 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 }
 .btn:active { transform: scale(0.97); }
 .btn svg { width: 16px; height: 16px; fill: none; flex-shrink: 0; display: block; }
-/* ── Lucide icon sizes (type scale) ── */
-.icon-xs  { width: 12px; height: 12px; display: block; flex-shrink: 0; }
-.icon-sm  { width: 14px; height: 14px; display: block; flex-shrink: 0; }
-.icon-md  { width: 16px; height: 16px; display: block; flex-shrink: 0; }
-.icon-lg  { width: 20px; height: 20px; display: block; flex-shrink: 0; }
-.icon-xl  { width: 24px; height: 24px; display: block; flex-shrink: 0; }
 [data-lucide] { display: block; flex-shrink: 0; }
 svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !important; stroke: none !important; }
 
@@ -941,10 +838,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .nav-icon-box svg                { width: 16px; height: 16px; }
 .hamburger svg                   { width: 18px; height: 18px; }
 #drawer-close svg                { width: 16px; height: 16px; }
-/* Mobile overlay */
-.mno-link-left svg               { width: 16px; height: 16px; }
 .mno-links a > svg               { width: 14px; height: 14px; }
-#filter-toggle-btn svg           { width: 14px; height: 14px; }
 /* Section headers */
 .section-link svg                { width: 18px; height: 18px; }
 /* Cards */
@@ -978,10 +872,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .btn-secondary svg { stroke: currentColor; fill: none; }
 .btn-secondary:hover, .btn-secondary:active { background: rgba(255,255,255,0.11); color: var(--text-primary); }
-/* ── Tertiary: ghost — transparent, border only, muted text, 32px ── */
-.btn-tertiary { height: 32px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-btn); transition: border-color var(--dur-micro) var(--ease-hover), background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover); }
-.btn-tertiary svg { stroke: currentColor; fill: none; }
-.btn-tertiary:hover, .btn-tertiary:active { border-color: var(--border-hover); background: var(--surface-btn-hover); color: var(--text-primary); }
 
 /* ── Content grid ── */
 /* .content = conteneur grille, .section = colonne éditoriale (cols 3–10) */
@@ -1100,11 +990,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 
 .panel-header { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: var(--z-base); cursor: grab; }
-.panel-header-actions { display: flex; align-items: center; gap: var(--space-3); }
 
 .panel p { font-size: var(--text-base); color: var(--text-tertiary); line-height: 1.4; letter-spacing: -0.1px; position: relative; z-index: var(--z-base); }
 .panel p strong { color: var(--text-primary); font-weight: 500; }
-
 
 
 .panel-close { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); transition: color var(--dur-short) var(--ease-hover); }
@@ -1135,12 +1023,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: var(--text-md); color: var(--text-secondary); line-height: 1.4; letter-spacing: -0.2px;
   max-width: 500px;
 }
-.pitch-deco {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  opacity: 0.10; pointer-events: none;
-}
-.pitch-deco-left  { left: var(--space-7); }
-.pitch-deco-right { right: var(--space-7); }
 
 /* CTAs inside interstitial cards use player-ctrl surface (light translucent, not glass-dark) */
 .pitch-card .btn, .keepbeat-card .btn, .newsletter-card .btn {
@@ -1168,12 +1050,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   letter-spacing: normal; text-transform: none; color: var(--text-primary);
   line-height: normal;
 }
-.keepbeat-deco {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  opacity: 0.13; pointer-events: none;
-}
-.keepbeat-deco-left  { left: var(--space-6); }
-.keepbeat-deco-right { right: var(--space-6); }
 
 /* ── Newsletter card ── */
 .newsletter-card {
@@ -1215,17 +1091,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .newsletter-input::placeholder { color: var(--text-tertiary); }
 .newsletter-input:focus { border-color: var(--border-hover); }
-.newsletter-socials {
-  display: flex; align-items: center; gap: var(--space-5);
-}
-.newsletter-socials a {
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-tertiary); transition: color var(--dur-micro) var(--ease-hover);
-}
-.newsletter-socials a:hover { color: var(--text-primary); }
-.newsletter-socials svg {
-  width: 18px; height: 18px; fill: currentColor; display: block;
-}
 .newsletter-confirm {
   font-size: var(--text-base); color: var(--text-secondary);
   display: none; align-items: center; gap: var(--space-2);
@@ -1464,20 +1329,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   }
 }
 
-/* Legacy aliases — kept for .playlist selectors compatibility */
-.playlist-glass { display: none; }
-
 .playlist-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
-.playlist-header-meta { font-size: var(--text-xs); color: var(--text-tertiary); letter-spacing: .04em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: right; }
 
 .track { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); border-radius: 0; }
 .track-recent { gap: var(--space-5); }
 .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
-.track.is-current .track-name { color: var(--accent); }
-/* No separators between tracks — spacing handled by parent gap */
-/* track numbers: only shown in .tracklist mode (show tracklist popup) */
-.track-num { display: none; font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 16px; text-align: right; line-height: 1; }
-.playlist.tracklist .track-num { display: block; }
 .track-info { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; flex: 1; }
 .track-name { font-size: var(--text-base); line-height: 1.4; color: var(--text-primary); }
 .track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
@@ -1488,24 +1344,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* font-size stays at 14px (--text-base) for both track-name and track-game — same as base */
 .playlist.tracklist .track { cursor: pointer; }
 .playlist.tracklist .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
-
-/* Legacy — kept for compat */
-.track-ts {
-  font-size: var(--text-sm); font-weight: 400; color: var(--text-secondary);
-  flex-shrink: 0; letter-spacing: .06em; font-family: var(--font);
-  cursor: pointer; transition: color var(--dur-short) var(--ease-hover); min-width: 36px;
-}
-.track-ts:hover { color: var(--text-secondary); }
-.track-duration { font-size: var(--text-sm); letter-spacing: .06em; color: var(--text-tertiary); flex-shrink: 0; font-family: var(--font); }
-.track-stream-icon {
-  width: 16px; height: 16px; flex-shrink: 0; fill: var(--text-secondary);
-  transition: fill var(--dur-short) var(--ease-hover); cursor: pointer;
-}
-.track-stream-icon:hover { fill: var(--text-primary); }
-.replay-badge {
-  font-size: var(--text-sm); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-  color: var(--text-tertiary);
-}
 .back-to-live {
   display: none; align-items: center; gap: var(--space-2);
   height: 32px; padding: 0 var(--space-3);
@@ -1726,20 +1564,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .vol-popup:not([data-dir="below"]) .vol-track-area { transform: translateY(4px); }
 .vol-popup[data-dir="below"]      .vol-track-area { transform: translateY(-4px); }
 .vol-popup.vol-open .vol-track-area { opacity: 1; transform: translateY(0); pointer-events: all; padding: 18px 0 var(--space-2); }
-
-/* ── Progressive blur ── */
-.prog-blur {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 72px; pointer-events: none; overflow: hidden;
-  border-radius: 0 0 var(--radius) var(--radius);
-}
-.prog-blur span {
-  position: absolute; inset: 0;
-  backdrop-filter: blur(var(--b));
-  -webkit-backdrop-filter: blur(var(--b));
-  -webkit-mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
-  mask-image: linear-gradient(to top, black var(--s), transparent var(--e));
-}
 .vol-track { width: 4px; height: 88px; background: rgba(255,255,255,0.24); border-radius: var(--radius-full); position: relative; cursor: pointer; user-select: none; flex-shrink: 0; }.vol-fill  { position: absolute; bottom: 0; left: 0; right: 0; background: var(--text-primary); border-radius: var(--radius-full); }
 .vol-knob  { position: absolute; left: 50%; transform: translate(-50%, 50%); width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); }
 .vol-btn-face {
@@ -1831,7 +1655,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .btn-play:hover { background: #1c1c1c !important; color: var(--icon-tertiary) !important; }
   /* Tap feedback */
   a:active, button:active { opacity: 0.7; }
-
 
 
   /* ── Tokens ── */
@@ -2628,21 +2451,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
               transform 260ms var(--ease-spring);
 }
 
-/* ── Tool panel header ── */
-.tool-panel-hdr {
-  display: flex; align-items: center; justify-content: space-between;
-  height: var(--nav-h); flex-shrink: 0;
-  padding: 0 var(--space-5);
-  cursor: grab;
-  position: relative;
-}
-.tool-panel-hdr::after {
-  content: ''; position: absolute; bottom: 0;
-  left: var(--space-5); right: var(--space-5);
-  height: 1px; background: var(--border-default);
-}
-.tool-panel-hdr-btns { display: flex; align-items: center; gap: var(--space-2); }
-
 /* ── Tool panel body ── */
 .tool-panel-body {
   flex: 1; overflow-y: auto; overflow-x: hidden; min-height: 0;
@@ -2700,16 +2508,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .sp-day-tab:last-child  { padding-right: var(--space-5); }
 .sp-day-tab:hover       { color: var(--text-primary); }
 .sp-day-tab.active      { color: var(--text-primary); cursor: default; }
-
-/* Day section header for continuous-scroll schedule */
-.sp-day-section { border-bottom: 1px solid var(--border-subtle); }
-.sp-day-section:last-child { border-bottom: none; }
-.sp-day-section-header {
-  padding: var(--space-3) var(--space-5) var(--space-2);
-  position: sticky; top: 0;
-  background: var(--glass-bg); backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
-  z-index: 1; border-bottom: 1px solid var(--border-subtle);
-}
 
 /* ── Live status — reusable component ── */
 /* Used in: schedule block headers, show rows, player bar */
@@ -2772,15 +2570,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .sp-live-btn:hover { background: var(--surface-control-hover); color: var(--text-primary); }
 /* Right section: bell */
 .sp-show-right { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
-.sp-new {
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--text-tertiary);
-}
-.sp-empty {
-  padding: var(--space-5);
-  font-size: var(--text-base); color: var(--text-tertiary);
-}
-#filter-count { font-size: 10px; font-weight: 700; letter-spacing: .3px; line-height: 1; background: var(--text-secondary); color: var(--surface-page); border-radius: var(--radius-full); padding: 2px 5px; vertical-align: middle; }
 
 /* Genre tooltip — même dark glass que la search bar */
 #genre-tooltip {
@@ -2947,7 +2736,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .schedule-slot-alert:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .schedule-slot-alert.alerted { background: rgba(var(--color-live-rgb),.12); border-color: rgba(var(--color-live-rgb),.4); color: var(--color-live); }
-.schedule-slot-new {}
 .schedule-empty {
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-sm); color: var(--text-disabled);
@@ -2967,7 +2755,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Canonical page hero — all secondary pages must use this
    padding-top: 184px = topbar-bottom(64) + gap-spec(144) - body-padding(24)
    → hero h1 is exactly 144px below the bottom of the search bar ── */
-.page-hero,
 .support-hero,
 .about-hero,
 .latest-hero,
@@ -2976,7 +2763,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   align-items: center; text-align: center;
   padding: 184px 0 var(--space-8);
 }
-.page-hero h1,
 .support-hero h1,
 .about-hero h1,
 .latest-hero h1,
@@ -2985,14 +2771,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: clamp(32px, 5.5vw, 64px);
   line-height: 1.05; letter-spacing: -0.03em; margin: 0;
 }
-.page-hero .page-eyebrow,
-.support-hero .page-eyebrow,
-.about-hero .page-eyebrow,
-.proposal-hero .page-eyebrow {
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--text-secondary);
-}
-.page-hero .page-desc,
 .support-hero .page-desc,
 .about-hero .about-tagline,
 .proposal-hero .page-desc {
@@ -3129,13 +2907,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .about-contact-col:nth-child(3) { grid-column: 5; }
 .about-contact-col h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-primary); margin: 0; }
 .about-contact-col p { font-size: var(--text-base); color: var(--text-secondary); line-height: 1.6; margin: 0; flex: 1; }
-.about-contact-link {
-  font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);
-  text-decoration: underline; text-underline-offset: 3px;
-  text-decoration-color: var(--border-hover);
-  transition: color var(--dur-base);
-}
-.about-contact-link:hover { color: var(--text-secondary); }
 .about-contact-btn { font-size: var(--text-sm); font-weight: 600; text-decoration: none; align-self: flex-start; }
 
 .about-stats {
@@ -3341,7 +3112,6 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   font-size: 8px; font-weight: 600; color: var(--text-secondary); letter-spacing: .02em;
   line-height: 1;
 }
-.show-submeta-dot { opacity: .45; }
 .show-submeta-host { color: var(--text-primary); cursor: pointer; transition: color var(--dur-short) var(--ease-hover); }
 .show-submeta-host:hover { color: var(--text-primary); }
 .show-date { font-size: var(--text-md); color: var(--text-primary); }
@@ -3354,15 +3124,6 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tl-left { display: none; }
 .show-tl-vdivider { display: none; }
 .show-tl-body { flex: 1; min-width: 0; }
-.show-tl-header { display: none; }
-.show-hero-divider { display: none; }
-
-.track-num {
-  display: block; flex-shrink: 0;
-  font-size: var(--text-sm); font-weight: 400; color: var(--text-tertiary);
-  font-family: var(--font);
-  min-width: 16px; text-align: left;
-}
 
 /* Tracklist column header — single line: # | TRACKLIST | clock */
 .tracklist-header {
@@ -3371,10 +3132,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   border-bottom: none;
   margin-bottom: 0;
 }
-.tracklist-header-num  { font-size: var(--text-sm); color: var(--text-disabled); min-width: 24px; flex-shrink: 0; letter-spacing: .04em; }
 .tracklist-header-name { min-width: 0; }
-.tracklist-header-ts   { width: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-disabled); }
-.tracklist-header-ts svg { width: 13px; height: 13px; stroke: currentColor; fill: none; display: block; }
 
 /* Tracklist rows — spacing verified with Range API (Geist 14px, lh:1, +2px glyph overflow each side)
    All measurements ink-to-ink (compact rhythm 12/8/12):
@@ -3433,16 +3191,6 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tracklist-inline .track-right {
   display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0;
 }
-/* Icon-only timestamp button */
-.ts-btn-icon {
-  width: 32px; height: 32px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.11); border: none; border-radius: var(--radius-control);
-  cursor: pointer; color: var(--icon-secondary);
-  transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
-}
-.ts-btn-icon:hover { color: var(--text-primary); background: rgba(255,255,255,0.16); }
-.ts-btn-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 
 /* ── Hero gradient overlays (Keakie method — artist page only) ── */
 .hero-grad {
@@ -3497,7 +3245,6 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-desc { font-size: var(--text-md); color: var(--text-secondary); line-height: 1.5; margin: 0; }
 
 .show-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); }
-.show-actions-row { display: contents; }
 @keyframes icon-swap {
   from { opacity: 0; transform: scale(0.6); }
   to   { opacity: 1; transform: scale(1); }
@@ -3644,18 +3391,13 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   --sidebar-width:             var(--sidebar-full);
   --sidebar-width-compact:     var(--sidebar-icon);
   --sidebar-padding-x:         var(--space-5);   /* 24px — header horizontal (normal)     */
-  --sidebar-padding-x-compact: 0px;              /* compact: no side pad, centering does it */
-  --sidebar-padding-b:         var(--space-5);   /* 24px — body bottom                    */
   --sidebar-icon-size:         16px;             /* icon size — matches player controls    */
   --sidebar-icon-size-compact: 16px;             /* compact: same as normal (= player)    */
 
   /* Menu row tokens — strict 24px grid (same in normal + compact) */
   --menu-padding-inline:    var(--space-5);   /* 24px — horizontal padding, all states  */
   --menu-separator-inset:   var(--space-5);   /* 24px — separator left/right inset      */
-  --menu-text-offset:       var(--space-5);   /* 24px — icon/text left alignment        */
-  --menu-padding:           var(--menu-padding-inline); /* alias                        */
   --menu-item-pad-y:        12px;             /* item vertical padding                  */
-  --menu-item-height:       40px;             /* 2×12px + 16px icon = ctrl-btn height   */
   --menu-label-gap:         var(--space-3);  /* 12px — icon ↔ label gap                */
   --menu-sep-color:         var(--border-default);
 
@@ -3666,9 +3408,6 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   --tool-panel-w:       380px;
   --tool-panel-max-h:   560px;
 
-  /* Global floating-window gap (= FWM EDGE = FWM GAP) */
-  --floating-gap:       24px;
-  --draggable-gap:      24px;
 }
 
 /* Body: 24px breathing room under topbar */
@@ -3776,16 +3515,6 @@ body { padding-top: 24px; }
 }
 .nav-item:hover .nav-icon-box { background: none !important; }
 
-/* ── Theme toggle (inside nav-item row) ── */
-.sidebar-theme-toggle {
-  flex-shrink: 0; margin-left: auto;
-  /* Expand: miroir collapse */
-  transition: opacity 240ms cubic-bezier(0, 0, 0.58, 1), max-width 240ms cubic-bezier(0, 0, 0.58, 1);
-  overflow: hidden; max-width: 44px;
-}
-/* Collapse: miroir expand */
-.nav-panel.sb-icons .sidebar-theme-toggle { max-width: 0; min-width: 0; opacity: 0; pointer-events: none; margin-left: 0; overflow: hidden; transition: opacity 240ms cubic-bezier(0.42, 0, 1, 1), max-width 240ms cubic-bezier(0.42, 0, 1, 1); }
-
 /* ── Nav items: row-style (explorer grammar) ── */
 .nav-item {
   position: relative;  /* for ::after inset separator */
@@ -3850,8 +3579,6 @@ body { padding-top: 24px; }
 #settings-btn:hover      .nav-icon-box svg { transform: rotate(60deg); }
 /* Heart → pulse scale */
 .nav-item[aria-label="Support us"]:hover .nav-icon-box svg { transform: scale(1.22); }
-/* Clock (Latest) → tick backward */
-#latest-btn:hover        .nav-icon-box svg { transform: rotate(-22deg); }
 /* Search → slight tilt */
 #search-btn:hover        .nav-icon-box svg { transform: scale(1.08) rotate(-8deg); }
 
@@ -3928,27 +3655,6 @@ body { padding-top: 24px; }
 .ham-item:hover::before { background: rgba(255,255,255,0.11); }
 .ham-item svg { width: 14px; height: 14px; flex-shrink: 0; }
 .ham-sep {}
-.ham-theme-row {
-  display: flex; align-items: center; gap: var(--space-3);
-  padding: 0 var(--space-4); min-height: 20px;
-  position: relative; cursor: default;
-  transition: color var(--dur-micro) var(--ease-hover);
-}
-.ham-theme-row::before {
-  content: '';
-  position: absolute;
-  inset: -8px 8px;
-  border-radius: var(--radius-control);
-  background: transparent;
-  transition: background var(--dur-micro) var(--ease-hover);
-  pointer-events: none;
-}
-.ham-theme-row svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-secondary); }
-.ham-theme-label {
-  flex: 1;
-  font-size: var(--text-base); font-family: var(--font);
-  color: var(--text-secondary); letter-spacing: -.1px;
-}
 .ham-theme-cycler {
   height: 28px; padding: 0 10px;
   font-size: var(--text-sm); font-family: var(--font); letter-spacing: -.1px;
@@ -4092,8 +3798,6 @@ html.light #profile-modal {
   border-color: rgba(0,0,0,0.08);
 }
 html.light .pf-sep { background: rgba(0,0,0,0.08); }
-html.light .pf-close { background: rgba(0,0,0,0.06); }
-html.light .pf-close:hover { background: rgba(0,0,0,0.12); }
 html.light .pf-chip { border-color: rgba(0,0,0,0.12); background: rgba(0,0,0,0.04); }
 html.light .pf-chip:hover { background: rgba(0,0,0,0.08); }
 html.light .pf-chip.pf-selected { background: var(--text-primary); color: var(--surface-page); }
@@ -4119,9 +3823,6 @@ html.light .pf-saved-item:hover { background: rgba(0,0,0,0.08); }
               transform 240ms cubic-bezier(0.42, 0, 1, 1),
               max-width 240ms cubic-bezier(0.42, 0, 1, 1);
 }
-
-/* ── Sidebar footer (compat, hidden) ── */
-.sidebar-footer { display: none !important; }
 
 /* ── Hide legacy collapse elements (desktop only) ── */
 .nav-sep, .nav-dots-collapsed, .hamburger, .nav-sep-mobile { display: none !important; }
@@ -4213,17 +3914,13 @@ html.light .fwm-snap-hint { border-color: rgba(0,0,0,0.16); background: rgba(0,0
    ============================================================ */
 
 /* ── Separators ── */
-html.light .ham-sep,
-html.light .nav-dropdown-sep,
-html.light .mno-sep,
-html.light .ts-sched-sep { background: rgba(0,0,0,0.08); }
+html.light .ham-sep { background: rgba(0,0,0,0.08); }
 html.light #player-sep { background: rgba(0,0,0,0.08); }
 html.light #ts-tabs-sep { background: rgba(0,0,0,0.08); }
 html.light #topbar-dropdown-sep { background: rgba(0,0,0,0.08); }
 html.light .tracklist-header { border-bottom-color: rgba(0,0,0,0.08); }
 html.light .nav-dd-item + .nav-dd-item::before { background: rgba(0,0,0,0.08); }
 html.light .nav-dd-theme-row::before { background: rgba(0,0,0,0.08); }
-html.light .nav-dropdown-social::before { background: rgba(0,0,0,0.08); }
 html.light .ts-genre-card::after { background: rgba(0,0,0,0.08); }
 
 /* ── Glass panels (dark → light glass) ── */
@@ -4276,8 +3973,6 @@ html.light .ts-filter-chips .chip { background: rgba(0,0,0,0.06); }
 html.light .ts-filter-chips .chip:hover { background: rgba(0,0,0,0.12); }
 html.light .btn-secondary { background: rgba(0,0,0,0.06); }
 html.light .btn-secondary:hover, html.light .btn-secondary:active { background: rgba(0,0,0,0.12); }
-html.light .ts-btn-icon { background: rgba(0,0,0,0.06); }
-html.light .ts-btn-icon:hover { background: rgba(0,0,0,0.12); }
 html.light .donate-amt { background: rgba(0,0,0,0.06); }
 html.light .donate-amt:hover { background: rgba(0,0,0,0.12); }
 
@@ -4296,8 +3991,6 @@ html.light .ts-btn { background: rgba(0,0,0,0.06); }
 html.light .ts-btn:hover { background: rgba(0,0,0,0.12); }
 html.light .back-to-live { background: rgba(0,0,0,0.06); }
 html.light .back-to-live:hover { background: rgba(0,0,0,0.12); }
-html.light .ts-sched-alert { background: rgba(0,0,0,0.06); }
-html.light .ts-sched-alert:hover { background: rgba(0,0,0,0.12); }
 html.light .schedule-slot-alert { background: rgba(0,0,0,0.06); }
 html.light .schedule-slot-alert:hover { background: rgba(0,0,0,0.12); }
 html.light .card-play { background: rgba(0,0,0,0.06); }
@@ -4333,10 +4026,6 @@ html.light .show-hero-scrim {
 }
 html.light .ts-btn { color: var(--text-secondary); }
 
-/* ── Day tabs ── */
-html.light .ts-sched-daytab:hover { background: rgba(0,0,0,0.04); }
-html.light .ts-sched-daytab.active { background: rgba(0,0,0,0.08); }
-
 /* ── Row hover tints ── */
 html.light .explore-show-row:hover::before { background: rgba(0,0,0,0.08); }
 html.light #topbar-dropdown-shows .explore-show-row:hover { background: rgba(0,0,0,0.08); }
@@ -4347,17 +4036,7 @@ html.light .ts-tab:hover { background: rgba(0,0,0,0.08); }
 html.light .ts-resident-row:hover { background: rgba(0,0,0,0.08); }
 html.light .ts-sched-row:hover { background: rgba(0,0,0,0.08); }
 html.light #ts-filter-btn:hover { background: rgba(0,0,0,0.08); }
-html.light .ts-sched-daytab:hover { background: rgba(0,0,0,0.08); }
 html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color: var(--text-primary); }
-
-/* ── FWM: drag grip icon ── */
-.fwm-grip {
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; pointer-events: none;
-  color: var(--text-tertiary); opacity: 0.45;
-  transition: opacity var(--dur-micro) var(--ease-hover);
-}
-.fwm-drag-handle:hover .fwm-grip { opacity: 0.9; }
 
 /* ── Nav keyboard shortcut hint — absolute to avoid flex-layout interference ── */
 .nav-kbd {
@@ -4369,14 +4048,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   overflow: hidden; max-width: 40px; opacity: 1;
   transition: max-width var(--dur-panel) var(--ease-panel-out), opacity var(--dur-fade) var(--ease-hover);
 }
-/* ── Player drag handle — absolute top-right of player-inner ── */
-.player-drag-handle {
-  position: absolute; top: 8px; right: 8px; z-index: 5;
-  width: 22px; height: 22px;
-  display: flex; align-items: center; justify-content: center;
-}
-.player-drag-handle .fwm-grip { opacity: 0.35; }
-.player-inner:hover .player-drag-handle .fwm-grip { opacity: 0.7; }
 
 /* ── Disable old collapse-JS interference ── */
 .nav-collapsible-item { max-width: none !important; opacity: 1 !important; overflow: visible !important; }
@@ -4794,7 +4465,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 .ts-sched-title-row { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
 .ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1; min-width: 0; }
 .ts-sched-host { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ts-sched-right { display: flex; align-items: center; flex-shrink: 0; }
 .ts-sched-live-badge {
   flex-shrink: 0;
   display: inline-flex; align-items: center; gap: var(--space-2);
@@ -4806,17 +4476,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
 .ts-sched-live-badge:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
-.ts-sched-alert {
-  width: 28px; height: 28px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.11); border: none;
-  border-radius: var(--radius-control); cursor: pointer;
-  color: var(--icon-secondary);
-  transition: background var(--dur-micro) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
-}
-.ts-sched-alert:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
-.ts-sched-alert.alerted { background: rgba(var(--color-live-rgb),.12); border-color: rgba(var(--color-live-rgb),.4); color: var(--color-live); }
-.ts-sched-alert svg { width: 12px; height: 12px; pointer-events: none; }
 
 #topbar-right { display: flex; align-items: center; gap: var(--space-3); grid-column: 3; justify-self: end; padding-left: 12px; }
 
@@ -6083,16 +5742,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 <script>
 history.scrollRestoration = 'manual';
 
-/* ── SVG helper ── */
-function mkSvg(d, size, stroke) {
-  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  s.setAttribute('viewBox', '0 0 24 24');
-  s.style.cssText = `width:${size}px;height:${size}px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block;flex-shrink:0;`;
-  if (stroke) s.style.stroke = stroke;
-  s.innerHTML = d;
-  return s;
-}
-
 /* ── Responsive detection ── */
 const mq = window.matchMedia('(max-width: 768px)');
 
@@ -6116,13 +5765,6 @@ function toggleSidebarLabels() {
   }
   _sidebarTransitioning = true;
   setTimeout(() => { _sidebarTransitioning = false; }, 450);
-}
-function closeSidebar() {
-  navPill.classList.add('sb-closed');
-  navPill.classList.remove('sb-icons');
-  document.body.classList.add('sb-closed');
-  document.body.classList.remove('sb-icons');
-  if (sidebarReopen) sidebarReopen.classList.add('visible');
 }
 function openSidebar() {
   navPill.classList.remove('sb-closed', 'sb-icons');
@@ -7400,7 +7042,6 @@ playBtn.addEventListener('click', e => {
 })();
 
 /* ── Panels ── */
-function closePanel(el) { el.classList.add('closing'); setTimeout(()=>el.style.display='none',180); }
 function acceptCookies() {
   const el = document.getElementById('panel-cookie');
   if (!el) return;
@@ -8522,22 +8163,6 @@ document.getElementById('show-host-wrap').addEventListener('click', () => {
 
 /* ── Show tracklist popup ── */
 let tracklistPopupOpen = false;
-function openShowTracklist() {
-  if (tracklistPopupOpen) { closeShowTracklist(); return; }
-  // Close player tracklist panel if open (but leave last-played intact)
-  if (plOpen && plPanel && plPanel.classList.contains('tracklist')) {
-    _closePl();
-  }
-  const popup = document.getElementById('show-tracklist-popup');
-  const scrim = document.getElementById('show-tracklist-scrim');
-  tracklistPopupOpen = true;
-  popup.style.display = 'block';
-  if (scrim) scrim.style.display = 'block';
-  requestAnimationFrame(() => {
-    popup.classList.add('open');
-    if (scrim) scrim.classList.add('open');
-  });
-}
 function closeShowTracklist() {
   const popup = document.getElementById('show-tracklist-popup');
   const scrim = document.getElementById('show-tracklist-scrim');
@@ -8555,12 +8180,6 @@ document.getElementById('show-tracklist-scrim').addEventListener('click', () => 
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && tracklistPopupOpen) closeShowTracklist(); });
 
 /* ── Scroll fade helpers ── */
-function updateScrollFade(el) {
-  const atBottom = el.scrollHeight - el.scrollTop <= el.clientHeight + 2;
-  const fade = 'linear-gradient(to bottom,black calc(100% - 48px),transparent 100%)';
-  el.style.maskImage = atBottom ? '' : fade;
-  el.style.webkitMaskImage = atBottom ? '' : fade;
-}
 function initScrollFade(el, fadeSize, topSafe = 0, skipFirstScrollEvent = false) {
   let _skip = skipFirstScrollEvent;
   const check = () => {
@@ -8608,14 +8227,6 @@ function initHScrollFade(el, fadeSize, offset) {
   };
   el.addEventListener('scroll', apply, { passive: true });
   apply();
-}
-
-function toggleShowFollow(btn) {
-  const following = btn.classList.toggle('active');
-  const svg = btn.querySelector('svg');
-  svg.innerHTML = following
-    ? '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16,11 18,13 22,9"/>'
-    : '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>';
 }
 
 /* ══════════════════════════════════════
@@ -9181,201 +8792,6 @@ function scheduleAllNotifs() {
   });
 }
 
-function renderSchedule() {
-  const container = document.getElementById('schedule-days');
-  if (!container) return;
-  // Use current date to label days starting from today
-  const today = new Date();
-  const todayDow = (today.getDay() + 6) % 7; // 0=Mon...6=Sun
-
-  let html = '';
-  for (let i = 0; i < 7; i++) {
-    const dow = (todayDow + i) % 7;
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
-    const daySlots = SCHEDULE_SHOWS.filter(s => s.day === dow);
-    const isToday = i === 0;
-
-    const dateStr = d.getDate() + ' ' + SHORT_MONTHS[d.getMonth()];
-
-    let slotsHtml = '';
-    if (daySlots.length === 0) {
-      slotsHtml = `<div class="schedule-empty">No shows scheduled</div>`;
-    } else {
-      for (const slot of daySlots) {
-        const showData = SHOW_DATA[slot.title];
-        // Is it live? (mock: if today and within 2h of slot time)
-        const [sh, sm] = slot.time.split(':').map(Number);
-        const slotMinutes = sh * 60 + sm;
-        const nowMinutes = today.getHours() * 60 + today.getMinutes();
-        const isLive = isToday && nowMinutes >= slotMinutes && nowMinutes < slotMinutes + 120;
-
-        const artistData = ARTISTS[slot.host];
-        const avatarHtml = artistData?.photo
-          ? `<img src="${artistData.photo}" alt="${slot.host}">`
-          : makeArtistSvg(slot.host);
-
-        const alertKey = `${slot.day}|${slot.time}|${slot.title}`;
-        const isAlerted = getAlerts().has(alertKey);
-        const alertIcon = isAlerted ? 'bell-ring' : 'bell';
-        const safeTitle = slot.title.replace(/'/g, "\\'");
-
-        slotsHtml += `
-          <div class="schedule-slot${isLive ? ' is-live' : ''}" role="button" tabindex="0" onclick="${showData ? `openShow('${safeTitle}')` : ''}">
-            <span class="schedule-slot-time">${slot.time}</span>
-            <div class="schedule-slot-body">
-              <div class="schedule-slot-title">
-                <span class="slot-title-text">${slot.title}</span>
-                ${isLive ? `<button class="schedule-slot-live-btn" onclick="event.stopPropagation()"><span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>LIVE</button>` : ''}
-                ${slot.isNew ? `<span class="badge-new"><span>NEW</span></span>` : ''}
-              </div>
-              <div class="schedule-slot-host">
-                <div class="schedule-slot-avatar">${avatarHtml}</div>
-                ${slot.host}
-              </div>
-            </div>
-            <div class="schedule-slot-right">
-              ${slot.genres?.length ? `<div class="slot-tags">${slot.genres.map(g => `<span class="chip genre-tag">${g}</span>`).join('')}</div>` : ''}
-              <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
-                title="${isAlerted ? 'Rappel activé' : 'Me rappeler'}"
-                onclick="event.stopPropagation(); toggleAlert(this, '${alertKey}', ${i}, '${slot.time}', '${safeTitle}')">
-                <i data-lucide="${alertIcon}" style="pointer-events:none"></i>
-              </button>
-            </div>
-          </div>`;
-      }
-    }
-
-    html += `
-      <div class="schedule-day${isToday ? ' today' : ''}">
-        <div class="schedule-day-header">
-          <span class="day-name">${isToday ? 'Today' : DAY_NAMES[dow]},</span>
-          <span class="day-date">${dateStr}.</span>
-        </div>
-        <div class="schedule-slots">${slotsHtml}</div>
-      </div>`;
-  }
-  container.innerHTML = html;
-}
-
-/* ── Schedule panel — floating utility window (Explorer sibling) ── */
-
-let _schedPanelClosing = false;
-let _schedActiveDow    = -1;  // -1 = auto-select today's day-of-week
-
-/* Abbreviated day names for the picker (Mon=0 … Sun=6 in our 0-indexed week) */
-const SP_DAY_SHORT  = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const SP_DAY_LETTER = ['M',   'T',   'W',   'T',   'F',   'S',   'S'];
-
-/* Build the single-line calendar header — Mon–Sun of current week, today highlighted */
-function _buildCalHeader(prefix, fnName, today) {
-  const todayDow = (today.getDay() + 6) % 7; // 0=Mon … 6=Sun
-  // Monday of this week
-  const monday = new Date(today);
-  monday.setDate(today.getDate() - todayDow);
-  const days = Array.from({length: 7}, (_, ri) => {
-    const d = new Date(monday); d.setDate(monday.getDate() + ri);
-    const isToday = ri === todayDow;
-    const dayName = isToday ? 'Today' : SP_DAY_SHORT[ri];
-    const label   = `${dayName}, ${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}`;
-    return `<button class="sp-cal-tab${isToday ? ' active' : ''}" id="${prefix}-tab-${ri}" onclick="${fnName}(${ri})">${label}</button>`;
-  }).join('');
-  return `<div class="sp-cal-header"><div class="sp-cal-days">${days}</div></div>`;
-}
-
-/* Convert day-of-week → days-from-today (for notification scheduling) */
-function _dowToIdx(dow) {
-  const todayDow = (new Date().getDay() + 6) % 7;
-  return (dow - todayDow + 7) % 7;
-}
-
-/* Format day-picker tab label: "Today, 19 Apr." or "Mon, 21 Apr." */
-function _dayTabLabel(i, todayDow, today) {
-  const offset = (i - todayDow + 7) % 7;
-  const d = new Date(today);
-  d.setDate(d.getDate() + offset);
-  const prefix = i === todayDow ? 'Today' : SP_DAY_SHORT[i];
-  return `${prefix}, ${d.getDate()} ${SHORT_MONTHS[d.getMonth()]}.`;
-}
-
-/* 4 fixed 6h blocks — always rendered even if no shows in window */
-const SP_BLOCKS = [
-  { label: 'Night program',     start:  0, time: '00:00' },
-  { label: 'Morning program',   start:  6, time: '06:00' },
-  { label: 'Afternoon program', start: 12, time: '12:00' },
-  { label: 'Evening program',   start: 18, time: '18:00' },
-];
-
-function _buildScheduleHTML(dayIndex, isToday, nowMin, closeFn) {
-  const allSlots = (SCHEDULE_SHOWS || [])
-    .filter(s => s.day === dayIndex)
-    .sort((a, b) => a.time.localeCompare(b.time));
-
-  let html = '';
-
-  SP_BLOCKS.forEach(({ label, start, time }) => {
-    const end         = start + 6;
-    const isBlockLive = isToday && nowMin >= start * 60 && nowMin < end * 60;
-    const liveBadge   = isBlockLive
-      ? `<span class="sp-live-badge"><span class="live-dot"></span>Live</span>`
-      : '';
-
-    html += `<div class="sp-block-hdr"><span class="sp-block-time">${time}</span><span>${label}</span>${liveBadge}</div>`;
-
-    /* Resident shows whose time falls within [start, end) */
-    const blockShows = allSlots.filter(s => {
-      if (s.host !== 'Resident') return false;
-      const h = parseInt(s.time.split(':')[0], 10);
-      return h >= start && h < end;
-    });
-
-    /* Find the currently live show within this block */
-    let liveSlotTime = null;
-    if (isBlockLive) {
-      const started = blockShows.filter(s => {
-        const [h, m] = s.time.split(':').map(Number);
-        return h * 60 + m <= nowMin;
-      });
-      if (started.length) liveSlotTime = started[started.length - 1].time;
-    }
-
-    blockShows.forEach(slot => {
-      /* Look up show by resident name: find show where showData.host === slot.title */
-      const showEntry  = SHOW_DATA && Object.entries(SHOW_DATA).find(([, d]) => d.host === slot.title);
-      const showTitle  = showEntry ? showEntry[0] : slot.title;
-      const safeTitle  = showTitle.replace(/'/g, "\\'");
-      const artistName = slot.title;
-      const alertKey   = `${slot.day}|${slot.time}|${slot.title}`;
-      const isAlerted  = getAlerts().has(alertKey);
-      const dayIdx     = _dowToIdx(dayIndex);
-      const onclk      = showEntry ? `${closeFn};openShow('${safeTitle}')` : '';
-      const isShowLive = liveSlotTime === slot.time;
-      const liveBtnHtml = isShowLive
-        ? `<button class="sp-live-btn" onclick="event.stopPropagation()"><span class="live-dot" style="animation:blink 1.4s ease-in-out infinite;"></span>LIVE</button>`
-        : '';
-      html += `
-        <div class="sp-show-row" role="button" tabindex="0" onclick="${onclk}">
-          <span class="sp-block-time">${slot.time}</span>
-          <div class="sp-show-info">
-            <div class="sp-show-title-row">
-              <div class="sp-show-name">${showTitle}</div>
-            </div>
-            <div class="sp-show-artist">${artistName}</div>
-          </div>
-          <div class="sp-show-right">
-            ${liveBtnHtml}
-            <button class="schedule-slot-alert${isAlerted ? ' alerted' : ''}"
-              title="${isAlerted ? 'Remove reminder' : 'Set reminder'}"
-              onclick="event.stopPropagation();toggleAlert(this,'${alertKey}',${dayIdx},'${slot.time}','${slot.title.replace(/'/g,"\\'")}')">
-              <i data-lucide="${isAlerted ? 'bell-ring' : 'bell'}" style="pointer-events:none"></i>
-            </button>
-          </div>
-        </div>`;
-    });
-  });
-
-  return `<div style="display:flex;flex-direction:column;gap:var(--space-4);">${html}</div>`;
-}
 
 function _renderSchedulePanelDaySlots(ri) {
   const body = document.getElementById('schedule-panel-body');
@@ -9444,18 +8860,9 @@ function closeSchedulePanel() {
   }, 260);
 }
 
-function toggleSchedulePanel() {
-  if (OM.isOpen('schedule')) {
-    closeSchedulePanel();
-  } else {
-    openSchedulePanel();
-  }
-}
-
 /* Legacy aliases — keep nav-dropdown / mobile-nav callers working */
 let schedulePreviousView = 'home';
 function openSchedule()  { openSchedulePanel(); }
-function closeSchedule() { closeSchedulePanel(); }
 
 /* ══════════════════════════════════════════════════════════════
    iOS LIQUID GLASS NAV — tab routing + pill animation
