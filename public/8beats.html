@@ -94,7 +94,7 @@
   /* ── Semantic — Interactive surfaces ── */
   --surface-hover:      transparent;
   /* Control surface — the "player-ctrl style": adaptive translucent fill (reads dark over a black bg, light over a light bg). Shared by player buttons + progress bar. */
-  --surface-control:       rgba(255,255,255,0.11);
+  --surface-control:       rgba(255,255,255,0.12);
   --surface-control-hover: rgba(255,255,255,0.16);
 
   /* ── Semantic — Icons (miroir du texte) ── */
@@ -622,7 +622,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 .nav-dd-item:first-child { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
 .nav-dd-item + .nav-dd-item::before {
   content: ''; position: absolute; top: 0; left: var(--space-5); right: var(--space-5);
-  height: 1px; background: rgba(255,255,255,0.11);
+  height: 1px; background: rgba(255,255,255,0.12);
 }
 .nav-dd-item:hover { color: var(--text-primary); background: var(--surface-hover); }
 .nav-dd-item svg {
@@ -632,7 +632,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 }
 /* ── Horizontal separators — unified style ── */
 .ham-sep {
-  height: 1px; background: rgba(255,255,255,0.11); margin: 0 16px;
+  height: 1px; background: rgba(255,255,255,0.12); margin: 0 16px;
 }
 .nav-dd-theme-row {
   display: flex; align-items: center; gap: var(--space-3);
@@ -641,7 +641,7 @@ html.light .theme-knob { transform: translateX(20px); background: #8A8A8A; }
 }
 .nav-dd-theme-row::before {
   content: ''; position: absolute; top: 0; left: var(--space-5); right: var(--space-5);
-  height: 1px; background: rgba(255,255,255,0.11);
+  height: 1px; background: rgba(255,255,255,0.12);
 }
 .nav-dd-theme-label { font-size: var(--text-base); color: var(--text-secondary); flex: 1; }
 
@@ -871,7 +871,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
 .btn-secondary svg { stroke: currentColor; fill: none; }
-.btn-secondary:hover, .btn-secondary:active { background: rgba(255,255,255,0.11); color: var(--text-primary); }
+.btn-secondary:hover, .btn-secondary:active { background: rgba(255,255,255,0.12); color: var(--text-primary); }
 
 /* ── Content grid ── */
 /* .content = conteneur grille, .section = colonne éditoriale (cols 3–10) */
@@ -950,7 +950,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-play {
   width: 68px; height: 68px;
   pointer-events: all;
-  background: rgba(255,255,255,0.11);
+  background: rgba(255,255,255,0.12);
   color: var(--text-primary);
 }
 .card-play:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
@@ -1154,7 +1154,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .panel-support-amt {
   flex: 1; height: 44px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.11); border: none;
+  background: rgba(255,255,255,0.12); border: none;
   border-radius: var(--radius-control); cursor: pointer;
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
   color: #a1a1a1;
@@ -1209,7 +1209,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .donate-amt {
   flex: 1; height: 52px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.11); border: none;
+  background: rgba(255,255,255,0.12); border: none;
   border-radius: var(--radius-control); cursor: pointer;
   font-family: var(--font); font-size: var(--text-md); font-weight: 500;
   color: var(--text-primary);
@@ -1304,7 +1304,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
    Closed: invisible at full-width (aligns with player shell top border).
    Open: flash at full-width → contracts to 16px inset separator. */
 #player-sep {
-  height: 1px; background: rgba(255,255,255,0.11);
+  height: 1px; background: rgba(255,255,255,0.12);
   margin: 0 0; opacity: 0;
   /* EXIT */
   transition: opacity 120ms var(--ease-hover) 0ms,
@@ -1347,7 +1347,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .back-to-live {
   display: none; align-items: center; gap: var(--space-2);
   height: 32px; padding: 0 var(--space-3);
-  background: rgba(255,255,255,0.11);
+  background: rgba(255,255,255,0.12);
   border: none;
   border-radius: var(--radius-control);
   cursor: pointer; white-space: nowrap;
@@ -1427,7 +1427,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-bar-main { min-height: 0; display: flex; align-items: center; padding: var(--space-4); gap: var(--space-4); }
 
 /* Player play — taille + flex-shrink spécifiques */
-.play-btn { flex-shrink: 0; background: rgba(255,255,255,0.11); }
+.play-btn { flex-shrink: 0; background: rgba(255,255,255,0.12); }
 .play-btn:hover { background: rgba(255,255,255,0.16); }
 .play-btn svg { width: 20px; height: 20px; }
 
@@ -1483,7 +1483,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Family 2: IconButton (.icon-btn) ── */
 .icon-btn {
   width: 40px; height: 40px; border-radius: var(--radius-control);
-  background: rgba(255,255,255,0.11); border: none;
+  background: rgba(255,255,255,0.12); border: none;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; flex-shrink: 0; color: var(--icon-secondary);
   transition: background var(--dur-short) var(--ease-out),
@@ -1514,7 +1514,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* ── Tracklist icon color ── */
 .playlist-inner .icon-btn,
 .playlist-inner .icon-btn--stream,
-.show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; color: #A1A1A1; background: rgba(255,255,255,0.11); border: none; }
+.show-tracklist-inline .icon-btn--stream { width: 32px; height: 32px; color: #A1A1A1; background: rgba(255,255,255,0.12); border: none; }
 .playlist-inner .icon-btn:hover,
 .playlist-inner .icon-btn--stream:hover,
 .show-tracklist-inline .icon-btn--stream:hover,
@@ -1523,7 +1523,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .ts-btn {
   width: 64px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.11); border: none; border-radius: var(--radius-control);
+  background: rgba(255,255,255,0.12); border: none; border-radius: var(--radius-control);
   cursor: pointer; font-size: var(--text-xs); letter-spacing: .04em;
   color: #A1A1A1; font-family: var(--font);
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
@@ -2106,7 +2106,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     top: 0; left: 0;
     width: 50%; height: 50%;
     border-radius: 28px 0 0 0;
-    background: radial-gradient(ellipse at 20% 0%, rgba(255,255,255,0.11), transparent 70%);
+    background: radial-gradient(ellipse at 20% 0%, rgba(255,255,255,0.12), transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -2427,7 +2427,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   transition: background var(--dur-micro) var(--ease-hover);
   pointer-events: none;
 }
-.explore-show-row:hover::before { background: rgba(255,255,255,0.11); }
+.explore-show-row:hover::before { background: rgba(255,255,255,0.12); }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
 .explore-show-title { font-size:var(--text-show); font-weight:400; line-height:1; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0; }
@@ -2534,7 +2534,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: var(--text-sm); font-weight: 400; font-family: var(--font);
   letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-primary); flex-shrink: 0;
-  background: rgba(255,255,255,0.11); border: none;
+  background: rgba(255,255,255,0.12); border: none;
   border-radius: var(--radius-control); padding: var(--space-1) var(--space-2);
 }
 /* live-dot inside sp-live-badge keeps its red color */
@@ -2774,7 +2774,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .schedule-slot-alert {
   width: 32px; height: 32px; border-radius: var(--radius-control); flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.11); border: none;
+  background: rgba(255,255,255,0.12); border: none;
   color: var(--icon-secondary); cursor: pointer;
   transition: background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
@@ -3303,7 +3303,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 /* Show page — secondary ghost btn */
 .show-btn-ghost { padding-left: var(--space-4); padding-right: var(--space-4); }
 /* Show page — secondary icon-only btn → uses .icon-btn.icon-btn--action */
-.icon-btn--action { background: rgba(255,255,255,0.11); border: none; color: var(--text-secondary); }
+.icon-btn--action { background: rgba(255,255,255,0.12); border: none; color: var(--text-secondary); }
 .icon-btn--action:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .icon-btn--action.active { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 
@@ -3696,7 +3696,7 @@ body { padding-top: 24px; }
   pointer-events: none;
 }
 .ham-item:hover { color: var(--text-primary); }
-.ham-item:hover::before { background: rgba(255,255,255,0.11); }
+.ham-item:hover::before { background: rgba(255,255,255,0.12); }
 .ham-item svg { width: 14px; height: 14px; flex-shrink: 0; }
 .ham-sep {}
 .ham-theme-cycler {
@@ -3719,7 +3719,7 @@ body { padding-top: 24px; }
 }
 .ham-social-row .icon-btn--ghost {
   width: 32px; height: 32px;
-  background: rgba(255,255,255,0.11); border: none; color: var(--text-secondary);
+  background: rgba(255,255,255,0.12); border: none; color: var(--text-secondary);
 }
 .ham-social-row .icon-btn--ghost:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 .ham-social-row .icon-btn--ghost svg { width: 14px; height: 14px; }
@@ -4232,14 +4232,14 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 #ts-badges > * { pointer-events: all; }
 /* ⌘K / Esc badge — 12px text, 4px v-padding, 8px h-padding */
 #topbar-search-kbd {
-  background: rgba(255,255,255,0.11); border-radius: 6px;
+  background: rgba(255,255,255,0.12); border-radius: 6px;
   color: #A1A1A1; font-size: 12px; line-height: 1; font-family: var(--font);
   padding: 4px 8px; white-space: nowrap; display: flex; align-items: center;
   opacity: 1; filter: blur(0px);
   transition: opacity 160ms var(--ease-hover), filter 160ms var(--ease-hover);
 }
 #topbar-search-esc {
-  background: rgba(255,255,255,0.11); border: none; border-radius: 6px;
+  background: rgba(255,255,255,0.12); border: none; border-radius: 6px;
   color: #A1A1A1; font-size: 12px; line-height: 1; font-family: var(--font);
   padding: 4px 8px; cursor: pointer; white-space: nowrap; display: flex; align-items: center;
   opacity: 0; filter: blur(4px); pointer-events: none;
@@ -4277,7 +4277,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
            separator" illusion without any double-line overlap.
    EXIT  — fades out immediately, margin resets. */
 #topbar-dropdown-sep {
-  height: 1px; background: rgba(255,255,255,0.11);
+  height: 1px; background: rgba(255,255,255,0.12);
   margin: 0 0; opacity: 0; filter: blur(4px);
   /* EXIT: fade+blur out */
   transition: opacity 200ms var(--ease-in) 0ms,
@@ -4312,7 +4312,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 #topbar-dropdown-shows .explore-show-row { gap: 16px; margin: -6px var(--hover-bleed) -6px var(--hover-bleed); padding: var(--hover-bleed); border-radius: var(--radius-control); }
 #topbar-dropdown-shows .explore-show-row::before { display: none; }
-#topbar-dropdown-shows .explore-show-row:hover { background: rgba(255,255,255,0.11); }
+#topbar-dropdown-shows .explore-show-row:hover { background: rgba(255,255,255,0.12); }
 #topbar-dropdown-shows::-webkit-scrollbar { width: 4px; }
 #topbar-dropdown-shows::-webkit-scrollbar-track { background: transparent; }
 #topbar-dropdown-shows::-webkit-scrollbar-thumb { background: #333333; border-radius: 2px; }
@@ -4329,7 +4329,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   content: '';
   position: absolute;
   bottom: 0; left: var(--space-4); right: var(--space-4);
-  height: 1px; background: rgba(255,255,255,0.11);
+  height: 1px; background: rgba(255,255,255,0.12);
 }
 .ts-genre-card-name {
   font-size: var(--text-base); font-weight: 500;
@@ -4364,7 +4364,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   transition: background 100ms ease-in 0ms;
 }
 #topbar-search.search-open #ts-tabs-sep {
-  background: rgba(255,255,255,0.11);
+  background: rgba(255,255,255,0.12);
   transition: background 200ms ease-out 280ms;
 }
 #ts-filter-btn {
@@ -4377,7 +4377,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
   white-space: nowrap; align-self: center;
 }
-#ts-filter-btn:hover { background: rgba(255,255,255,0.11); color: var(--text-primary); }
+#ts-filter-btn:hover { background: rgba(255,255,255,0.12); color: var(--text-primary); }
 #ts-filter-btn svg, #ts-filter-btn i { width: 14px; height: 14px; stroke: currentColor; fill: none; display: block; }
 /* ── Topbar inline genre filter row ── */
 #ts-filter-row {
@@ -4407,7 +4407,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 .ts-filter-chips::-webkit-scrollbar { display: none; }
 .ts-filter-chips .chip {
-  background: rgba(255,255,255,0.11); border: none;
+  background: rgba(255,255,255,0.12); border: none;
   backdrop-filter: none; -webkit-backdrop-filter: none;
   transition: background var(--dur-short) var(--ease-out),
               color var(--dur-micro) var(--ease-out),
@@ -4427,9 +4427,9 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
 .ts-tab::before { display: none; }
-.ts-tab:hover { background: rgba(255,255,255,0.11); color: var(--text-primary); }
+.ts-tab:hover { background: rgba(255,255,255,0.12); color: var(--text-primary); }
 .ts-tab.active { background: transparent; color: var(--text-primary); }
-.ts-tab.active:hover { background: rgba(255,255,255,0.11); }
+.ts-tab.active:hover { background: rgba(255,255,255,0.12); }
 .ts-tab svg { width: 14px; height: 14px; stroke: currentColor; fill: none;
               stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
               flex-shrink: 0; display: block; }
@@ -4460,7 +4460,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   border-radius: var(--radius-control);
   transition: color var(--dur-micro) var(--ease-hover), background var(--dur-micro) var(--ease-hover);
 }
-.ts-resident-row:hover { background: rgba(255,255,255,0.11); }
+.ts-resident-row:hover { background: rgba(255,255,255,0.12); }
 .ts-resident-avatar {
   width: 36px; height: 36px; border-radius: 50%;
   background: var(--surface-elevated); border: 1px solid var(--border-default);
@@ -4481,7 +4481,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 .ts-show-title-row { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
 .ts-show-host-link { font-size: var(--text-base); line-height: 1; color: var(--text-secondary); cursor: pointer; align-self: flex-start; transition: color var(--dur-short) var(--ease-hover); }
 .ts-show-host-link:hover { color: var(--text-primary); }
-.ts-timestamp-tag { display: inline-flex; align-items: center; gap: var(--space-1); background: rgba(255,255,255,0.11); border: none; border-radius: var(--radius-control); padding: 2px 8px; font-size: var(--text-sm); color: #A1A1A1; white-space: nowrap; cursor: pointer; }
+.ts-timestamp-tag { display: inline-flex; align-items: center; gap: var(--space-1); background: rgba(255,255,255,0.12); border: none; border-radius: var(--radius-control); padding: 2px 8px; font-size: var(--text-sm); color: #A1A1A1; white-space: nowrap; cursor: pointer; }
 .ts-timestamps-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
 
 /* ── Schedule tab in search dropdown ── */
@@ -4513,7 +4513,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   flex-shrink: 0;
   display: inline-flex; align-items: center; gap: var(--space-2);
   height: 32px; padding: 0 var(--space-3);
-  background: rgba(255,255,255,0.11); border: none; border-radius: var(--radius-control);
+  background: rgba(255,255,255,0.12); border: none; border-radius: var(--radius-control);
   font-size: var(--text-sm); font-family: var(--font); font-weight: 400;
   text-transform: uppercase; letter-spacing: .06em; line-height: 1;
   color: var(--text-secondary); white-space: nowrap;
@@ -7137,7 +7137,7 @@ playBtn.addEventListener('click', e => {
   /* Layer config — colors resolved per-frame to respect theme switches */
   const LAYERS = [
     { aScale: 1.00, lw: 1.5,  darkColor: 'rgba(255,255,255,0.12)', lightColor: 'rgba(0,0,0,0.12)' },
-    { aScale: 0.55, lw: 1.0,  darkColor: 'rgba(255,255,255,0.11)', lightColor: 'rgba(0,0,0,0.08)' },
+    { aScale: 0.55, lw: 1.0,  darkColor: 'rgba(255,255,255,0.12)', lightColor: 'rgba(0,0,0,0.08)' },
   ];
 
   function tick(ts) {
