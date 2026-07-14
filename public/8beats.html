@@ -347,12 +347,16 @@ a { text-decoration: none; color: inherit; }
 /* ============================================================
    3. TYPOGRAPHY
    ============================================================ */
+/* Alpha Lyrae only ships one weight file (Medium/400) — any heavier
+   font-weight forces the browser to synthesize ("faux") bold, which
+   chunks up and degrades the glyph shapes. Pin to 400 everywhere. */
 h1,
 .show-title {
   font-family: 'Alpha Lyrae', var(--font);
+  font-weight: 400;
   color: var(--text-primary);
 }
-.section-header-text h2 { color: var(--text-primary); }
+.section-header-text h2 { color: var(--text-primary); font-weight: 400; }
 
 /* ── .label — classe unique pour tous les titres en majuscules ── */
 /* ── Label typography — shared across all uppercase 12px labels ── */
@@ -888,7 +892,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; }
 .section-header-text { display: flex; flex-direction: column; gap: var(--space-2); }
-.section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 600; letter-spacing: -.4px; line-height: 1.1; }
+.section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.4px; line-height: 1.1; }
 .section-header-text h3 { font-size: var(--text-md); font-weight: 400; color: var(--text-secondary); }
 
 /* section title with inline chevron */
