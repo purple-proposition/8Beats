@@ -10408,6 +10408,8 @@ function _saveLayoutPrefs() {
   document.querySelectorAll('.nav-kbd:not([data-kbd])').forEach(el => {
     el.textContent = isMac ? '⌘K' : 'Ctrl K';
   });
+  const searchKbd = document.getElementById('topbar-search-kbd');
+  if (searchKbd) searchKbd.textContent = isMac ? '⌘K' : 'Ctrl K';
 })();
 document.addEventListener('keydown', e => {
   if (!(e.metaKey || e.ctrlKey)) return;
