@@ -1142,14 +1142,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; align-items: center; gap: var(--space-2); line-height: 1.4;
 }
 .panel-support-header svg { width: 13px; height: 13px; fill: none; stroke: var(--text-secondary); stroke-width: 2; flex-shrink: 0; }
+/* Fixed size, no hover expand/collapse: an animated height here shifts the
+   bottom-left-anchored panel's top edge (and its close button) right as the
+   user moves toward it, making it frustrating to close. */
 .panel-support-amounts {
   display: flex; gap: var(--space-2);
-  max-height: 0; overflow: hidden; opacity: 0;
-  margin-top: calc(-1 * var(--space-4));
-  transition: max-height 280ms var(--ease-out), opacity 200ms var(--ease-out), margin-top 280ms var(--ease-out);
-}
-.panel-support:hover .panel-support-amounts {
-  max-height: 60px; opacity: 1; margin-top: 0;
 }
 .panel-support-amt {
   flex: 1; height: 44px;
@@ -1165,12 +1162,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: 12px; color: var(--text-secondary); line-height: 1;
   text-align: center; letter-spacing: .02em;
   display: flex; align-items: center; justify-content: center; gap: 5px;
-  max-height: 0; overflow: hidden; opacity: 0;
-  margin-top: calc(-1 * var(--space-4));
-  transition: max-height 280ms var(--ease-out), opacity 200ms 60ms var(--ease-out), margin-top 280ms var(--ease-out);
-}
-.panel-support:hover .panel-support-note {
-  max-height: 30px; opacity: 1; margin-top: 0;
 }
 .paypal-logo-svg { height: 11px; width: auto; display: inline-block; fill: currentColor; flex-shrink: 0; }
 
