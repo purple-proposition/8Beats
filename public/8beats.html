@@ -1476,7 +1476,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game-wrap { line-height: 1; margin-top: -4px; } /* empirically-calibrated trim */
+.player-game-wrap { line-height: 1; } /* trim removed: label->title (untrimmed, gap:9) already measured correctly at 24px on a real device; title->game measured short (18) with the old -4px trim, so dropping it to match the untrimmed pair structurally */
 .player-game { font-size: 14px; line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
@@ -6953,13 +6953,9 @@ let playing = false;
 const playBtn = document.getElementById('play-btn');
 
 /* Keep play-btn perfectly square, sized to match the 3-line player-info block.
-   The CSS capsize trim (.player-info-top / .player-game-wrap) gets
-   player-info's own box close to the true glyph ink span, but it's built
-   from static font-metric ratios (canvas-measured), which don't perfectly
-   match actual rendered ink for every string — so for the button specifically
-   we still measure real ink via Range.getBoundingClientRect() for pixel-exact
-   edges, layered on top of (not replacing) the CSS trim that keeps the
-   12px row-to-row gaps correct.
+   We measure real ink via Range.getBoundingClientRect() for pixel-exact
+   edges rather than trusting the CSS line-box, so the button stays aligned
+   regardless of whatever line-height/margin tuning the 3 rows end up with.
    JS-driven (not aspect-ratio) because aspect-ratio + align-self:stretch inside
    a flex row resolves width before the stretched height is known — unreliable. */
 (function () {
