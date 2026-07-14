@@ -6309,7 +6309,13 @@ const PLATFORM_LABELS = {
   spotify: 'Spotify', appleMusic: 'Apple Music', youtube: 'YouTube',
   youtubeMusic: 'YouTube Music', deezer: 'Deezer', tidal: 'Tidal',
   amazonMusic: 'Amazon Music', soundcloud: 'SoundCloud', pandora: 'Pandora',
+  bandcamp: 'Bandcamp',
 };
+// Rough global popularity order — unlisted platforms sort after these.
+const PLATFORM_ORDER = [
+  'spotify', 'appleMusic', 'youtubeMusic', 'youtube', 'amazonMusic',
+  'deezer', 'tidal', 'soundcloud', 'pandora', 'bandcamp',
+];
 let _musicLinksActiveEl = null;
 
 function closeMusicLinksPopup() {
@@ -6337,7 +6343,12 @@ async function showMusicLinksPopup(sourceUrl, anchorEl) {
       linksByPlatform = data.linksByPlatform || {};
       _musicLinksCache.set(sourceUrl, linksByPlatform);
     }
-    const entries = Object.entries(linksByPlatform).filter(([key]) => PLATFORM_LABELS[key]);
+    const entries = Object.entries(linksByPlatform)
+      .filter(([key]) => PLATFORM_LABELS[key])
+      .sort(([a], [b]) => {
+        const ia = PLATFORM_ORDER.indexOf(a), ib = PLATFORM_ORDER.indexOf(b);
+        return (ia === -1 ? PLATFORM_ORDER.length : ia) - (ib === -1 ? PLATFORM_ORDER.length : ib);
+      });
     if (!entries.length) {
       musicLinksPopupEl.innerHTML = '<div class="mlp-title">Available on</div><div class="mlp-empty">No other platforms found.</div>';
       return;
