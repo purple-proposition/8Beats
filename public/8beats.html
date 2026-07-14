@@ -6306,15 +6306,17 @@ function hideGameTooltip() {
    ══════════════════════════════════════ */
 const musicLinksPopupEl = document.getElementById('music-links-popup');
 const PLATFORM_LABELS = {
+  // Pandora deliberately excluded — US/AU/NZ only, not available in Europe
+  // or most of the world, so it doesn't belong in a "listen anywhere" list.
   spotify: 'Spotify', appleMusic: 'Apple Music', youtube: 'YouTube',
   youtubeMusic: 'YouTube Music', deezer: 'Deezer', tidal: 'Tidal',
-  amazonMusic: 'Amazon Music', soundcloud: 'SoundCloud', pandora: 'Pandora',
+  amazonMusic: 'Amazon Music', soundcloud: 'SoundCloud',
   bandcamp: 'Bandcamp',
 };
 // Rough global popularity order — unlisted platforms sort after these.
 const PLATFORM_ORDER = [
   'spotify', 'appleMusic', 'youtubeMusic', 'youtube', 'amazonMusic',
-  'deezer', 'tidal', 'soundcloud', 'pandora', 'bandcamp',
+  'deezer', 'tidal', 'soundcloud', 'bandcamp',
 ];
 let _musicLinksActiveEl = null;
 
@@ -6964,37 +6966,21 @@ let playing = false;
 const playBtn = document.getElementById('play-btn');
 
 /* Keep play-btn perfectly square, sized to match the 3-line player-info block.
-   We measure real ink via Range.getBoundingClientRect() for pixel-exact
-   edges rather than trusting the CSS line-box, so the button stays aligned
-   regardless of whatever line-height/margin tuning the 3 rows end up with.
+   Matches player-info's plain box (not glyph ink) — an earlier version
+   measured real ink via Range.getBoundingClientRect() for the top/bottom
+   edges specifically, but that consistently overshot the box by a pixel or
+   two (confirmed via inspector: button taller than player-info's own
+   rendered height), so back to the simpler, exactly-matching box measurement.
    JS-driven (not aspect-ratio) because aspect-ratio + align-self:stretch inside
    a flex row resolves width before the stretched height is known — unreliable. */
 (function () {
   const infoEl = document.querySelector('.player-info');
-  const labelEl = document.getElementById('player-program-label');
-  const gameEl = document.getElementById('player-game');
   if (!infoEl || !playBtn) return;
-  const inkRect = el => {
-    const range = document.createRange();
-    range.selectNodeContents(el);
-    return range.getBoundingClientRect();
-  };
-  playBtn.style.alignSelf = 'flex-start';
   const syncSize = () => {
-    let top, h;
-    if (labelEl && gameEl) {
-      top = inkRect(labelEl).top;
-      h = inkRect(gameEl).bottom - top;
-    } else {
-      const r = infoEl.getBoundingClientRect();
-      top = r.top; h = r.height;
-    }
+    const h = infoEl.getBoundingClientRect().height;
     if (h <= 0) return;
     playBtn.style.width = h + 'px';
     playBtn.style.height = h + 'px';
-    playBtn.style.marginTop = '0px';
-    const delta = top - playBtn.getBoundingClientRect().top;
-    playBtn.style.marginTop = delta + 'px';
   };
   syncSize();
   new ResizeObserver(syncSize).observe(infoEl);
