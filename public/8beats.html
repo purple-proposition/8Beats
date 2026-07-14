@@ -347,9 +347,13 @@ a { text-decoration: none; color: inherit; }
 /* ============================================================
    3. TYPOGRAPHY
    ============================================================ */
+/* Alpha Lyrae only ships one weight file (Medium); requesting 700 forces
+   the browser to synthesize bold, which chunks up the glyphs into that
+   blocky/pixelated look — kept intentionally for the alt aesthetic. */
 h1,
 .show-title {
   font-family: 'Alpha Lyrae', var(--font);
+  font-weight: 700;
   color: var(--text-primary);
 }
 .section-header-text h2 { color: var(--text-primary); }
@@ -800,7 +804,7 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   gap: var(--space-5);
 }
 
-.hero-inner h1 { font-size: clamp(32px,5.5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; color: var(--text-primary); }
+.hero-inner h1 { font-size: clamp(32px,5.5vw,64px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; color: var(--text-primary); }
 .hero-inner p  { font-size: var(--text-md); color: var(--text-secondary); line-height: 1.6; }
 
 .hero-actions  { display: flex; justify-content: center; gap: var(--space-4); margin-top: 0; }
@@ -888,7 +892,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; }
 .section-header-text { display: flex; flex-direction: column; gap: var(--space-2); }
-.section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 600; letter-spacing: -.4px; line-height: 1.1; }
+.section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 700; letter-spacing: -.4px; line-height: 1.1; }
 .section-header-text h3 { font-size: var(--text-md); font-weight: 400; color: var(--text-secondary); }
 
 /* section title with inline chevron */
