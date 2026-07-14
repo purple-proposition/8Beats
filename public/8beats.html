@@ -6330,7 +6330,7 @@ async function showMusicLinksPopup(sourceUrl, anchorEl) {
   try {
     let linksByPlatform = _musicLinksCache.get(sourceUrl);
     if (!linksByPlatform) {
-      const res = await fetch('https://api.song.link/v1-alpha.1/links?url=' + encodeURIComponent(sourceUrl));
+      const res = await fetch('/api/music-links?url=' + encodeURIComponent(sourceUrl));
       if (res.status === 429) throw new Error('rate-limited');
       if (!res.ok) throw new Error('lookup failed: ' + res.status);
       const data = await res.json();
