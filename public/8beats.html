@@ -1476,7 +1476,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game-wrap { line-height: 1; } /* trim removed: label->title (untrimmed, gap:9) already measured correctly at 24px on a real device; title->game measured short (18) with the old -4px trim, so dropping it to match the untrimmed pair structurally */
+.player-game-wrap { line-height: 1; margin-top: -1px; } /* interpolated from two real-device data points: -4px measured 18 (target-6), 0px measured 26 (target+2) -> -1px should land on 24 */
 .player-game { font-size: 14px; line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
