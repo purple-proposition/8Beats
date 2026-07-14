@@ -7034,6 +7034,18 @@ playBtn.addEventListener('click', e => {
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
   let W = 0, H = 0;
 
+  /* Vertical reference = the h1 block's own center, not the hero section's —
+     the h1 can sit off-center (e.g. wraps to 2 lines on tablet widths),
+     so the waveform must track its actual position, not H*0.5. */
+  const heroH1 = document.querySelector('.hero-inner h1');
+  let centerY = null;
+  function updateCenterY() {
+    if (!heroH1) { centerY = null; return; }
+    const cRect = canvas.getBoundingClientRect();
+    const hRect = heroH1.getBoundingClientRect();
+    centerY = (hRect.top + hRect.height / 2) - cRect.top;
+  }
+
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = canvas.offsetWidth;
@@ -7041,9 +7053,12 @@ playBtn.addEventListener('click', e => {
     canvas.width  = W * dpr;
     canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    updateCenterY();
   }
   resize();
   window.addEventListener('resize', resize, { passive: true });
+  if (heroH1) new ResizeObserver(updateCenterY).observe(heroH1);
+  document.fonts?.ready.then(updateCenterY);
 
   /* ── Visibility guards ── */
   let rafId = null, inView = true, tabVisible = true;
@@ -7138,7 +7153,7 @@ playBtn.addEventListener('click', e => {
 
     ctx.clearRect(0, 0, W, H);
 
-    const cy  = H * 0.5;
+    const cy  = centerY != null ? centerY : H * 0.5;
     const maxH = H * 0.42;   /* max half-height of wave */
     const isLight = document.documentElement.classList.contains('light');
 
