@@ -5672,7 +5672,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
               Back to live
             </button>
             <button class="player-ctrl icon-btn--spotify" id="spotify-btn" aria-label="Available on other platforms" aria-expanded="false" onclick="showMusicLinksPopup('https://open.spotify.com/track/7zzPjPRCw5ppY2kjt0wFuO', this)">
-              <i data-lucide="plus" style="stroke:currentColor;fill:none;display:block"></i>
+              <i data-lucide="disc-3" style="stroke:currentColor;fill:none;display:block"></i>
             </button>
             <button class="player-ctrl" id="playlist-btn"
                     aria-label="Playlist" aria-expanded="false" aria-controls="playlist">
@@ -6267,10 +6267,10 @@ const PLATFORM_LABELS = {
   amazonMusic: 'Amazon Music', soundcloud: 'SoundCloud',
   bandcamp: 'Bandcamp',
 };
-// Rough global popularity order — unlisted platforms sort after these.
+// Fixed global popularity order (approx. MAU/subscriber base) — unlisted platforms sort after these.
 const PLATFORM_ORDER = [
-  'spotify', 'appleMusic', 'youtubeMusic', 'youtube', 'amazonMusic',
-  'deezer', 'tidal', 'soundcloud', 'bandcamp',
+  'spotify', 'youtubeMusic', 'youtube', 'appleMusic', 'amazonMusic',
+  'soundcloud', 'deezer', 'tidal', 'bandcamp',
 ];
 let _musicLinksActiveEl = null;
 
