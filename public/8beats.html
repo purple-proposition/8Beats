@@ -927,6 +927,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 }
 .card-thumb:hover::after,
 .card-thumb.is-playing::after { opacity: 1; }
+/* Mood tiles: zoom only, no darkening — image + label need to stay legible */
+.card-thumb.mood-thumb::after { display: none; }
 
 .card-overlay {
   position: absolute; inset: 0; z-index: 2;
@@ -7926,7 +7928,7 @@ function openMoodSearch(theme) {
 function makeMoodsSection() {
   const cards = HOME_MOODS.map(m =>
     `<article class="card" onclick="openMoodSearch('${m.theme}')">
-      <div class="card-thumb"><img src="${m.img}" alt="${m.theme}" loading="lazy"></div>
+      <div class="card-thumb mood-thumb"><img src="${m.img}" alt="${m.theme}" loading="lazy"></div>
     </article>`
   ).join('');
   return `<div class="section col-editorial" style="margin-top:var(--space-8);">
