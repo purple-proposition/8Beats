@@ -3630,6 +3630,11 @@ body { padding-top: 24px; }
   border-radius: calc(var(--radius-btn) - 1px);
   display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4) 0;
 }
+/* Search only makes sense in the hamburger menu where #topbar-search itself is hidden (<=768px) */
+#ham-search-item { display: none; }
+@media (max-width: 768px) {
+  #ham-search-item { display: flex; }
+}
 .ham-item {
   display: flex; align-items: center; gap: var(--space-3);
   padding: 0 var(--space-4); min-height: 20px;
@@ -4839,7 +4844,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
       </button>
       <div id="ham-menu" role="menu">
         <div id="ham-menu-inner">
-        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openTopbarSearch()">
+        <button class="ham-item" id="ham-search-item" role="menuitem" onclick="closeHamMenu();openTopbarSearch()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Search
         </button>
@@ -4847,17 +4852,13 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           About
         </button>
-        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openSupport()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          Support us
-        </button>
         <button class="ham-item" role="menuitem" onclick="closeHamMenu();openProposal()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
           Submit a show
         </button>
-        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openProfile()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          Profile
+        <button class="ham-item" role="menuitem" onclick="closeHamMenu();openSupport()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Support us
         </button>
         <div class="ham-sep"></div>
         <div class="ham-social-row">
@@ -4899,10 +4900,6 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
         <span class="nav-icon-box"><i data-lucide="clipboard-list" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Submit a show</span>
       </a>
-      <button class="nav-item nav-collapsible-item" aria-label="Profile" onclick="openProfile()">
-        <span class="nav-icon-box"><i data-lucide="user-round" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
-        <span class="nav-label">Profile</span>
-      </button>
       <button class="nav-item" id="settings-btn" onclick="toggleSettings()" aria-label="Settings">
         <span class="nav-icon-box"><i data-lucide="settings" style="stroke:currentColor;fill:none;display:block;flex-shrink:0"></i></span>
         <span class="nav-label">Settings</span>
