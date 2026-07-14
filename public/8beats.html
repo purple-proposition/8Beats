@@ -1600,8 +1600,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   /* All direct .section children of .content span the full grid — overrides any inline grid-column */
   .content .section[style] { grid-column: 1 / -1 !important; }
 
-  /* Hero: expand columns to fill more width */
-  .hero { padding: var(--space-9) var(--space); }
+  /* Hero: expand columns to fill more width.
+     padding-top empirically tuned so the visual gap between the topbar
+     search bar and the h1 block is 96px (measured via getBoundingClientRect,
+     not just the raw padding value — the fixed topbar isn't in flow). */
+  .hero { padding: var(--space-9) var(--space) var(--space-9); padding-top: 144px; }
   .hero-inner { grid-column: 4 / span 6; }
 
   /* Cards — carousel, ~3.5 visible on large tablet */
