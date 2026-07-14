@@ -7908,6 +7908,38 @@ const HOME_INTERSTITIALS = {
   </div>`,
 };
 
+/* ── Moods section — image tiles from 8beats.co, hover zoom via .card-thumb ── */
+const HOME_MOODS = [
+  { theme: 'Beach',  img: '/img/moods/beach.jpg'  },
+  { theme: 'Winter', img: '/img/moods/winter.jpg' },
+  { theme: 'Retro',  img: '/img/moods/retro.jpg'  },
+  { theme: 'Spooky', img: '/img/moods/spooky.jpg' },
+];
+
+function openMoodSearch(theme) {
+  openTopbarSearch();
+  const input = document.getElementById('topbar-search-input');
+  if (input) input.value = theme;
+  handleTopbarSearch(theme);
+}
+
+function makeMoodsSection() {
+  const cards = HOME_MOODS.map(m =>
+    `<article class="card" onclick="openMoodSearch('${m.theme}')">
+      <div class="card-thumb"><img src="${m.img}" alt="${m.theme}" loading="lazy"></div>
+    </article>`
+  ).join('');
+  return `<div class="section col-editorial" style="margin-top:var(--space-8);">
+    <header class="section-header">
+      <div class="section-header-text">
+        <h2>Moods</h2>
+        <p style="font-size:16px;line-height:1.4;color:var(--text-secondary);">Pick a vibe, we'll bring the soundtrack.</p>
+      </div>
+    </header>
+    <div class="cards">${cards}</div>
+  </div>`;
+}
+
 function renderHomeSections() {
   const container = document.getElementById('home-themed-sections');
   if (!container) return;
@@ -7940,6 +7972,8 @@ function renderHomeSections() {
     if (sec.interstitialAfter && HOME_INTERSTITIALS[sec.interstitialAfter]) {
       parts.push(HOME_INTERSTITIALS[sec.interstitialAfter]);
     }
+    // Moods slot in between "Join the party" (after Cozy Grooves) and Club Errera
+    if (sec.interstitialAfter === 'pitch-card') parts.push(makeMoodsSection());
   });
   container.innerHTML = parts.join('');
   lucide.createIcons({ nodes: [container] });
@@ -9813,6 +9847,7 @@ function _renderTopbarShows(q) {
     s.title.toLowerCase().includes(q) ||
     s.host.toLowerCase().includes(q) ||
     s.genres.some(g => g.toLowerCase().includes(q)) ||
+    (s.themes && s.themes.some(t => t.toLowerCase().includes(q))) ||
     (s.games && s.games.some(ga => ga.toLowerCase().includes(q)))
   );
   if (tsActiveGenres.size) list = list.filter(s => s.genres.some(g => tsActiveGenres.has(g.toLowerCase())));
