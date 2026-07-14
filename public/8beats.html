@@ -1402,24 +1402,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   border-radius: 0;
   z-index: var(--z-base);
 }
-.progress-tooltip {
-  position: fixed; z-index: var(--z-top);
-  background: var(--glass-bg); border: none;
-  backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);
-  border-radius: var(--radius-btn); padding: var(--space-2) var(--space-4);
-  font-family: var(--font);
-  pointer-events: none; white-space: nowrap;
-  opacity: 0; filter: blur(6px); transform: translateY(6px);
-  /* exit — symétrique : mêmes durées que l'entrée, ease-in (accélère) */
-  transition: opacity 200ms var(--ease-in), filter 240ms var(--ease-in), transform 260ms var(--ease-in);
-}
-.progress-tooltip.visible {
-  opacity: 1; filter: blur(0px); transform: translateY(0);
-  /* enter — spring */
-  transition: opacity   200ms var(--ease-spring),
-              filter    240ms var(--ease-spring),
-              transform 260ms var(--ease-spring);
-}
+.progress-tooltip { white-space: nowrap; }
 
 .player-bar {
   display: flex; flex-direction: column;
@@ -2584,36 +2567,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .sp-show-right { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
 /* Genre tooltip — même dark glass que la search bar */
-#genre-tooltip {
+/* ── Shared glass-popup base ──
+   One open/close rhythm for every hover/click popup on the site:
+   #genre-tooltip, #game-tooltip, #music-links-popup, #progress-tooltip.
+   Same timing as #ham-menu (200/240/260ms, ease-in exit / ease-spring enter). */
+.glass-popup {
   position: fixed; z-index: var(--z-top);
-  max-width: 220px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop);
-  -webkit-backdrop-filter: var(--glass-backdrop);
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: var(--space-3) var(--space-4);
-  font-family: var(--font); font-size: var(--text-base); line-height: 1.5;
-  color: var(--text-tertiary);
-  pointer-events: none;
-  opacity: 0; filter: blur(10px);
-  transform: scale(0.95) translateY(4px);
-  transform-origin: bottom center;
-  /* Same open/close rhythm as #ham-menu: 200/240/260ms, ease-in exit */
-  transition: opacity   200ms var(--ease-in),
-              filter    240ms var(--ease-in),
-              transform 260ms var(--ease-in);
-}
-#genre-tooltip.visible {
-  opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
-  transition: opacity   200ms var(--ease-spring),
-              filter    240ms var(--ease-spring),
-              transform 260ms var(--ease-spring);
-}
-/* Game tooltip — même dark glass que le genre, + footer attribution IGDB */
-#game-tooltip {
-  position: fixed; z-index: var(--z-top);
-  max-width: 300px;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
@@ -2625,17 +2584,19 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   opacity: 0; filter: blur(10px);
   transform: scale(0.95) translateY(4px);
   transform-origin: bottom center;
-  /* Same open/close rhythm as #ham-menu: 200/240/260ms, ease-in exit */
   transition: opacity   200ms var(--ease-in),
               filter    240ms var(--ease-in),
               transform 260ms var(--ease-in);
 }
-#game-tooltip.visible {
+.glass-popup.visible {
   opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
   transition: opacity   200ms var(--ease-spring),
               filter    240ms var(--ease-spring),
               transform 260ms var(--ease-spring);
 }
+#genre-tooltip { max-width: 220px; font-size: var(--text-base); line-height: 1.5; color: var(--text-tertiary); }
+/* Game tooltip — même dark glass que le genre, + footer attribution IGDB */
+#game-tooltip { max-width: 300px; }
 #game-tooltip .gt-desc { font-size: var(--text-base); line-height: 1.5; color: var(--text-tertiary); }
 #game-tooltip .gt-foot {
   display: flex; align-items: center; gap: 5px;
@@ -2647,27 +2608,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 /* ── PROTOTYPE: "Available on" music-links popup (Odesli/song.link) ── */
 #music-links-popup {
-  position: fixed; z-index: var(--z-top);
   width: 240px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop);
-  -webkit-backdrop-filter: var(--glass-backdrop);
-  border: none;
-  border-radius: var(--radius-sm);
   padding: var(--space-4);
-  font-family: var(--font);
-  pointer-events: none;
-  opacity: 0; filter: blur(10px);
-  transform: scale(0.95) translateY(4px);
   transform-origin: top center;
-  /* Same open/close rhythm as #ham-menu: 200/240/260ms, ease-in exit */
-  transition: opacity 200ms var(--ease-in), filter 240ms var(--ease-in), transform 260ms var(--ease-in);
 }
-#music-links-popup.visible {
-  opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
-  pointer-events: all;
-  transition: opacity 200ms var(--ease-spring), filter 240ms var(--ease-spring), transform 260ms var(--ease-spring);
-}
+#music-links-popup.visible { pointer-events: all; }
 #music-links-popup .mlp-title {
   font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-tertiary); margin-bottom: var(--space-3);
@@ -4767,10 +4712,10 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 </head>
 <body>
 
-<div id="genre-tooltip"></div>
-<div id="game-tooltip"></div>
-<div id="progress-tooltip" class="progress-tooltip"></div>
-<div id="music-links-popup"></div>
+<div id="genre-tooltip" class="glass-popup"></div>
+<div id="game-tooltip" class="glass-popup"></div>
+<div id="progress-tooltip" class="glass-popup progress-tooltip"></div>
+<div id="music-links-popup" class="glass-popup"></div>
 
 <!-- NAV DROPDOWN — must live directly in body, outside any backdrop-filter ancestor -->
 <div id="nav-dropdown">
