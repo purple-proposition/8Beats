@@ -2596,19 +2596,19 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-family: var(--font); font-size: var(--text-base); line-height: 1.5;
   color: var(--text-tertiary);
   pointer-events: none;
-  opacity: 0; filter: blur(6px);
-  transform: scale(0.92) translateY(4px);
+  opacity: 0; filter: blur(10px);
+  transform: scale(0.95) translateY(4px);
   transform-origin: bottom center;
-  /* exit — symétrique : mêmes durées que l'entrée, ease-in */
-  transition: opacity   180ms var(--ease-in),
-              filter    200ms var(--ease-in),
-              transform 220ms var(--ease-in);
+  /* Same open/close rhythm as #ham-menu: 200/240/260ms, ease-in exit */
+  transition: opacity   200ms var(--ease-in),
+              filter    240ms var(--ease-in),
+              transform 260ms var(--ease-in);
 }
 #genre-tooltip.visible {
   opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
-  transition: opacity   180ms var(--ease-spring),
-              filter    200ms var(--ease-spring),
-              transform 220ms var(--ease-spring);
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring);
 }
 /* Game tooltip — même dark glass que le genre, + footer attribution IGDB */
 #game-tooltip {
@@ -2622,18 +2622,19 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   padding: var(--space-3) var(--space-4);
   font-family: var(--font);
   pointer-events: none;
-  opacity: 0; filter: blur(6px);
-  transform: scale(0.92) translateY(4px);
+  opacity: 0; filter: blur(10px);
+  transform: scale(0.95) translateY(4px);
   transform-origin: bottom center;
-  transition: opacity   180ms var(--ease-in),
-              filter    200ms var(--ease-in),
-              transform 220ms var(--ease-in);
+  /* Same open/close rhythm as #ham-menu: 200/240/260ms, ease-in exit */
+  transition: opacity   200ms var(--ease-in),
+              filter    240ms var(--ease-in),
+              transform 260ms var(--ease-in);
 }
 #game-tooltip.visible {
   opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
-  transition: opacity   180ms var(--ease-spring),
-              filter    200ms var(--ease-spring),
-              transform 220ms var(--ease-spring);
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring);
 }
 #game-tooltip .gt-desc { font-size: var(--text-base); line-height: 1.5; color: var(--text-tertiary); }
 #game-tooltip .gt-foot {
@@ -2656,15 +2657,16 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   padding: var(--space-4);
   font-family: var(--font);
   pointer-events: none;
-  opacity: 0; filter: blur(6px);
-  transform: scale(0.94) translateY(4px);
+  opacity: 0; filter: blur(10px);
+  transform: scale(0.95) translateY(4px);
   transform-origin: top center;
-  transition: opacity 160ms var(--ease-in), filter 180ms var(--ease-in), transform 200ms var(--ease-in);
+  /* Same open/close rhythm as #ham-menu: 200/240/260ms, ease-in exit */
+  transition: opacity 200ms var(--ease-in), filter 240ms var(--ease-in), transform 260ms var(--ease-in);
 }
 #music-links-popup.visible {
   opacity: 1; filter: blur(0px); transform: scale(1) translateY(0);
   pointer-events: all;
-  transition: opacity 160ms var(--ease-spring), filter 180ms var(--ease-spring), transform 200ms var(--ease-spring);
+  transition: opacity 200ms var(--ease-spring), filter 240ms var(--ease-spring), transform 260ms var(--ease-spring);
 }
 #music-links-popup .mlp-title {
   font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
@@ -3231,7 +3233,8 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   line-height: 1; transition: color var(--dur-short) var(--ease-hover);
 }
 .show-tracklist-inline .track-game:hover,
-.track-game:hover { color: var(--text-primary); cursor: pointer; }
+.track-game:hover,
+.player-game:hover { color: var(--text-primary); cursor: pointer; }
 .show-tracklist-inline .track-right {
   display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0;
 }
@@ -6228,7 +6231,7 @@ function showGenreTooltip(label, chipEl) {
     const r  = chipEl.getBoundingClientRect();
     const tw = genreTooltipEl.offsetWidth;
     const th = genreTooltipEl.offsetHeight;
-    const gap = 8, margin = 12;
+    const gap = 12, margin = 12;
     // flip: above if room, else below
     const top = (r.top - th - gap >= margin)
       ? r.top - th - gap
@@ -6282,7 +6285,7 @@ function showGameTooltip(name, el) {
     const r  = el.getBoundingClientRect();
     const tw = gameTooltipEl.offsetWidth;
     const th = gameTooltipEl.offsetHeight;
-    const gap = 8, margin = 12;
+    const gap = 12, margin = 12;
     const top = (r.top - th - gap >= margin) ? r.top - th - gap : r.bottom + gap;
     const left = Math.max(margin, Math.min(r.left, window.innerWidth - tw - margin));
     gameTooltipEl.style.left = left + 'px';
@@ -6377,7 +6380,7 @@ function positionMusicLinksPopup(anchorEl) {
     const r = anchorEl.getBoundingClientRect();
     const pw = musicLinksPopupEl.offsetWidth;
     const ph = musicLinksPopupEl.offsetHeight;
-    const gap = 8, margin = 12;
+    const gap = 12, margin = 12;
     const top = (r.bottom + gap + ph <= window.innerHeight - margin) ? r.bottom + gap : r.top - ph - gap;
     const left = Math.max(margin, Math.min(r.right - pw, window.innerWidth - pw - margin));
     musicLinksPopupEl.style.left = left + 'px';
@@ -6937,10 +6940,11 @@ document.addEventListener('mouseout', e => {
   hideGenreTooltip();
 });
 
-// Game tooltip — hover sur le nom du jeu (.track-game) si une fiche IGDB existe
+// Game tooltip — hover sur le nom du jeu (.track-game, ou #player-game dans
+// la barre du player) si une fiche IGDB existe
 let _gameTimer = null;
 document.addEventListener('mouseover', e => {
-  const el = e.target.closest('.track-game');
+  const el = e.target.closest('.track-game, #player-game');
   if (!el) return;
   const name = el.textContent.trim();
   if (!GAME_INFO[name]) return;
@@ -6948,13 +6952,13 @@ document.addEventListener('mouseover', e => {
   _gameTimer = setTimeout(() => showGameTooltip(name, el), 600);
 });
 document.addEventListener('mouseout', e => {
-  const el = e.target.closest('.track-game');
+  const el = e.target.closest('.track-game, #player-game');
   if (!el) return;
   clearTimeout(_gameTimer);
   hideGameTooltip();
 });
 document.addEventListener('click', e => {
-  const el = e.target.closest('.track-game');
+  const el = e.target.closest('.track-game, #player-game');
   if (!el) return;
   const name = el.textContent.trim();
   const info = GAME_INFO[name];
