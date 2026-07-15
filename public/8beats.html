@@ -1612,7 +1612,11 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
      own 96px margin-top is the intended gap, not an addition on top of it. */
   .hero { padding: var(--space-9) var(--space) 0; padding-top: 144px; }
   .hero-inner { grid-column: 4 / span 6; }
-  .hero-inner h1 { font-size: 64px; }
+  .hero-inner h1,
+  /* !important: the canonical secondary-hero h1 rule sits later in the
+     source (unconditional, same specificity), so it would otherwise win
+     over this breakpoint override regardless of media query. */
+  .support-hero h1, .about-hero h1, .latest-hero h1, .proposal-hero h1 { font-size: 64px !important; }
 
   /* Cards — carousel, ~3.5 visible on large tablet */
   .cards {
@@ -1710,7 +1714,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     padding: var(--space-8) var(--space) var(--space-6);
   }
   .hero-inner { grid-column: unset; width: 100%; }
-  .hero-inner h1 { font-size: 64px !important; letter-spacing: -0.03em; max-width: 100%; margin-left: auto; margin-right: auto; line-height: 1; }
+  .hero-inner h1,
+  .support-hero h1, .about-hero h1, .latest-hero h1, .proposal-hero h1 { font-size: 64px !important; letter-spacing: -0.03em; max-width: 100%; margin-left: auto; margin-right: auto; line-height: 1; }
   #hero-waveform { display: none; }
   .hero-inner p  { font-size: var(--text-md); max-width: 320px; }
   .hero-actions  { display: flex; flex-direction: column; width: 100%; gap: var(--space-3); }
