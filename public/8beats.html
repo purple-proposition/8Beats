@@ -765,7 +765,11 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: var(--space-4);
-  padding: 184px var(--space-5) var(--space-8); /* 184 = topbar-bottom(64) + gap(144) - body-padding(24) */
+  /* 184 = topbar-bottom(64) + gap(144) - body-padding(24). Bottom padding is 0
+     because #view-home > .content already carries margin-top:96px — the real
+     gap to the next section is that 96px alone, pixel-perfect against the
+     Listen now button. */
+  padding: 184px var(--space-5) 0;
   overflow: hidden;
   background: var(--surface-page);
 }
@@ -1604,7 +1608,9 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
      padding-top empirically tuned so the visual gap between the topbar
      search bar and the h1 block is 96px (measured via getBoundingClientRect,
      not just the raw padding value — the fixed topbar isn't in flow). */
-  .hero { padding: var(--space-9) var(--space) var(--space-9); padding-top: 144px; }
+  /* Bottom padding 0 — same reasoning as desktop: #view-home > .content's
+     own 96px margin-top is the intended gap, not an addition on top of it. */
+  .hero { padding: var(--space-9) var(--space) 0; padding-top: 144px; }
   .hero-inner { grid-column: 4 / span 6; }
 
   /* Cards — carousel, ~3.5 visible on large tablet */
