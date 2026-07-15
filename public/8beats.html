@@ -1603,6 +1603,10 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
   /* All direct .section children of .content span the full grid — overrides any inline grid-column */
   .content .section[style] { grid-column: 1 / -1 !important; }
+  /* Interstitial cards (Join the party, Don't sleep on it, Keep the beat
+     going) stay narrower on tablet: 3 grid cols of breathing room either
+     side, 6 cols in the middle — not the full 12 like other sections. */
+  .content .section.interstitial-card { grid-column: 4 / span 6 !important; }
 
   /* Hero: expand columns to fill more width.
      padding-top empirically tuned so the visual gap between the topbar
@@ -7895,7 +7899,7 @@ const HOME_SECTIONS = [
 ];
 
 const HOME_INTERSTITIALS = {
-  'pitch-card': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
+  'pitch-card': `<div class="section interstitial-card" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="pitch-card">
       <div class="pitch-inner">
         <h2 class="pitch-title">Join the party</h2>
@@ -7908,7 +7912,7 @@ const HOME_INTERSTITIALS = {
     </div>
   </div>`,
 
-  'newsletter': `<div class="section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
+  'newsletter': `<div class="section interstitial-card" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="newsletter-card">
       <div class="newsletter-inner">
         <h2 class="newsletter-title">Don't sleep on it</h2>
@@ -7927,7 +7931,7 @@ const HOME_INTERSTITIALS = {
       </div>
     </div>
   </div>`,
-  'keep-beat': `<div class="section keepbeat-section" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
+  'keep-beat': `<div class="section keepbeat-section interstitial-card" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
     <div class="keepbeat-card">
       <div class="pitch-inner">
         <h2 class="keepbeat-title">Keep the beat going</h2>
