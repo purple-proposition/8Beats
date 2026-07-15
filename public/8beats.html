@@ -10127,11 +10127,14 @@ function _renderTopbarSchedule() {
    stack ordered by priority. CSS transitions handle reflow.
    ============================================================ */
 const FWM = (() => {
-  const GAP = 24;
   /* EDGE tracks --space (24px desktop, 16px ≤1024px) instead of a hardcoded
      24 — otherwise FWM-positioned windows (player, cookie/support panels)
      drift 8px off the content grid's edge at tablet widths, since the grid
-     itself insets by --space while FWM used a constant unrelated to it. */
+     itself insets by --space while FWM used a constant unrelated to it.
+     GAP (spacing between stacked windows) was left as a separate hardcoded
+     24 and missed that same fix — same value as EDGE by design, so it's
+     just an alias now instead of a second constant that can drift out of
+     sync. */
   function EDGE() {
     const v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--space'));
     return v || 24;
@@ -10226,8 +10229,8 @@ const FWM = (() => {
         const stackMaxW  = stack.reduce((m, n) => Math.max(m, n.el.offsetWidth || 0), 0);
         const playerLeft = window.innerWidth - edge - playerNode.el.offsetWidth;
         const panelRight = edge + stackMaxW;
-        if (panelRight + GAP > playerLeft) {
-          playerBaseOff = playerNode.el.offsetHeight + GAP;
+        if (panelRight + edge > playerLeft) {
+          playerBaseOff = playerNode.el.offsetHeight + edge;
         }
       }
 
@@ -10238,7 +10241,7 @@ const FWM = (() => {
         const w = node.el.offsetWidth, h = node.el.offsetHeight;
         if (!w || !h) continue;
         _moveTo(node.el, isLeft, isBot, edge, slotOff, immediate);
-        slotOff += h + GAP;
+        slotOff += h + edge;
       }
 
       /* ── Lateral (non-menu siblings) — beside menu, same vertical anchor ── */
@@ -10246,8 +10249,8 @@ const FWM = (() => {
       for (const node of lateralStack) {
         const w = node.el.offsetWidth, h = node.el.offsetHeight;
         if (!w || !h) continue;
-        _moveTo(node.el, isLeft, isBot, edge + menuW + GAP, sidOff, immediate);
-        sidOff += h + GAP;
+        _moveTo(node.el, isLeft, isBot, edge + menuW + edge, sidOff, immediate);
+        sidOff += h + edge;
       }
     }
   }
