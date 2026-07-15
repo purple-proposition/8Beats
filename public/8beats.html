@@ -1024,7 +1024,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .pitch-card {
   position: relative; overflow: hidden;
   border: none; border-radius: var(--radius);
-  padding: var(--space-6) var(--space-7);
+  padding: var(--space-4) var(--space-7);
   text-align: center;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop);
@@ -1035,19 +1035,24 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   position: relative; z-index: var(--z-base);
   display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
 }
-.pitch-title {
-  font-size: clamp(24px, 3vw, 36px); font-weight: 600;
-  letter-spacing: 1px; text-transform: uppercase; color: var(--text-primary);
-  line-height: 1.1;
+/* ── Interstitial cards (Join the party / Keep the beat going / Don't
+   sleep on it) — unified title/body/CTA rules across all three. ── */
+.pitch-title, .keepbeat-title, .newsletter-title {
+  font-family: 'Alpha Lyrae', var(--font);
+  font-size: 32px; font-weight: 400;
+  letter-spacing: normal; text-transform: none; color: var(--text-primary);
+  line-height: normal;
 }
-.pitch-body {
+.pitch-body, .newsletter-desc {
   font-size: var(--text-md); color: var(--text-secondary); line-height: 1.4; letter-spacing: -0.2px;
   max-width: 500px;
 }
 
-/* CTAs inside interstitial cards use player-ctrl surface (light translucent, not glass-dark) */
+/* CTAs inside interstitial cards use player-ctrl surface + radius (light
+   translucent, not glass-dark) and player-ctrl's 16px label size. */
 .pitch-card .btn, .keepbeat-card .btn, .newsletter-card .btn {
   background: var(--surface-control); backdrop-filter: none; -webkit-backdrop-filter: none;
+  border-radius: var(--radius-control); font-size: var(--text-md);
 }
 .pitch-card .btn:hover, .keepbeat-card .btn:hover, .newsletter-card .btn:hover,
 .pitch-card .btn:active, .keepbeat-card .btn:active, .newsletter-card .btn:active {
@@ -1058,25 +1063,19 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .keepbeat-card {
   position: relative; overflow: hidden;
   border: none; border-radius: var(--radius);
-  padding: var(--space-8) var(--space-7);
+  padding: var(--space-4) var(--space-7);
   text-align: center;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
   display: flex; align-items: center; justify-content: center;
 }
-.keepbeat-title {
-  font-family: 'Alpha Lyrae', var(--font);
-  font-size: 32px; font-weight: 400;
-  letter-spacing: normal; text-transform: none; color: var(--text-primary);
-  line-height: normal;
-}
 
 /* ── Newsletter card ── */
 .newsletter-card {
   position: relative; overflow: hidden;
   border: none; border-radius: var(--radius);
-  padding: var(--space-7);
+  padding: var(--space-4) var(--space-7);
   text-align: center;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop);
@@ -1086,16 +1085,6 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .newsletter-inner {
   display: flex; flex-direction: column; align-items: center;
   gap: var(--space-5); position: relative; z-index: 1; width: 100%;
-}
-.newsletter-title {
-  font-family: 'Alpha Lyrae', var(--font);
-  font-size: 48px;
-  font-weight: 400; letter-spacing: -0.02em; line-height: normal;
-  color: var(--text-primary); margin: 0;
-}
-.newsletter-desc {
-  font-size: 16px; color: #A1A1A1;
-  line-height: 1.6; margin: 0; max-width: 420px;
 }
 .newsletter-form {
   display: flex; gap: var(--space-3); width: 100%; max-width: 480px;
