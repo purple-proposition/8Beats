@@ -2762,15 +2762,17 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .support-wrap { padding-top: 0; padding-bottom: 0; row-gap: var(--space-8); align-items: start; }
 
 /* ── Canonical page hero — all secondary pages must use this
-   padding-top: 184px = topbar-bottom(64) + gap-spec(144) - body-padding(24)
-   → hero h1 is exactly 144px below the bottom of the search bar ── */
+   padding-top empirically tuned (getBoundingClientRect) so the visual gap
+   between the search bar and the h1 is exactly 96px, matching the homepage
+   hero — not just the raw padding value, since the fixed topbar isn't
+   in-flow. ── */
 .support-hero,
 .about-hero,
 .latest-hero,
 .proposal-hero {
   display: flex; flex-direction: column; gap: var(--space-3);
   align-items: center; text-align: center;
-  padding: 184px 0 var(--space-8);
+  padding: 142px 0 var(--space-8);
 }
 .support-hero h1,
 .about-hero h1,
