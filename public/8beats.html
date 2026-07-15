@@ -1618,7 +1618,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     display: flex;
     gap: var(--gutter);
     overflow-x: auto;
-    padding: 4px var(--space) 12px;
+    padding: var(--space-1) var(--space) var(--space-3);
     margin: 0 calc(-1 * var(--space));
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -1855,7 +1855,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .show-submeta { justify-content: center; }
   /* Description and below: left-aligned, starts after the gradient zone */
   .show-desc { margin-top: var(--space-3); }
-  .show-actions { flex-wrap: wrap; gap: var(--space); margin-top: 16px; }
+  .show-actions { flex-wrap: wrap; gap: var(--space); margin-top: var(--space-4); }
   .show-btn-play { flex: 1 1 100%; justify-content: center; }
   .show-btn-ghost { flex: 1; justify-content: center; padding: 11px var(--space-3); }
   .icon-btn--action { width: 44px; height: 44px; flex-shrink: 0; }
@@ -1958,7 +1958,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   .explore-show-row { padding: 0 var(--space) !important; flex-direction: column !important; align-items: flex-start !important; gap: var(--space-2) !important; }
   .explore-show-row > div:last-child { margin-left: 0 !important; flex-shrink: unset !important; }
   /* Search dropdown: keep rows horizontal (image left, text right) */
-  #topbar-dropdown-shows .explore-show-row { flex-direction: row !important; align-items: flex-start !important; gap: 12px !important; padding: var(--hover-bleed) !important; }
+  #topbar-dropdown-shows .explore-show-row { flex-direction: row !important; align-items: flex-start !important; gap: var(--space-3) !important; padding: var(--hover-bleed) !important; }
 
   /* ── Playlist ── */
   /* playlist-clip height managed by JS — no max-height override needed */
@@ -2630,7 +2630,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-tertiary); margin-bottom: var(--space-3);
 }
-#music-links-popup .mlp-links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+#music-links-popup .mlp-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
 #music-links-popup .mlp-links a.mlp-icon-link {
   display: flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; border-radius: var(--radius-control);
@@ -3082,7 +3082,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   display: flex; flex-direction: column; gap: var(--space-5);
 }
 .show-head { display: flex; flex-direction: column; }
-.show-head .show-submeta { margin-top: 12px; }
+.show-head .show-submeta { margin-top: var(--space-3); }
 .show-head #show-date { margin-top: 12px; display: block; }
 /* Tags sit directly below date: cancel show-main gap (24px), add 12px back */
 .show-main > .hero-tags { margin-top: calc(-1 * var(--space-5) + 12px); }
@@ -3155,7 +3155,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tracklist-inline { padding-bottom: 0; }
 .show-tracklist-inline .track {
   display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-4); padding: 24px 0 0 0; border-radius: 0; cursor: pointer;
+  gap: var(--space-4); padding: var(--space-5) 0 0 0; border-radius: 0; cursor: pointer;
   position: relative;
 }
 /* Whole-row hover highlight (like search results) — overshoots --hover-bleed (8px) beyond content on every side.
@@ -3171,11 +3171,11 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 .show-tracklist-inline .track:hover::before { background: rgba(255,255,255,0.06); }
 .show-tracklist-inline .track-info, .show-tracklist-inline .track-right { position: relative; z-index: 1; }
-.show-tracklist-inline .tracklist-header + .track { padding-top: 24px; }
+.show-tracklist-inline .tracklist-header + .track { padding-top: var(--space-5); }
 .show-tracklist-inline .tracklist-header + .track::before { top: calc(24px - var(--hover-bleed)); }
 .show-tracklist-inline .track:last-child::before { bottom: calc(16px - var(--hover-bleed)); }
 .show-tracklist-inline .track:last-child {
-  padding-bottom: 16px;
+  padding-bottom: var(--space-4);
   border-bottom: none;
 }
 .show-tracklist-inline .track + .track { border-top: none; }
@@ -3422,7 +3422,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 }
 
 /* Body: 24px breathing room under topbar */
-body { padding-top: 24px; }
+body { padding-top: var(--space-5); }
 /* Sidebar hidden during topbar test */
 .nav-wrap { display: none !important; }
 .sidebar-reopen { display: none !important; }
@@ -3609,7 +3609,7 @@ body { padding-top: 24px; }
 /* ham-menu: animated shell — NO overflow:hidden so filter:blur() spreads freely.
    overflow:hidden on the shell clips the blur diffusion and makes it invisible. */
 #ham-menu {
-  position: absolute; top: calc(100% + 8px); right: 8px;
+  position: absolute; top: calc(100% + var(--space-2)); right: var(--space-2);
   min-width: 192px;
   background: rgba(75,75,75,0.40);
   backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
@@ -3687,7 +3687,7 @@ body { padding-top: 24px; }
 .ham-social-row {
   display: flex; align-items: center;
   padding: 0 var(--space-4);
-  gap: 12px;
+  gap: var(--space-3);
 }
 .ham-social-row .icon-btn--ghost {
   width: 32px; height: 32px;
@@ -3729,7 +3729,7 @@ body { padding-top: 24px; }
 #profile-modal.pf-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
 .pf-body {
-  padding: 16px; display: flex; flex-direction: column; gap: 16px;
+  padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-4);
   overflow-y: auto; flex: 1;
 }
 .pf-header {
@@ -3740,7 +3740,7 @@ body { padding-top: 24px; }
   color: var(--text-primary); line-height: 1;
 }
 .pf-sep { height: 1px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
-.pf-section { display: flex; flex-direction: column; gap: 16px; }
+.pf-section { display: flex; flex-direction: column; gap: var(--space-4); }
 .pf-section-label {
   display: flex; align-items: center; gap: 6px;
   font-size: var(--text-sm); font-weight: 400;
@@ -3750,7 +3750,7 @@ body { padding-top: 24px; }
 @media (max-width: 1024px) { .pf-desktop-only { display: none !important; } }
 
 .pf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-#pf-platforms.pf-chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 12px; }
+#pf-platforms.pf-chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: var(--space-3); }
 
 .pf-platform-btn {
   width: 36px; height: 36px; flex-shrink: 0;
@@ -3788,10 +3788,10 @@ html.light .pf-platform-btn.pf-selected { background: var(--text-primary); color
 }
 
 .pf-saved-empty { font-size: var(--text-sm); color: var(--text-tertiary); }
-.pf-saved-list { display: flex; flex-direction: column; gap: 4px; }
+.pf-saved-list { display: flex; flex-direction: column; gap: var(--space-1); }
 .pf-saved-item {
   display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; border-radius: var(--radius-control);
+  padding: var(--space-2); border-radius: var(--radius-control);
   background: rgba(255,255,255,0.04); cursor: pointer;
   transition: background var(--dur-short) var(--ease-hover);
 }
@@ -4095,7 +4095,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
    TOPBAR (test — sidebar kept hidden for easy revert)
    ══════════════════════════════════════════════════ */
 #topbar {
-  position: fixed; top: 24px; left: 0; right: 0; height: 40px;
+  position: fixed; top: var(--space-5); left: 0; right: 0; height: 40px;
   z-index: var(--z-nav);
   display: grid; grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -4197,7 +4197,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
    display:grid stacks kbd and esc in the same cell so the hidden one
    never contributes to layout width — no phantom space pushing kbd left. */
 #ts-badges {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  position: absolute; right: var(--space-3); top: 50%; transform: translateY(-50%);
   display: grid;
   pointer-events: none;
 }
@@ -4209,7 +4209,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 #topbar-search-kbd {
   background: rgba(255,255,255,0.12); border-radius: 6px;
   color: #A1A1A1; font-size: 12px; line-height: 1; font-family: var(--font);
-  padding: 4px 8px; white-space: nowrap; display: flex; align-items: center;
+  padding: var(--space-1) var(--space-2); white-space: nowrap; display: flex; align-items: center;
   opacity: 1; filter: blur(0px);
   transition: opacity 160ms var(--ease-hover), filter 160ms var(--ease-hover);
 }
@@ -4271,7 +4271,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
    ENTER — phase 3: starts at 180ms once separator is established, pure decelerate.
    EXIT  — phase 1: immediate, fast ease-in — content leaves before the panel collapses. */
 #topbar-dropdown-shows {
-  overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; margin-right: 8px;
+  overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; margin-right: var(--space-2);
   opacity: 0; transform: translateY(6px);
   /* EXIT */
   transition:
@@ -4285,7 +4285,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     opacity   300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms,
     transform 300ms cubic-bezier(0.0, 0, 0.2, 1) 180ms;
 }
-#topbar-dropdown-shows .explore-show-row { gap: 16px; margin: -6px var(--hover-bleed) -6px var(--hover-bleed); padding: var(--hover-bleed); border-radius: var(--radius-control); }
+#topbar-dropdown-shows .explore-show-row { gap: var(--space-4); margin: -6px var(--hover-bleed) -6px var(--hover-bleed); padding: var(--hover-bleed); border-radius: var(--radius-control); }
 #topbar-dropdown-shows .explore-show-row::before { display: none; }
 #topbar-dropdown-shows .explore-show-row:hover { background: rgba(255,255,255,0.12); }
 #topbar-dropdown-shows::-webkit-scrollbar { width: 4px; }
@@ -4335,7 +4335,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 #ts-tabs-sep {
   height: 1px; background: transparent;
-  margin: 4px var(--space-4) 0;
+  margin: var(--space-1) var(--space-4) 0;
   transition: background 100ms ease-in 0ms;
 }
 #topbar-search.search-open #ts-tabs-sep {
@@ -4412,7 +4412,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 /* ── Residents tab in search dropdown ── */
 #topbar-dropdown-residents,
 #topbar-dropdown-schedule {
-  overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; margin-right: 8px;
+  overflow-y: scroll; max-height: 400px; overscroll-behavior: contain; margin-right: var(--space-2);
   opacity: 0; transform: translateY(6px);
   transition: opacity 100ms ease-in 0ms, transform 100ms ease-in 0ms;
 }
@@ -4496,7 +4496,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 .ts-sched-live-badge:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
 
-#topbar-right { display: flex; align-items: center; gap: var(--space-3); grid-column: 3; justify-self: end; padding-left: 12px; }
+#topbar-right { display: flex; align-items: center; gap: var(--space-3); grid-column: 3; justify-self: end; padding-left: var(--space-3); }
 
 /* ── NEW badge in search dropdown ── */
 @keyframes shimmer-new {
