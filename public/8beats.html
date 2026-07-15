@@ -4532,9 +4532,15 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   animation: shimmer-new 4s linear infinite;
 }
 
-/* ── Show page: top spacing = horizontal spacing (2 cols + gaps) ── */
-.show-hero { margin-top: calc(-1 * var(--space-9)); } /* cancel body padding-top */
-.show-hero-content { padding-top: calc(var(--space) + var(--sidebar-full)); }
+/* ── Show page: search-bar-to-title gap pinned to 96px (getBoundingClientRect-
+   verified), same standard as every other page. Fixed px, not --nav-h/--space
+   calc — those tokens change at the tablet breakpoint but the search bar's
+   own position doesn't, so a calc tied to them drifted the gap out of sync
+   across viewport widths. body's padding-top is a flat 24px (--space-5) at
+   every width ≥769px, so -24px here always lands the hero flush at the true
+   viewport top for the background bleed, independent of breakpoint. ── */
+.show-hero { margin-top: -24px; }
+.show-hero-content { padding-top: 168px; }
 
 /* ── Mobile: full revert ── */
 @media (max-width: 768px) {
