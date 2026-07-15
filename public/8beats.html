@@ -336,7 +336,12 @@ body {
   line-height: 1.5;
   color: var(--text-secondary);
   background: var(--surface-page);
-  min-height: 100vh;
+  /* dvh, not vh — vh is the "large" viewport (as if the browser's own
+     chrome were hidden), so on mobile it reserves height behind Safari's/
+     Chrome's bottom bar. dvh tracks whichever viewport is actually visible
+     right now, across engines, so fixed-bottom content (the player) never
+     floats with a phantom gap above the browser UI. */
+  min-height: 100dvh;
   padding-bottom: calc(var(--player-h) + var(--space) + var(--space-5));
   /* Note: background transition removed — CSS cannot interpolate var() changes */
   transition: color var(--dur-large) var(--ease-hover);
@@ -1713,7 +1718,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
     padding: var(--space-8) var(--space) var(--space-6);
   }
   .hero-inner { grid-column: unset; width: 100%; }
-  .hero-inner h1 { font-size: 48px !important; letter-spacing: -0.03em; max-width: 100%; margin-left: auto; margin-right: auto; line-height: 1; }
+  .hero-inner h1 { font-size: 64px !important; letter-spacing: -0.03em; max-width: 100%; margin-left: auto; margin-right: auto; line-height: 1; }
   #hero-waveform { display: none; }
   .hero-inner p  { font-size: var(--text-md); max-width: 320px; }
   .hero-actions  { display: flex; flex-direction: column; width: 100%; gap: var(--space-3); }
@@ -3717,7 +3722,7 @@ body { padding-top: var(--space-5); }
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(0.96);
   width: min(400px, calc(100vw - 32px));
-  max-height: min(560px, calc(100vh - 80px));
+  max-height: min(560px, calc(100dvh - 80px));
   overflow: hidden;
   background: rgba(75,75,75,0.40);
   backdrop-filter: blur(24px) brightness(0.56);
