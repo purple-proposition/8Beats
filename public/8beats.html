@@ -903,6 +903,8 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .section-header-text { display: flex; flex-direction: column; gap: var(--space-2); }
 .section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.4px; line-height: 1.1; }
 .section-header-text h3 { font-size: var(--text-md); font-weight: 400; color: var(--text-secondary); }
+/* Shared section subtitle — was duplicated as an identical inline style in 3 places */
+.section-subtitle { font-size: var(--text-md); line-height: 1.4; color: var(--text-secondary); }
 
 /* section title with inline chevron */
 .section-link { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-primary); text-decoration: none; transition: opacity var(--dur-short) var(--ease-hover); }
@@ -1159,12 +1161,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   display: flex; gap: var(--space-2);
 }
 .panel-support-amt {
-  flex: 1; height: 44px;
+  flex: 1; height: 40px;
   display: flex; align-items: center; justify-content: center;
   background: rgba(255,255,255,0.12); border: none;
   border-radius: var(--radius-control); cursor: pointer;
   font-family: var(--font); font-size: var(--text-base); font-weight: 400;
-  color: #a1a1a1;
+  color: var(--text-secondary);
   transition: background var(--dur-short) var(--ease-hover), color var(--dur-short) var(--ease-hover);
 }
 .panel-support-amt:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
@@ -4965,7 +4967,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
     <header class="section-header">
       <div class="section-header-text">
         <h2><a href="#" class="section-link" onclick="event.preventDefault();openLatestShows()">Latest shows<i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i></a></h2>
-        <p style="font-size:16px;line-height:1.4;color:var(--text-secondary);">Fresh video game music mixes from our residents — new shows every week.</p>
+        <p class="section-subtitle">Fresh video game music mixes from our residents — new shows every week.</p>
       </div>
     </header>
 
@@ -7967,7 +7969,7 @@ function makeMoodsSection() {
     <header class="section-header">
       <div class="section-header-text">
         <h2>Moods</h2>
-        <p style="font-size:16px;line-height:1.4;color:var(--text-secondary);">Pick a vibe, we'll bring the soundtrack.</p>
+        <p class="section-subtitle">Pick a vibe, we'll bring the soundtrack.</p>
       </div>
     </header>
     <div class="cards">${cards}</div>
@@ -7998,7 +8000,7 @@ function renderHomeSections() {
       <header class="section-header">
         <div class="section-header-text">
           <h2><a href="#" class="section-link">${sec.title}<i data-lucide="chevron-right" style="stroke:currentColor;fill:none;display:block"></i></a></h2>
-          <p style="font-size:16px;line-height:1.4;color:var(--text-secondary);">${sec.subtitle}</p>
+          <p class="section-subtitle">${sec.subtitle}</p>
         </div>
       </header>
       <div class="cards">${cards}</div>
