@@ -910,13 +910,17 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Leading-trim: measure gaps from cap-height, not line-box edges (Safari 18+, progressive enhancement) */
 h1, h2, h3, h4, h5, h6,
 .section-subtitle,
-.host-name, .card-meta,
-.player-title, .player-game, .player-info-top .label, .qmenu-label,
+.card-meta,
+.player-info-top .label, .qmenu-label,
 .progress-time,
-.sp-show-name, .sp-show-artist,
-.track-game, .track-ago, .track-time,
+.track-ago, .track-time,
 .schedule-day-header .day-name,
 .schedule-day-header .day-date { text-box: trim-both cap alphabetic; }
+
+/* trim-start only: these elements have overflow:hidden — trim-end alphabetic would clip descenders */
+.host-name, .player-title, .player-game,
+.sp-show-name, .sp-show-artist,
+.track-game { text-box: trim-start cap; }
 
 /* section title with inline chevron */
 .section-link { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-primary); text-decoration: none; transition: opacity var(--dur-short) var(--ease-hover); }
@@ -987,7 +991,7 @@ h1, h2, h3, h4, h5, h6,
 
 .card-host { display: flex; align-items: center; gap: var(--space-2); }
 .avatar { width: 18px; height: 18px; border-radius: 50%; background: var(--border-default); border: 1px solid var(--border-default); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .3px; }
-.host-name { font-size: var(--text-base); color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; }
+.host-name { font-size: var(--text-base); color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; text-box: trim-start cap; }
 .host-name:hover { opacity: 0.64; }
 
 .card-meta   { font-size: var(--text-base); color: var(--text-tertiary); font-family: var(--font); line-height: 1; }
