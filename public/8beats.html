@@ -780,9 +780,10 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
 }
 /* No edge fades — waveform is masked on the canvas directly */
 .hero::before, .hero::after { display: none; }
-/* Waveform canvas: visible on sides, fades to invisible at center-6-col boundaries.
+/* Waveform canvas: visible on sides, fades to invisible at center-4-col boundaries.
    The hero bg (--surface-page) shows through in the center, giving solid bg behind text.
-   Centre 6 cols = 25%–75% of 12-col grid → fade zone ~6% either side of boundary. */
+   Centre 4 cols = 33%–67% of 12-col grid, 4 cols animated on each side →
+   fade zone ~6% either side of boundary. */
 #hero-waveform {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -790,18 +791,18 @@ html.light .mno-toggle-track { background: transparent; border-color: var(--bord
   z-index: 1;
   mask-image: linear-gradient(to right,
     black 0%,
-    black 19%,
-    transparent 25%,
-    transparent 75%,
-    black 81%,
+    black 27%,
+    transparent 33%,
+    transparent 67%,
+    black 73%,
     black 100%
   );
   -webkit-mask-image: linear-gradient(to right,
     black 0%,
-    black 19%,
-    transparent 25%,
-    transparent 75%,
-    black 81%,
+    black 27%,
+    transparent 33%,
+    transparent 67%,
+    black 73%,
     black 100%
   );
 }
