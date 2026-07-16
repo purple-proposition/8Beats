@@ -7853,44 +7853,104 @@ function makeArtSvg(colors, accent) {
 }
 
 /* ── Homepage themed sections ── */
-const HOME_SECTIONS = [
-  {
-    theme: 'cozy grooves',
-    title: 'Cozy Grooves',
-    subtitle: 'Calming music for focus, relaxation, and sleep.',
-    grads: [
-      {g1:'#1a1005',g2:'#8a5a1a',rg:'#d4a040'},
-      {g1:'#100a00',g2:'#5a4020',rg:'#c09060'},
-      {g1:'#0a1a10',g2:'#2a5a30',rg:'#60c070'},
-      {g1:'#001828',g2:'#006888',rg:'#40b0d0'},
-    ],
-    interstitialAfter: 'pitch-card',
-  },
-  {
-    theme: 'club errera',
-    title: 'Club Errera',
-    subtitle: 'Hit the dancefloor with party-ready mixes.',
-    grads: [
-      {g1:'#0d0118',g2:'#6a10b0',rg:'#9b40ff'},
-      {g1:'#080808',g2:'#303030',rg:'#d0d0d0'},
-      {g1:'#031520',g2:'#086080',rg:'#00cfff'},
-      {g1:'#140500',g2:'#703000',rg:'#ff8020'},
-    ],
-    interstitialAfter: 'keep-beat',
-  },
-  {
-    theme: 'vault',
-    title: 'From The Vault',
-    subtitle: "Rediscover our archive's timeless classics.",
-    grads: [
-      {g1:'#03071a',g2:'#102860',rg:'#4060ff'},
-      {g1:'#080f02',g2:'#3a6010',rg:'#80ff40'},
-      {g1:'#180200',g2:'#781800',rg:'#ff4010'},
-      {g1:'#080418',g2:'#4a1880',rg:'#a060ff'},
-    ],
-    interstitialAfter: 'newsletter',
-  },
-];
+/* Seasonal section — swaps theme with the calendar, sits between Cozy
+   Grooves and Club Errera. Meteorological seasons (N. hemisphere):
+   winter Dec-Feb, spring Mar-May (no section — plain card page instead
+   of a themeless placeholder), summer Jun-Aug, autumn Sep-Nov. */
+function getSeasonalSection() {
+  const month = new Date().getMonth(); // 0 = January
+  if (month === 11 || month <= 1) {
+    return {
+      theme: 'winter', title: 'Winter',
+      subtitle: 'Cozy soundtracks for the cold months.',
+      grads: [
+        {g1:'#04121c',g2:'#0e3a5c',rg:'#4fb8e0'},
+        {g1:'#0a0a12',g2:'#2a3a52',rg:'#8fa8c8'},
+        {g1:'#020c0a',g2:'#0e3830',rg:'#40c0a0'},
+        {g1:'#0c0c1a',g2:'#3a3a6a',rg:'#a0a0e0'},
+      ],
+    };
+  }
+  if (month >= 5 && month <= 7) {
+    return {
+      theme: 'beach', title: 'Beach',
+      subtitle: 'Sun-soaked mixes for the summer heat.',
+      grads: [
+        {g1:'#1a1005',g2:'#c47a1a',rg:'#ffcf60'},
+        {g1:'#001820',g2:'#00708c',rg:'#40d8e0'},
+        {g1:'#180a00',g2:'#a03818',rg:'#ff9050'},
+        {g1:'#001a12',g2:'#0a7050',rg:'#50e0a0'},
+      ],
+    };
+  }
+  if (month >= 8 && month <= 10) {
+    return {
+      theme: 'spooky', title: 'Spooky',
+      subtitle: 'Eerie soundtracks for the autumn nights.',
+      grads: [
+        {g1:'#0a0004',g2:'#4a0818',rg:'#c02050'},
+        {g1:'#060608',g2:'#26262e',rg:'#707078'},
+        {g1:'#0c0400',g2:'#5a2800',rg:'#e07020'},
+        {g1:'#04060a',g2:'#182848',rg:'#4060a0'},
+      ],
+    };
+  }
+  return null; // spring — no seasonal section
+}
+
+function getHomeSections() {
+  const seasonal = getSeasonalSection();
+  return [
+    {
+      theme: 'cozy grooves',
+      title: 'Cozy Grooves',
+      subtitle: 'Calming music for focus, relaxation, and sleep.',
+      grads: [
+        {g1:'#1a1005',g2:'#8a5a1a',rg:'#d4a040'},
+        {g1:'#100a00',g2:'#5a4020',rg:'#c09060'},
+        {g1:'#0a1a10',g2:'#2a5a30',rg:'#60c070'},
+        {g1:'#001828',g2:'#006888',rg:'#40b0d0'},
+      ],
+      interstitialAfter: 'pitch-card',
+    },
+    ...(seasonal ? [seasonal] : []),
+    {
+      theme: 'club errera',
+      title: 'Club Errera',
+      subtitle: 'Hit the dancefloor with party-ready mixes.',
+      grads: [
+        {g1:'#0d0118',g2:'#6a10b0',rg:'#9b40ff'},
+        {g1:'#080808',g2:'#303030',rg:'#d0d0d0'},
+        {g1:'#031520',g2:'#086080',rg:'#00cfff'},
+        {g1:'#140500',g2:'#703000',rg:'#ff8020'},
+      ],
+      interstitialAfter: 'keep-beat',
+    },
+    {
+      theme: 'retro',
+      title: 'Retro',
+      subtitle: 'Chiptunes and 8-bit classics from the archive.',
+      grads: [
+        {g1:'#1a0018',g2:'#7a1868',rg:'#ff40c0'},
+        {g1:'#001018',g2:'#0a5868',rg:'#40e0e0'},
+        {g1:'#180800',g2:'#985010',rg:'#ffb040'},
+        {g1:'#08000c',g2:'#301868',rg:'#8050ff'},
+      ],
+    },
+    {
+      theme: 'vault',
+      title: 'From The Vault',
+      subtitle: "Rediscover our archive's timeless classics.",
+      grads: [
+        {g1:'#03071a',g2:'#102860',rg:'#4060ff'},
+        {g1:'#080f02',g2:'#3a6010',rg:'#80ff40'},
+        {g1:'#180200',g2:'#781800',rg:'#ff4010'},
+        {g1:'#080418',g2:'#4a1880',rg:'#a060ff'},
+      ],
+      interstitialAfter: 'newsletter',
+    },
+  ];
+}
 
 const HOME_INTERSTITIALS = {
   'pitch-card': `<div class="section interstitial-card" style="margin-top:var(--space-8);margin-bottom:0;grid-column:5/span 4;">
@@ -7939,43 +7999,12 @@ const HOME_INTERSTITIALS = {
   </div>`,
 };
 
-/* ── Moods section — image tiles from 8beats.co, hover zoom via .card-thumb ── */
-const HOME_MOODS = [
-  { theme: 'Beach',  img: '/img/moods/beach.jpg'  },
-  { theme: 'Winter', img: '/img/moods/winter.jpg' },
-  { theme: 'Retro',  img: '/img/moods/retro.jpg'  },
-  { theme: 'Spooky', img: '/img/moods/spooky.jpg' },
-];
-
-function openMoodSearch(theme) {
-  openTopbarSearch();
-  const input = document.getElementById('topbar-search-input');
-  if (input) input.value = theme;
-  handleTopbarSearch(theme);
-}
-
-function makeMoodsSection() {
-  const cards = HOME_MOODS.map(m =>
-    `<article class="card" onclick="openMoodSearch('${m.theme}')">
-      <div class="card-thumb mood-thumb"><img src="${m.img}" alt="${m.theme}" loading="lazy"></div>
-    </article>`
-  ).join('');
-  return `<div class="section col-editorial" style="margin-top:var(--space-8);">
-    <header class="section-header">
-      <div class="section-header-text">
-        <h2>Moods</h2>
-        <p class="section-subtitle">Pick a vibe, we'll bring the soundtrack.</p>
-      </div>
-    </header>
-    <div class="cards">${cards}</div>
-  </div>`;
-}
 
 function renderHomeSections() {
   const container = document.getElementById('home-themed-sections');
   if (!container) return;
   const parts = [];
-  HOME_SECTIONS.forEach(sec => {
+  getHomeSections().forEach(sec => {
     const secShows = shows.filter(s => s.themes && s.themes.includes(sec.theme)).slice(0, 4);
     if (!secShows.length) return;
     const cards = secShows.map((s, i) => {
@@ -8003,8 +8032,6 @@ function renderHomeSections() {
     if (sec.interstitialAfter && HOME_INTERSTITIALS[sec.interstitialAfter]) {
       parts.push(HOME_INTERSTITIALS[sec.interstitialAfter]);
     }
-    // Moods slot in between "Join the party" (after Cozy Grooves) and Club Errera
-    if (sec.interstitialAfter === 'pitch-card') parts.push(makeMoodsSection());
   });
   container.innerHTML = parts.join('');
   lucide.createIcons({ nodes: [container] });
