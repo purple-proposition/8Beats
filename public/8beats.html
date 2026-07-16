@@ -932,19 +932,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 .card-thumb:hover > svg, .card-thumb:hover > img {
   transform: scale3d(1.05, 1.05, 1.05);
 }
-/* Overlay CSS-only — pas de JS, pas de filter() */
-.card-thumb::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: var(--overlay);
-  opacity: 0;
-  transition: opacity var(--dur-short) var(--ease-hover);
-  z-index: var(--z-base);
-}
-.card-thumb:hover::after,
-.card-thumb.is-playing::after { opacity: 1; }
-/* Mood tiles: zoom only, no darkening — image + label need to stay legible */
-.card-thumb.mood-thumb::after { display: none; }
+/* Dark hover overlay removed site-wide — zoom alone is the hover signal now. */
 
 .card-overlay {
   position: absolute; inset: 0; z-index: 2;
