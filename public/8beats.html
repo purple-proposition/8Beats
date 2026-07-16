@@ -902,7 +902,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; }
 .section-header-text { display: flex; flex-direction: column; gap: var(--space-4); }
-.section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.4px; line-height: 1.1; }
+.section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.4px; line-height: 1; }
 .section-header-text h3 { font-size: var(--text-md); font-weight: 400; color: var(--text-secondary); }
 /* Shared section subtitle — was duplicated as an identical inline style in 3 places */
 .section-subtitle { font-size: var(--text-md); line-height: 1; color: var(--text-secondary); }
@@ -910,7 +910,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Leading-trim: measure gaps from cap-height, not line-box edges (Safari 18+, progressive enhancement) */
 h1, h2, h3, h4, h5, h6,
 .section-subtitle,
-.card-meta,
+.card-meta, .track-name,
 .player-info-top .label, .qmenu-label,
 .progress-time,
 .track-ago, .track-time,
@@ -1342,7 +1342,7 @@ h1, h2, h3, h4, h5, h6,
 .track-recent { gap: var(--space-5); }
 .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 .track-info { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; flex: 1; }
-.track-name { font-size: var(--text-base); line-height: 1.4; color: var(--text-primary); }
+.track-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); }
 .track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
 .track-ago  { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; }
 .track-time { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font); }
@@ -2231,7 +2231,7 @@ h1, h2, h3, h4, h5, h6,
   border: 1px solid var(--border-default);
   border-radius: var(--radius-control);
   padding: 2px var(--space-2);
-  font-family: var(--font); white-space: nowrap; flex-shrink: 0; line-height: 1.4;
+  font-family: var(--font); white-space: nowrap; flex-shrink: 0; line-height: 1;
 }
 .settings-kbd-clickable {
   cursor: pointer;
@@ -3257,7 +3257,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
   font-size: 8px; font-weight: 600; text-transform: uppercase; color: var(--text-tertiary);
   flex-shrink: 0;
 }
-.show-host-name { font-size: var(--text-md); line-height: 1.25; color: var(--text-primary); transition: color var(--dur-micro) var(--ease-hover); }
+.show-host-name { font-size: var(--text-md); line-height: 1; color: var(--text-primary); transition: color var(--dur-micro) var(--ease-hover); }
 .show-host:hover .show-host-name { color: var(--text-primary); }
 
 .show-desc { font-size: var(--text-md); color: var(--text-secondary); line-height: 1.5; margin: 0; }
