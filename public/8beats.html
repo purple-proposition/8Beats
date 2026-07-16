@@ -2631,6 +2631,14 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
   max-width: min(220px, calc(100vw - 24px));
   padding: var(--space-4);
   transform-origin: top center;
+  /* Same organic growth curve as #topbar-search's expand — content loads
+     in (loading → resolved) and the box should ease into its new size
+     instead of snapping. interpolate-size lets the browser actually
+     animate to/from the max-content keyword instead of just snapping
+     (supported in Chromium; harmlessly ignored elsewhere). */
+  interpolate-size: allow-keywords;
+  transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1),
+              height 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 #music-links-popup.visible { pointer-events: all; }
 #music-links-popup .mlp-title {
@@ -5637,8 +5645,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
       <!-- Live state buttons -->
       <div class="player-qmenu-inner" id="qmenu-live-btns">
         <button class="player-qmenu-action" id="qmenu-spotify-btn" onclick="closePlayerQMenu(); document.getElementById('spotify-btn').click()">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;stroke:none;display:block;flex-shrink:0"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg>
-          <span class="qmenu-label">Available on Spotify</span>
+          <i data-lucide="disc-3" style="width:16px;height:16px;stroke:currentColor;fill:none;display:block;flex-shrink:0"></i>
+          <span class="qmenu-label">Available on other platforms</span>
         </button>
         <button class="player-qmenu-action" id="qmenu-pl-btn" onclick="closePlayerQMenu(); document.getElementById('playlist-btn').click()">
           <i data-lucide="clock" style="fill:none;display:block;width:16px;height:16px;stroke:currentColor"></i>
@@ -6748,7 +6756,7 @@ function switchToTracklist(showTitle) {
           <span class="track-game">${t.game}</span>
         </div>
         <div class="track-right">
-          ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Listen on Spotify" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="${SPOTIFY_PATH}"/></svg></button>` : ''}
+          ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Available on other platforms" onclick="event.stopPropagation()"><i data-lucide="disc-3" style="stroke:currentColor;fill:none;display:block"></i></button>` : ''}
         </div>
       </div>
     `).join('')}
@@ -8130,7 +8138,7 @@ function openShow(key) {
         ${t.game ? `<span class="track-game">${t.game}</span>` : ''}
       </div>
       <div class="track-right">
-        ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Available on other platforms" aria-expanded="false" onclick="event.stopPropagation();showMusicLinksPopup('https://open.spotify.com/track/4PTG3Z6ehGkBFwjybzWkR8', this)"><i data-lucide="plus" style="stroke:currentColor;fill:none;display:block"></i></button>` : ''}
+        ${t.avail ? `<button class="icon-btn icon-btn--stream" aria-label="Available on other platforms" aria-expanded="false" onclick="event.stopPropagation();showMusicLinksPopup('https://open.spotify.com/track/4PTG3Z6ehGkBFwjybzWkR8', this)"><i data-lucide="disc-3" style="stroke:currentColor;fill:none;display:block"></i></button>` : ''}
       </div>
     </div>`).join('');
   lucide.createIcons({ nodes: [document.getElementById('show-tracklist-inline')] });
