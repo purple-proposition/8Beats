@@ -43,7 +43,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Pixel&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
 @font-face {
@@ -238,6 +238,18 @@
   --surface-btn:    var(--surface-subtle);  /* settings icon bg, kbd tag bg */
 }
 
+/* ── EXPERIMENT: sharp corners ─────────────────────────────────────────
+   Overrides every radius token to 0 in one place. To revert, delete this
+   block (or comment it out) — the rounded values defined above in :root
+   come straight back, nothing else on the site needs to change. ── */
+:root {
+  --radius:         0px;
+  --radius-sm:      0px;
+  --radius-btn:     0px;
+  --radius-control: 0px;
+  --radius-full:    0px;
+}
+
 /* ── LIGHT MODE — semantic overrides only ── */
 html.light {
   --surface-page:           #f5f5f5;
@@ -357,7 +369,7 @@ a { text-decoration: none; color: inherit; }
    chunks up and degrades the glyph shapes. Pin to 400 everywhere. */
 h1,
 .show-title {
-  font-family: 'Geist Pixel', var(--font);
+  font-family: 'Alpha Lyrae', var(--font);
   font-weight: 400;
   color: var(--text-primary);
 }
@@ -902,7 +914,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; }
 .section-header-text { display: flex; flex-direction: column; gap: var(--space-4); }
-.section-header-text h2 { font-family: 'Geist Pixel', var(--font); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.4px; line-height: 1; }
+.section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.4px; line-height: 1; }
 .section-header-text h3 { font-size: var(--text-md); font-weight: 400; color: var(--text-secondary); }
 /* Shared section subtitle — was duplicated as an identical inline style in 3 places */
 .section-subtitle { font-size: var(--text-md); line-height: 1; color: var(--text-secondary); }
@@ -1059,7 +1071,7 @@ h1, h2, h3, h4, h5, h6,
 /* ── Interstitial cards (Join the party / Keep the beat going / Don't
    sleep on it) — unified title/body/CTA rules across all three. ── */
 .pitch-title, .keepbeat-title, .newsletter-title {
-  font-family: 'Geist Pixel', var(--font);
+  font-family: 'Alpha Lyrae', var(--font);
   font-size: 32px; font-weight: 400;
   letter-spacing: normal; text-transform: none; color: var(--text-primary);
   line-height: normal;
@@ -2830,7 +2842,7 @@ h1, h2, h3, h4, h5, h6,
 .about-hero h1,
 .latest-hero h1,
 .proposal-hero h1 {
-  font-family: 'Geist Pixel', var(--font);
+  font-family: 'Alpha Lyrae', var(--font);
   font-size: clamp(32px, 5.5vw, 64px);
   line-height: 1.05; letter-spacing: -0.03em; margin: 0;
 }
@@ -2876,7 +2888,7 @@ h1, h2, h3, h4, h5, h6,
 .support-plan.featured .support-plan-name { color: var(--text-primary); }
 .support-plan-price { display: flex; align-items: baseline; gap: var(--space-1); }
 .support-plan-price .price-amount {
-  font-family: 'Geist Pixel', var(--font);
+  font-family: 'Alpha Lyrae', var(--font);
   font-size: 40px; line-height: normal; color: var(--text-primary);
 }
 .support-plan-price .price-currency {
@@ -2974,7 +2986,7 @@ h1, h2, h3, h4, h5, h6,
 }
 .about-stat-bottom { display: flex; flex-direction: column; gap: var(--space-2); }
 .about-stat-number {
-  font-family: 'Geist Pixel', var(--font);
+  font-family: 'Alpha Lyrae', var(--font);
   font-size: clamp(32px, 4vw, 48px); line-height: normal; color: var(--text-primary);
 }
 .about-stat-label { font-size: var(--text-sm); color: var(--text-secondary); }
@@ -4147,7 +4159,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   background: transparent;
 }
 #topbar-wordmark {
-  font-family: 'Geist Pixel', var(--font); font-size: 18px; letter-spacing: -.01em;
+  font-family: 'Alpha Lyrae', var(--font); font-size: 18px; letter-spacing: -.01em;
   color: var(--text-primary); text-decoration: none; flex-shrink: 0;
   justify-self: start;
 }
