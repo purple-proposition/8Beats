@@ -1429,6 +1429,11 @@ h1, h2, h3, h4, h5, h6,
 .progress-knob.scrubbing {
   width: 20px; height: 20px;
 }
+/* While actively dragging the scrubber, lock cursor + selection page-wide
+   so a fast/erratic drag doesn't select text or show the wrong cursor
+   the instant the pointer leaves the 4px track. */
+body.progress-scrubbing { cursor: grabbing !important; user-select: none !important; }
+body.progress-scrubbing * { cursor: grabbing !important; user-select: none !important; }
 .progress-marker {
   position: absolute; top: -2px; bottom: -2px; width: 2px;
   background: var(--text-tertiary);
@@ -6743,6 +6748,13 @@ function pctFromProgressEvent(e) {
 
 progressTrack.addEventListener('mousedown', e => {
   progressDragging = true;
+  /* Knob must stay enlarged for the whole drag, not just while the cursor
+     happens to overlap the 4px track (:hover) — any vertical mouse
+     movement broke that instantly, shrinking the knob mid-drag. Matching
+     Spotify/YouTube: grab once, stay big until release, regardless of
+     where the cursor wanders. */
+  progressKnob.classList.add('scrubbing');
+  document.body.classList.add('progress-scrubbing');
   let pct = pctFromProgressEvent(e);
   // Snap magnétique — si proche d'un marker (<2%), snapper dessus
   const { nearest, minDist } = getTrackAtPct(pct);
@@ -6757,12 +6769,18 @@ document.addEventListener('mousemove', e => {
   if (nearest && minDist < 2) pct = nearest.pct;
   setProgressPct(pct);
 });
-document.addEventListener('mouseup', () => { progressDragging = false; });
+document.addEventListener('mouseup', () => {
+  if (!progressDragging) return;
+  progressDragging = false;
+  progressKnob.classList.remove('scrubbing');
+  document.body.classList.remove('progress-scrubbing');
+});
 
 /* ── Touch scrubbing (mobile) ── */
 progressTrack.addEventListener('touchstart', e => {
   progressDragging = true;
   progressKnob.classList.add('scrubbing');
+  document.body.classList.add('progress-scrubbing');
   if (navigator.vibrate) navigator.vibrate(10);
   let pct = pctFromProgressEvent(e.touches[0]);
   const { nearest, minDist } = getTrackAtPct(pct);
@@ -6782,6 +6800,7 @@ document.addEventListener('touchend', () => {
   if (!progressDragging) return;
   progressDragging = false;
   progressKnob.classList.remove('scrubbing');
+  document.body.classList.remove('progress-scrubbing');
 });
 
 function switchToTracklist(showTitle) {
