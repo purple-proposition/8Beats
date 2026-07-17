@@ -6655,9 +6655,14 @@ progressTrack.addEventListener('mouseleave', () => {
   progressTooltipVisible = false;
 });
 
-function setProgressPct(pct) {
+function setProgressPct(pct, snapped) {
   progressPct = Math.max(0, Math.min(100, pct));
-  if (progressDragging) {
+  if (snapped) {
+    // Magnetized onto a marker — ease the pull instead of teleporting,
+    // even mid-drag when position updates are normally instant.
+    progressFill.style.transition = 'width 90ms var(--ease-out)';
+    progressKnob.style.transition = 'left 90ms var(--ease-out), width 200ms var(--ease-out), height 200ms var(--ease-out)';
+  } else if (progressDragging) {
     progressFill.style.transition = 'none';
     progressKnob.style.transition = 'none';
   } else {
@@ -6734,6 +6739,23 @@ function pctFromProgressEvent(e) {
   return ((x - r.left) / r.width) * 100;
 }
 
+/* Magnetic snap radius in screen pixels, NOT a percentage of the show's
+   duration. The old `minDist < 2` check was 2% of the total timeline —
+   for a 1h show that's a ±72s snap zone, so dragging anywhere near a
+   marker made the knob leap a large, jarring distance with zero easing.
+   A fixed pixel radius feels the same regardless of show length, and
+   pairing it with a brief transition (below) turns the leap into a
+   quick, deliberate pull instead of a teleport. */
+const SNAP_PX = 10;
+function resolveProgressPct(clientX) {
+  const r = progressTrack.getBoundingClientRect();
+  const rawPct = ((clientX - r.left) / r.width) * 100;
+  const { nearest, minDist } = getTrackAtPct(rawPct);
+  const minDistPx = (minDist / 100) * r.width;
+  if (nearest && minDistPx < SNAP_PX) return { pct: nearest.pct, snapped: true };
+  return { pct: rawPct, snapped: false };
+}
+
 progressTrack.addEventListener('mousedown', e => {
   progressDragging = true;
   /* Knob must stay enlarged for the whole drag, not just while the cursor
@@ -6743,19 +6765,14 @@ progressTrack.addEventListener('mousedown', e => {
      where the cursor wanders. */
   progressKnob.classList.add('scrubbing');
   document.body.classList.add('progress-scrubbing');
-  let pct = pctFromProgressEvent(e);
-  // Snap magnétique — si proche d'un marker (<2%), snapper dessus
-  const { nearest, minDist } = getTrackAtPct(pct);
-  if (nearest && minDist < 2) pct = nearest.pct;
-  setProgressPct(pct);
+  const { pct, snapped } = resolveProgressPct(e.clientX);
+  setProgressPct(pct, snapped);
   e.stopPropagation(); e.preventDefault();
 });
 document.addEventListener('mousemove', e => {
   if (!progressDragging) return;
-  let pct = pctFromProgressEvent(e);
-  const { nearest, minDist } = getTrackAtPct(pct);
-  if (nearest && minDist < 2) pct = nearest.pct;
-  setProgressPct(pct);
+  const { pct, snapped } = resolveProgressPct(e.clientX);
+  setProgressPct(pct, snapped);
 });
 document.addEventListener('mouseup', () => {
   if (!progressDragging) return;
@@ -6770,18 +6787,16 @@ progressTrack.addEventListener('touchstart', e => {
   progressKnob.classList.add('scrubbing');
   document.body.classList.add('progress-scrubbing');
   if (navigator.vibrate) navigator.vibrate(10);
-  let pct = pctFromProgressEvent(e.touches[0]);
-  const { nearest, minDist } = getTrackAtPct(pct);
-  if (nearest && minDist < 2) { pct = nearest.pct; if (navigator.vibrate) navigator.vibrate(6); }
-  setProgressPct(pct);
+  const { pct, snapped } = resolveProgressPct(e.touches[0].clientX);
+  if (snapped && navigator.vibrate) navigator.vibrate(6);
+  setProgressPct(pct, snapped);
   e.preventDefault();
 }, { passive: false });
 document.addEventListener('touchmove', e => {
   if (!progressDragging) return;
-  let pct = pctFromProgressEvent(e.touches[0]);
-  const { nearest, minDist } = getTrackAtPct(pct);
-  if (nearest && minDist < 2) { pct = nearest.pct; if (navigator.vibrate) navigator.vibrate(6); }
-  setProgressPct(pct);
+  const { pct, snapped } = resolveProgressPct(e.touches[0].clientX);
+  if (snapped && navigator.vibrate) navigator.vibrate(6);
+  setProgressPct(pct, snapped);
   e.preventDefault();
 }, { passive: false });
 document.addEventListener('touchend', () => {
