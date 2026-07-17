@@ -2643,12 +2643,30 @@ h1, h2, h3, h4, h5, h6,
      in (loading → resolved) and the box should ease into its new size
      instead of snapping. interpolate-size lets the browser actually
      animate to/from the max-content keyword instead of just snapping
-     (supported in Chromium; harmlessly ignored elsewhere). */
+     (supported in Chromium; harmlessly ignored elsewhere).
+     IMMUTABLE RULE: this MUST always include .glass-popup's own
+     opacity/filter/transform transition alongside any popup-specific
+     addition (like width/height here) — `transition` is not additive
+     across rules, a bare override here silently deletes the shared
+     open/close animation instead of extending it. Every popup on the
+     site must animate identically to #ham-menu; if you add a
+     transition line to a .glass-popup element, copy the three lines
+     below verbatim rather than replacing them. */
   interpolate-size: allow-keywords;
-  transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1),
+  transition: opacity   200ms var(--ease-in),
+              filter    240ms var(--ease-in),
+              transform 260ms var(--ease-in),
+              width 380ms cubic-bezier(0.22, 1, 0.36, 1),
               height 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-#music-links-popup.visible { pointer-events: all; }
+#music-links-popup.visible {
+  pointer-events: all;
+  transition: opacity   200ms var(--ease-spring),
+              filter    240ms var(--ease-spring),
+              transform 260ms var(--ease-spring),
+              width 380ms cubic-bezier(0.22, 1, 0.36, 1),
+              height 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
 #music-links-popup .mlp-title {
   font-size: var(--text-sm); font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
   color: var(--text-tertiary); margin-bottom: var(--space-3);
@@ -3258,6 +3276,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-host-av {
   width: 18px; height: 18px; border-radius: 50%;
   background: var(--badge-bg); border: 1px solid var(--badge-border);
+  background-size: cover; background-position: center;
   display: flex; align-items: center; justify-content: center;
   font-size: 8px; font-weight: 600; text-transform: uppercase; color: var(--text-tertiary);
   flex-shrink: 0;
@@ -8091,12 +8110,14 @@ function openShow(key) {
 
   // Populate show content
   document.getElementById('show-title').textContent = key;
-  document.getElementById('show-host-av').textContent = data.initials;
+  const artistData = ARTISTS[data.host];
+  const hostAvEl = document.getElementById('show-host-av');
+  hostAvEl.textContent = artistData?.photo ? '' : data.initials;
+  hostAvEl.style.backgroundImage = artistData?.photo ? `url(${artistData.photo})` : '';
   document.getElementById('show-host-name').textContent = data.host;
   document.getElementById('show-submeta-host').textContent = data.host;
   const avEl = document.getElementById('show-submeta-av');
-  const artistData = ARTISTS[data.host];
-  avEl.textContent = data.initials || '';
+  avEl.textContent = artistData?.photo ? '' : (data.initials || '');
   avEl.style.backgroundImage = artistData?.photo ? `url(${artistData.photo})` : '';
   avEl.style.display = '';
   document.getElementById('show-desc').textContent = data.desc || '';
