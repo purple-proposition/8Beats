@@ -43,7 +43,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Pixel&display=swap">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
 @font-face {
@@ -357,7 +357,7 @@ a { text-decoration: none; color: inherit; }
    chunks up and degrades the glyph shapes. Pin to 400 everywhere. */
 h1,
 .show-title {
-  font-family: 'Alpha Lyrae', var(--font);
+  font-family: 'Geist Pixel', var(--font);
   font-weight: 400;
   color: var(--text-primary);
 }
@@ -902,7 +902,7 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; }
 .section-header-text { display: flex; flex-direction: column; gap: var(--space-4); }
-.section-header-text h2 { font-family: 'Alpha Lyrae', var(--font); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.4px; line-height: 1; }
+.section-header-text h2 { font-family: 'Geist Pixel', var(--font); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.4px; line-height: 1; }
 .section-header-text h3 { font-size: var(--text-md); font-weight: 400; color: var(--text-secondary); }
 /* Shared section subtitle — was duplicated as an identical inline style in 3 places */
 .section-subtitle { font-size: var(--text-md); line-height: 1; color: var(--text-secondary); }
@@ -952,7 +952,17 @@ h1, h2, h3, h4, h5, h6,
 .card-thumb:hover > svg, .card-thumb:hover > img {
   transform: scale3d(1.05, 1.05, 1.05);
 }
-/* Dark hover overlay removed site-wide — zoom alone is the hover signal now. */
+/* Overlay CSS-only — pas de JS, pas de filter() */
+.card-thumb::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--overlay);
+  opacity: 0;
+  transition: opacity var(--dur-short) var(--ease-hover);
+  z-index: var(--z-base);
+}
+.card-thumb:hover::after,
+.card-thumb.is-playing::after { opacity: 1; }
 
 .card-overlay {
   position: absolute; inset: 0; z-index: 2;
@@ -1049,7 +1059,7 @@ h1, h2, h3, h4, h5, h6,
 /* ── Interstitial cards (Join the party / Keep the beat going / Don't
    sleep on it) — unified title/body/CTA rules across all three. ── */
 .pitch-title, .keepbeat-title, .newsletter-title {
-  font-family: 'Alpha Lyrae', var(--font);
+  font-family: 'Geist Pixel', var(--font);
   font-size: 32px; font-weight: 400;
   letter-spacing: normal; text-transform: none; color: var(--text-primary);
   line-height: normal;
@@ -1471,8 +1481,8 @@ h1, h2, h3, h4, h5, h6,
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
 
-.player-game-wrap { line-height: 1; margin-top: -3px; } /* trim-both not fully closing the gap on all engines — measured 15px vs the 12px target, -3px corrects it */
-.player-game { font-size: 14px; line-height: 1; color: var(--text-secondary); }
+.player-game-wrap { line-height: 1; }
+.player-game { font-size: var(--text-md); line-height: 1; color: var(--text-secondary); }
 .player-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 
 /* ── Family 2: IconButton (.icon-btn) ── */
@@ -2820,7 +2830,7 @@ h1, h2, h3, h4, h5, h6,
 .about-hero h1,
 .latest-hero h1,
 .proposal-hero h1 {
-  font-family: 'Alpha Lyrae', var(--font);
+  font-family: 'Geist Pixel', var(--font);
   font-size: clamp(32px, 5.5vw, 64px);
   line-height: 1.05; letter-spacing: -0.03em; margin: 0;
 }
@@ -2866,7 +2876,7 @@ h1, h2, h3, h4, h5, h6,
 .support-plan.featured .support-plan-name { color: var(--text-primary); }
 .support-plan-price { display: flex; align-items: baseline; gap: var(--space-1); }
 .support-plan-price .price-amount {
-  font-family: 'Alpha Lyrae', var(--font);
+  font-family: 'Geist Pixel', var(--font);
   font-size: 40px; line-height: normal; color: var(--text-primary);
 }
 .support-plan-price .price-currency {
@@ -2964,7 +2974,7 @@ h1, h2, h3, h4, h5, h6,
 }
 .about-stat-bottom { display: flex; flex-direction: column; gap: var(--space-2); }
 .about-stat-number {
-  font-family: 'Alpha Lyrae', var(--font);
+  font-family: 'Geist Pixel', var(--font);
   font-size: clamp(32px, 4vw, 48px); line-height: normal; color: var(--text-primary);
 }
 .about-stat-label { font-size: var(--text-sm); color: var(--text-secondary); }
@@ -4137,7 +4147,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   background: transparent;
 }
 #topbar-wordmark {
-  font-family: 'Alpha Lyrae', var(--font); font-size: 18px; letter-spacing: -.01em;
+  font-family: 'Geist Pixel', var(--font); font-size: 18px; letter-spacing: -.01em;
   color: var(--text-primary); text-decoration: none; flex-shrink: 0;
   justify-self: start;
 }
