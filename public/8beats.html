@@ -907,7 +907,13 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Shared section subtitle — was duplicated as an identical inline style in 3 places */
 .section-subtitle { font-size: var(--text-md); line-height: 1; color: var(--text-secondary); }
 
-/* Leading-trim: measure gaps from cap-height, not line-box edges (Safari 18+, progressive enhancement) */
+/* Leading-trim: measure gaps from cap-height, not line-box edges (Safari 18+,
+   progressive enhancement). Site-wide rule: every single-line, ellipsis-
+   truncated text element uses overflow-x:hidden + overflow-y:visible (never
+   the overflow:hidden shorthand — that clips descenders the instant
+   trim-both shrinks the box below the glyphs' full height) and gets
+   text-box:trim-both. There is no more trim-start-only carve-out: once
+   overflow-y can't clip, trim-both is safe everywhere. */
 h1, h2, h3, h4, h5, h6,
 .section-subtitle,
 .card-meta, .track-name,
@@ -916,15 +922,13 @@ h1, h2, h3, h4, h5, h6,
 .track-ago, .track-time,
 .schedule-day-header .day-name,
 .schedule-day-header .day-date,
-.explore-show-title { text-box: trim-both cap alphabetic; }
-
-/* trim-start only: these elements have overflow:hidden directly — trim-end would clip descenders */
+.explore-show-title,
 .host-name,
 .sp-show-name, .sp-show-artist,
 .track-game,
-.ts-show-host-link { text-box: trim-start cap alphabetic; }
-
-/* player-title/game: wraps now use overflow-x:hidden + overflow-y:visible → trim-both safe */
+.ts-show-host-link,
+.slot-title-text, .schedule-slot-host,
+.ts-sched-name, .ts-sched-host,
 .player-title, .player-game { text-box: trim-both cap alphabetic; }
 
 /* section title with inline chevron */
@@ -1358,7 +1362,7 @@ h1, h2, h3, h4, h5, h6,
 .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 .track-info { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; flex: 1; }
 .track-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); }
-.track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
+.track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
 .track-ago  { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; }
 .track-time { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font); }
 
@@ -2455,7 +2459,7 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
 .explore-show-row:hover::before { background: rgba(255,255,255,0.12); }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
-.explore-show-title { font-size:var(--text-show); font-weight:400; line-height:1; color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0; }
+.explore-show-title { font-size:var(--text-show); font-weight:400; line-height:1; color:var(--text-primary);white-space:nowrap;overflow-x:hidden;overflow-y:visible;text-overflow:ellipsis;min-width:0; }
 .hero-tags { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 
 /* ============================================================
@@ -2591,8 +2595,8 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
 .sp-show-row:hover { background: var(--surface-control); }
 .sp-show-info { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; min-width: 0; }
 .sp-show-title-row { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
-.sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; transition: color var(--dur-micro) var(--ease-hover); flex-shrink: 1; min-width: 0; }
-.sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1; }
+.sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; line-height: 1; transition: color var(--dur-micro) var(--ease-hover); flex-shrink: 1; min-width: 0; }
+.sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; line-height: 1; }
 /* Live button — player-ctrl style, uppercase */
 .sp-live-btn {
   display: inline-flex; align-items: center; gap: var(--space-2);
@@ -2768,7 +2772,7 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
   font-size: var(--text-md); font-weight: 400; color: var(--text-primary); line-height: 1;
 }
 .schedule-slot-title .slot-title-text {
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1;
+  white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; min-width: 0; flex-shrink: 1;
 }
 .schedule-slot-host {
   font-size: var(--text-base); color: var(--text-secondary); margin-top: var(--space-2); line-height: 1;
@@ -3238,7 +3242,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tracklist-inline .track-game {
   display: block; width: fit-content; max-width: 100%;
   font-size: var(--text-base); color: var(--text-tertiary);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis;
   line-height: 1; transition: color var(--dur-short) var(--ease-hover);
 }
 .show-tracklist-inline .track-game:hover,
@@ -4528,8 +4532,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 .ts-sched-info { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; min-width: 0; }
 .ts-sched-title-row { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
-.ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1; min-width: 0; }
-.ts-sched-host { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; flex-shrink: 1; min-width: 0; }
+.ts-sched-host { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; }
 .ts-sched-live-badge {
   flex-shrink: 0;
   display: inline-flex; align-items: center; gap: var(--space-2);
