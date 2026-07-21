@@ -907,29 +907,12 @@ svg[data-lucide="play"], svg[data-lucide="pause"] { fill: currentColor !importan
 /* Shared section subtitle — was duplicated as an identical inline style in 3 places */
 .section-subtitle { font-size: var(--text-md); line-height: 1; color: var(--text-secondary); }
 
-/* Leading-trim: measure gaps from cap-height, not line-box edges (Safari 18+,
-   progressive enhancement). Site-wide rule: every single-line, ellipsis-
-   truncated text element uses overflow-x:hidden + overflow-y:visible (never
-   the overflow:hidden shorthand — that clips descenders the instant
-   trim-both shrinks the box below the glyphs' full height) and gets
-   text-box:trim-both. There is no more trim-start-only carve-out: once
-   overflow-y can't clip, trim-both is safe everywhere. */
-h1, h2, h3, h4, h5, h6,
-.section-subtitle,
-.card-meta, .track-name,
-.player-info-top .label, .qmenu-label,
-.progress-time,
-.track-ago, .track-time,
-.schedule-day-header .day-name,
-.schedule-day-header .day-date,
-.explore-show-title,
-.host-name,
-.sp-show-name, .sp-show-artist,
-.track-game,
-.ts-show-host-link,
-.slot-title-text, .schedule-slot-host,
-.ts-sched-name, .ts-sched-host,
-.player-title, .player-game { text-box: trim-both cap alphabetic; }
+/* text-box-trim (Safari-only "leading-trim" feature) was tried here to tighten
+   gaps to cap-height, in several edge configurations (trim-both cap alphabetic,
+   then cap text), each paired with overflow tweaks. All still clipped descenders
+   in real Safari — a rendering bug in Safari's implementation that isn't
+   reproducible in Chromium-based tooling, so it couldn't be verified here before
+   shipping. Dropped entirely: normal line-height boxes, zero clipping risk. */
 
 /* section title with inline chevron */
 .section-link { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-primary); text-decoration: none; transition: opacity var(--dur-short) var(--ease-hover); }
@@ -1010,7 +993,7 @@ h1, h2, h3, h4, h5, h6,
 
 .card-host { display: flex; align-items: center; gap: var(--space-2); }
 .avatar { width: 20px; height: 20px; border-radius: 50%; background: var(--border-default); border: 1px solid var(--border-default); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .3px; background-size: cover; background-position: center; }
-.host-name { font-size: var(--text-base); color: var(--text-primary); white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; line-height: 1; transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; text-box: trim-both cap alphabetic; }
+.host-name { font-size: var(--text-base); color: var(--text-primary); white-space: nowrap; line-height: 1; transition: opacity var(--dur-short) var(--ease-hover); cursor: pointer; }
 .host-name:hover { opacity: 0.64; }
 
 .card-meta   { font-size: var(--text-base); color: var(--text-tertiary); font-family: var(--font); line-height: 1; }
@@ -1362,7 +1345,7 @@ h1, h2, h3, h4, h5, h6,
 .track-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 .track-info { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; flex: 1; }
 .track-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); }
-.track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; transition: color var(--dur-short) var(--ease-hover); }
+.track-game { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; transition: color var(--dur-short) var(--ease-hover); }
 .track-ago  { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; }
 .track-time { font-size: var(--text-sm); color: var(--text-tertiary); flex-shrink: 0; width: 40px; letter-spacing: 0; font-family: var(--font); }
 
@@ -1485,7 +1468,7 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 .player-title-row { display: flex; align-items: center; gap: 2px; overflow: hidden; }
-.player-title-wrap { flex: 1; min-width: 0; overflow-x: hidden; overflow-y: visible; line-height: 1; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
+.player-title-wrap { flex: 1; min-width: 0; line-height: 1; mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 16px),transparent); }
 .player-title { font-family: var(--font); font-size: var(--text-md); font-weight: 400; letter-spacing: -.25px; white-space: nowrap; line-height: 1; display: inline-block; color: var(--text-primary); }
 .player-title.scrolling { animation: marquee-move var(--marquee-dur, 10s) linear 1 forwards; }
 @keyframes marquee-move { 0%{transform:translateX(0)} 100%{transform:translateX(var(--offset))} }
@@ -1932,7 +1915,7 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
   .player-info-top .label { font-size: var(--text-sm); text-transform: uppercase; }
   .player-title-wrap { mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
   .player-title { font-size: var(--text-md); font-weight: 400; }
-  .player-game-wrap { overflow-x: hidden; overflow-y: visible; mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
+  .player-game-wrap { mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); -webkit-mask-image: linear-gradient(to right,black calc(100% - 12px),transparent); }
   .player-game  { font-size: 14px; color: var(--text-secondary); white-space: nowrap; display: block; }
   .player-controls { gap: var(--space-2); flex-shrink: 0; }
   .vol-wrap, .vol-popup,
@@ -2459,7 +2442,7 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
 .explore-show-row:hover::before { background: rgba(255,255,255,0.12); }
 .explore-show-title { }
 /* will-change uniquement pendant l'animation — pas de layer GPU permanent */
-.explore-show-title { font-size:var(--text-show); font-weight:400; line-height:1; color:var(--text-primary);white-space:nowrap;overflow-x:hidden;overflow-y:visible;text-overflow:ellipsis;min-width:0; }
+.explore-show-title { font-size:var(--text-show); font-weight:400; line-height:1; color:var(--text-primary);white-space:nowrap;min-width:0; }
 .hero-tags { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 
 /* ============================================================
@@ -2595,8 +2578,8 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
 .sp-show-row:hover { background: var(--surface-control); }
 .sp-show-info { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; min-width: 0; }
 .sp-show-title-row { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
-.sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; line-height: 1; transition: color var(--dur-micro) var(--ease-hover); flex-shrink: 1; min-width: 0; }
-.sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; line-height: 1; }
+.sp-show-name   { font-size: var(--text-show); color: var(--text-primary); font-weight: 400; white-space: nowrap; line-height: 1; transition: color var(--dur-micro) var(--ease-hover); flex-shrink: 1; min-width: 0; }
+.sp-show-artist { font-size: var(--text-base); color: var(--text-tertiary); font-weight: 400; white-space: nowrap; line-height: 1; }
 /* Live button — player-ctrl style, uppercase */
 .sp-live-btn {
   display: inline-flex; align-items: center; gap: var(--space-2);
@@ -2772,7 +2755,7 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
   font-size: var(--text-md); font-weight: 400; color: var(--text-primary); line-height: 1;
 }
 .schedule-slot-title .slot-title-text {
-  white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; min-width: 0; flex-shrink: 1;
+  white-space: nowrap; min-width: 0; flex-shrink: 1;
 }
 .schedule-slot-host {
   font-size: var(--text-base); color: var(--text-secondary); margin-top: var(--space-2); line-height: 1;
@@ -3242,7 +3225,7 @@ textarea.proposal-input { resize: vertical; min-height: 100px; line-height: 1.5;
 .show-tracklist-inline .track-game {
   display: block; width: fit-content; max-width: 100%;
   font-size: var(--text-base); color: var(--text-tertiary);
-  white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis;
+  white-space: nowrap;
   line-height: 1; transition: color var(--dur-short) var(--ease-hover);
 }
 .show-tracklist-inline .track-game:hover,
@@ -4164,6 +4147,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 #topbar-search {
   position: relative;
   height: 48px;
+  contain: layout paint style;
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 @media (min-width: 1025px) {
@@ -4189,9 +4173,9 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 #ts-panel {
   position: absolute; top: 0; left: 0; right: 0; z-index: 1;
   display: flex; flex-direction: column;
-  background: rgba(75,75,75,0.40);
-  backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.56);
+  background: rgba(40,40,40,0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: var(--radius-btn);
   border: none;
   overflow: hidden;
@@ -4212,10 +4196,10 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 #topbar-search-label {
   font-family: var(--font); font-size: var(--text-base); color: var(--text-tertiary);
   white-space: nowrap;
-  transition: opacity 200ms var(--ease-hover), filter 200ms var(--ease-hover);
+  transition: opacity 200ms var(--ease-hover);
 }
 /* hide label only when user has typed something */
-#topbar-search.has-query #topbar-search-label { opacity: 0; filter: blur(6px); pointer-events: none; }
+#topbar-search.has-query #topbar-search-label { opacity: 0; pointer-events: none; }
 /* Fondue droite sur le texte — le gradient suit le resize de la barre,
    le label s'efface naturellement avant d'atteindre la zone du badge ⌘K */
 @media (min-width: 1025px) {
@@ -4226,12 +4210,12 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 #topbar-search-cycle {
   display: inline-block; vertical-align: baseline;
-  will-change: opacity, filter;
+  will-change: opacity;
   font-size: var(--text-base); color: var(--text-tertiary);
-  transition: opacity 0.3s var(--ease-hover), filter 0.3s var(--ease-hover);
+  transition: opacity 0.3s var(--ease-hover);
 }
-#topbar-search-cycle.cycle-out { opacity: 0; filter: blur(4px); }
-#topbar-search-cycle.cycle-in  { opacity: 1; filter: blur(0px); }
+#topbar-search-cycle.cycle-out { opacity: 0; }
+#topbar-search-cycle.cycle-in  { opacity: 1; }
 
 #topbar-search-input {
   position: absolute; inset: 0;
@@ -4260,20 +4244,20 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   background: rgba(255,255,255,0.12); border-radius: 6px;
   color: #A1A1A1; font-size: 12px; line-height: 1; font-family: var(--font);
   padding: var(--space-1) var(--space-2); white-space: nowrap; display: flex; align-items: center;
-  opacity: 1; filter: blur(0px);
-  transition: opacity 160ms var(--ease-hover), filter 160ms var(--ease-hover);
+  opacity: 1;
+  transition: opacity 160ms var(--ease-hover);
 }
 #topbar-search-esc {
   background: rgba(255,255,255,0.12); border: none; border-radius: 6px;
   color: #A1A1A1; font-size: 12px; line-height: 1; font-family: var(--font);
   padding: 4px 8px; cursor: pointer; white-space: nowrap; display: flex; align-items: center;
-  opacity: 0; filter: blur(4px); pointer-events: none;
-  transition: opacity 160ms var(--ease-hover), filter 160ms var(--ease-hover),
+  opacity: 0; pointer-events: none;
+  transition: opacity 160ms var(--ease-hover),
               background var(--dur-short) var(--ease-hover), color var(--dur-micro) var(--ease-hover);
 }
 #topbar-search-esc:hover { background: rgba(255,255,255,0.16); color: var(--text-primary); }
-#topbar-search.search-open #topbar-search-kbd { opacity: 0; filter: blur(4px); pointer-events: none; }
-#topbar-search.search-open #topbar-search-esc { opacity: 1; filter: blur(0px); pointer-events: all; }
+#topbar-search.search-open #topbar-search-kbd { opacity: 0; pointer-events: none; }
+#topbar-search.search-open #topbar-search-esc { opacity: 1; pointer-events: all; }
 
 /* Body: grid-template-rows trick — animates to exact content height, no max-height approximation.
    0fr collapses the row to 0; 1fr expands to true intrinsic height. Easing applies across the
@@ -4303,17 +4287,15 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
    EXIT  — fades out immediately, margin resets. */
 #topbar-dropdown-sep {
   height: 1px; background: rgba(255,255,255,0.12);
-  margin: 0 0; opacity: 0; filter: blur(4px);
-  /* EXIT: fade+blur out */
+  margin: 0 0; opacity: 0;
+  /* EXIT: fade out */
   transition: opacity 200ms var(--ease-in) 0ms,
-              filter  240ms var(--ease-in) 0ms,
               margin  200ms cubic-bezier(0.4, 0, 1, 1) 0ms;
 }
 #topbar-search.search-open #topbar-dropdown-sep {
-  margin: 0 16px 4px; opacity: 1; filter: blur(0px);
+  margin: 0 16px 4px; opacity: 1;
   /* ENTER: flash visible at full-width, then contract */
   transition: opacity 80ms var(--ease-hover) 0ms,
-              filter  80ms var(--ease-hover) 0ms,
               margin  300ms cubic-bezier(0.4, 0, 0.2, 1) 40ms;
 }
 
@@ -4532,8 +4514,8 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
 }
 .ts-sched-info { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; min-width: 0; }
 .ts-sched-title-row { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
-.ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; flex-shrink: 1; min-width: 0; }
-.ts-sched-host { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; overflow-x: hidden; overflow-y: visible; text-overflow: ellipsis; }
+.ts-sched-name { font-size: var(--text-base); line-height: 1; color: var(--text-primary); white-space: nowrap; flex-shrink: 1; min-width: 0; }
+.ts-sched-host { font-size: var(--text-base); line-height: 1; color: var(--text-tertiary); white-space: nowrap; }
 .ts-sched-live-badge {
   flex-shrink: 0;
   display: inline-flex; align-items: center; gap: var(--space-2);
