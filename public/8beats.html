@@ -1685,8 +1685,10 @@ body.progress-scrubbing * { cursor: grabbing !important; user-select: none !impo
   /* ── Tokens ── */
   :root {
     --nav-h: 56px; --player-h: 106px; --space: 16px; --gutter: 16px;
-    /* 4-column grid on mobile: (100vw - 2×12 - 3×12) / 4 */
-    --grid-col: calc((100vw - 60px) / 4);
+    /* 4-column grid on mobile, derived from the tokens like the 12-column one:
+       (100vw - 2 × --space - 3 × --gutter) / 4. It used to hardcode 12px margins
+       and gutters against 16px tokens, so a 4-column span overflowed by 20px. */
+    --grid-col: calc((100vw - 2 * var(--space) - 3 * var(--gutter)) / 4);
   }
 
   body { padding-bottom: calc(var(--player-h) + var(--space) + env(safe-area-inset-bottom,0px) + 8px); overflow-x: hidden; }
@@ -4590,7 +4592,7 @@ html.light .ts-filter-chips .chip--active { background: rgba(0,0,0,0.12); color:
   /* Prevent horizontal scroll */
   html, body { overflow-x: hidden; }
   /* Re-declare 4-col --grid-col here so it wins over the global :root at line 3506 */
-  :root { --grid-col: calc((100vw - 60px) / 4); }
+  :root { --grid-col: calc((100vw - 2 * var(--space) - 3 * var(--gutter)) / 4); }
 
   /* Body: offset for fixed topbar; reset ios-nav padding-bottom */
   body, body.sb-icons, body.sb-closed {
