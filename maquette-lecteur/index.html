@@ -1,0 +1,860 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maquette lecteur 8Beats</title>
+<style>
+@font-face { font-family: "8BeatsDisplay"; src: url("assets/8BeatsDisplay-Regular.ttf") format("truetype"); }
+@font-face { font-family: "Geist"; src: url("assets/Geist-Regular.ttf") format("truetype"); font-weight: 400; }
+:root { color-scheme: light dark; }
+body { margin: 0; padding: 16px; background: #fafafa; font-family: system-ui, sans-serif; }
+@media (prefers-color-scheme: dark) { body { background: #171717; } }
+.player { position: relative; width: 320px; height: 320px; border-radius: 16px; overflow: hidden; background: #262626; }
+.art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.band { position: absolute; left: 0; right: 0; bottom: 0; height: calc(100% / 3);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  -webkit-mask-image: linear-gradient(to top, rgba(10,10,10,1) 0, rgba(10,10,10,1) 58px, rgba(10,10,10,.95) 64px, rgba(10,10,10,.5) 70px, rgba(10,10,10,.05) 76px, rgba(10,10,10,0) 82px);
+  mask-image: linear-gradient(to top, rgba(10,10,10,1) 0, rgba(10,10,10,1) 58px, rgba(10,10,10,.95) 64px, rgba(10,10,10,.5) 70px, rgba(10,10,10,.05) 76px, rgba(10,10,10,0) 82px); }
+.btn { position: absolute; width: 32px; height: 32px; border-radius: 8px; background: rgba(250,250,250,.12); backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); display: grid; place-items: center; }
+.logo { top: 12px; left: 12px; }
+.tools { top: 12px; right: 12px; display: flex; gap: 8px; position: absolute; }
+.tools .btn-ic { width: 32px; height: 32px; border-radius: 8px; background: rgba(250,250,250,.12); backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); display: grid; place-items: center; }
+:root { --text-block: calc(16px + 4px + 14px); }
+.meta { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 12px; color: #fafafa; }
+.play { width: var(--text-block); height: var(--text-block); flex-shrink: 0; border-radius: 8px; background: rgba(250,250,250,.12); display: grid; place-items: center; }
+.text { flex: 1; min-width: 0; height: var(--text-block); }
+.title { font-family: "8BeatsDisplay", Geist, sans-serif; font-size: 16px; line-height: 1; #fafafa-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.game { margin-top: 4px; font-family: Geist, sans-serif; font-size: 14px; line-height: 1; opacity: .72; #fafafa-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.foot-note { font: 13px/1.5 system-ui, sans-serif; color: #737373; max-width: 320px; margin-top: 12px; }
+
+.wrap { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; padding: 24px; border-radius: 16px; background: radial-gradient(circle at 20% 30%, #7a3b8f 0, transparent 45%), radial-gradient(circle at 75% 70%, #2f6f8f 0, transparent 50%), #171717; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.label { font: 600 13px/1.5 system-ui, sans-serif; color: #737373; margin: 0; }
+.card { position: relative; width: 320px; height: 80px; border-radius: 16px; overflow: visible; background: rgba(0,0,0,.36); backdrop-filter: blur(32px) saturate(1); -webkit-backdrop-filter: blur(32px) saturate(1); border: 0; box-sizing: border-box; }
+.card .row { position: relative; height: 100%; display: flex; align-items: center; gap: 12px; padding: 12px; box-sizing: border-box; color: #fafafa; }
+.thumb { position: relative; width: 64px; height: 64px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb .ov { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(10,10,10,.4); opacity: 0; transition: opacity 160ms ease-out; }
+.thumb:hover .ov { opacity: 1; }
+.card .text { flex: 1; min-width: 0; }
+.card .title { font-family: "8BeatsDisplay", Geist, sans-serif; font-size: 16px; line-height: 1; #fafafa-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .sub { margin-top: 4px; font-family: Geist, sans-serif; font-size: 14px; line-height: 1; opacity: .72; #fafafa-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .more { width: 32px; height: 32px; border-radius: 8px; background: rgba(250,250,250,.12); display: grid; place-items: center; flex-shrink: 0; }
+
+.btn-ic, .btn, .play, .more, .thumb, .card { cursor: pointer; user-select: none; }
+.btn-ic.on, .btn.on { background: rgba(250,250,250,.28); }
+.col { position: relative; }
+.menu { position: absolute; top: 96px; right: 0; width: 220px; padding: 8px; border-radius: 16px; background: #262626; color: #fafafa; box-shadow: 0 0 0 1px rgba(250,250,250,.12); display: none; z-index: 2; }
+.menu.open { display: block; }
+.menu button { display: block; width: 100%; text-align: left; padding: 8px 12px; border: 0; border-radius: 8px; background: transparent; color: #fafafa; font: 14px/20px Geist, sans-serif; cursor: pointer; }
+.menu button:hover { background: rgba(250,250,250,.12); }
+
+/* Comportements repris de l'app : chrome, icônes, menus */
+:root { --ease-out: cubic-bezier(0,0,.2,1); --ease-standard: cubic-bezier(0.16,1,0.4,1); --ease-inward: cubic-bezier(.4,0,1,1); --ease-spring: cubic-bezier(.36,1.56,.64,1); }
+.lecteur.show .meta { transition-delay: 0ms; }
+.chrome-el svg, .play svg { opacity: .72; transition: opacity 80ms var(--ease-out); }
+.play:hover svg, .btn-ic:hover svg { opacity: 1; }
+.play:hover svg { animation: shove 500ms ease-in-out; }
+@keyframes shove { 0% { transform: none; } 20% { transform: translateX(-1px) rotate(-10deg); } 50% { transform: translateX(2px) rotate(0deg); } 100% { transform: none; } }
+.lecteur .tools .btn-ic:nth-child(1) svg { transition: transform 400ms ease-in-out, opacity 80ms; }
+.tools .btn-ic:nth-child(1):hover svg { transform: rotate(90deg); }
+.lecteur .tools .btn-ic:nth-child(3) svg { transition: transform 500ms var(--enter), opacity 80ms; }
+.tools .btn-ic:nth-child(3):hover svg { transform: rotate(180deg); }
+.tools .btn-ic:nth-child(2):hover svg { transform: translateY(-1px); transition: transform 320ms var(--ease-out); }
+.menu { opacity: 0; transform: translateY(-16px); filter: blur(10px); transition: opacity 320ms var(--exit), filter 320ms var(--exit), transform 320ms var(--exit); }
+.menu.open { opacity: 1; transform: none; filter: blur(0); transition: opacity 240ms var(--enter), filter 240ms var(--enter), transform 240ms var(--enter); }
+.menu button { transition: background 320ms var(--ease-standard); }
+.menu button:hover { transition: background 160ms var(--ease-out); }
+
+
+/* Panneaux, repris de PlayerView.panelOverlay et PlayerPanel */
+.veil { position: absolute; inset: 0; z-index: 2; display: none; }
+.lecteur.has-panel .veil { display: block; }
+.panel { position: absolute; top: 52px; right: calc(12px + var(--ti)); max-height: calc(100% - 64px); box-sizing: border-box; padding: 12px; border-radius: 16px; color: #fafafa; z-index: 3; overflow: hidden;
+  background: rgba(10,10,10,.36); backdrop-filter: blur(32px) saturate(1); -webkit-backdrop-filter: blur(32px) saturate(1);
+  transform: translateY(-16px); opacity: 0; pointer-events: none;
+  transition: transform 320ms var(--exit), opacity 320ms var(--exit); }
+.panel.wide { left: 12px; }
+.panel.open { transform: none; opacity: 1; pointer-events: auto; }
+.panel .ph { margin: 0 0 8px; font: 12px/16px Geist, sans-serif; text-transform: uppercase; letter-spacing: 1px; opacity: .52; }
+.stg { transform: translateX(-28px); opacity: 0; transition: transform 320ms var(--exit), opacity 320ms var(--exit); }
+.panel.revealed .stg { transform: none; opacity: 1; }
+.plates { display: flex; gap: 8px; flex-wrap: wrap; }
+.plate { width: 32px; height: 32px; border-radius: 8px; background: rgba(250,250,250,.12); display: grid; place-items: center; color: #fafafa; cursor: pointer; transition: background 80ms var(--ease-out); }
+.plate svg { opacity: .72; transition: opacity 80ms var(--ease-out); }
+.plate:hover { background: rgba(250,250,250,.16); }
+.plate:hover svg { opacity: 1; }
+.hlist { display: flex; flex-direction: column; gap: 8px; }
+.hrow { display: flex; gap: 12px; align-items: baseline; }
+.hrow .age { width: 56px; flex-shrink: 0; font: 12px/20px Geist, sans-serif; opacity: .72; }
+.hrow .ht { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.hrow .t { font: 14px/20px Geist, sans-serif; }
+.hrow .g { font: 12px/20px Geist, sans-serif; opacity: .72; #fafafa-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sets { display: flex; flex-direction: column; gap: 8px; }
+.srow { display: flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; color: #fafafa; font: 14px/20px Geist, sans-serif; cursor: pointer; opacity: .72; transition: opacity 320ms var(--ease-standard); }
+.srow:hover { opacity: 1; transition: opacity 160ms var(--ease-out); }
+.divider { height: 1px; background: rgba(250,250,250,.12); margin: 8px 0; }
+.panel.vol { padding: 12px; }
+.rail { position: relative; width: 8px; height: 80px; border-radius: 2px; background: rgba(250,250,250,.24); cursor: pointer; }
+.rail .fill { position: absolute; left: 0; right: 0; bottom: 0; border-radius: 2px; background: #fafafa; height: 70%; }
+.tools .btn-ic.on { background: linear-gradient(rgba(10,10,10,.2), rgba(10,10,10,.2)), rgba(250,250,250,.12); }
+.tools .btn-ic.on svg { opacity: 1; }
+
+
+/* Boutons de menu uniformes, comme SettingsRow : arrivée 160 ms ease-out, sortie 320 ms standard */
+.panel button, .menu button, .srow { transition: background 320ms var(--ease-standard), opacity 320ms var(--ease-standard); }
+.panel button:hover, .menu button:hover, .srow:hover { transition: background 160ms var(--ease-out), opacity 160ms var(--ease-out); }
+
+.chrome-el.gone { display: none; }
+
+:root { --exit: cubic-bezier(0.16,1,0.4,1); --enter: cubic-bezier(0.16,1,0.4,1); }
+/* Verre animé par son flou et son fond, pas par l'opacité : sinon le flou disparaît pendant le fondu */
+.lecteur .glass { backdrop-filter: blur(0); -webkit-backdrop-filter: blur(0); background-color: rgba(250,250,250,0); transition: backdrop-filter 320ms var(--exit), -webkit-backdrop-filter 320ms var(--exit), background-color 320ms var(--exit); }
+.lecteur.show .glass { backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); background-color: rgba(250,250,250,.12); transition: backdrop-filter 240ms var(--enter), -webkit-backdrop-filter 240ms var(--enter), background-color 240ms var(--enter); }
+/* Contenus (icônes, texte) : fondu d'opacité sur eux seulement */
+.lecteur .chrome-el svg, .lecteur .chrome-el .text { opacity: 0; transition: opacity 320ms var(--exit); }
+.lecteur.show .chrome-el svg, .lecteur.show .chrome-el .text { transition: opacity 240ms var(--enter); }
+.lecteur.show .chrome-el svg { opacity: .72; }
+.lecteur.show .chrome-el .text { opacity: 1; }
+.lecteur.show .play:hover svg, .lecteur.show .btn-ic:hover svg { opacity: 1; }
+.lecteur .chrome-el.gone { display: none; }
+
+/* Menu des trois petits points : sort du bouton (scale 6 %, ancré en haut à droite), lignes en cascade */
+.col .menu { transform: translateY(-16px); opacity: 0; filter: none; transition: transform 320ms var(--exit), opacity 320ms var(--exit); }
+.col .menu.open { display: block; transform: none; opacity: 1; transition: transform 320ms var(--exit), opacity 320ms var(--exit); }
+.col .menu button { opacity: 0; transition: none; }
+.col .menu.open button { opacity: 1; animation: tile-in 200ms cubic-bezier(0.16,1,0.4,1) backwards; }
+.col .menu.open button:nth-child(1) { animation-delay: 96ms; }
+.col .menu.open button:nth-child(2) { animation-delay: 144ms; }
+.col .menu.open button:nth-child(3) { animation-delay: 192ms; }
+.card .more { transition: background 160ms var(--ease-out); }
+.card .more.on { background: rgba(250,250,250,.28); }
+.card .more:active svg { animation: shove 500ms ease-in-out; }
+@keyframes tile-in { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+
+/* Menu des trois petits points : fond assombri et flouté, icônes qui glissent vers la gauche */
+.wrap { position: relative; }
+.scrim { position: absolute; inset: 0; z-index: 2; border-radius: 16px; pointer-events: none; background: rgba(10,10,10,0); backdrop-filter: blur(0); -webkit-backdrop-filter: blur(0); transition: background 320ms var(--exit), backdrop-filter 320ms var(--exit), -webkit-backdrop-filter 320ms var(--exit); }
+.wrap.menu-open .scrim { background: rgba(10,10,10,.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background 320ms var(--exit), backdrop-filter 320ms var(--exit), -webkit-backdrop-filter 320ms var(--exit); }
+.col:has(.card.tray-open) { z-index: 3; }
+.quick { display: flex; gap: 8px; padding: 4px 4px 8px; }
+.qbtn { width: 32px; height: 32px; border-radius: 8px; background: rgba(250,250,250,.12); display: grid; place-items: center; color: #fafafa; }
+.qbtn svg { width: 16px; height: 16px; opacity: .72; }
+.col .menu.open .qbtn { animation: slide-left 200ms cubic-bezier(0.16,1,0.4,1) backwards; }
+.col .menu.open .qbtn:nth-child(1) { animation-delay: 96ms; }
+.col .menu.open .qbtn:nth-child(2) { animation-delay: 144ms; }
+.col .menu.open .qbtn:nth-child(3) { animation-delay: 192ms; }
+.col .menu.open .qbtn:nth-child(4) { animation-delay: 240ms; }
+@keyframes slide-left { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+
+/* Plateau d'icônes : sort à gauche des trois petits points, de droite à gauche */
+.tray { display: flex; gap: 8px; width: 0; overflow: hidden; flex-shrink: 0; justify-content: flex-end; transition: width 320ms var(--exit) 240ms; }
+.card.tray-open .tray { width: 152px; transition: width 320ms var(--exit); }
+/* Fermeture : même animation qu'à l'ouverture, en miroir (le dernier arrivé sort en premier) */
+.tray .qbtn { transform: translateX(28px); opacity: 0; transition: transform 240ms cubic-bezier(0.16,1,0.4,1), opacity 240ms cubic-bezier(0.16,1,0.4,1); }
+.tray .qbtn:nth-child(1) { transition-delay: 0ms; }
+.tray .qbtn:nth-child(2) { transition-delay: 48ms; }
+.tray .qbtn:nth-child(3) { transition-delay: 96ms; }
+.tray .qbtn:nth-child(4) { transition-delay: 144ms; }
+.card.tray-open .tray .qbtn { transform: none; opacity: 1; transition: transform 240ms cubic-bezier(0.16,1,0.4,1), opacity 240ms cubic-bezier(0.16,1,0.4,1); }
+.card.tray-open .tray .qbtn:nth-child(4) { transition-delay: 96ms; }
+.card.tray-open .tray .qbtn:nth-child(3) { transition-delay: 144ms; }
+.card.tray-open .tray .qbtn:nth-child(2) { transition-delay: 192ms; }
+.card.tray-open .tray .qbtn:nth-child(1) { transition-delay: 240ms; }
+
+/* Le texte s'efface pendant que le plateau prend sa place */
+.card .text { transition: opacity 240ms cubic-bezier(0,0,.2,1); }
+.card.tray-open .text { opacity: 0; transition: opacity 240ms cubic-bezier(0,0,.2,1); }
+
+/* Le player C s'assombrit et se floute, sauf les trois petits points et le plateau d'icônes */
+.cscrim { position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none; background: rgba(10,10,10,0); transition: background 320ms var(--exit); }
+.card.tray-open .cscrim { background: rgba(10,10,10,.5); transition: background 320ms var(--exit); }
+.card .more, .card .tray { position: relative; z-index: 3; }
+
+/* Panneaux du player compact : même contenu que le lecteur A, posés sous la carte */
+/* Mode compact : valeurs propres, indépendantes du lecteur A. Chaque panneau prend la largeur de son contenu. */
+.col:has(.card[data-v="C"]) .panel { top: 101px; left: auto; right: 0; width: max-content; min-width: 0; max-height: none; overflow: hidden; }
+.col:has(.card[data-v="C"]) .panel.wide { left: auto; }
+.col:has(.card[data-v="C"]) .panel[data-panel-id="history"] { width: 240px; }
+/* Chaque pop-up se pose sous son bouton (centre du bouton aligné sur le centre du pop-up) */
+.col:has(.card[data-v="C"]) .panel[data-panel-id="avail"] { width: 176px; right: 100px; }
+.col:has(.card[data-v="C"]) .panel[data-panel-id="history"] { right: 28px; }
+.col:has(.card[data-v="C"]) .panel[data-panel-id="settings"] { width: 176px; right: 20px; }
+/* Volume : centré sous son bouton (le plus à gauche du plateau) */
+.col:has(.card[data-v="C"]) .panel[data-panel-id="volume"] { width: 56px; right: 160px; max-height: none; overflow: visible; }
+.col:has(.card[data-v="C"]):has(.panel.open) { z-index: 4; }
+
+/* Volume en mode compact : la pilule sort du bouton (même comportement que le lecteur complet) */
+.card .vpill { display: none; position: absolute; left: 236px; top: 29px; width: 32px; height: 136px; box-sizing: border-box; border-radius: 8px; background: rgba(250,250,250,.12); backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); transform-origin: top center; transform: scaleY(.235); opacity: 0; pointer-events: none; z-index: 2; transition: transform 320ms cubic-bezier(0.16,1,0.4,1), opacity 240ms cubic-bezier(0.16,1,0.4,1); }
+.card.vol-open .vpill { transform: none; opacity: 1; pointer-events: auto; transition: transform 320ms cubic-bezier(0.16,1,0.4,1), opacity 240ms cubic-bezier(0.16,1,0.4,1); }
+.card .vpill .rail { position: absolute; left: 12px; top: 44px; width: 8px; height: 80px; border-radius: 4px; background: rgba(250,250,250,.24); cursor: pointer; }
+.card .vpill .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 70%; border-radius: 4px; background: #fafafa; }
+.col:has(.card[data-v="C"]) .panel[data-panel-id="volume"] { width: 32px; right: 52px; padding: 12px; }
+
+/* Le plateau sort par-dessus le texte, sans pousser les trois petits points : le bouton ne bouge plus à l'ouverture */
+.card .tray { position: absolute; right: 52px; top: 28px; height: 32px; z-index: 3; }
+
+/* Les icônes gardent leur taille pendant la fermeture : elles ne se compriment plus */
+.tray .qbtn { flex: none; }
+
+/* Bouton de panneau actif : même état que le lecteur complet */
+.qbtn.on { background: rgba(250,250,250,.28); }
+
+/* Mode compact : chaque pop-up se referme vers son bouton (origine = centre du bouton dans le pop-up) */
+.col:has(.card[data-v="C"]) .panel[data-panel-id="avail"] { transform-origin: 88px 0; }
+.col:has(.card[data-v="C"]) .panel[data-panel-id="history"] { transform-origin: 120px 0; }
+.col:has(.card[data-v="C"]) .panel[data-panel-id="settings"] { transform-origin: 88px 0; }
+.col:has(.card[data-v="C"]) .panel[data-panel-id="volume"] { transform-origin: 16px -28px; }
+
+/* Mode compact : la cover et le texte se floutent à l'ouverture du plateau, les icônes passent par-dessus */
+.card .thumb, .card .text { transition: filter 320ms var(--exit), opacity 320ms var(--exit); }
+.card.tray-open .thumb { filter: blur(4px); }
+.card.tray-open .text { filter: blur(4px); opacity: 1; transition: filter 320ms var(--exit), opacity 320ms var(--exit); }
+
+/* Boutons du plateau et trois petits points : verre flouté comme les autres contrôles, pour que le texte flouté derrière ne transparaisse pas */
+.qbtn, .card .more { backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); }
+
+/* Réglage du mode : Full ou Compact */
+.seg { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.seg-label { margin: 0; font: 12px/16px Geist, sans-serif; opacity: .6; text-transform: uppercase; letter-spacing: 1px; }
+.seg-row { display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: rgba(250,250,250,.08); }
+.seg-row button { flex: 1; height: 32px; border: 0; border-radius: 8px; background: transparent; color: #fafafa; font: 14px/20px Geist, sans-serif; cursor: pointer; opacity: .72; transition: background 160ms var(--ease-out), opacity 160ms var(--ease-out); }
+.seg-row button:hover { opacity: 1; }
+.seg-row button.on { background: rgba(250,250,250,.16); opacity: 1; }
+.wrap.mode-full .col:has(.card[data-v="C"]) { display: none; }
+.wrap.mode-compact .col:has(.lecteur) { display: none; }
+
+
+/* Passage Full → Compact : transformation continue (view transition) */
+::view-transition-group(*) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.16,1,0.4,1); }
+::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+
+/* Trois petits points et plateau : mêmes opacités et mêmes mouvements de survol que le lecteur complet */
+.card .more svg { opacity: .72; transition: opacity 80ms var(--ease-out); }
+.card .more:hover svg { opacity: 1; animation: shove 500ms ease-in-out; }
+.card .more:active svg { animation: none; }
+.tray .qbtn svg { opacity: .72; transition: transform 320ms var(--ease-out), opacity 80ms var(--ease-out); }
+.tray .qbtn:hover svg { opacity: 1; }
+.tray .qbtn:nth-child(1) svg { transition: transform 400ms ease-in-out, opacity 80ms; }
+.tray .qbtn:nth-child(1):hover svg { transform: rotate(90deg); }
+.tray .qbtn:nth-child(2):hover svg { transform: translateY(-1px); }
+.tray .qbtn:nth-child(3) svg { transition: transform 500ms var(--enter), opacity 80ms; }
+.tray .qbtn:nth-child(3):hover svg { transform: rotate(180deg); }
+
+/* Mouvements de survol des icônes : mêmes valeurs que IconMotion de l'app */
+.tray .qbtn:nth-child(3) svg { transition: transform 700ms cubic-bezier(0.16,1,0.4,1), opacity 80ms; }
+.tray .qbtn:nth-child(3):hover svg { transform: rotate(180deg); }
+.tray .qbtn:nth-child(2) .ico-note { transform-box: fill-box; transform-origin: 50% 100%; }
+.tray .qbtn:nth-child(2):hover .ico-note { animation: note-lift 520ms ease-in-out; }
+@keyframes note-lift { 0% { transform: none; } 31% { transform: translateY(-2.5px) rotate(-9deg); } 62% { transform: translateY(0.5px) rotate(4deg); } 100% { transform: none; } }
+.tray .qbtn:nth-child(2):hover svg { transform: none; }
+
+/* Icône note (derniers morceaux) : rotation autour du centre de l'icône, repère de la boîte de l'icône */
+.tray .qbtn:nth-child(2) .ico-note { transform-box: view-box; transform-origin: 12px 16px; }
+.tray .qbtn:nth-child(2):hover .ico-note { animation: note-lift 520ms ease-in-out; }
+/* Trois petits points : sautent à tour de rôle, gauche, milieu, droite */
+.card .more circle { transform-box: fill-box; transform-origin: center; }
+.card .more:hover circle { animation: dot-jump 320ms ease-out; }
+.card .more:hover circle:nth-child(3) { animation-delay: 0ms; }
+.card .more:hover circle:nth-child(1) { animation-delay: 120ms; }
+.card .more:hover circle:nth-child(2) { animation-delay: 240ms; }
+@keyframes dot-jump { 0% { transform: translateY(0); } 30% { transform: translateY(-3px); } 60% { transform: translateY(0); } 100% { transform: translateY(0); } }
+.card .more:hover svg { animation: none; }
+/* Volume : les ondes s'allument l'une après l'autre (ripple de l'app) */
+.tray .qbtn:nth-child(4) .wave { transition: opacity 160ms var(--ease-out); }
+.tray .qbtn:nth-child(4):hover .w1 { animation: wave-ripple 900ms ease-in-out infinite; }
+.tray .qbtn:nth-child(4):hover .w2 { animation: wave-ripple 900ms ease-in-out 150ms infinite; }
+@keyframes wave-ripple { 0% { opacity: .25; transform: translateX(-1px); } 50% { opacity: 1; transform: translateX(1px); } 100% { opacity: .25; transform: translateX(-1px); } }
+
+/* Lecteur complet : mêmes mouvements de survol que IconMotion (disque, note, engrenage) et ondes du volume */
+.lecteur .tools .btn-ic[data-panel="history"] svg { transition: transform 320ms var(--ease-out), opacity 80ms; }
+.tools .btn-ic[data-panel="history"]:hover svg { transform: none; }
+.tools .btn-ic[data-panel="history"] .ico-note { transform-box: view-box; transform-origin: 12px 16px; }
+.tools .btn-ic[data-panel="history"]:hover .ico-note { animation: note-lift 520ms ease-in-out; }
+.lecteur .tools .btn-ic[data-panel="settings"] svg { transition: transform 700ms cubic-bezier(0.16,1,0.4,1), opacity 80ms; }
+.tools .btn-ic[data-panel="settings"]:hover svg { transform: rotate(180deg); }
+.tools .btn-ic[data-panel="volume"] .wave { transition: opacity 160ms var(--ease-out); }
+.tools .btn-ic[data-panel="volume"]:hover .w1 { animation: wave-ripple 900ms ease-in-out infinite; }
+.tools .btn-ic[data-panel="volume"]:hover .w2 { animation: wave-ripple 900ms ease-in-out 150ms infinite; }
+.wave { transform-box: view-box; }
+
+/* Volume compact : le pop-up part du centre du bouton, la barre arrive du haut, centrée */
+/* Volume compact : la barre s'étire depuis son milieu (pas depuis la gauche ni le haut) */
+.col:has(.card[data-v="C"]) .panel[data-panel-id="volume"] .rail { transform: scaleY(0); opacity: 0; transform-origin: 50% 50%; transition: transform 320ms cubic-bezier(0.16,1,0.4,1), opacity 240ms cubic-bezier(0,0,.2,1); }
+.col:has(.card[data-v="C"]) .panel[data-panel-id="volume"].revealed .rail { transform: none; opacity: 1; transition-delay: 120ms; }
+
+/* Mode compact : une seule ligne ; si le texte est trop long, il défile (comme le lecteur complet) */
+.card .title, .card .sub { white-space: nowrap; overflow: hidden; text-overflow: clip; }
+.card .mq { display: inline-block; white-space: nowrap; }
+.card .mq.scroll { animation-duration: var(--mq-dur, 6s); animation-timing-function: linear; animation-iteration-count: infinite; display: inline-flex; }
+@keyframes mq-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-1 * var(--mq-loop))); } }
+
+/* Pop-ups : boutons en verre flouté, comme les contrôles, et texte au même niveau d'opacité */
+.plate, .seg-row button { backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); }
+.srow { opacity: 1; }
+.srow:hover { opacity: 1; }
+
+
+
+/* Mode compact : boutons à plat comme le site (le verre reste sur le conteneur) */
+.qbtn, .card .more { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(250,250,250,.12); transition: background 160ms var(--ease-out), color 80ms var(--ease-out), transform 80ms var(--ease-out); }
+.qbtn svg, .card .more svg { opacity: 1; }
+.qbtn.on, .card .more.on { background: rgba(250,250,250,.28); }
+
+/* Full → Compact : la pochette se glisse à sa place, le texte arrive de gauche derrière la pochette, le bouton trois petits points arrive de droite */
+::view-transition-group(shell) { animation-duration: 320ms; animation-timing-function: cubic-bezier(0.16,1,0.4,1); }
+::view-transition-group(cover) { animation-duration: 320ms; animation-timing-function: cubic-bezier(0.16,1,0.4,1); z-index: 2; }
+::view-transition-group(title) { animation-duration: 320ms; animation-timing-function: cubic-bezier(0.16,1,0.4,1); z-index: 1; }
+::view-transition-group(more) { animation-duration: 240ms; animation-timing-function: cubic-bezier(0.16,1,0.4,1); }
+::view-transition-new(title) { animation: title-in 320ms cubic-bezier(0.16,1,0.4,1) 120ms both; }
+::view-transition-old(title) { animation: title-out 240ms cubic-bezier(0.4,0,1,1) both; }
+::view-transition-new(more) { animation: more-in 240ms cubic-bezier(0.16,1,0.4,1) 200ms both; }
+::view-transition-old(more) { animation: more-out 160ms cubic-bezier(0.4,0,1,1) both; }
+@keyframes title-in { from { transform: translateX(-56px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes title-out { to { transform: translateX(-24px); opacity: 0; } }
+@keyframes more-in { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes more-out { to { transform: translateX(24px); opacity: 0; } }
+
+/* Lecteur complet et carte compacte : 24 px. Pochette : 12 px (24 − 12). Contrôles : 8 px. */
+
+/* Pochette : ses bords sont arrondis elle-même (24 px en full, 12 px en compact), pour que la transition arrondisse la pochette au lieu de la faire passer par des coins carrés */
+.art { border-radius: 16px; }
+.card .thumb img { border-radius: 12px; }
+
+
+/* Pop-up volume : même arrondi que les boutons du menu (8 px), en full comme en compact */
+.panel[data-panel-id="volume"] { border-radius: 8px; }
+
+/* Barre de volume (full et compact) : s'étire depuis son milieu, jamais depuis la gauche */
+.panel[data-panel-id="volume"] .rail { transform: scaleY(0) !important; opacity: 0; transform-origin: 50% 50%; transition: transform 320ms cubic-bezier(0.16,1,0.4,1), opacity 240ms cubic-bezier(0,0,.2,1); }
+.panel[data-panel-id="volume"].revealed .rail { transform: scaleY(1) !important; opacity: 1; transition-delay: 120ms; }
+
+/* Mode full : boutons et pop-ups à 12 px (conteneur 24 − marge 12) */
+.lecteur .tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn { border-radius: 12px; }
+.lecteur .panel { border-radius: 12px; }
+.lecteur .panel[data-panel-id="volume"] { border-radius: 12px; }
+
+/* Mode full : état actif avec la même matière que les pop-ups (verre sombre, flou 32 px) */
+.lecteur .tools .btn-ic.on, .lecteur .tools .btn-ic.on { background: rgba(10,10,10,.32); backdrop-filter: blur(32px) saturate(1); -webkit-backdrop-filter: blur(32px) saturate(1); }
+.lecteur .seg-row button.on { background: rgba(10,10,10,.32); backdrop-filter: blur(32px) saturate(1); -webkit-backdrop-filter: blur(32px) saturate(1); }
+
+/* Mode full : état au repos = même matière que l'état actif, mais plus clair pour le distinguer */
+.lecteur .tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn { background: rgba(250,250,250,.16); backdrop-filter: blur(32px) saturate(1); -webkit-backdrop-filter: blur(32px) saturate(1); }
+.lecteur .tools .btn-ic.on, .lecteur .seg-row button.on { background: rgba(10,10,10,.32); }
+
+/* Mode full : l'état actif reste affiché au survol (le survol ne doit pas l'effacer) */
+
+/* Mode full : au survol, le bouton s'assombrit (entre le repos et l'état actif) */
+
+/* Mode full : l'icône reste pleine au survol, au clic et quand le bouton est actif */
+.lecteur .tools .btn-ic:hover svg, .lecteur .tools .btn-ic:active svg, .lecteur .tools .btn-ic.on svg, .lecteur .play:active svg { opacity: 1 !important; }
+
+/* Mode compact : mêmes états que le full (repos blanc 16 %, actif et survol noir 32 %, verre flouté 36 px) */
+.qbtn, .card .more { background: rgba(250,250,250,.16); backdrop-filter: blur(32px) saturate(1); -webkit-backdrop-filter: blur(32px) saturate(1); transition: background 160ms var(--ease-out); }
+.qbtn svg, .card .more svg { opacity: .72; }
+.qbtn:hover svg, .qbtn.on svg, .card .more:hover svg, .card .more.on svg, .qbtn:active svg, .card .more:active svg { opacity: 1; }
+
+
+/* Une seule matière pour tout : verre sombre (noir 32 %, flou 32 px). Les boutons au repos et les pop-ups ont exactement ce verre ; l'actif et le survol ajoutent seulement une couche blanche 12 %. */
+:root { --glass: rgba(10,10,10,.32); --glass-on: linear-gradient(rgba(250,250,250,.12), rgba(250,250,250,.12)), rgba(10,10,10,.32); --glass-blur: 32px; }
+.lecteur .tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn, .qbtn, .card .more { background: var(--glass); }
+.lecteur .tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn, .qbtn, .card .more, .panel { backdrop-filter: blur(var(--glass-blur)) saturate(1); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1); }
+.panel { background: var(--glass); }
+
+/* Essai 2 : pop-up compact posé sur la scène, avec la même couche sombre que la carte (noir 32 % superposé) */
+.col:has(.card[data-v="C"]) .panel { background: linear-gradient(rgba(10,10,10,.32), rgba(10,10,10,.32)), rgba(10,10,10,.32); backdrop-filter: blur(32px) saturate(1); -webkit-backdrop-filter: blur(32px) saturate(1); }
+
+/* Boutons (full et compact) : teinte blanche sur le verre, légère sur une carte sombre. Les pop-ups gardent le verre sombre. */
+
+
+
+
+/* Boutons glass : pas de teinte fixe. Le flou et la saturation prennent la couleur du fond ; l'état actif ajoute seulement une très légère couche claire. */
+
+
+
+/* Survol cohérent : même principe que le repos (couleur du fond), avec une couche claire un peu plus marquée. L'actif reste plus marqué que le survol. */
+
+
+/* Ligatures du logo : coins en courbe continue (squircle) au lieu d'un simple arrondi, boutons et pop-ups */
+.tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn, .qbtn, .card .more, .panel, .seg-row button, .plate { corner-shape: squircle; }
+
+/* Ligature bouton ↔ pop-up (compact) : pont de même verre et deux raccords concaves */
+
+/* Boutons du full : mêmes états que les pop-ups (verre sombre 32 %, flou 32 px) ; l'actif ajoute la couche claire 12 % */
+.lecteur .tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn { background: rgba(10,10,10,.32); backdrop-filter: blur(32px) saturate(1); -webkit-backdrop-filter: blur(32px) saturate(1); }
+.lecteur .tools .btn-ic.on, 
+/* Boutons du full = pop-ups : même verre (noir 32 %, flou 32 px, saturation 1,04), écrasant les anciennes règles */
+.lecteur .tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn { background: rgba(10,10,10,.32) !important; backdrop-filter: blur(32px) saturate(1) !important; -webkit-backdrop-filter: blur(32px) saturate(1) !important; }
+.lecteur .tools .btn-ic.on, 
+
+
+/* Lecteur au repos : le bouton (fond, flou, icône, texte) disparaît sur une seule courbe. Le flou ne change pas, seule l'opacité du bouton passe à 0 : le flou ne peut donc pas rester seul. */
+.lecteur:not(.show) .glass { backdrop-filter: blur(var(--blur)) !important; -webkit-backdrop-filter: blur(var(--blur)) !important; }
+.lecteur:not(.show) .tools .btn-ic, .lecteur:not(.show) .play, .lecteur:not(.show) .logo, .lecteur:not(.show) .btn, .lecteur:not(.show) .band { opacity: 0 !important; transition: opacity 320ms var(--exit), background-color 320ms var(--exit) !important; }
+.lecteur.show .tools .btn-ic, .lecteur.show .play, .lecteur.show .logo, .lecteur.show .btn, .lecteur.show .band { opacity: 1 !important; transition: opacity 240ms var(--enter), background-color 240ms var(--enter) !important; }
+
+/* ===== PROTÉGÉ — NE PAS SUPPRIMER NI DÉPLACER ===== */
+/* Bandeau flouté du bas : flou seul, aucune teinte (ni blanc ni noir). Sans cette règle, la classe .glass ajoute un voile blanc à 12 %. */
+.band, .lecteur .band, .lecteur.show .band, .lecteur .band.glass, .lecteur.show .band.glass { background: none !important; background-color: transparent !important; }
+/* ===== FIN PROTÉGÉ ===== */
+
+/* Pop-ups flottants : même rayon que le lecteur (24 px). Chaîne : pop-up 24, sélecteur 12, boutons du sélecteur 8, icônes réseaux 12. */
+.panel { border-radius: 24px !important; }
+#playerA .panel[data-panel-id="volume"], #playerF .panel[data-panel-id="volume"], .lecteur .panel[data-panel-id="volume"] { border-radius: 24px !important; }
+.lecteur .seg-row { border-radius: 12px !important; }
+.lecteur .seg-row button { border-radius: 8px !important; }
+.lecteur .socials .plate { border-radius: 12px !important; }
+
+/* Texte qui défile (compact) : pas de fondu à gauche au repos ; il apparaît pendant que le texte se déplace, en même temps que le défilement. */
+
+/* Lecteur complet : bord du lecteur 16 px, boutons 8 px */
+.lecteur { border-radius: 16px; }
+.lecteur .art { border-radius: 16px; }
+.lecteur .tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn { border-radius: 8px !important; }
+
+/* Pop-ups : mêmes arrondis que les boutons (8 px), tous modes */
+.panel, .lecteur .panel, .lecteur .panel[data-panel-id="volume"] { border-radius: 8px !important; }
+
+/* Test : pop-ups et boutons du full à 16 px */
+.panel, .lecteur .panel, .lecteur .panel[data-panel-id="volume"] { border-radius: 16px !important; }
+.lecteur .tools .btn-ic, .lecteur .play, .lecteur .logo, .lecteur .btn { border-radius: 16px !important; }
+
+/* Fond de scène derrière les maquettes : permet de voir le flou du lecteur compact */
+body { background: radial-gradient(circle at 20% 30%, #7a3b8f 0, transparent 45%), radial-gradient(circle at 75% 70%, #2f6f8f 0, transparent 50%), #171717 !important; }
+
+/* Lecteur F (SimCity) : habillage du site 8beats.vercel.app. Conteneur en verre gris, boutons sans flou. */
+#playerF .band { display: none !important; }
+#playerF .meta { left: 12px !important; right: 12px !important; bottom: 12px !important; padding: 12px; border-radius: 12px; background: rgba(63,63,63,.48) !important; backdrop-filter: blur(24px) saturate(1.6) brightness(.56) !important; -webkit-backdrop-filter: blur(24px) saturate(1.6) brightness(.56) !important; }
+#playerF .play, #playerF .tools .btn-ic { background: rgba(255,255,255,.12) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-radius: 8px !important; }
+#playerF .title, #playerF .game { white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; }
+#playerF .title { font-size: 14px !important; }
+#playerF .game { font-size: 12px !important; }
+#playerF { --text-block: 30px; }
+#playerF .tools .btn-ic { background: rgba(10,10,10,.32) !important; backdrop-filter: blur(32px) saturate(1.04) !important; -webkit-backdrop-filter: blur(32px) saturate(1.04) !important; }
+/* Lecteur F : entrée et sortie uniformes. Chaque élément entre depuis son bord et sort vers ce même bord. Entrée 240 ms, sortie 320 ms, même courbe. */
+#playerF .meta, #playerF .tools .btn-ic { transition: opacity 320ms var(--exit), transform 320ms var(--exit) !important; }
+#playerF.show .meta, #playerF.show .tools .btn-ic { transition: opacity 240ms var(--enter), transform 240ms var(--enter) !important; opacity: 1 !important; transform: none !important; }
+#playerF:not(.show) .meta { opacity: 0 !important; transform: translateY(16px) !important; }
+#playerF:not(.show) .tools .btn-ic { opacity: 0 !important; transform: translateY(-16px) !important; }
+.card .title { font-size: 14px !important; }
+.card .sub { font-size: 12px !important; }
+.card .text { line-height: 1; }
+.card .more { width: 30px !important; height: 30px !important; border-radius: 8px !important; }
+.card .text { height: auto !important; }
+.card .row { padding: 12px !important; }
+.card .thumb { width: 56px !important; height: 56px !important; border-radius: 12px !important; }
+.card .thumb { border-radius: 16px !important; }
+.card .thumb img { border-radius: 16px; }
+.card .thumb { border-radius: 4px !important; }
+.card .thumb img { border-radius: 4px; }
+.card .thumb { border-radius: 8px !important; }
+.card .thumb img { border-radius: 8px; }
+.card .row { padding: 8px !important; }
+.card .thumb { width: 64px !important; height: 64px !important; }
+.card .thumb { border-radius: 8px !important; }
+.card .thumb img { border-radius: 8px; }
+.card .row { gap: 8px !important; }
+.card .tray .qbtn { width: 30px !important; height: 30px !important; border-radius: 8px !important; }
+.card .tray .qbtn svg { width: 16px; height: 16px; }
+
+/* Lecteur F : même verre que le lecteur A (pas de teinte du site), rayon 4 px = 16 (cover) - 12 (marge). Desktop uniquement. */
+#playerF .meta { background: rgba(10,10,10,.32) !important; backdrop-filter: blur(32px) saturate(1.04) !important; -webkit-backdrop-filter: blur(32px) saturate(1.04) !important; border-radius: 16px !important; }
+
+/* Durées uniques : entrée 240 ms, sortie 320 ms, une courbe expo (--enter / --exit), sans rebond ni échelle */
+.panel.open { transition: transform 240ms var(--enter), opacity 240ms var(--enter); }
+.panel.revealed .stg { transition: transform 240ms var(--enter), opacity 240ms var(--enter); }
+.col .menu.open { transition: transform 240ms var(--enter), opacity 240ms var(--enter); }
+.card.tray-open .tray { transition: width 240ms var(--enter); }
+.card.tray-open .cscrim { transition: background 240ms var(--enter); }
+.wrap.menu-open .scrim { transition: background 240ms var(--enter), backdrop-filter 240ms var(--enter), -webkit-backdrop-filter 240ms var(--enter); }
+.card.tray-open .thumb, .card.tray-open .text { transition: filter 240ms var(--enter), opacity 240ms var(--enter); }
+/* Lecteur F : contrôles à 12 px (boutons du haut et bouton lecture), conteneur du bas à 16 px */
+#playerF .tools .btn-ic, #playerF .play { border-radius: 12px !important; }
+/* Lecteur F : marge extérieure 8 px et padding du conteneur 8 px (multiples de 4). Rayon du conteneur inchangé (16 px). */
+#playerF .tools { top: 8px !important; right: 8px !important; }
+#playerF .meta { left: 8px !important; right: 8px !important; bottom: 8px !important; padding: 8px !important; }
+/* Lecteur F : espace entre le bouton lecture et le texte = 8 px (comme les autres marges du lecteur) */
+#playerF .meta { gap: 8px !important; }
+/* Lecteur F : marge entre le conteneur du bas et le bord du lecteur = 8 px (côtés et bas) */
+#playerF .meta { left: 8px !important; right: 8px !important; bottom: 8px !important; }
+/* Lecteur F : bouton lecture 32 px (même taille que les boutons du haut), 8 px de marge tout autour : le conteneur s'adapte (48 px) */
+#playerF { --text-block: 32px; }
+/* Test : marge autour du bouton lecture à 4 px (le padding du conteneur passe à 4 px, le texte suit) */
+#playerF .meta { padding: 4px !important; }
+/* Lecteur F : bouton lecture à 12 px d'arrondi = conteneur 16 px − marge 4 px, pour une marge d'angle uniforme (boutons du haut inchangés, 12 px) */
+#playerF .play { border-radius: 12px !important; }
+/* Lecteur F : bouton lecture à 40 px (1,25 × les boutons du haut), conteneur 48 px avec padding 4 px */
+#playerF { --text-block: 40px; }
+/* Lecteur F : bouton lecture 38 px. Bloc texte = titre 14 + espace 4 + sous-titre 12 = 30 px, centré sur le bouton : 8 px en haut et en bas dans un conteneur de 46 px (38 + 4 + 4). */
+#playerF { --text-block: 38px; }
+#playerF .text { display: flex; flex-direction: column; justify-content: center; }
+/* Maquette réduite à deux modes : Full = lecteur F (SimCity 4), Compact = carte C (SimCity 4). Le lecteur A sort de la maquette. */
+.col:has(#playerA) { display: none !important; }
+/* La colonne C est hors du conteneur .wrap : on la masque en mode Full avec le sélecteur frère */
+.wrap.mode-full ~ .col:has(.card[data-v="C"]) { display: none !important; }
+/* En mode Compact, le conteneur Full (vide) disparaît : il ne laisse plus de bandeau */
+.wrap.mode-compact { display: none; }
+/* Affichage final : lecteur F et carte C côte à côte, plus les références. Le lecteur A est retiré. */
+.wrap, .wrap.mode-compact, .wrap.mode-full { display: flex !important; }
+.wrap .col:has(.card[data-v="C"]), .wrap .col:has(.lecteur), .wrap .col:has(img[alt^="Référence"]) { display: flex !important; }
+.col:has(#playerA) { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="col"><p class="label">A. Lecteur actuel</p>
+<div class="player lecteur" id="playerA">
+  <img class="art" src="assets/bust-a-groove-2.jpg" alt="Pochette Bust a Groove 2">
+  <div class="band chrome-el glass" style="--blur:24px"></div>
+  <div class="tools chrome-el">
+    <span class="btn-ic glass" style="--blur:32px" data-act="tool" data-panel="avail"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /> <path d="M6 12c0-1.7.7-3.2 1.8-4.2" /> <circle cx="12" cy="12" r="2" /> <path d="M18 12c0 1.7-.7 3.2-1.8 4.2" /></svg></span>
+    <span class="btn-ic glass" style="--blur:32px" data-act="tool" data-panel="history"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g class="ico-note"><path d="M21 15V6" /><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" /></g> <path d="M12 12H3" /> <path d="M16 6H3" /> <path d="M12 18H3" /></svg></span>
+    <span class="btn-ic glass" style="--blur:32px" data-act="tool" data-panel="settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /> <circle cx="12" cy="12" r="3" /></svg></span>
+    <span class="btn-ic glass" style="--blur:32px" data-act="tool" data-panel="volume"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /> <path class="wave w1" d="M16 9a5 5 0 0 1 0 6" /> <path class="wave w2" d="M19.364 18.364a9 9 0 0 0 0-12.728" /></svg></span>
+  </div>
+  
+<div class="veil"></div>
+<div class="panel" data-panel-id="avail" style="--ti:120px;--ox:16px"><p class="ph" style="margin-bottom:12px">Available on</p><div class="plates"><span class="plate"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg></span><span class="plate"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.75,0 C16.89,0.01 17.42,0.01 17.72,0.08 C18.03,0.15 18.63,0.35 18.91,0.5 C19.19,0.64 19.49,0.88 19.7,1.1 C19.91,1.32 20.24,1.82 20.38,2.08 C20.53,2.33 20.63,2.61 20.72,2.91 C20.8,3.21 20.93,3.33 20.97,4.2 C21,5.07 20.95,9.06 20.95,9.06 C20.95,9.06 18.31,9.59 17.54,9.79 C16.76,9.99 16.01,10.27 15.48,10.47 C14.95,10.67 14.07,11.11 13.82,11.2 C13.56,11.29 13.84,11.75 13.69,11.14 C13.54,10.53 12.77,7.62 12.76,6.9 C12.75,6.18 13.2,6.4 13.61,6.07 C14.02,5.74 15.25,4.87 15.65,4.55 C16.04,4.24 16.25,4.04 16.42,3.84 C16.58,3.65 16.75,3.35 16.81,3.16 C16.87,2.97 16.84,2.66 16.81,2.49 C16.78,2.33 16.66,2.09 16.58,1.97 C16.51,1.85 16.44,1.73 16.27,1.64 C16.1,1.55 15.76,1.36 15.38,1.35 C15,1.34 14.2,1.42 13.59,1.56 C12.98,1.69 11.05,2.31 11.05,2.31 C11.05,2.31 11.76,1.73 12.14,1.5 C12.51,1.26 13.25,0.85 13.69,0.66 C14.14,0.48 14.86,0.26 15.29,0.17 C15.72,0.07 16.52,0.04 16.73,0.02 C16.93,-0 16.61,-0.01 16.75,0 Z M9.81,4.82 C9.95,4.82 10.54,4.79 10.76,4.84 C10.99,4.89 11.29,5.04 11.39,5.15 C11.48,5.27 11.47,5.49 11.45,5.65 C11.43,5.81 11.73,5.46 11.24,6.3 C10.75,7.13 8.64,10.59 8,11.57 C7.36,12.56 7.11,12.82 6.73,13.26 C6.36,13.7 5.36,14.67 5.36,14.67 C5.36,14.67 6.13,16.76 6.34,17.25 C6.55,17.73 6.71,17.9 6.86,18.1 C7,18.29 7.38,18.62 7.38,18.62 C7.38,18.62 8.37,18.1 9.06,17.62 C9.75,17.14 12.24,15.23 12.24,15.23 C12.24,15.23 12.58,17.85 12.07,18.74 C11.56,19.63 9.28,21.04 8.64,21.51 C8.01,21.97 7.92,21.91 7.61,22.01 C7.29,22.1 6.77,22.2 6.44,22.21 C6.11,22.22 5.61,22.2 5.3,22.09 C4.98,21.98 4.48,21.67 4.22,21.42 C3.96,21.18 3.62,20.7 3.45,20.36 C3.28,20.03 3.09,19.56 3.03,19.05 C2.97,18.55 2.99,17.44 3.03,16.81 C3.08,16.18 3.24,15.24 3.37,14.63 C3.5,14.02 3.73,13.15 3.95,12.53 C4.16,11.91 4.59,10.88 4.88,10.26 C5.18,9.65 5.68,8.76 6.05,8.17 C6.42,7.57 7.15,6.5 7.5,6.09 C7.85,5.67 8.22,5.41 8.54,5.24 C8.86,5.06 9.61,4.9 9.79,4.84 C9.97,4.78 9.67,4.82 9.81,4.82 Z M11.49,8.42 C11.49,8.42 11.67,8.69 11.74,8.89 C11.81,9.1 11.92,9.44 11.99,9.87 C12.06,10.3 12.22,11.93 12.22,11.93 L8.6,14.11 C8.6,14.11 8.98,12.93 9.18,12.45 C9.38,11.96 9.69,11.27 10.02,10.7 C10.34,10.13 11.26,8.76 11.47,8.44 C11.68,8.11 11.49,8.42 11.49,8.42 Z M20.86,9.91 C20.86,9.91 20.95,8.82 20.97,9.97 C20.98,11.13 20.97,18.06 20.97,18.06 C20.97,18.06 20.07,17.58 19.66,17.45 C19.25,17.33 18.59,17.23 18.08,17.18 C17.56,17.14 16.55,17.11 16.02,17.14 C15.49,17.18 14.34,17.41 14.34,17.41 C14.34,17.41 14.12,14.74 14.09,14.23 C14.05,13.72 14.07,13.89 14.09,13.82 C14.1,13.74 13.82,13.98 14.19,13.71 C14.56,13.45 16.02,12.4 16.71,11.97 C17.39,11.53 18.45,10.93 19.03,10.64 C19.62,10.35 20.58,10.04 20.84,9.93 C21.1,9.83 20.86,9.91 20.86,9.91 Z M15.5,17.93 C15.63,17.93 16.09,17.9 16.35,17.95 C16.62,18.01 17.16,18.19 17.39,18.31 C17.62,18.42 17.83,18.61 17.97,18.78 C18.12,18.95 18.32,19.26 18.39,19.51 C18.46,19.77 18.48,20.32 18.47,20.59 C18.46,20.86 18.38,21.18 18.31,21.4 C18.24,21.63 18.09,21.96 17.97,22.17 C17.85,22.38 17.61,22.72 17.45,22.9 C17.3,23.07 17.07,23.29 16.87,23.42 C16.68,23.55 16.28,23.75 16.08,23.83 C15.88,23.92 15.74,23.98 15.46,24 C15.18,24.02 14.09,23.96 14.09,23.96 C14.09,23.96 14.26,22.05 14.3,21.24 C14.33,20.42 14.34,18.22 14.34,18.22 C14.34,18.22 15.32,17.99 15.48,17.95 C15.65,17.91 15.38,17.93 15.5,17.93 Z M11.95,19.89 C11.95,19.89 11.95,20.94 11.91,21.22 C11.86,21.49 11.72,21.71 11.64,21.84 C11.55,21.97 11.38,22.09 11.28,22.15 C11.19,22.21 11.03,22.24 10.95,22.25 C10.87,22.27 10.8,22.28 10.7,22.23 C10.6,22.19 10.26,21.96 10.26,21.96 C10.26,21.96 11.69,20.2 11.93,19.91 C12.17,19.61 11.95,19.89 11.95,19.89 Z M10.12,22.25 C10.12,22.25 10.96,22.88 11.22,23.13 C11.49,23.37 11.99,24 11.99,24 L9.12,24 C9.12,24 9.96,22.52 10.1,22.28 C10.24,22.03 10.12,22.25 10.12,22.25 Z"/></svg></span><span class="plate"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5H0z"/></svg></span><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /> <path d="M12 5v14" /></svg></span></div></div>
+<div class="panel wide" data-panel-id="history" style="--ti:0px;--ox:92px"><p class="ph">Last played tracks</p><div class="hlist"><div class="hrow stg"><span class="age">2 min</span><span class="ht"><span class="t">Afternoon Break</span><span class="g">Shin Megami Tensei: Persona 3</span></span></div><div class="hrow stg"><span class="age">6 min</span><span class="ht"><span class="t">The Radio Stars</span><span class="g">I Am an Air Traffic Controller 4</span></span></div><div class="hrow stg"><span class="age">10 min</span><span class="ht"><span class="t">Coastline</span><span class="g">Pop'n Music 4</span></span></div></div></div>
+<div class="panel" data-panel-id="settings" style="--ti:40px;--ox:16px"><p class="ph">Settings</p><div class="seg stg" data-seg><p class="seg-label">Player mode</p><div class="seg-row"><button type="button" data-mode="full" class="on">Full</button><button type="button" data-mode="compact">Compact</button></div></div>
+  <div class="sets" style="width:152px">
+    <button class="srow stg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg><span>Support us</span></button>
+    <button class="srow stg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10" /> <path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></svg><span>Quit 8Beats</span></button>
+    <div class="divider stg"></div>
+    <div class="plates socials"><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></span><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.7a8.18 8.18 0 0 0 4.79 1.52V6.76a4.85 4.85 0 0 1-1.02-.07z"/></svg></span><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg></span><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></span></div>
+  </div></div>
+<div class="panel vol" data-panel-id="volume" style="--ti:0px;--ox:16px"><div class="rail stg"><div class="fill"></div></div></div>
+<div class="meta chrome-el">
+    <div class="play glass" style="--blur:32px" data-act="play">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="#fafafa"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>
+    </div>
+    <div class="text">
+      <div class="title">Shin Kono – The Heat Is On</div>
+      <div class="game">Bust a Groove 2</div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="col"><p class="label">F. Lecteur SimCity 4</p><div class="player lecteur" id="playerF">
+  <img class="art" src="assets/simcity4.jpg" alt="Pochette SimCity 4">
+  <div class="band chrome-el glass" style="--blur:24px"></div>
+  <div class="tools chrome-el">
+    <span class="btn-ic glass" style="--blur:32px" data-act="tool" data-panel="avail"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /> <path d="M6 12c0-1.7.7-3.2 1.8-4.2" /> <circle cx="12" cy="12" r="2" /> <path d="M18 12c0 1.7-.7 3.2-1.8 4.2" /></svg></span>
+    <span class="btn-ic glass" style="--blur:32px" data-act="tool" data-panel="history"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g class="ico-note"><path d="M21 15V6" /><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" /></g> <path d="M12 12H3" /> <path d="M16 6H3" /> <path d="M12 18H3" /></svg></span>
+    <span class="btn-ic glass" style="--blur:32px" data-act="tool" data-panel="settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /> <circle cx="12" cy="12" r="3" /></svg></span>
+    <span class="btn-ic glass" style="--blur:32px" data-act="tool" data-panel="volume"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /> <path class="wave w1" d="M16 9a5 5 0 0 1 0 6" /> <path class="wave w2" d="M19.364 18.364a9 9 0 0 0 0-12.728" /></svg></span>
+  </div>
+  
+<div class="veil"></div>
+<div class="panel" data-panel-id="avail" style="--ti:120px;--ox:16px"><p class="ph" style="margin-bottom:12px">Available on</p><div class="plates"><span class="plate"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 1 1-.453-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 1 1-.543-1.793c3.532-1.072 9.404-.865 13.115 1.338a.937.937 0 0 1-.955 1.612z"/></svg></span><span class="plate"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.75,0 C16.89,0.01 17.42,0.01 17.72,0.08 C18.03,0.15 18.63,0.35 18.91,0.5 C19.19,0.64 19.49,0.88 19.7,1.1 C19.91,1.32 20.24,1.82 20.38,2.08 C20.53,2.33 20.63,2.61 20.72,2.91 C20.8,3.21 20.93,3.33 20.97,4.2 C21,5.07 20.95,9.06 20.95,9.06 C20.95,9.06 18.31,9.59 17.54,9.79 C16.76,9.99 16.01,10.27 15.48,10.47 C14.95,10.67 14.07,11.11 13.82,11.2 C13.56,11.29 13.84,11.75 13.69,11.14 C13.54,10.53 12.77,7.62 12.76,6.9 C12.75,6.18 13.2,6.4 13.61,6.07 C14.02,5.74 15.25,4.87 15.65,4.55 C16.04,4.24 16.25,4.04 16.42,3.84 C16.58,3.65 16.75,3.35 16.81,3.16 C16.87,2.97 16.84,2.66 16.81,2.49 C16.78,2.33 16.66,2.09 16.58,1.97 C16.51,1.85 16.44,1.73 16.27,1.64 C16.1,1.55 15.76,1.36 15.38,1.35 C15,1.34 14.2,1.42 13.59,1.56 C12.98,1.69 11.05,2.31 11.05,2.31 C11.05,2.31 11.76,1.73 12.14,1.5 C12.51,1.26 13.25,0.85 13.69,0.66 C14.14,0.48 14.86,0.26 15.29,0.17 C15.72,0.07 16.52,0.04 16.73,0.02 C16.93,-0 16.61,-0.01 16.75,0 Z M9.81,4.82 C9.95,4.82 10.54,4.79 10.76,4.84 C10.99,4.89 11.29,5.04 11.39,5.15 C11.48,5.27 11.47,5.49 11.45,5.65 C11.43,5.81 11.73,5.46 11.24,6.3 C10.75,7.13 8.64,10.59 8,11.57 C7.36,12.56 7.11,12.82 6.73,13.26 C6.36,13.7 5.36,14.67 5.36,14.67 C5.36,14.67 6.13,16.76 6.34,17.25 C6.55,17.73 6.71,17.9 6.86,18.1 C7,18.29 7.38,18.62 7.38,18.62 C7.38,18.62 8.37,18.1 9.06,17.62 C9.75,17.14 12.24,15.23 12.24,15.23 C12.24,15.23 12.58,17.85 12.07,18.74 C11.56,19.63 9.28,21.04 8.64,21.51 C8.01,21.97 7.92,21.91 7.61,22.01 C7.29,22.1 6.77,22.2 6.44,22.21 C6.11,22.22 5.61,22.2 5.3,22.09 C4.98,21.98 4.48,21.67 4.22,21.42 C3.96,21.18 3.62,20.7 3.45,20.36 C3.28,20.03 3.09,19.56 3.03,19.05 C2.97,18.55 2.99,17.44 3.03,16.81 C3.08,16.18 3.24,15.24 3.37,14.63 C3.5,14.02 3.73,13.15 3.95,12.53 C4.16,11.91 4.59,10.88 4.88,10.26 C5.18,9.65 5.68,8.76 6.05,8.17 C6.42,7.57 7.15,6.5 7.5,6.09 C7.85,5.67 8.22,5.41 8.54,5.24 C8.86,5.06 9.61,4.9 9.79,4.84 C9.97,4.78 9.67,4.82 9.81,4.82 Z M11.49,8.42 C11.49,8.42 11.67,8.69 11.74,8.89 C11.81,9.1 11.92,9.44 11.99,9.87 C12.06,10.3 12.22,11.93 12.22,11.93 L8.6,14.11 C8.6,14.11 8.98,12.93 9.18,12.45 C9.38,11.96 9.69,11.27 10.02,10.7 C10.34,10.13 11.26,8.76 11.47,8.44 C11.68,8.11 11.49,8.42 11.49,8.42 Z M20.86,9.91 C20.86,9.91 20.95,8.82 20.97,9.97 C20.98,11.13 20.97,18.06 20.97,18.06 C20.97,18.06 20.07,17.58 19.66,17.45 C19.25,17.33 18.59,17.23 18.08,17.18 C17.56,17.14 16.55,17.11 16.02,17.14 C15.49,17.18 14.34,17.41 14.34,17.41 C14.34,17.41 14.12,14.74 14.09,14.23 C14.05,13.72 14.07,13.89 14.09,13.82 C14.1,13.74 13.82,13.98 14.19,13.71 C14.56,13.45 16.02,12.4 16.71,11.97 C17.39,11.53 18.45,10.93 19.03,10.64 C19.62,10.35 20.58,10.04 20.84,9.93 C21.1,9.83 20.86,9.91 20.86,9.91 Z M15.5,17.93 C15.63,17.93 16.09,17.9 16.35,17.95 C16.62,18.01 17.16,18.19 17.39,18.31 C17.62,18.42 17.83,18.61 17.97,18.78 C18.12,18.95 18.32,19.26 18.39,19.51 C18.46,19.77 18.48,20.32 18.47,20.59 C18.46,20.86 18.38,21.18 18.31,21.4 C18.24,21.63 18.09,21.96 17.97,22.17 C17.85,22.38 17.61,22.72 17.45,22.9 C17.3,23.07 17.07,23.29 16.87,23.42 C16.68,23.55 16.28,23.75 16.08,23.83 C15.88,23.92 15.74,23.98 15.46,24 C15.18,24.02 14.09,23.96 14.09,23.96 C14.09,23.96 14.26,22.05 14.3,21.24 C14.33,20.42 14.34,18.22 14.34,18.22 C14.34,18.22 15.32,17.99 15.48,17.95 C15.65,17.91 15.38,17.93 15.5,17.93 Z M11.95,19.89 C11.95,19.89 11.95,20.94 11.91,21.22 C11.86,21.49 11.72,21.71 11.64,21.84 C11.55,21.97 11.38,22.09 11.28,22.15 C11.19,22.21 11.03,22.24 10.95,22.25 C10.87,22.27 10.8,22.28 10.7,22.23 C10.6,22.19 10.26,21.96 10.26,21.96 C10.26,21.96 11.69,20.2 11.93,19.91 C12.17,19.61 11.95,19.89 11.95,19.89 Z M10.12,22.25 C10.12,22.25 10.96,22.88 11.22,23.13 C11.49,23.37 11.99,24 11.99,24 L9.12,24 C9.12,24 9.96,22.52 10.1,22.28 C10.24,22.03 10.12,22.25 10.12,22.25 Z"/></svg></span><span class="plate"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5H0z"/></svg></span><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /> <path d="M12 5v14" /></svg></span></div></div>
+<div class="panel wide" data-panel-id="history" style="--ti:0px;--ox:92px"><p class="ph">Last played tracks</p><div class="hlist"><div class="hrow stg"><span class="age">2 min</span><span class="ht"><span class="t">Afternoon Break</span><span class="g">Shin Megami Tensei: Persona 3</span></span></div><div class="hrow stg"><span class="age">6 min</span><span class="ht"><span class="t">The Radio Stars</span><span class="g">I Am an Air Traffic Controller 4</span></span></div><div class="hrow stg"><span class="age">10 min</span><span class="ht"><span class="t">Coastline</span><span class="g">Pop'n Music 4</span></span></div></div></div>
+<div class="panel" data-panel-id="settings" style="--ti:40px;--ox:16px"><p class="ph">Settings</p><div class="seg stg" data-seg><p class="seg-label">Player mode</p><div class="seg-row"><button type="button" data-mode="full" class="on">Full</button><button type="button" data-mode="compact">Compact</button></div></div>
+  <div class="sets" style="width:152px">
+    <button class="srow stg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg><span>Support us</span></button>
+    <button class="srow stg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10" /> <path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></svg><span>Quit 8Beats</span></button>
+    <div class="divider stg"></div>
+    <div class="plates socials"><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></span><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.7a8.18 8.18 0 0 0 4.79 1.52V6.76a4.85 4.85 0 0 1-1.02-.07z"/></svg></span><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg></span><span class="plate"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></span></div>
+  </div></div>
+<div class="panel vol" data-panel-id="volume" style="--ti:0px;--ox:16px"><div class="rail stg"><div class="fill"></div></div></div>
+<div class="meta chrome-el">
+    <div class="play glass" style="--blur:32px" data-act="play">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="#fafafa"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>
+    </div>
+    <div class="text">
+      <div class="title">The Humble Brothers – Terrain</div>
+      <div class="game">SimCity 4</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="col"><p class="label">C. Carte, play/pause au survol de la pochette</p>
+<div class="card" data-v="C"><div class="cscrim"></div>
+  <div class="row">
+    <div class="thumb"><img src="assets/simcity4.jpg" alt="Pochette SimCity 4"><span class="ov"><svg width="24" height="24" viewBox="0 0 24 24" fill="#fafafa"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg></span></div>
+    <div class="text"><div class="title">The Humble Brothers – Terrain</div><div class="sub">SimCity 4</div></div>
+    <div class="tray"><span class="qbtn" data-panel="avail"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /> <path d="M6 12c0-1.7.7-3.2 1.8-4.2" /> <circle cx="12" cy="12" r="2" /> <path d="M18 12c0 1.7-.7 3.2-1.8 4.2" /></svg></span><span class="qbtn" data-panel="history"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g class="ico-note"><path d="M21 15V6" /><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" /></g> <path d="M12 12H3" /> <path d="M16 6H3" /> <path d="M12 18H3" /></svg></span><span class="qbtn" data-panel="settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /> <circle cx="12" cy="12" r="3" /></svg></span><span class="qbtn" data-panel="volume"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /> <path class="wave w1" d="M16 9a5 5 0 0 1 0 6" /> <path class="wave w2" d="M19.364 18.364a9 9 0 0 0 0-12.728" /></svg></span></div><span class="more" data-act="more"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fafafa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1" /> <circle cx="19" cy="12" r="1" /> <circle cx="5" cy="12" r="1" /></svg></span>
+  </div><div class="vpill"><div class="rail"><div class="fill"></div></div></div>
+</div></div>
+<div class="col"><p class="label">D. Référence moodboard</p>
+<img src="assets/moodboard-ref.png" alt="Référence moodboard" style="width:320px;border-radius:16px;display:block"></div>
+<div class="col"><p class="label">E. Référence moodboard 2</p>
+<img src="assets/moodboard-ref-2.png" alt="Référence moodboard 2" style="width:320px;border-radius:16px;display:block"></div>
+
+</div>
+
+<script>
+  const PLAY = '<path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>';
+  const PAUSE = '<rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/>';
+  let playing = true;
+  const setIcons = () => {
+    document.querySelectorAll('[data-act="play"] svg, .thumb .ov svg').forEach(s => { s.innerHTML = playing ? PAUSE : PLAY; });
+  };
+  const toggle = () => { playing = !playing; setIcons(); };
+  setIcons();
+
+  document.querySelectorAll('[data-act="play"]').forEach(el => el.addEventListener('click', toggle));
+  document.querySelectorAll('.card[data-v="C"] .thumb').forEach(el => el.addEventListener('click', toggle));
+  document.querySelectorAll('[data-act="logo"]').forEach(el => el.addEventListener('click', () => el.classList.toggle('on')));
+  const pA = document.getElementById('playerA');
+  const VOL = {"volume-x": "<path d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\" /> <line x1=\"22\" x2=\"16\" y1=\"9\" y2=\"15\" /> <line x1=\"16\" x2=\"22\" y1=\"9\" y2=\"15\" />", "volume-1": "<path d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\" /> <path class=\"wave w1\" d=\"M16 9a5 5 0 0 1 0 6\" />", "volume-2": "<path d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\" /> <path class=\"wave w1\" d=\"M16 9a5 5 0 0 1 0 6\" /> <path class=\"wave w2\" d=\"M19.364 18.364a9 9 0 0 0 0-12.728\" />"};
+  let stagTimers = [];
+  // Gestionnaires des boutons d'un lecteur : chacun ouvre ses propres panneaux
+  const attachTools = (pA) => {
+  const closePanels = () => {
+    pA.querySelectorAll('.panel.open').forEach(p => { p.classList.remove('open', 'revealed'); });
+    pA.querySelectorAll('[data-act="tool"]').forEach(b => b.classList.remove('on'));
+    pA.classList.remove('has-panel');
+  };
+  pA.querySelectorAll('[data-act="tool"]').forEach(btn => btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const target = pA.querySelector(`.panel[data-panel-id="${btn.dataset.panel}"]`);
+    const willOpen = !target.classList.contains('open');
+    closePanels();
+    if (!willOpen) return;
+    target.classList.add('open'); btn.classList.add('on'); pA.classList.add('has-panel');
+    // Entrée en cascade : 60 ms entre chaque ligne, comme historyRowStagger
+    target.querySelectorAll('.stg').forEach((el, i) => { el.style.transitionDelay = (i * 60) + 'ms'; });
+    setTimeout(() => target.classList.add('revealed'), 30);
+    if (btn.dataset.panel === 'settings' || btn.dataset.panel === 'avail') {
+      const icons = btn.dataset.panel === 'settings' ? target.querySelectorAll('.socials .plate') : target.querySelectorAll('.plate');
+      icons.forEach(el => el.getAnimations().forEach(a => a.cancel()));
+      icons.forEach((el, i) => el.animate(
+        [{ opacity: 0, transform: 'translateX(-28px)' }, { opacity: 1, transform: 'none' }],
+        // De gauche à droite : la première icône part en premier
+        { duration: 240, delay: 96 + i * 48, easing: 'cubic-bezier(0.16,1,0.4,1)', fill: 'backwards' }
+      ));
+    }
+  }));
+  };
+  attachTools(pA);
+  const pFt = document.getElementById('playerF');
+  if (pFt) attachTools(pFt);
+  // Survol du lecteur F : affiche le chrome, le masque après 500 ms hors du lecteur (comme A)
+  if (pFt) {
+    let hideF;
+    pFt.addEventListener('pointerenter', () => { clearTimeout(hideF); pFt.classList.add('show'); });
+    pFt.addEventListener('pointerleave', () => { clearTimeout(hideF); hideF = setTimeout(() => { if (!pFt.classList.contains('has-panel')) pFt.classList.remove('show'); }, 0); });
+  }
+  // Le voile referme le panneau ouvert, pour chaque lecteur
+  document.querySelectorAll('.lecteur .veil').forEach(v => v.addEventListener('click', e => {
+    e.stopPropagation();
+    const root = v.closest('.lecteur');
+    root.querySelectorAll('.panel.open').forEach(p => p.classList.remove('open', 'revealed'));
+    root.querySelectorAll('[data-act="tool"].on').forEach(b => b.classList.remove('on'));
+    root.classList.remove('has-panel');
+  }));
+  pA.querySelector('.veil').addEventListener('click', e => { e.stopPropagation(); closePanels(); });
+
+  // Volume : glisser sur le rail, icône du bouton selon le niveau
+  const rail = pA.querySelector('.rail'), fill = rail.querySelector('.fill');
+  const volBtn = pA.querySelector('[data-panel="volume"] svg');
+  const setVol = v => {
+    v = Math.min(1, Math.max(0, Math.round(v * 100) / 100));
+    fill.style.height = (v * 100) + '%';
+    volBtn.innerHTML = v <= 0 ? VOL['volume-x'] : v < .5 ? VOL['volume-1'] : VOL['volume-2'];
+  };
+  const fromEvent = e => { const r = rail.getBoundingClientRect(); setVol(1 - (e.clientY - r.top) / r.height); };
+  rail.addEventListener('pointerdown', e => { rail.setPointerCapture(e.pointerId); fromEvent(e); });
+  rail.addEventListener('pointermove', e => { if (rail.hasPointerCapture(e.pointerId)) fromEvent(e); });
+  setVol(.7);
+  </script>
+
+<script>
+  // Chrome du lecteur A : visible 3 s à l'ouverture, puis seulement au survol (sortie dès que le pointeur quitte)
+  // Une fois le fondu fini, les éléments sont retirés du rendu (display: none) : un élément à opacité 0
+  // reste dessiné, et chaque bloc flouté coûte cher. C'est aussi ce que fait l'app (retrait de l'arbre).
+  const chromeEls = pA.querySelectorAll('.chrome-el');
+  let hideTimer, removeTimer;
+  const showChrome = () => { clearTimeout(hideTimer); clearTimeout(removeTimer); chromeEls.forEach(el => el.classList.remove('gone')); void pA.offsetWidth; pA.classList.add('show'); };
+  const hideChrome = () => {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      if (pA.classList.contains('has-panel')) return;
+      pA.classList.remove('show');
+      removeTimer = setTimeout(() => chromeEls.forEach(el => el.classList.add('gone')), 320);
+    }, 0);
+  };
+  pA.addEventListener('pointerenter', showChrome);
+  pA.addEventListener('pointerleave', hideChrome);
+  setTimeout(hideChrome, 3000);
+  showChrome();
+
+  // Icônes du plateau : ouvrent le panneau correspondant, copié du lecteur A
+  const cCol = document.querySelector('.col:has(.card[data-v="C"])');
+  const cCard = cCol.querySelector('.card[data-v="C"]');
+  pA.querySelectorAll('.panel').forEach(p => cCol.appendChild(p.cloneNode(true)));
+  // Fermeture : les icônes repartent vers la gauche, la plus à droite part en premier (miroir de l'ouverture)
+  const closeIcons = p => {
+    const id = p.dataset.panelId;
+    if (id !== 'settings' && id !== 'avail') return;
+    const icons = id === 'settings' ? p.querySelectorAll('.socials .plate') : p.querySelectorAll('.plate');
+    const n = icons.length;
+    icons.forEach((el, i) => {
+      el.getAnimations().forEach(a => a.cancel());
+      el.animate(
+        [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(-28px)' }],
+        { duration: 240, delay: (n - 1 - i) * 48, easing: 'cubic-bezier(0.16,1,0.4,1)', fill: 'forwards' }
+      );
+    });
+  };
+  const closeCPanels = () => { cCol.querySelectorAll('.panel.open').forEach(p => { closeIcons(p); p.classList.remove('open', 'revealed'); }); cCard.querySelectorAll('.qbtn.on').forEach(b => b.classList.remove('on')); };
+  cCard.querySelectorAll('.qbtn').forEach(btn => btn.addEventListener('click', e => {
+    e.stopPropagation();
+    cCard.classList.remove('vol-open');
+    const target = cCol.querySelector(`.panel[data-panel-id="${btn.dataset.panel}"]`);
+    const willOpen = !target.classList.contains('open');
+    closeCPanels();
+    if (!willOpen) return;
+    // Position : centré sous le bouton qui l'ouvre, 12 px sous la ligne de boutons
+    {
+      const colR = cCol.getBoundingClientRect();
+      const bR = btn.getBoundingClientRect();
+      const pw = target.offsetWidth;
+      const cx = bR.left + bR.width / 2 - colR.left;
+      let left = cx - pw / 2;
+      left = Math.max(0, Math.min(left, colR.width - pw));
+      target.style.right = 'auto';
+      target.style.left = left + 'px';
+      target.style.top = (bR.bottom - colR.top + 12) + 'px';
+    }
+    target.classList.add('open');
+    cCard.querySelectorAll('.qbtn.on').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+
+    target.querySelectorAll('.stg').forEach((el, i) => { el.style.transitionDelay = (i * 60) + 'ms'; });
+    setTimeout(() => target.classList.add('revealed'), 30);
+    if (btn.dataset.panel === 'settings' || btn.dataset.panel === 'avail') {
+      const icons = btn.dataset.panel === 'settings' ? target.querySelectorAll('.socials .plate') : target.querySelectorAll('.plate');
+      icons.forEach(el => el.getAnimations().forEach(a => a.cancel()));
+      icons.forEach((el, i) => el.animate(
+        [{ opacity: 0, transform: 'translateX(-28px)' }, { opacity: 1, transform: 'none' }],
+        // De gauche à droite : la première icône part en premier
+        { duration: 240, delay: 96 + i * 48, easing: 'cubic-bezier(0.16,1,0.4,1)', fill: 'backwards' }
+      ));
+    }
+  }));
+  document.addEventListener('click', () => { closeCPanels(); cCard.classList.remove('vol-open'); });
+  cCol.addEventListener('click', e => e.stopPropagation());
+  // Rail du volume de la pilule : glisser pour régler
+  const vrail = cCard.querySelector('.vpill .rail'), vfill = cCard.querySelector('.vpill .fill');
+  const vset = e => { const r = vrail.getBoundingClientRect(); const v = Math.min(1, Math.max(0, 1 - (e.clientY - r.top) / r.height)); vfill.style.height = (v * 100) + '%'; };
+  vrail.addEventListener('pointerdown', e => { vrail.setPointerCapture(e.pointerId); vset(e); });
+  vrail.addEventListener('pointermove', e => { if (vrail.hasPointerCapture(e.pointerId)) vset(e); });
+  cCard.querySelector('.vpill').addEventListener('click', e => e.stopPropagation());
+  const cRail = cCol.querySelector('.panel[data-panel-id="volume"] .rail'), cFill = cCol.querySelector('.panel[data-panel-id="volume"] .fill');
+  const cSet = e => { const r = cRail.getBoundingClientRect(); const v = Math.min(1, Math.max(0, 1 - (e.clientY - r.top) / r.height)); cFill.style.height = (v * 100) + '%'; };
+  cRail.addEventListener('pointerdown', e => { cRail.setPointerCapture(e.pointerId); cSet(e); });
+  cRail.addEventListener('pointermove', e => { if (cRail.hasPointerCapture(e.pointerId)) cSet(e); });
+
+  // Trois petits points : les icônes glissent vers la gauche du bouton, sans popup
+  document.querySelectorAll('.card').forEach(card => {
+    const more = card.querySelector('[data-act="more"]');
+    more.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = !card.classList.contains('tray-open');
+      document.querySelectorAll('.card.tray-open').forEach(c => c.classList.remove('tray-open'));
+      document.querySelectorAll('[data-act="more"].on').forEach(m => m.classList.remove('on'));
+      card.classList.toggle('tray-open', open);
+      if (!open) card.classList.remove('vol-open');
+      more.classList.toggle('on', open);
+      });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.card.tray-open').forEach(c => c.classList.remove('tray-open'));
+    document.querySelectorAll('[data-act="more"].on').forEach(m => m.classList.remove('on'));
+  });
+
+
+
+  // Noms de transition : la coque, la pochette, le titre et le bouton trois petits points se transforment ensemble
+  const setNames = mode => {
+    const A = document.getElementById('playerA');
+    const C = document.querySelector('.card[data-v="C"]');
+    [A, A.querySelector('.art'), A.querySelector('.title'), C, C.querySelector('.thumb img'), C.querySelector('.title'), C.querySelector('[data-act="more"]')]
+      .forEach(el => el && (el.style.viewTransitionName = ''));
+    const set = mode === 'full'
+      ? [[A, 'shell'], [A.querySelector('.art'), 'cover'], [A.querySelector('.title'), 'title']]
+      : [[C, 'shell'], [C.querySelector('.thumb img'), 'cover'], [C.querySelector('.title'), 'title'], [C.querySelector('[data-act="more"]'), 'more']];
+    set.forEach(([el, n]) => el.style.viewTransitionName = n);
+  };
+  setNames('full');
+  let curMode = 'full';
+  // Réglage du mode : Full ou Compact (les deux réglages restent synchronisés)
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const mode = b.dataset.mode;
+    if (mode === curMode) return;
+    // Fermer tous les menus et éteindre les boutons actifs avant la transition : on passe d'un lecteur au repos
+    const A = document.getElementById('playerA');
+    const C = document.querySelector('.card[data-v="C"]');
+    const restAll = () => {
+      A.querySelectorAll('.panel.open').forEach(p => p.classList.remove('open', 'revealed'));
+      A.classList.remove('has-panel');
+      A.querySelectorAll('[data-act="tool"].on').forEach(x => x.classList.remove('on'));
+      C.querySelectorAll('.panel.open').forEach(p => p.classList.remove('open', 'revealed'));
+      C.classList.remove('tray-open', 'vol-open');
+      C.querySelectorAll('.qbtn.on, [data-act="more"].on').forEach(x => x.classList.remove('on'));
+    };
+    restAll();
+    // Laisser les menus finir de se refermer (≈ 260 ms) avant de transformer le lecteur
+    setTimeout(() => {
+    const apply = () => {
+      setNames(mode);
+      document.querySelector('.wrap').classList.toggle('mode-compact', mode === 'compact');
+      document.querySelector('.wrap').classList.toggle('mode-full', mode === 'full');
+      document.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x.dataset.mode === mode));
+    };
+    if (document.startViewTransition) document.startViewTransition(apply); else apply();
+    curMode = mode;
+    }, 260);
+  }));
+  document.querySelector('.wrap').classList.add('mode-full');
+
+  // Défilement en boucle des textes du mode compact quand ils dépassent la largeur
+  document.querySelectorAll('.card .title, .card .sub').forEach(el => {
+    const text = el.textContent;
+    const span = document.createElement('span');
+    span.className = 'mq';
+    span.textContent = text;
+    el.textContent = '';
+    el.appendChild(span);
+    const w = span.scrollWidth;
+    if (w > el.clientWidth) {
+      const gap = 24;
+      span.innerHTML = '<span>' + text + '</span><span style="margin-left:' + gap + 'px">' + text + '</span>';
+      el.classList.add('marquee');
+      span.classList.add('scroll');
+      const rest = 4, scroll = (w + gap) / 25, total = rest + scroll;
+      const pct = (rest / total * 100).toFixed(2) + '%';
+      const name = 'mq-scroll-' + Math.round(w + gap);
+      if (!document.getElementById(name)) {
+        const st = document.createElement('style');
+        st.id = name;
+        st.textContent = '@keyframes ' + name + ' { 0%, ' + pct + ' { transform: translateX(0); } 100% { transform: translateX(-' + (w + gap) + 'px); } }';
+        document.head.appendChild(st);
+      }
+      const mname = 'mq-mask-' + Math.round(w + gap);
+      if (!document.getElementById(mname)) {
+        const st2 = document.createElement('style');
+        st2.id = mname;
+        const rest = 'linear-gradient(to right, #000 0, #000 16px, #000 calc(100% - 16px), #000 100%)';
+        const move = 'linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%)';
+        st2.textContent = '@keyframes ' + mname + ' { 0%, ' + pct + ' { -webkit-mask-image: ' + rest + '; mask-image: ' + rest + '; animation-timing-function: linear; } ' + (parseFloat(pct) + 1 / total * 100).toFixed(2) + '%, 100% { -webkit-mask-image: ' + move + '; mask-image: ' + move + '; } }';
+        document.head.appendChild(st2);
+      }
+      el.classList.add('marquee');
+      el.style.animation = mname + ' ' + total + 's linear infinite';
+      span.style.animationName = name;
+      span.style.setProperty('--mq-dur', total + 's');
+    }
+  });
+</script>
+</body>
+</html>
+
+</body></html>
